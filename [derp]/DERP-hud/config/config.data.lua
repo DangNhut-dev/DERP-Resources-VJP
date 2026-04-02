@@ -259,7 +259,6 @@ Config.CustomZoneNames = {
 Config.CustomNamesShouldUpdateGameTextEntries = false
 
 Config.WeaponNames = {
-  WEAPON_KNIFE = "Knife",
   WEAPON_NIGHTSTICK = "Nightstick",
   WEAPON_HAMMER = "Hammer",
   WEAPON_BAT = "Baseball Bat",
@@ -356,8 +355,6 @@ Config.WeaponNames = {
   WEAPON_GLOCK26S = "Glock 26 Switch",
   WEAPON_AK74 = "Ak 74",
   WEAPON_GLOCK17 = "Glock 17",
-  WEAPON_ACIDPACKAGE = "Báo",
-  WEAPON_DIGISCANNER = "Dò chìa",
   WEAPON_GLOCK22 = "Glock 22",
   WEAPON_M9 = "Beretta M9A3",
   WEAPON_REMINGTON = "Remington 870",
@@ -365,33 +362,6 @@ Config.WeaponNames = {
   WEAPON_MP9 = "MP9",
   WEAPON_M110 = "M110",
   WEAPON_HK416 = "HK416",
-  WEAPON_KATANA = "KATANA",
-  WEAPON_SLEDGEHAMMER = "Búa Tạ",
-  WEAPON_COLBATON = "Baton",
-  WEAPON_FLASHBANG = "Flash",
-}
-
-Config.BlacklistWeaponUI = {
-    ['weapon_knife']       = true,
-    ['weapon_nightstick']  = true,
-    ['weapon_acidpackage'] = true,
-    ['weapon_digiscanner'] = true,
-    ['weapon_flashlight'] = true,
-    ['weapon_katana'] = true,
-    ['weapon_sledgehammer'] = true,
-    ['weapon_colbaton'] = true,
-    ['weapon_flashbang'] = true,
-    -- ['weapon_bat']         = true,
-    -- ['weapon_crowbar']     = true,
-    -- ['weapon_machete']     = true,
-    -- ['weapon_hatchet']     = true,
-    -- ['weapon_knuckle']     = true,
-    -- ['weapon_dagger']      = true,
-    -- ['weapon_hammer']      = true,
-    -- ['weapon_switchblade'] = true,
-    -- ['weapon_bottle']      = true,
-    -- ['weapon_wrench']      = true,
-    -- ['weapon_unarmed']     = true,
 }
 
 Config.TrainMetroStations = {

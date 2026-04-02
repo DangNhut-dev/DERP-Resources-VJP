@@ -21,17 +21,15 @@ function GetWeaponData(weaponHash)
         return false
     end
 
-    local weaponRawKey = weaponHashes[weaponHash] or ''   -- giữ chữ hoa để lookup config
-    local weaponKey    = string.lower(weaponRawKey)        -- lowercase chỉ để làm path ảnh
-    local weaponName   = weaponKey
+    local weaponRawKey = weaponHashes[weaponHash] or ''
+    local weaponKey    = string.lower(weaponRawKey)
 
-    if Config.BlacklistWeaponUI[weaponKey] then
+    -- Không có trong WeaponNames → không hiển thị
+    if not Config.WeaponNames or not Config.WeaponNames[weaponRawKey] then
         return false
     end
 
-    if Config.WeaponNames and Config.WeaponNames[weaponRawKey] then
-        weaponName = Config.WeaponNames[weaponRawKey]
-    end
+    local weaponName = Config.WeaponNames[weaponRawKey]
 
     local isVehicleWeapon, vehicleWeaponIndex = GetCurrentPedVehicleWeapon(cache.ped)
     if isVehicleWeapon then
@@ -49,8 +47,8 @@ function GetWeaponData(weaponHash)
     totalAmmo = tonumber(totalAmmo) or 0
 
     return {
-        weaponHash  = weaponKey,   -- "weapon_pistol" → path ảnh ox_inventory
-        weaponName  = weaponName,  -- display label từ Config.WeaponNames
+        weaponHash  = weaponKey,
+        weaponName  = weaponName,
         reserveAmmo = totalAmmo,
         clipAmmo    = 0,
     }
