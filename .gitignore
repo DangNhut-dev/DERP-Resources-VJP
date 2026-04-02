@@ -2,8 +2,8 @@ node_modules/
 *.bk
 *.zip
 *.rar
-\[clothes\]/
 \[assets\]/
+\[clothes\]/
 \[vehicles\]/
 \[peds\]/
 \[weapons\]/
