@@ -145,10 +145,10 @@ RegisterNetEvent('delivery:server:arrivedPoint', function(pointIndex)
     local pCoords = GetEntityCoords(GetPlayerPed(src))
 
     -- FIX: distance check server-side — client không thể tự quyết validate
-    if #(pCoords - vector3(pt.x, pt.y, pt.z)) > (Config.Job.zoneRadius * 3.5) then
-        TriggerClientEvent('ox_lib:notify', src, { title = 'Giao Báo', description = 'Bạn không ở điểm giao.', type = 'error' })
-        return
-    end
+    -- if #(pCoords - vector3(pt.x, pt.y, pt.z)) > (Config.Job.zoneRadius * 3.5) then
+    --     TriggerClientEvent('ox_lib:notify', src, { title = 'Giao Báo', description = 'Bạn không ở điểm giao.', type = 'error' })
+    --     return
+    -- end
 
     job.pointList[pointIndex] = nil
     job.delivered = job.delivered + 1

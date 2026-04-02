@@ -31,9 +31,6 @@ local function deleteJobVehicle()
 end
 
 local function clearWorkZones()
-    for i = 1, #workZones do
-        if workZones[i] then workZones[i]:remove() end
-    end
     workZones = {}
     for k, v in pairs(blipStore) do
         if DoesBlipExist(v) then RemoveBlip(v) end
@@ -105,30 +102,13 @@ end
 
 local function createDeliveryPoints(points)
     clearWorkZones()
-    -- FIX: throwCooldown per-point chống fire server event 2 lần cùng 1 điểm
     local throwCooldown = {}
 
     for k, v in ipairs(points) do
-        local zone = lib.points.new({
+        workZones[k] = {
             coords     = vec3(v.x, v.y, v.z),
-            distance   = 30,
             pointIndex = v.pointIndex,
-            nearby     = function(point)
-                if point.isClosest and activeJob and not allDelivered then
-                    if not throwCooldown[point.pointIndex] then
-                        if IsProjectileTypeWithinDistance(point.coords.x, point.coords.y, point.coords.z, getWeaponHash(), Config.Job.zoneRadius, true) then
-                            throwCooldown[point.pointIndex] = true
-                            TriggerServerEvent('delivery:server:arrivedPoint', point.pointIndex)
-                            -- FIX: reset cooldown sau 2s phòng server reject trả về
-                            SetTimeout(2000, function()
-                                throwCooldown[point.pointIndex] = nil
-                            end)
-                        end
-                    end
-                end
-            end,
-        })
-        workZones[k] = zone
+        }
 
         blipStore[k] = AddBlipForCoord(v.x, v.y, v.z)
         SetBlipSprite(blipStore[k], 40)
@@ -140,6 +120,26 @@ local function createDeliveryPoints(points)
         AddTextComponentString('Điểm Giao Báo')
         EndTextCommandSetBlipName(blipStore[k])
     end
+
+    CreateThread(function()
+        while activeJob and not allDelivered do
+            Wait(200)
+            for k, zone in pairs(workZones) do
+                if zone and zone.coords then
+                    local idx = zone.pointIndex
+                    if not throwCooldown[idx] then
+                        if IsProjectileTypeWithinDistance(zone.coords.x, zone.coords.y, zone.coords.z, getWeaponHash(), Config.Job.zoneRadius, true) then
+                            throwCooldown[idx] = true
+                            TriggerServerEvent('delivery:server:arrivedPoint', idx)
+                            SetTimeout(2000, function()
+                                throwCooldown[idx] = nil
+                            end)
+                        end
+                    end
+                end
+            end
+        end
+    end)
 end
 
 RegisterNetEvent('delivery:client:startJob', function(points, total, slotCoords, areaLabel)
@@ -179,10 +179,8 @@ RegisterNetEvent('delivery:client:startJob', function(points, total, slotCoords,
 end)
 
 RegisterNetEvent('delivery:client:removePoint', function(pointIndex, remaining)
-    -- FIX: tìm zone theo pointIndex thay vì assume k == pointIndex
     for k, zone in pairs(workZones) do
         if zone and zone.pointIndex == pointIndex then
-            zone:remove()
             workZones[k] = nil
             if blipStore[k] and DoesBlipExist(blipStore[k]) then
                 RemoveBlip(blipStore[k])
