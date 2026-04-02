@@ -1,6 +1,6 @@
 Config.Locations = {
     ['apartment'] = {
-        coords = vector3(-667.02, -1105.24, 14.63),
+        coords = vector3(561.79, -1773.13, 29.35),
         type = "default",
         label = 'Chung Cư'
     },
