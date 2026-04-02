@@ -148,8 +148,16 @@ local function addTreeTarget(treeIdx, entity)
             distance = 2.5,
             onSelect = function()
                 if isHarvesting or not treeAvailable[treeIdx] then return end
+
+                local ped = PlayerPedId()
+
+                if IsPedInAnyVehicle(ped, false) then
+                    lib.notify({ title = 'Thu hoạch bông', description = 'Bạn đang ở trên xe', type = 'error' })
+                    return
+                end
+
                 local slots = exports.ox_inventory:Search('slots', 'scissors')
-                    if not slots or not next(slots) then
+                if not slots or not next(slots) then
                     lib.notify({ title = 'Thu hoạch bông', description = 'Bạn cần kéo để thu hoạch', type = 'error' })
                     return
                 end
