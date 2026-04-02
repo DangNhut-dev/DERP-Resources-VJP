@@ -146,7 +146,7 @@ end
 -- Setup keybind if configured
 if Config.Alerts.menuKey and type(Config.Alerts.menuKey) == "string" then
   lib.addKeybind({
-    name = "ambulance_alerts",
+    name = "ambulance_alerts1",
     description = locale("open_ambulance_alerts"),
     defaultKey = Config.Alerts.menuKey,
     onPressed = function()
