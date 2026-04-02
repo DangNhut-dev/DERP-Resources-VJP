@@ -262,12 +262,12 @@ Config.Death = {
             TaskPlayAnim(cache.ped, animDict, 'idle_a', 8.0, -8.0, -1, 1, 0, false, false, false)
             local result = lib.skillCheck({'easy', 'easy', {areaSize = 60, speedMultiplier = 2}, 'hard'}, {'w', 'a', 's', 'd'})
             if result then
-                if Bridge.Progress.StartCircle({
-                    duration = 25000,
-                    label = locale('reviving_player'),
-                    position = 'center',
+                if lib.progressBar({
+                    duration     = 25000,
+                    label        = locale('reviving_player'),
+                    position     = 'center',
                     useWhileDead = true,
-                    canCancel = true
+                    canCancel    = true,
                 }) then
                     TriggerServerEvent('p_ambulancejob/server/death/targetRevive', targetId)
                 end
@@ -1277,11 +1277,11 @@ Config.Defibrilator = {
     onUse = function(targetId)
         -- this will execute when defibrilator is used on some player
         -- targetId = player id of target
-        if Bridge.Progress.StartCircle({
-            duration = 5000,
-            label = locale('preparing_defibrilator'),
-            position = 'bottom',
-            canCancel = false
+        if lib.progressBar({
+            duration  = 5000,
+            label     = locale('preparing_defibrilator'),
+            position  = 'bottom',
+            canCancel = false,
         }) then
             local result = lib.skillCheck({'easy', 'medium', 'hard'})
             return result

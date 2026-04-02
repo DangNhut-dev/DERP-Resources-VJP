@@ -50,7 +50,7 @@ return {
             ped = 's_m_m_doctor_01',
             anim = {dict = 'amb@world_human_clipboard@male@idle_a', clip = 'idle_a', flag = 1},
             prop = {model = 'p_amb_clipboard_01', bone = 36029, coords = vec3(0.16, 0.08, 0.1), rot = vec3(-130.0, -50.0, 0.0)},
-            duration = 5000,
+            duration = 15000,
             maxDutyMedics = 2,
             price = {
                 money = 500, -- price in cash

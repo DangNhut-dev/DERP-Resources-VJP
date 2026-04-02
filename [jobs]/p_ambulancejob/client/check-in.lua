@@ -174,12 +174,12 @@ function CheckIn.start(self, hospitalId, paymentType, dropItems)
 
   -- Show progress bar
   local duration = hospitalConfig.duration or 5000
-  local success = Bridge.Progress.StartCircle({
-    duration = duration,
-    label = locale("checking_in"),
-    position = "center",
-    useWhileDead = true,
-    canCancel = false
+  local success = lib.progressBar({
+      duration     = duration,
+      label        = locale("checking_in"),
+      position     = 'center',
+      useWhileDead = true,
+      canCancel    = false,
   })
 
   if success then

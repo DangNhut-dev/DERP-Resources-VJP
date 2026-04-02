@@ -736,11 +736,11 @@ RegisterNUICallback("damages/checkPulse", function()
   
   Damages.antiSpam = GetGameTimer() + 5000
   
-  local success = Bridge.Progress.StartCircle({
-    duration = 5000,
-    label = locale("checking_pulse"),
-    position = "bottom"
-  })
+  local success = lib.progressBar({
+    duration     = 5000,
+    label        = locale("checking_pulse"),
+    position     = 'bottom',
+})
   
   if success then
     Damages.pulseChecked = true
@@ -755,10 +755,10 @@ RegisterNUICallback("damages/checkTemperature", function()
   
   Damages.antiSpam = GetGameTimer() + 5000
   
-  local success = Bridge.Progress.StartCircle({
-    duration = 5000,
-    label = locale("checking_temperature"),
-    position = "bottom"
+  local success = lib.progressBar({
+      duration = 5000,
+      label    = locale("checking_temperature"),
+      position = 'bottom',
   })
   
   if success then
