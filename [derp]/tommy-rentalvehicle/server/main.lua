@@ -15,39 +15,48 @@ AddEventHandler('qb-rental:server:rentcar', function(data)
 end)
 
 RegisterServerEvent('qb-rental:server:startreturnvehicle')
-AddEventHandler('qb-rental:server:startreturnvehicle', function()
+AddEventHandler('qb-rental:server:startreturnvehicle', function(netId)
     local src = source
     if not RentedCars[src] then
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_vehicle_nearby'), 'error')
         return
     end
 
-    local coords = GetEntityCoords(GetPlayerPed(src), false)
-    local toReturn = {}
-
-    for k, v in pairs(RentedCars[src]) do
-        local vehCoord = GetEntityCoords(v.veh, false)
-        if GetDistanceBetweenCoords(coords, vehCoord) <= 20 then
-            toReturn[#toReturn + 1] = { key = k, data = v }
-        end
+    if currentVeh == 0 then
+        lib.notify({ title = 'Thuê xe', description = 'Bạn chưa ngồi trong xe', type = 'error' })
+        return
     end
 
-    if #toReturn == 0 then
+    local veh = NetworkGetEntityFromNetworkId(netId)
+    if not veh or veh == 0 then
         TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_vehicle_nearby'), 'error')
         return
     end
 
-    local totalPrice = 0
-    for _, entry in ipairs(toReturn) do
-        local v = entry.data
-        ReturnVehicle(src, v.veh, entry.key, v.returnprice)
-        RentedCars[src][entry.key] = nil
-        VehicleSpots[v.rentid][v.carspot].used = false
-        totalPrice = totalPrice + v.returnprice
+    if GetVehiclePedIsIn(GetPlayerPed(src), false) ~= veh then
+        TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_vehicle_nearby'), 'error')
+        return
     end
 
-    local retmsg = #toReturn .. Lang:t('success.return_04') .. totalPrice .. '$'
-    TriggerClientEvent('QBCore:Notify', src, retmsg, 'success')
+    local foundKey = nil
+    for k, v in pairs(RentedCars[src]) do
+        if v.netid == netId then
+            foundKey = k
+            break
+        end
+    end
+
+    if not foundKey then
+        TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_vehicle_nearby'), 'error')
+        return
+    end
+
+    local entry = RentedCars[src][foundKey]
+    ReturnVehicle(src, entry.veh, foundKey, entry.returnprice)
+    RentedCars[src][foundKey] = nil
+    VehicleSpots[entry.rentid][entry.carspot].used = false
+
+    TriggerClientEvent('QBCore:Notify', src, Lang:t('success.return_04') .. entry.returnprice .. '$', 'success')
 end)
 
 RegisterServerEvent('qb-rental:server:freespot')

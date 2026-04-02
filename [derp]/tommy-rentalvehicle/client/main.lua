@@ -53,7 +53,25 @@ AddEventHandler('qb-rental:client:startrent', function(data)
             description = Lang:t('menu.return_text'),
             icon = 'car',
             onSelect = function()
-                TriggerServerEvent('qb-rental:server:startreturnvehicle')
+                local ped = PlayerPedId()
+                local currentVeh = GetVehiclePedIsIn(ped, false)
+                if currentVeh == 0 then
+                    lib.notify({ title = 'Bạn chưa ngồi trong xe', type = 'error' })
+                    return
+                end
+                local currentNetId = NetworkGetNetworkIdFromEntity(currentVeh)
+                local isRented = false
+                for _, netId in pairs(RentedCars) do
+                    if netId == currentNetId then
+                        isRented = true
+                        break
+                    end
+                end
+                if not isRented then
+                    lib.notify({ title = 'Thuê xe', description = 'Đây không phải xe thuê của bạn', type = 'error' })
+                    return
+                end
+                TriggerServerEvent('qb-rental:server:startreturnvehicle', currentNetId)
             end,
         },
     }
