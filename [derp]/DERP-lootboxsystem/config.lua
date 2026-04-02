@@ -3,7 +3,7 @@ Config = {}
 Config.OpenCooldown = 5000
 
 -- Config.ImageBasePath = 'nui://ox_inventory/web/clothes/'
-Config.ImageBasePath = 'https://newscity.top/fivem/items101/'
+Config.ImageBasePath = 'https://gta5root.top/fivem/items101/'
 Config.ImageBox      = 'nui://ox_inventory/web/images/'
 
 -- Weight override nếu muốn tuỳ chỉnh, mặc định dùng order từ RarityConfig.tiers

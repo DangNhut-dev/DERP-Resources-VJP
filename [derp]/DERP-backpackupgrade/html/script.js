@@ -130,15 +130,15 @@ const R_INNER = 60;
 
 // ── Helpers ────────────────────────────────────────────────────────
 function imgUrl(item) {
-    if (typeof item === 'string') return `https://newscity.top/fivem/items101/${item}.png`;
+    if (typeof item === 'string') return `https://gta5root.top/fivem/items101/${item}.png`;
     const meta = item.metadata || {};
     const draw = meta.drawableId != null ? meta.drawableId : '';
     const tex  = meta.textureId  != null ? meta.textureId  : '';
     const gen  = meta.gender     != null ? meta.gender     : '';
     if (draw !== '' && tex !== '' && gen !== '') {
-        return `https://newscity.top/fivem/items101/${item.name}_${draw}_${tex}_${gen}.png`;
+        return `https://gta5root.top/fivem/items101/${item.name}_${draw}_${tex}_${gen}.png`;
     }
-    return `https://newscity.top/fivem/items101/${item.name}.png`;
+    return `https://gta5root.top/fivem/items101/${item.name}.png`;
 }
 function degToRad(d)  { return d * Math.PI / 180; }
 function radToDeg(r)  { return r * 180 / Math.PI; }
