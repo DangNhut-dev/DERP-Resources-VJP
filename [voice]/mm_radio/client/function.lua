@@ -457,9 +457,9 @@ end
 exports('LeaveRadio', LeaveRadio)
 
 lib.addKeybind({
-    name = 'radio',
+    name = 'mmradio',
     description = 'Press = to open Radio',
-    defaultKey = 'EQUALS',
+    defaultKey = '',
     onPressed = function()
         if not Radio.usingRadio then
             if Radio.hasRadio then
@@ -470,9 +470,9 @@ lib.addKeybind({
 })
 
 lib.addKeybind({
-    name = '+channel',
+    name = 'mm+channel',
     description = 'Press to switch to next radio channel',
-    defaultKey = 'PERIOD',
+    defaultKey = '',
     onPressed = function()
         if not Radio.onRadio then return end
         local currentChannel = Radio.RadioChannel
@@ -481,9 +481,9 @@ lib.addKeybind({
 })
 
 lib.addKeybind({
-    name = '-channel',
+    name = 'mm-channel',
     description = 'Press to switch to previous radio channel',
-    defaultKey = 'COMMA',
+    defaultKey = '',
     onPressed = function()
         if not Radio.onRadio then return end
         local currentChannel = Radio.RadioChannel
@@ -499,3 +499,6 @@ if Shared.Battery.state then
         end
     end)
 end
+exports('useRadio', function(data, slot)
+    TriggerEvent('mm_radio:client:use', slot)
+end)

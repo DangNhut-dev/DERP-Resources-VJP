@@ -564,7 +564,11 @@ return {
 		weight = 1000,
 		degrade = 100,
 		stack = false,
-		allowArmed = true
+		allowArmed = true,
+		consume = 0,
+		client = {
+			export = 'mm_radio.useRadio'
+		}
 	},
 
 	['bodycam'] = {
