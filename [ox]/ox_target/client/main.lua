@@ -36,16 +36,13 @@ local vec0 = vec3(0, 0, 0)
 
 ---@param option OxTargetOption
 ---@param distance number
+---@param playerCoords vector3
 ---@param endCoords vector3
 ---@param entityHit? number
 ---@param entityType? number
 ---@param entityModel? number | false
-local function shouldHide(option, distance, endCoords, entityHit, entityType, entityModel)
+local function shouldHide(option, distance, playerCoords, endCoords, entityHit, entityType, entityModel)
     if option.menuName ~= currentMenu then
-        return true
-    end
-
-    if distance > (option.distance or 7) then
         return true
     end
 
@@ -117,6 +114,15 @@ local function shouldHide(option, distance, endCoords, entityHit, entityType, en
         end
     end
 
+    if entityHit and entityHit > 0 and entityType and entityType > 0 and entityModel then
+        local targetCoords = offset or bone and GetEntityBonePosition_2(entityHit, bone) or GetEntityCoords(entityHit)
+        distance = #(playerCoords - targetCoords)
+    end
+
+    if distance > (option.distance or 7) then
+        return true
+    end
+
     if option.canInteract then
         local success, resp = pcall(option.canInteract, entityHit, distance, endCoords, option.name, bone)
         return not success or not resp
@@ -180,9 +186,14 @@ local function startTargeting()
         hit, entityHit, endCoords = lib.raycast.fromCamera(flag, 4, 20)
         distance = #(playerCoords - endCoords)
 
-        if entityHit ~= 0 and entityHit ~= lastEntity then
-            local success, result = pcall(GetEntityType, entityHit)
-            entityType = success and result or 0
+        if entityHit ~= 0 then
+            if entityHit ~= lastEntity then
+                local success, result = pcall(GetEntityType, entityHit)
+                entityType = success and result or 0
+            end
+        else
+            entityType = 0
+            entityModel = nil
         end
 
         if entityType == 0 then
@@ -196,8 +207,17 @@ local function startTargeting()
                 if entityHit ~= 0 then
                     local success, result = pcall(GetEntityType, entityHit)
                     entityType = success and result or 0
+                else
+                    entityType = 0
+                    entityModel = nil
                 end
             end
+        end
+
+        if entityHit > 0 and flag ~= 511 and not HasEntityClearLosToEntity(entityHit, cache.ped, 7) then
+            entityHit = 0
+            entityType = 0
+            entityModel = nil
         end
 
         nearbyZones, zonesChanged = utils.getNearbyZones(endCoords)
@@ -205,36 +225,29 @@ local function startTargeting()
         local entityChanged = entityHit ~= lastEntity
         local newOptions = (zonesChanged or entityChanged or menuChanged) and true
 
-        if entityHit > 0 and entityChanged then
+        if entityChanged then
             currentMenu = nil
+            options:wipe()
 
-            if flag ~= 511 then
-                entityHit = HasEntityClearLosToEntity(entityHit, cache.ped, 7) and entityHit or 0
-            end
-
-            if lastEntity ~= entityHit and debug then
-                if lastEntity then
-                    SetEntityDrawOutline(lastEntity, false)
-                end
-
-                if entityType ~= 1 then
-                    SetEntityDrawOutline(entityHit, true)
-                end
+            if debug and lastEntity > 0 then
+                SetEntityDrawOutline(lastEntity, false)
             end
 
             if entityHit > 0 then
+                if debug and entityType ~= 1 then
+                    SetEntityDrawOutline(entityHit, true)
+                end
+
                 local success, result = pcall(GetEntityModel, entityHit)
-                entityModel = success and result
+                entityModel = success and result or nil
+            else
+                entityType = 0
+                entityModel = nil
             end
         end
 
         if hasTarget and (zonesChanged or entityChanged and hasTarget > 1) then
             SendNuiMessage('{"event": "leftTarget"}')
-
-            if entityChanged then options:wipe() end
-
-            if debug and lastEntity > 0 then SetEntityDrawOutline(lastEntity, false) end
-
             hasTarget = false
         end
 
@@ -256,7 +269,7 @@ local function startTargeting()
 
             for i = 1, optionCount do
                 local option = v[i]
-                local hide = shouldHide(option, dist, endCoords, entityHit, entityType, entityModel)
+                local hide = (k ~= '__global' and entityHit <= 0) or shouldHide(option, dist, playerCoords, endCoords, entityHit, entityType, entityModel)
 
                 if option.hide ~= hide then
                     option.hide = hide
@@ -277,7 +290,7 @@ local function startTargeting()
 
             for j = 1, optionCount do
                 local option = zoneOptions[j]
-                local hide = shouldHide(option, distance, endCoords, entityHit)
+                local hide = shouldHide(option, distance, playerCoords, endCoords, entityHit)
 
                 if option.hide ~= hide then
                     option.hide = hide
