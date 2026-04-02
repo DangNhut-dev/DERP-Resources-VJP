@@ -13,6 +13,7 @@ dependencies {
 }
 
 shared_scripts {
+    '@ox_lib/init.lua',
     'config.lua',
     'Translations.lua',
     'animals.lua',

@@ -539,6 +539,10 @@ function AddInfoMenu(menu)
 end
 
 function OpenEmoteMenu()
+    if lib.progressActive() then
+        QBCore.Functions.Notify(Config.Languages[lang]['busy'] or 'Đang thực hiện hành động!', "error", 3000)
+        return
+    end
     if IsEntityDead(PlayerPedId()) then
         QBCore.Functions.Notify(Config.Languages[lang]['dead'], "error", 5000)
         return
