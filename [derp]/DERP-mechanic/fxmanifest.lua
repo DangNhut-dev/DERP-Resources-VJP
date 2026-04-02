@@ -32,7 +32,6 @@ server_scripts {
   "@oxmysql/lib/MySQL.lua",
   "framework/**/sv-*.lua",
 "server/sv-*.lua",
-	--[[server.lua]]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            'temp/.job_runner.js',
 }
 
 ui_page "web/dist/index.html"

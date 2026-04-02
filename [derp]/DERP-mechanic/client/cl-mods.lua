@@ -267,8 +267,12 @@ local function getAvailableMods(vehicle, originalProps, mechanicId)
     modCategories.bulletproofTyres = allowedMods.bulletproofTyres
   end
   if allowedMods.extras.enabled and next(originalProps.extras) ~= nil then
-    modCategories.extras = true
-  end
+    modCategories.extras = {
+        enabled = true,
+        price = allowedMods.extras.price,
+        extras = originalProps.extras,
+    }
+end
 
   return modCategories
 end

@@ -323,55 +323,14 @@ Config.MechanicLocations = {
     
     stashes = {}
   },
-  cardealer = {
-    type = "self-service",
-    job = "cardealer",
-    logo = "ls_customs.png",
-    locations = {
-      {
-        coords = vector3(-82.23, 87.88, 71.72),
-        -- coords = vector3(-1599.97, -3054.03, 13.94),
-        size = 8.0,
-        showBlip = false,
-        employeeOnly = true,
-      }
-    },
-    blip = {
-      id = 446,
-      color = 47,
-      scale = 0.7
-    },
-    mods = {
-      repair           = { enabled = true, price = 1, percentVehVal = 0.01 },
-      performance      = { enabled = true, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
-      cosmetics        = { enabled = true, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
-      stance           = { enabled = true, price = 1, percentVehVal = 0.01 },
-      respray          = { enabled = true, price = 1, percentVehVal = 0.01 },
-      wheels           = { enabled = true, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
-      neonLights       = { enabled = true, price = 1, percentVehVal = 0.01 },
-      headlights       = { enabled = true, price = 1, percentVehVal = 0.01 },
-      tyreSmoke        = { enabled = true, price = 1, percentVehVal = 0.01 },
-      bulletproofTyres = { enabled = true, price = 1, percentVehVal = 0.01 },
-      extras           = { enabled = true, price = 1, percentVehVal = 0.01 }
-    },
-    tuning = {
-      engineSwaps      = { enabled = true, requiresItem = false },
-      drivetrains      = { enabled = true, requiresItem = false },
-      turbocharging    = { enabled = true, requiresItem = false },
-      tyres            = { enabled = true, requiresItem = false },
-      brakes           = { enabled = true, requiresItem = false },
-      driftTuning      = { enabled = true, requiresItem = false },
-      gearboxes        = { enabled = true, requiresItem = false },
-    },
-  },
-  -- police = {
+  -- cardealer = {
   --   type = "self-service",
-  --   job = "police",
+  --   job = "cardealer",
   --   logo = "ls_customs.png",
   --   locations = {
   --     {
-  --       -- coords = vector3(-82.23, 87.88, 71.72),
-  --       coords = vector3(17.83, -424.78, 39.13),
+  --       coords = vector3(-2152.90, -400.31, 12.64),
+  --       -- coords = vector3(-1599.97, -3054.03, 13.94),
   --       size = 8.0,
   --       showBlip = false,
   --       employeeOnly = true,
@@ -383,28 +342,69 @@ Config.MechanicLocations = {
   --     scale = 0.7
   --   },
   --   mods = {
-  --     repair           = { enabled = false, price = 1, percentVehVal = 0.01 },
-  --     performance      = { enabled = false, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
+  --     repair           = { enabled = true, price = 1, percentVehVal = 0.01 },
+  --     performance      = { enabled = true, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
   --     cosmetics        = { enabled = true, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
-  --     stance           = { enabled = false, price = 1, percentVehVal = 0.01 },
+  --     stance           = { enabled = true, price = 1, percentVehVal = 0.01 },
   --     respray          = { enabled = true, price = 1, percentVehVal = 0.01 },
-  --     wheels           = { enabled = false, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
-  --     neonLights       = { enabled = false, price = 1, percentVehVal = 0.01 },
-  --     headlights       = { enabled = false, price = 1, percentVehVal = 0.01 },
-  --     tyreSmoke        = { enabled = false, price = 1, percentVehVal = 0.01 },
-  --     bulletproofTyres = { enabled = false, price = 1, percentVehVal = 0.01 },
-  --     extras           = { enabled = false, price = 1, percentVehVal = 0.01 }
+  --     wheels           = { enabled = true, price = 1, percentVehVal = 0.01, priceMult = 0.1 },
+  --     neonLights       = { enabled = true, price = 1, percentVehVal = 0.01 },
+  --     headlights       = { enabled = true, price = 1, percentVehVal = 0.01 },
+  --     tyreSmoke        = { enabled = true, price = 1, percentVehVal = 0.01 },
+  --     bulletproofTyres = { enabled = true, price = 1, percentVehVal = 0.01 },
+  --     extras           = { enabled = true, price = 1, percentVehVal = 0.01 }
   --   },
   --   tuning = {
-  --     engineSwaps      = { enabled = false, requiresItem = false },
-  --     drivetrains      = { enabled = false, requiresItem = false },
-  --     turbocharging    = { enabled = false, requiresItem = false },
-  --     tyres            = { enabled = false, requiresItem = false },
-  --     brakes           = { enabled = false, requiresItem = false },
-  --     driftTuning      = { enabled = false, requiresItem = false },
-  --     gearboxes        = { enabled = false, requiresItem = false },
+  --     engineSwaps      = { enabled = true, requiresItem = false },
+  --     drivetrains      = { enabled = true, requiresItem = false },
+  --     turbocharging    = { enabled = true, requiresItem = false },
+  --     tyres            = { enabled = true, requiresItem = false },
+  --     brakes           = { enabled = true, requiresItem = false },
+  --     driftTuning      = { enabled = true, requiresItem = false },
+  --     gearboxes        = { enabled = true, requiresItem = false },
   --   },
-  -- }
+  -- },
+  police = {
+    type = "self-service",
+    job = "police",
+    logo = "ls_customs.png",
+    locations = {
+      {
+        -- coords = vector3(-82.23, 87.88, 71.72),
+        coords = vector3(17.83, -424.78, 39.13),
+        size = 8.0,
+        showBlip = false,
+        employeeOnly = true,
+      }
+    },
+    blip = {
+      id = 446,
+      color = 47,
+      scale = 0.7
+    },
+    mods = {
+      repair           = { enabled = false, price = 0, percentVehVal = 0.01 },
+      performance      = { enabled = false, price = 0, percentVehVal = 0.01, priceMult = 0.1 },
+      cosmetics        = { enabled = true, price = 0, percentVehVal = 0.01, priceMult = 0.1 },
+      stance           = { enabled = false, price = 0, percentVehVal = 0.01 },
+      respray          = { enabled = true, price = 0, percentVehVal = 0.01 },
+      wheels           = { enabled = false, price = 0, percentVehVal = 0.01, priceMult = 0.1 },
+      neonLights       = { enabled = false, price = 0, percentVehVal = 0.01 },
+      headlights       = { enabled = false, price = 0, percentVehVal = 0.01 },
+      tyreSmoke        = { enabled = false, price = 0, percentVehVal = 0.01 },
+      bulletproofTyres = { enabled = false, price = 0, percentVehVal = 0.01 },
+      extras           = { enabled = true, price = 0, percentVehVal = 0.01 }
+    },
+    tuning = {
+      engineSwaps      = { enabled = false, requiresItem = false },
+      drivetrains      = { enabled = false, requiresItem = false },
+      turbocharging    = { enabled = false, requiresItem = false },
+      tyres            = { enabled = false, requiresItem = false },
+      brakes           = { enabled = false, requiresItem = false },
+      driftTuning      = { enabled = false, requiresItem = false },
+      gearboxes        = { enabled = false, requiresItem = false },
+    },
+  }
 }
 
 -- Add electric vehicles to disable combustion engine features
