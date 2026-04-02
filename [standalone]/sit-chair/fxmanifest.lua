@@ -7,7 +7,7 @@ description '[FREE] Sit on every chair'
 version '1.1.0'
 
 shared_scripts {
-	'@es_extended/imports.lua',
+    '@ox_lib/init.lua',
 	'config.lua'
 }
 
