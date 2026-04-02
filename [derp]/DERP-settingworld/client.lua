@@ -168,33 +168,23 @@ end
 --     print('Signed: ' .. (wep > 2147483647 and wep - 4294967296 or wep))
 -- end, false)
 
-RegisterCommand('getprop', function()
-    local ped = PlayerPedId()
-    local coords = GetEntityCoords(ped)
-    local forward = GetEntityForwardVector(ped)
-    
-    local dest = {
-        x = coords.x + forward.x * 5.0,
-        y = coords.y + forward.y * 5.0,
-        z = coords.z + 0.5
-    }
-    
-    local _, hit, _, _, entity = GetShapeTestResult(
-        StartShapeTestRay(
-            coords.x, coords.y, coords.z + 0.5,
-            dest.x, dest.y, dest.z,
-            -1, ped, 0
-        )
-    )
-    
-    if hit and entity ~= 0 then
-        local hash = GetEntityModel(entity)
-        local eCoords = GetEntityCoords(entity)
-        print('=== ENTITY INFO ===')
-        print('Hash: ' .. hash)
-        print('Coords: ' .. eCoords.x .. ', ' .. eCoords.y .. ', ' .. eCoords.z)
-        print('Is Object: ' .. tostring(IsEntityAnObject(entity)))
-    else
-        print('Không tìm thấy entity phía trước')
+Citizen.CreateThread(function()
+    for i = 1, 12 do
+        EnableDispatchService(i, false)
     end
-end, false)
+    SetMaxWantedLevel(0)
+
+    SetGarbageTrucks(false)                       -- Xe rác ngẫu nhiên [true/false]
+    SetRandomBoats(false)                         -- Thuyền ngẫu nhiên [true/false]
+    SetCreateRandomCops(false)                    -- Cops ngẫu nhiên (xe / ped) [true/false]
+    SetCreateRandomCopsNotOnScenarios(false)      -- Cops không theo kịch bản [true/false]
+    SetCreateRandomCopsOnScenarios(false)         -- Cops theo kịch bản [true/false]
+
+    while true do
+        Citizen.Wait(1500)
+        local pid = PlayerId()
+        if GetPlayerWantedLevel(pid) ~= 0 then
+            ClearPlayerWantedLevel(pid)
+        end
+    end
+end)
