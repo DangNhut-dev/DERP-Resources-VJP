@@ -39,8 +39,12 @@ local function spawnNpc()
             name     = 'lumberjack_npc_talk',
             label    = 'Nói chuyện với quản lý',
             icon     = 'fas fa-comment',
-            distance = 3.0,
+            distance = 2.0,
             onSelect = function()
+                if IsPedInAnyVehicle(PlayerPedId(), false) then
+                    Notify('Bạn đang ở trên xe!', 'error')
+                    return
+                end
                 lib.showContext('lumberjack_main')
             end,
         }
@@ -202,8 +206,12 @@ local function spawnTreeAt(index)
             name     = 'lumberjack_tree' .. index,
             label    = 'Chặt cây',
             icon     = 'fas fa-tree',
-            distance = 3.0,
+            distance = 2.0,
             onSelect = function()
+                if IsPedInAnyVehicle(PlayerPedId(), false) then
+                    Notify('Bạn đang ở trên xe!', 'error')
+                    return
+                end
                 TriggerEvent('pyh-lumberjack:useAxe', index)
             end,
         }
@@ -270,6 +278,10 @@ local function initJob()
         radius   = 2.0,
         name     = 'lumberjack_getClean',
         options  = {{ label = 'Xử lý gỗ', icon = 'fas fa-industry', onSelect = function()
+            if IsPedInAnyVehicle(PlayerPedId(), false) then
+                Notify('Bạn đang ở trên xe!', 'error')
+                return
+            end
             TriggerServerEvent("pyh-lumberjack:requestProcess", "logs")
         end }}
     })
@@ -279,6 +291,10 @@ local function initJob()
         radius   = 2.0,
         name     = 'lumberjack_getCleaned',
         options  = {{ label = 'Gỗ → Ván thô', icon = 'fas fa-cut', onSelect = function()
+            if IsPedInAnyVehicle(PlayerPedId(), false) then
+                Notify('Bạn đang ở trên xe!', 'error')
+                return
+            end
             TriggerServerEvent("pyh-lumberjack:requestProcess", "cleanLogs")
         end }}
     })
@@ -288,15 +304,24 @@ local function initJob()
         radius   = 2.0,
         name     = 'lumberjack_sand',
         options  = {{ label = 'Chà nhám ván', icon = 'fas fa-tools', onSelect = function()
+            if IsPedInAnyVehicle(PlayerPedId(), false) then
+                Notify('Bạn đang ở trên xe!', 'error')
+                return
+            end
             TriggerServerEvent("pyh-lumberjack:requestProcess", "rawPlanks")
         end }}
     })
+
 
     exports.ox_target:addSphereZone({
         coords   = Config.finish,
         radius   = 2.0,
         name     = 'lumberjack_finish',
         options  = {{ label = 'Hoàn thiện gỗ', icon = 'fas fa-paint-brush', onSelect = function()
+            if IsPedInAnyVehicle(PlayerPedId(), false) then
+                Notify('Bạn đang ở trên xe!', 'error')
+                return
+            end
             TriggerServerEvent("pyh-lumberjack:requestProcess", "sandedPlanks")
         end }}
     })
@@ -360,6 +385,10 @@ end)
 RegisterNetEvent("pyh-lumberjack:useAxe")
 AddEventHandler("pyh-lumberjack:useAxe", function(treeIdx)
     if not hasJob then return end
+    if IsPedInAnyVehicle(PlayerPedId(), false) then
+        Notify('Bạn đang ở trên xe!', 'error')
+        return
+    end
 
     -- Support cả trigger từ ox_target (có treeIdx) lẫn usable item (không có)
     local playerPed     = PlayerPedId()
@@ -443,6 +472,10 @@ local processLabels = {
 
 RegisterNetEvent('pyh-lumberjack:startProcessBar')
 AddEventHandler('pyh-lumberjack:startProcessBar', function(processType, amount)
+    if IsPedInAnyVehicle(PlayerPedId(), false) then
+        Notify('Bạn đang ở trên xe!', 'error')
+        return
+    end
     local label = processLabels[processType] or 'Đang xử lý...'
 
     ProgBar('lumberjack_process', label .. ' (' .. amount .. ')', 20000, {
