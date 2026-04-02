@@ -7,7 +7,7 @@ Config.DatabaseChecker.AutoFix = false -- if true, the tablet will automatically
 
 Config.LBPhone = "auto" -- Set to false if you don't want to link lb-phone to lb-tablet
 
-Config.OpenCommand = "tablet" -- the command to open the tablet. can be set to false to disable
+Config.OpenCommand = false -- the command to open the tablet. can be set to false to disable
 
 Config.Logs = {}
 Config.Logs.Enabled = false
@@ -67,7 +67,7 @@ Config.Genders = "auto"
 -- }
 
 Config.Item = {}
-Config.Item.Require = false -- require a tablet item to use the tablet
+Config.Item.Require = true -- require a tablet item to use the tablet
 Config.Item.Name = "tablet" -- name of the tablet item
 Config.Item.Inventory = "ox_inventory" -- inventory script to check for the item. set to "auto" to automatically detect
 Config.RequireItemDutyBlips = true -- require a tablet item to be shown on duty blips?
@@ -1037,7 +1037,7 @@ Config.Browser.BlacklistedDomains = {
 
 --[[ KEY BINDINGS ]] --
 Config.KeyBinds = {  -- https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/keyboard/
-    Open = {
+    Opens = {
         bind = "",
         description = "Open your tablet"
     },

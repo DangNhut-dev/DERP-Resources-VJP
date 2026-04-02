@@ -319,7 +319,7 @@ Additional Notes:]]
         }
     },
     KeyBinds = {
-        Open = { bind = "F5", description = "Open your tablet" },
+        Opens = { bind = "", description = "Open your tablet" },
         Focus = { bind = "LMENU", description = "Toggle cursor on your tablet" },
         Opacity = { bind = "LMENU", description = "Toggle tablet transparency" },
         NotificationUp = { bind = "UP", description = "Go up in the dispatch list" },
