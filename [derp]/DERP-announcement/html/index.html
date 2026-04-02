@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DERP Announcement</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- Announcement: logo halves outside, text bar smaller and centered -->
+    <div id="announce-wrap" class="hidden">
+        <div id="logo-left">
+            <img src="assets/logo.png" alt="" />
+        </div>
+        <div id="announce-bar">
+            <span id="announce-text"></span>
+        </div>
+        <div id="logo-right">
+            <img src="assets/logo1.png" alt="" />
+        </div>
+    </div>
+
+    <!-- Restart display -->
+    <div id="restart-wrap" class="hidden">
+        <div id="restart-box">
+            <div id="restart-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                </svg>
+            </div>
+            <div id="restart-label">KHOI DONG LAI SERVER</div>
+            <div id="restart-timer">
+                <span id="restart-seconds">0</span><span id="restart-unit">s</span>
+            </div>
+            <div id="restart-sub">Vui long luu tien trinh cua ban</div>
+            <div id="restart-progress-wrap">
+                <div id="restart-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin UI -->
+    <div id="admin-wrap" class="hidden">
+        <div id="admin-box">
+            <div id="admin-header">
+                <span id="admin-title">GUI THONG BAO</span>
+                <button id="admin-close" onclick="closeAdmin()">&#x2715;</button>
+            </div>
+            <div id="admin-body">
+                <label class="admin-label">Noi dung thong bao</label>
+                <textarea id="admin-message" placeholder="Nhap noi dung..." maxlength="500"></textarea>
+                <label class="admin-label">Thoi gian hien thi (giay)</label>
+                <input id="admin-time" type="number" value="10" min="3" max="120" />
+                <div id="admin-actions">
+                    <button id="btn-send" onclick="submitAnnounce()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                        GUI
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

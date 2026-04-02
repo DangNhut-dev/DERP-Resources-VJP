@@ -1,0 +1,17 @@
+{
+  "toggle_front_driver_door": "Mở/Đóng cửa trước bên lái",
+  "toggle_front_passenger_door": "Mở/Đóng cửa trước bên phụ",
+  "toggle_rear_driver_door": "Mở/Đóng cửa sau bên lái",
+  "toggle_rear_passenger_door": "Mở/Đóng cửa sau bên phụ",
+  "toggle_hood": "Mở/Đóng capo",
+  "toggle_trunk": "Mở/Đóng cốp xe",
+  "debug_box": "(Debug) Hộp",
+  "debug_sphere": "(Debug) Hình cầu",
+  "debug_police_car": "Xe cảnh sát",
+  "debug_ped": "(Debug) Nhân vật",
+  "debug_vehicle": "(Debug) Phương tiện",
+  "debug_object": "(Debug) Vật thể",
+  "debug_global": "(Debug) Toàn cục",
+  "toggle_targeting": "Bật/Tắt nhắm mục tiêu",
+  "go_back": "Quay lại"
+}

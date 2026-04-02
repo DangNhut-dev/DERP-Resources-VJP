@@ -1,0 +1,25 @@
+{
+  "success": {
+    "you_have_been_clocked_in": "Bạn Đã Bắt Đầu Ca Làm Việc"
+  },
+  "text": {
+    "point_enter_warehouse": "[E] - Vào Kho",
+    "enter_warehouse": "Vào Kho",
+    "exit_warehouse": "Ra Khỏi Kho",
+    "point_exit_warehouse": "[E] - Ra Khỏi Kho",
+    "clock_out": "Kết Thúc Ca",
+    "point_clock_out": "[E] - Kết Thúc Ca",
+    "clock_in": "Bắt Đầu Ca",
+    "point_clock_in": "[E] - Bắt Đầu Ca",
+    "hand_in_package": "Giao Hàng",
+    "point_hand_in_package": "[E] - Giao Hàng",
+    "get_package": "Lấy Hàng",
+    "point_get_package": "[E] - Lấy Hàng",
+    "picking_up_the_package": "Đang Lấy Hàng",
+    "unpacking_the_package": "Đang Mở Kiện Hàng"
+  },
+  "error": {
+    "you_have_clocked_out": "Bạn Đã Kết Thúc Ca Làm Việc",
+    "overweight_check": "Bạn Không Thể Mang Thêm Đồ"
+  }
+}

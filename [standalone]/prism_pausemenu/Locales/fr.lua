@@ -1,0 +1,28 @@
+Locales['fr'] = {
+  ['home'] = 'Accueil',
+  ['map'] = 'Carte',
+  ['settings'] = 'Paramètres',
+  ['tebex'] = 'Tebex',
+  ['discord'] = 'Discord',
+  ['exit'] = 'Quitter',
+  ['mapDescription'] = 'Voir l\'emplacement',
+  ['openMap'] = 'Ouvrir la carte',
+  ['donate'] = 'Faire un don',
+  ['donateDescription'] = 'Aidez à soutenir la ville',
+  ['store'] = 'Boutique',
+  ['statistics'] = 'Statistiques',
+  ['statisticsDescription'] = 'Statistiques du joueur',
+  ['personal'] = 'Personnel',
+  ['information'] = 'Information',
+  ['gang'] = 'Gang',
+  ['job'] = 'Emploi',
+  ['close'] = 'Fermer',
+  ['pauseMenu'] = 'Menu pause',
+  ['cash'] = 'Argent liquide',
+  ['personalDescription'] = 'Toutes vos données personnelles en un seul endroit.',
+  ['bankName'] = 'Prism',
+  ['valid'] = 'Valide',
+  ['creditCard'] = 'Carte de crédit',
+  ['playTime'] = 'Temps de jeu'
+}
+

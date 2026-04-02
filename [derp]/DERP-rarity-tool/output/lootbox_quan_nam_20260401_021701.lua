@@ -1,0 +1,21 @@
+['pd_quan'] = {
+    label = 'pd_quan',
+    items = {
+        { name = 'quan_230_0_0' },
+        { name = 'quan_231_0_0' },
+        { name = 'quan_232_0_0' },
+        { name = 'quan_232_1_0' },
+        { name = 'quan_232_2_0' },
+        { name = 'quan_232_3_0' },
+        { name = 'quan_232_4_0' },
+        { name = 'quan_232_5_0' },
+        { name = 'quan_232_6_0' },
+        { name = 'quan_233_0_0' },
+        { name = 'quan_233_1_0' },
+        { name = 'quan_233_2_0' },
+        { name = 'quan_233_3_0' },
+        { name = 'quan_233_4_0' },
+        { name = 'quan_233_5_0' },
+        { name = 'quan_234_0_0' },
+    }
+},

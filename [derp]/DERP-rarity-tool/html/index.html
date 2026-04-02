@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Rajdhani', sans-serif;
+        color: #e0e0e0;
+        overflow: hidden;
+        user-select: none;
+    }
+
+    #app { display: none; width: 100vw; height: 100vh; position: relative; }
+
+    /* ── Menu chọn cloth type + gender ── */
+    #menu-panel {
+        display: none;
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(12, 12, 18, 0.95);
+        border: 1px solid rgba(5, 242, 242, 0.3);
+        border-radius: 8px;
+        padding: 30px;
+        min-width: 400px;
+    }
+
+    #menu-panel h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #05f2f2;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .menu-section { margin-bottom: 16px; }
+    .menu-section label {
+        display: block;
+        font-size: 13px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .menu-btn {
+        background: rgba(30, 30, 40, 0.9);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #ccc;
+        padding: 8px 4px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.15s;
+    }
+
+    .menu-btn:hover {
+        background: rgba(5, 242, 242, 0.15);
+        border-color: #05f2f2;
+        color: #fff;
+    }
+
+    .menu-btn.selected {
+        background: rgba(5, 242, 242, 0.2);
+        border-color: #05f2f2;
+        color: #05f2f2;
+    }
+
+    .gender-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .gender-btn {
+        flex: 1;
+        padding: 10px;
+        background: rgba(30, 30, 40, 0.9);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        transition: all 0.15s;
+    }
+
+    .gender-btn:hover {
+        border-color: #05f2f2;
+        color: #fff;
+    }
+
+    .gender-btn.selected {
+        background: rgba(5, 242, 242, 0.2);
+        border-color: #05f2f2;
+        color: #05f2f2;
+    }
+
+    #start-btn {
+        width: 100%;
+        margin-top: 16px;
+        padding: 12px;
+        background: rgba(5, 242, 242, 0.2);
+        border: 1px solid #05f2f2;
+        color: #05f2f2;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.15s;
+    }
+
+    #start-btn:hover { background: rgba(5, 242, 242, 0.35); }
+
+    #close-menu-btn {
+        position: absolute;
+        top: 10px; right: 14px;
+        background: none;
+        border: none;
+        color: #666;
+        font-size: 20px;
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+    }
+
+    #close-menu-btn:hover { color: #ff4d4d; }
+
+    /* ── Browse HUD ── */
+    #browse-hud {
+        display: none;
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(12, 12, 18, 0.92);
+        border: 1px solid rgba(5, 242, 242, 0.25);
+        border-radius: 8px;
+        padding: 16px 28px;
+        text-align: center;
+        min-width: 500px;
+    }
+
+    #browse-info {
+        font-size: 20px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 4px;
+    }
+
+    #browse-info .drawable-num { color: #05f2f2; }
+    #browse-info .texture-num { color: #ffd700; }
+
+    #browse-sub {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 12px;
+    }
+
+    #rarity-bar {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .rarity-key {
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(30, 30, 40, 0.8);
+    }
+
+    .rarity-key .key-num {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+        margin-right: 4px;
+        font-size: 11px;
+    }
+
+    #browse-controls {
+        font-size: 12px;
+        color: #555;
+        letter-spacing: 0.5px;
+    }
+
+    #browse-controls span { color: #888; }
+
+    #assigned-tag {
+        display: none;
+        margin-top: 8px;
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ── Flash overlay khi assign ── */
+    #flash-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        pointer-events: none;
+        z-index: 999;
+    }
+
+    /* ── Save modal ── */
+    #save-modal {
+        display: none;
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(12, 12, 18, 0.96);
+        border: 1px solid rgba(5, 242, 242, 0.3);
+        border-radius: 8px;
+        padding: 28px;
+        min-width: 420px;
+        z-index: 100;
+    }
+
+    #save-modal h3 {
+        font-size: 18px;
+        color: #05f2f2;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+    }
+
+    .save-field { margin-bottom: 12px; }
+    .save-field label {
+        display: block;
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .save-field input {
+        width: 100%;
+        padding: 8px 12px;
+        background: rgba(30, 30, 40, 0.9);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 4px;
+        color: #fff;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .save-field input:focus { border-color: #05f2f2; }
+
+    .save-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .save-actions button {
+        flex: 1;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: 1px solid;
+    }
+
+    #do-save {
+        background: rgba(5, 242, 242, 0.2);
+        border-color: #05f2f2;
+        color: #05f2f2;
+    }
+
+    #do-save:hover { background: rgba(5, 242, 242, 0.35); }
+
+    #do-cancel {
+        background: rgba(60, 30, 30, 0.5);
+        border-color: rgba(255, 77, 77, 0.4);
+        color: #ff6b6b;
+    }
+
+    #do-cancel:hover { background: rgba(80, 30, 30, 0.6); }
+
+    /* ── Complete / Error ── */
+    #complete-panel, #error-panel {
+        display: none;
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(12, 12, 18, 0.95);
+        border: 1px solid rgba(5, 242, 242, 0.3);
+        border-radius: 8px;
+        padding: 28px;
+        text-align: center;
+        min-width: 350px;
+    }
+
+    #complete-panel h3 { color: #05f2f2; font-size: 20px; margin-bottom: 10px; }
+    #complete-count { color: #ffd700; font-size: 16px; margin-bottom: 16px; }
+
+    #error-panel h3 { color: #ff4d4d; font-size: 18px; margin-bottom: 10px; }
+    #error-msg { color: #ccc; font-size: 14px; margin-bottom: 16px; }
+
+    .panel-btn {
+        padding: 10px 24px;
+        background: rgba(5, 242, 242, 0.2);
+        border: 1px solid #05f2f2;
+        color: #05f2f2;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .panel-btn:hover { background: rgba(5, 242, 242, 0.35); }
+</style>
+</head>
+<body>
+<div id="app">
+    <!-- Menu -->
+    <div id="menu-panel">
+        <button id="close-menu-btn" onclick="closeUI()">&times;</button>
+        <h2>Rarity Tool</h2>
+
+        <div class="menu-section">
+            <label>Loai quan ao</label>
+            <div class="menu-grid" id="cloth-grid"></div>
+        </div>
+
+        <div class="menu-section">
+            <label>Gioi tinh</label>
+            <div class="gender-row">
+                <button class="gender-btn" data-gender="0" onclick="selectGender(0)">Nam (0)</button>
+                <button class="gender-btn" data-gender="1" onclick="selectGender(1)">Nu (1)</button>
+            </div>
+        </div>
+
+        <div class="menu-section">
+            <label>Bat dau tu Drawable so</label>
+            <input type="number" id="input-start-drawable" value="0" min="0"
+                style="width:100%;padding:8px 12px;background:rgba(30,30,40,0.9);border:1px solid rgba(255,255,255,0.15);border-radius:4px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;"
+                onfocus="this.style.borderColor='#05f2f2'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"
+            >
+        </div>
+
+        <button id="start-btn" onclick="startSession()">BAT DAU DUYET</button>
+    </div>
+
+    <!-- Browse HUD -->
+    <div id="browse-hud">
+        <div id="browse-info"></div>
+        <div id="browse-sub"></div>
+        <div id="rarity-bar"></div>
+        <div id="assigned-tag"></div>
+        <div id="browse-controls">
+            <span>[Q]</span> Quay lai &nbsp;&nbsp;
+            <span>[E]</span> Bo qua &nbsp;&nbsp;
+            <span>[1-5]</span> Gan rarity &nbsp;&nbsp;
+            <span>[F7]</span> Luu &nbsp;&nbsp;
+            <span>[Backspace]</span> Dong
+        </div>
+    </div>
+
+    <!-- Flash -->
+    <div id="flash-overlay"></div>
+
+    <!-- Save Modal -->
+    <div id="save-modal">
+        <h3>Luu Output</h3>
+        <div class="save-field">
+            <label>Lootbox Key (vd: lootbox_nam_thuong_aokhoac)</label>
+            <input type="text" id="input-key" placeholder="lootbox_nam_thuong_aokhoac">
+        </div>
+        <div class="save-field">
+            <label>Label (vd: Hom Ao Thuong)</label>
+            <input type="text" id="input-label" placeholder="Hom Ao Thuong">
+        </div>
+        <div class="save-actions">
+            <button id="do-save" onclick="doSave()">LUU</button>
+            <button id="do-cancel" onclick="cancelSave()">HUY</button>
+        </div>
+    </div>
+
+    <!-- Complete -->
+    <div id="complete-panel">
+        <h3>HOAN THANH</h3>
+        <div id="complete-count"></div>
+        <button class="panel-btn" onclick="promptSaveFromComplete()">LUU KET QUA</button>
+        &nbsp;
+        <button class="panel-btn" onclick="closeUI()">DONG</button>
+    </div>
+
+    <!-- Error -->
+    <div id="error-panel">
+        <h3>LOI</h3>
+        <div id="error-msg"></div>
+        <button class="panel-btn" onclick="hideError()">OK</button>
+    </div>
+</div>
+
+<script>
+    let selectedCloth = null;
+    let selectedGender = null;
+    let rarityTiers = [];
+
+    function hideAll() {
+        document.getElementById('menu-panel').style.display = 'none';
+        document.getElementById('browse-hud').style.display = 'none';
+        document.getElementById('save-modal').style.display = 'none';
+        document.getElementById('complete-panel').style.display = 'none';
+        document.getElementById('error-panel').style.display = 'none';
+    }
+
+    function selectCloth(name) {
+        selectedCloth = name;
+        document.querySelectorAll('#cloth-grid .menu-btn').forEach(b => {
+            b.classList.toggle('selected', b.dataset.cloth === name);
+        });
+    }
+
+    function selectGender(g) {
+        selectedGender = g;
+        document.querySelectorAll('.gender-btn').forEach(b => {
+            b.classList.toggle('selected', parseInt(b.dataset.gender) === g);
+        });
+    }
+
+    function startSession() {
+        if (selectedCloth === null || selectedGender === null) return;
+        const startDrawable = parseInt(document.getElementById('input-start-drawable').value) || 0;
+        fetch('https://DERP-rarity-tool/startSession', {
+            method: 'POST',
+            body: JSON.stringify({ clothType: selectedCloth, gender: selectedGender, startDrawable: startDrawable })
+        });
+    }
+
+    function closeUI() {
+        hideAll();
+        document.getElementById('app').style.display = 'none';
+        fetch('https://DERP-rarity-tool/closeUI', { method: 'POST', body: '{}' });
+    }
+
+    function doSave() {
+        const key = document.getElementById('input-key').value.trim();
+        const label = document.getElementById('input-label').value.trim();
+        if (!key) return;
+        fetch('https://DERP-rarity-tool/saveOutput', {
+            method: 'POST',
+            body: JSON.stringify({ lootboxKey: key, lootboxLabel: label })
+        });
+    }
+
+    function cancelSave() {
+        document.getElementById('save-modal').style.display = 'none';
+        fetch('https://DERP-rarity-tool/cancelSave', { method: 'POST', body: '{}' });
+    }
+
+    function promptSaveFromComplete() {
+        document.getElementById('complete-panel').style.display = 'none';
+        document.getElementById('save-modal').style.display = 'block';
+        fetch('https://DERP-rarity-tool/requestFocus', { method: 'POST', body: '{}' });
+    }
+
+    function hideError() {
+        document.getElementById('error-panel').style.display = 'none';
+    }
+
+    // Build rarity bar HTML
+    function buildRarityBar(tiers) {
+        return tiers.map(t =>
+            `<div class="rarity-key" style="color:${t.color};border-color:${t.color}30">` +
+            `<span class="key-num">${t.bind}</span>${t.label}</div>`
+        ).join('');
+    }
+
+    window.addEventListener('message', (e) => {
+        const msg = e.data;
+
+        if (msg.action === 'showMenu') {
+            hideAll();
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('menu-panel').style.display = 'block';
+
+            rarityTiers = msg.data.rarityTiers || [];
+            selectedCloth = null;
+            selectedGender = null;
+
+            const grid = document.getElementById('cloth-grid');
+            grid.innerHTML = '';
+            (msg.data.clothTypes || []).forEach(ct => {
+                const btn = document.createElement('button');
+                btn.className = 'menu-btn';
+                btn.dataset.cloth = ct.name;
+                btn.textContent = ct.label;
+                btn.onclick = () => selectCloth(ct.name);
+                grid.appendChild(btn);
+            });
+        }
+
+        if (msg.action === 'showBrowsing') {
+            hideAll();
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('browse-hud').style.display = 'block';
+
+            rarityTiers = msg.data.rarityTiers || rarityTiers;
+            document.getElementById('rarity-bar').innerHTML = buildRarityBar(rarityTiers);
+        }
+
+        if (msg.action === 'updatePreview') {
+            const d = msg.data;
+            document.getElementById('browse-info').innerHTML =
+                `<span class="drawable-num">Drawable ${d.drawable}</span> / ${d.maxDrawables - 1}` +
+                ` &nbsp;&mdash;&nbsp; ` +
+                `<span class="texture-num">Texture ${d.texture}</span> / ${d.maxTextures - 1}`;
+
+            document.getElementById('browse-sub').textContent =
+                `${d.clothType} | ${d.gender === 0 ? 'NAM' : 'NU'} | ${d.clothType}_${d.drawable}_${d.texture}_${d.gender}`;
+
+            const tag = document.getElementById('assigned-tag');
+            if (d.assignedRarity) {
+                const tier = rarityTiers.find(t => t.key === d.assignedRarity);
+                tag.style.display = 'block';
+                tag.style.color = tier ? tier.color : '#fff';
+                tag.textContent = '★ ' + (tier ? tier.label : d.assignedRarity);
+            } else {
+                tag.style.display = 'none';
+            }
+        }
+
+        if (msg.action === 'flashAssign') {
+            const overlay = document.getElementById('flash-overlay');
+            overlay.style.display = 'block';
+            overlay.style.background = msg.data.color + '15';
+            overlay.style.boxShadow = `inset 0 0 120px ${msg.data.color}30`;
+            setTimeout(() => { overlay.style.display = 'none'; }, 180);
+        }
+
+        if (msg.action === 'promptSave') {
+            document.getElementById('save-modal').style.display = 'block';
+        }
+
+        if (msg.action === 'showComplete') {
+            hideAll();
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('complete-panel').style.display = 'block';
+            document.getElementById('complete-count').textContent =
+                `Da gan ${msg.data.total} items`;
+        }
+
+        if (msg.action === 'showSaved') {
+            hideAll();
+            document.getElementById('app').style.display = 'none';
+        }
+
+        if (msg.action === 'showError') {
+            document.getElementById('error-panel').style.display = 'block';
+            document.getElementById('error-msg').textContent = msg.data.message;
+        }
+
+        if (msg.action === 'closeUI') {
+            hideAll();
+            document.getElementById('app').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

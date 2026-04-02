@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaniWorld Bossmenu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+
+<body>
+    <div class="application-container" id="application-container" style="display: none;">
+        <!-- Header section -->
+        <div class="application-header">
+            <div class="police-emblem"></div>
+            <h2 class="application-title">Dơn ứng tuyển Police Academy</h2>
+            <p class="application-subtitle">Đơn tuyển dụng vào làm việc tại Polie Department</p>
+        </div>
+    
+        <!-- Progress bar -->
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    
+        <!-- Form content -->
+        <div class="application-content">
+            <div class="intro-text">
+                <p>Cảm ơn bạn đã quan tâm đến việc gia nhập lực lượng Cảnh sát. Vui lòng điền đầy đủ tất cả các mục trong đơn đăng ký này một cách cẩn thận.!!!</p>
+                <p>Các mục bắt buộc được đánh dấu bằng dấu *. <span class="required-label"></span></p>
+            </div>
+    
+            <div class="application-question" id="application-question">
+                Tại sao bạn lại muốn tham gia Police Department?<span class="application-question-required" id="application-question-required"></span>
+            </div>
+    
+            <textarea class="application-input" id="application-input_text" placeholder="Nhập câu trả lời của bạn tại đây...."></textarea>
+            <input type="number" id="application-input_number">
+            <select id="application-input_select">
+                <option>bolbol</option>
+            </select>
+
+            <div class="badge-watermark"></div>
+        </div>
+    
+        <!-- Buttons section -->
+        <div class="application-buttons">
+            <button class="btn-cancel" id="cancel_app">Trở lại</button>
+            <button class="btn-next" id="finish_task">Finish</button>
+        </div>
+        </div>
+        <div id="container" class="container" style="display: none;">
+            <!-- Thanh Điều Hướng Bên -->
+            <div class="sidebar">
+                <div class="sidebar-logo">DW</div>
+                <a class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Bảng Điều Khiển</span>
+                </a>
+                <a class="nav-item" data-page="employees">
+                    <i class="fas fa-users"></i>
+                    <span>Nhân Viên</span>
+                </a>
+                <a class="nav-item" data-page="society">
+                    <i class="fas fa-coins"></i>
+                    <span>Quỹ Tổ Chức</span>
+                </a>
+                <a class="nav-item" data-page="permissions">
+                    <i class="fas fa-key"></i>
+                    <span>Phân Quyền</span>
+                </a>
+                <a class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Cài Đặt</span>
+                </a>
+                <a class="nav-item" style="margin-top: auto;" id="close-ui">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Đóng</span>
+                </a>
+            </div>
+
+            <!-- Khu Vực Nội Dung Chính -->
+            <div class="content">
+                <!-- Trang Bảng Điều Khiển -->
+                <div class="page active" id="dashboard-page">
+                    <header>
+                        <div class="header-title">
+                            <h1 id="department-title">Bảng Điều Khiển</h1>
+                            <p id="employees-count">Đang quản lý 0 nhân viên</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" id="refresh-data-btn">
+                                <i class="fas fa-sync-alt"></i> Làm Mới Dữ Liệu
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-card-title">Tổng Số Nhân Viên</div>
+                            <div class="stat-card-value" id="total-employees">0</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-users"></i> <span id="status-online">0</span> đang trực tuyến
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-title">Số Giờ Làm Việc Trung Bình</div>
+                            <div class="stat-card-value" id="avg-hours">0</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-clock"></i> giờ mỗi nhân viên mỗi tuần
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-title">Cấp Bậc Cao Nhất</div>
+                            <div class="stat-card-value" id="highest-grade">-</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-star"></i> <span id="highest-grade-count">0</span> nhân viên ở cấp bậc này
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-title">Cấp Bậc Phổ Biến Nhất</div>
+                            <div class="stat-card-value" id="common-grade">-</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-user-friends"></i> <span id="common-grade-count">0</span> nhân viên ở cấp bậc này
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-row">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <div class="chart-title">Tổng Quan Hoạt Động - Theo Giờ</div>
+                                <div class="chart-actions">
+                                    <div class="chart-action" id="download-activity"><i class="fas fa-download"></i></div>
+                                    <div class="chart-action" id="expand-activity"><i class="fas fa-expand"></i></div>
+                                </div>
+                            </div>
+                            <div class="activity-chart" id="activity-chart">
+                                <!-- Được tạo tự động bởi JavaScript -->
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <div class="chart-title">Nhân Viên Đang Trực Tuyến</div>
+                                <div class="chart-actions">
+                                    <div class="chart-action" id="refresh-online"><i class="fas fa-sync-alt"></i></div>
+                                </div>
+                            </div>
+                            <div class="employee-list" id="online-employees">
+                                <!-- Được tạo tự động bởi JavaScript -->
+                                <div class="empty-list">Hiện không có nhân viên nào trực tuyến</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <div class="table-title">Danh Sách Nhân Viên</div>
+                            <div class="table-actions">
+                                <input type="text" id="search-employee" placeholder="Tìm kiếm nhân viên...">
+                            </div>
+                        </div>
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Họ Tên</th>
+                                    <th>Cấp Bậc</th>
+                                    <th>Trạng Thái</th>
+                                    <th class="location-column">Vị Trí</th>
+                                    <th class="playtime-column">Thời Gian Chơi</th>
+                                    <th>Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employees-table">
+                                <!-- Được tạo tự động bởi JavaScript -->
+                                <tr>
+                                    <td colspan="6" class="empty-table">Đang tải dữ liệu...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Trang Quản Lý Nhân Viên -->
+                <div class="page" id="employees-page">
+                    <header>
+                        <div class="header-title">
+                            <h1>Quản Lý Nhân Viên</h1>
+                            <p id="employees-management-count">Đang quản lý 0 nhân viên</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" id="hire-employee-btn">
+                                <i class="fas fa-user-plus"></i> Tuyển Nhân Viên
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="employee-management">
+                        <div class="tabs">
+                            <div class="tab active" data-filter="all">Tất Cả</div>
+                            <div class="tab" data-filter="online">Trực Tuyến</div>
+                            <div class="tab" data-filter="offline">Ngoại Tuyến</div>
+                            <div class="tab" data-filter="management">Ban Quản Lý</div>
+                        </div>
+
+                        <input type="text" id="search-management-employee" placeholder="Tìm kiếm nhân viên...">
+
+                        <div class="table-container">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Họ Tên</th>
+                                        <th>Cấp Bậc</th>
+                                        <th>Trạng Thái</th>
+                                        <th class="playtime-column">Thời Gian Chơi</th>
+                                        <th>Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="management-employees-table">
+                                    <!-- Được tạo tự động bởi JavaScript -->
+                                    <tr>
+                                        <td colspan="5" class="empty-table">Đang tải dữ liệu...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trang Quỹ Tổ Chức -->
+                <div class="page" id="society-page">
+                    <header>
+                        <div class="header-title">
+                            <h1><i class="fas fa-coins"></i> Quản Lý Quỹ Tổ Chức</h1>
+                            <p>Quản lý tài chính của tổ chức một cách an toàn và hiệu quả</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" id="refresh-society-btn">
+                                <i class="fas fa-sync-alt"></i> Làm Mới Dữ Liệu
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="dashboard-grid">
+                        <div class="stat-card society-balance-card">
+                            <div class="stat-card-title">Số Dư Quỹ</div>
+                            <div class="stat-card-value" id="society-balance">$0</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-wallet"></i> <span id="society-name">Đang tải...</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-title">Giao Dịch Gần Nhất</div>
+                            <div class="stat-card-value" id="last-transaction-amount">$0</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-clock"></i> <span id="last-transaction-time">Chưa có giao dịch gần đây</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-title">Hoạt Động Hôm Nay</div>
+                            <div class="stat-card-value" id="today-transactions">0</div>
+                            <div class="stat-card-trend">
+                                <i class="fas fa-exchange-alt"></i> <span id="today-transactions-amount">$0</span> tổng khối lượng
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="society-actions-container">
+                        <div class="chart-container society-chart-container">
+                            <div class="chart-header">
+                                <div class="chart-title">Biểu Đồ Giao Dịch</div>
+                                <div class="chart-actions">
+                                    <div class="dropdown">
+                                        <button id="timeframe-selector" class="dropdown-btn">
+                                            <span>7 ngày qua</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                        <div id="timeframe-dropdown" class="dropdown-content">
+                                            <a href="#" data-timeframe="day">Hôm Nay</a>
+                                            <a href="#" data-timeframe="week">7 Ngày Qua</a>
+                                            <a href="#" data-timeframe="month">30 Ngày Qua</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="transactions-chart" class="transactions-chart"></div>
+                        </div>
+
+                        <div class="society-actions-row">
+                            <div class="society-action-card">
+                                <div class="society-card-title">
+                                    <i class="fas fa-arrow-circle-up"></i> Nộp Tiền Vào Quỹ
+                                </div>
+                                <div class="form-group">
+                                    <label for="deposit-amount">Số Tiền Nộp</label>
+                                    <input type="number" id="deposit-amount" min="1" placeholder="Nhập số tiền muốn nộp">
+                                </div>
+                                <button class="btn btn-primary" id="deposit-btn">
+                                    <i class="fas fa-arrow-circle-up"></i> Xác Nhận Nộp Tiền
+                                </button>
+                            </div>
+
+                            <div class="society-action-card">
+                                <div class="society-card-title">
+                                    <i class="fas fa-arrow-circle-down"></i> Rút Tiền Từ Quỹ
+                                </div>
+                                <div class="form-group">
+                                    <label for="withdraw-amount">Số Tiền Rút</label>
+                                    <input type="number" id="withdraw-amount" min="1" placeholder="Nhập số tiền muốn rút">
+                                </div>
+                                <button class="btn btn-primary" id="withdraw-btn">
+                                    <i class="fas fa-arrow-circle-down"></i> Xác Nhận Rút Tiền
+                                </button>
+                            </div>
+
+                            <div class="society-action-card">
+                                <div class="society-card-title">
+                                    <i class="fas fa-exchange-alt"></i> Chuyển Tiền Cho Nhân Viên
+                                </div>
+                                <div class="form-group">
+                                    <label for="transfer-employee">Chọn Nhân Viên</label>
+                                    <select id="transfer-employee">
+                                        <!-- Các lựa chọn sẽ được điền tự động -->
+                                        <option value="">Chọn nhân viên</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transfer-amount">Số Tiền Chuyển</label>
+                                    <input type="number" id="transfer-amount" min="1" placeholder="Nhập số tiền muốn chuyển">
+                                </div>
+                                <button class="btn btn-primary" id="transfer-btn">
+                                    <i class="fas fa-exchange-alt"></i> Xác Nhận Chuyển Tiền
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <div class="table-title">
+                                <i class="fas fa-history"></i> Lịch Sử Giao Dịch
+                            </div>
+                            <div class="table-actions">
+                                <input type="text" id="search-transaction" placeholder="Tìm kiếm giao dịch...">
+                            </div>
+                        </div>
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Ngày & Giờ</th>
+                                    <th>Loại</th>
+                                    <th>Số Tiền</th>
+                                    <th>Nhân Viên</th>
+                                    <th>Ghi Chú</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-table">
+                                <!-- Được tạo tự động bởi JavaScript -->
+                                <tr>
+                                    <td colspan="5" class="empty-table">Đang tải lịch sử giao dịch...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Trang Phân Quyền -->
+                <div class="page" id="permissions-page">
+                    <header>
+                        <div class="header-title">
+                            <h1><i class="fas fa-key"></i> Phân Quyền Nhân Viên</h1>
+                            <p>Cấp quyền truy cập cụ thể cho từng nhân viên</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" id="refresh-permissions-btn">
+                                <i class="fas fa-sync-alt"></i> Làm Mới Phân Quyền
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="permissions-container">
+                        <div class="permissions-selection">
+                            <div class="form-group">
+                                <label for="permissions-employee-select">Chọn Nhân Viên</label>
+                                <select id="permissions-employee-select" class="permissions-select">
+                                    <option value="">-- Chọn nhân viên --</option>
+                                    <!-- Nhân viên sẽ được tải tự động -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="permissions-content" id="permissions-content" style="display: none;">
+                            <div class="permissions-card">
+                                <div class="permissions-title">Quyền Truy Cập</div>
+                                <p class="permissions-description">Chọn các tính năng mà nhân viên này được phép sử dụng</p>
+
+                                <div class="toggle-container">
+                                    <p>Truy Cập Bảng Điều Khiển</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="perm-dashboard">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="toggle-container">
+                                    <p>Quản Lý Nhân Viên</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="perm-employees">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="toggle-container">
+                                    <p>Tài Chính Tổ Chức</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="perm-society">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="toggle-container">
+                                    <p>Xét Duyệt Đơn Tuyển</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="perm-applications">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="toggle-container">
+                                    <p>Tuyển Dụng & Sa Thải</p>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="perm-hiringfiring">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="save-permissions-container">
+                                <button class="btn btn-primary" id="save-permissions-btn">
+                                    <i class="fas fa-save"></i> Lưu Phân Quyền
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Xác Nhận Phân Quyền -->
+                <div class="modal" id="permissions-confirm-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title"><i class="fas fa-key"></i> Xác Nhận Thay Đổi Phân Quyền</div>
+                            <div class="modal-close">&times;</div>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bạn đang chuẩn bị thay đổi quyền của <span id="confirm-permissions-employee" class="employee-name">Tên Nhân Viên</span></p>
+                            <div class="permission-summary" id="permission-summary">
+                                <!-- Tóm tắt sẽ được điền tự động -->
+                            </div>
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <div>
+                                    <strong>Lưu ý:</strong> Việc cấp quyền cho phép nhân viên này truy cập các tính năng quản lý nhạy cảm. Hãy cân nhắc kỹ trước khi xác nhận.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline modal-close-btn">Huỷ</button>
+                            <button class="btn btn-primary" id="confirm-permissions-btn">
+                                <i class="fas fa-check-circle"></i> Xác Nhận Thay Đổi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trang Đơn Tuyển Dụng -->
+                <div class="page" id="applications-page">
+                    <header>
+                        <div class="header-title">
+                            <h1>Đơn Xin Việc</h1>
+                            <p id="applications-count">0 đơn đang chờ xét duyệt</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" id="refresh-applications-btn">
+                                <i class="fas fa-sync-alt"></i> Làm Mới Danh Sách
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="applications-container">
+                        <div class="tabs">
+                            <div class="tab active" data-filter="all">Tất Cả</div>
+                            <div class="tab" data-filter="pending">Chờ Duyệt</div>
+                            <div class="tab" data-filter="accepted">Đã Chấp Nhận</div>
+                            <div class="tab" data-filter="rejected">Đã Từ Chối</div>
+                            <div class="tab" data-filter="finish">Hoàn Tất</div>
+                        </div>
+
+                        <input type="text" id="search-application" placeholder="Tìm kiếm đơn...">
+
+                        <div class="table-container">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Họ Tên</th>
+                                        <th>Ngày Nộp Đơn</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="applications-table">
+                                    <!-- Được tạo tự động bởi JavaScript -->
+                                    <tr>
+                                        <td colspan="4" class="empty-table">Không có đơn nào để hiển thị</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Chi Tiết Đơn -->
+                <div class="modal" id="application-details-modal">
+                    <div class="modal-content application-details-content">
+                        <div class="modal-header application-header">
+                            <div class="modal-title">
+                                <i class="fas fa-file-alt"></i> Chi Tiết Đơn Xin Việc
+                            </div>
+                            <div class="modal-close">&times;</div>
+                        </div>
+                        <div class="modal-body application-body">
+                            <div class="applicant-card">
+                                <div class="applicant-info">
+                                    <div class="applicant-name-container">
+                                        <i class="fas fa-user"></i>
+                                        <h3 id="applicant-name">Nguyễn Văn A</h3>
+                                    </div>
+                                    <div class="applicant-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <p id="application-date">Nộp ngày: 12/03/2025</p>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-info-circle"></i>
+                                            <p id="application-status" class="status-badge">Trạng thái: Chờ Duyệt</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 class="section-title">Nội Dung Đơn</h4>
+                            <div class="application-responses" id="application-responses-container">
+                                <!-- Nội dung sẽ được tạo tự động -->
+                            </div>
+
+                            <h4 class="section-title">Ghi Chú Xét Duyệt</h4>
+                            <div class="form-group">
+                                <textarea id="application-notes" placeholder="Thêm ghi chú về đơn này"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer application-footer">
+                            <button class="btn btn-danger" id="reject-application-btn">
+                                <i class="fas fa-times-circle"></i> Từ Chối
+                            </button>
+                            <button class="btn btn-outline modal-close-btn">
+                                <i class="fas fa-times"></i> Đóng
+                            </button>
+                            <button class="btn btn-primary" id="accept-application-btn">
+                                <i class="fas fa-check-circle"></i> Chấp Nhận
+                            </button>
+                            <button class="btn btn-success" id="finish-application-btn">
+                                <i class="fas fa-flag-checkered"></i> Hoàn Tất
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trang Cài Đặt -->
+                <div class="page" id="settings-page">
+                    <header>
+                        <div class="header-title">
+                            <h1>Cài Đặt Hệ Thống</h1>
+                            <p>Tuỳ chỉnh trải nghiệm quản lý của bạn</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" id="reset-settings-btn">
+                                <i class="fas fa-undo"></i> Đặt Lại Cài Đặt
+                            </button>
+                            <button class="btn btn-primary" id="save-settings-btn">
+                                <i class="fas fa-save"></i> Lưu Cài Đặt
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="settings-container">
+                        <div class="settings-card">
+                            <div class="settings-title">Cài Đặt Giao Diện</div>
+
+                            <div class="toggle-container">
+                                <p>Chế Độ Tối</p>
+                                <label class="toggle">
+                                    <input type="checkbox" id="darkMode" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="toggle-container">
+                                <p>Hiển Thị Hiệu Ứng</p>
+                                <label class="toggle">
+                                    <input type="checkbox" id="showAnimations" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="toggle-container">
+                                <p>Chế Độ Thu Gọn</p>
+                                <label class="toggle">
+                                    <input type="checkbox" id="compactView">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="color-picker">
+                                <label>Màu Chủ Đề</label>
+                                <div class="color-options">
+                                    <div class="color-option color-blue active" data-color="blue"></div>
+                                    <div class="color-option color-purple" data-color="purple"></div>
+                                    <div class="color-option color-green" data-color="green"></div>
+                                    <div class="color-option color-red" data-color="red"></div>
+                                    <div class="color-option color-orange" data-color="orange"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="settings-title">Cài Đặt Hiển Thị</div>
+
+                            <div class="toggle-container">
+                                <p>Hiển Thị Thời Gian Chơi</p>
+                                <label class="toggle">
+                                    <input type="checkbox" id="showPlaytime" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="toggle-container">
+                                <p>Hiển Thị Vị Trí</p>
+                                <label class="toggle">
+                                    <input type="checkbox" id="showLocation" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="refreshInterval">Chu Kỳ Làm Mới (giây)</label>
+                                <input type="number" id="refreshInterval" min="30" max="300" value="60">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notificationSound">Âm Thanh Thông Báo</label>
+                                <select id="notificationSound">
+                                    <option value="none">Tắt</option>
+                                    <option value="default" selected>Mặc Định</option>
+                                    <option value="alert">Cảnh Báo</option>
+                                    <option value="chime">Chuông</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Xác Nhận Chuyển Tiền -->
+        <div class="modal" id="transfer-confirm-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-exchange-alt"></i> Xác Nhận Chuyển Tiền</div>
+                    <div class="modal-close">&times;</div>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn đang chuẩn bị chuyển <span id="confirm-transfer-amount" class="transaction-amount negative">$0</span> cho <strong><span id="confirm-transfer-employee">Tên Nhân Viên</span></strong></p>
+                    <div class="form-group">
+                        <label for="transfer-note">Ghi Chú (Tuỳ Chọn)</label>
+                        <textarea id="transfer-note" placeholder="Thêm ghi chú cho giao dịch này"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline modal-close-btn">Huỷ</button>
+                    <button class="btn btn-primary" id="confirm-transfer-btn">
+                        <i class="fas fa-check-circle"></i> Xác Nhận Chuyển
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Xác Nhận Nộp/Rút Tiền -->
+        <div class="modal" id="money-action-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="money-action-title">Xác Nhận Thao Tác</div>
+                    <div class="modal-close">&times;</div>
+                </div>
+                <div class="modal-body">
+                    <p id="money-action-message">Bạn có chắc chắn muốn thực hiện giao dịch này không?</p>
+                    <div class="form-group">
+                        <label for="money-action-note">Ghi Chú (Tuỳ Chọn)</label>
+                        <textarea id="money-action-note" placeholder="Thêm ghi chú cho giao dịch này"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline modal-close-btn">Huỷ</button>
+                    <button class="btn btn-primary" id="confirm-money-action-btn">
+                        <i class="fas fa-check-circle"></i> Xác Nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Chỉnh Sửa Nhân Viên -->
+        <div class="modal" id="edit-employee-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Chỉnh Sửa Nhân Viên</div>
+                    <div class="modal-close">&times;</div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit-name">Họ Tên</label>
+                        <input type="text" id="edit-name" readonly>
+                        <input type="hidden" id="edit-citizenid">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-rank">Cấp Bậc</label>
+                        <select id="edit-rank">
+                            <!-- Tuỳ chọn được tạo tự động -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-note">Ghi Chú</label>
+                        <textarea id="edit-note" placeholder="Ghi chú về nhân viên này"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="fire-employee-btn">Sa Thải Nhân Viên</button>
+                    <button class="btn btn-outline modal-close-btn">Huỷ</button>
+                    <button class="btn btn-primary" id="save-employee-btn">Lưu Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông Báo -->
+        <div class="notification" id="notification">
+            Cài đặt đã được lưu thành công!
+        </div>
+
+        <!-- Menu Sa Thải -->
+        <div id="custom-fire-menu" class="qb-fire-menu-container" style="display: none;">
+            <div class="qb-fire-menu-header">Sa Thải Nhân Viên</div>
+            <div class="qb-fire-menu-message" id="fire-message">
+                Bạn có chắc chắn muốn sa thải nhân viên này không?
+            </div>
+            <div class="qb-fire-menu-buttons">
+                <div class="qb-fire-menu-button cancel" id="fire-cancel-btn">HUỶ</div>
+                <div class="qb-fire-menu-button confirm" id="fire-confirm-btn">SA THẢI</div>
+            </div>
+        </div>
+
+        <!-- Modal Tuyển Nhân Viên -->
+        <div class="modal" id="hire-employee-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fas fa-user-plus"></i> Tuyển Nhân Viên Mới</div>
+                    <div class="modal-close">&times;</div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="hire-id">ID Người Chơi</label>
+                        <input type="number" id="hire-id" placeholder="Nhập ID người chơi" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="hire-rank">Cấp Bậc</label>
+                        <select id="hire-rank">
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline modal-close-btn">Huỷ</button>
+                    <button class="btn btn-primary" id="confirm-hire-btn">
+                        <i class="fas fa-check-circle"></i> Xác Nhận Tuyển Dụng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <link rel="stylesheet" href="fire-menu.css">
+        <script src="script.js"></script>

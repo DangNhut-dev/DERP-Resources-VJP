@@ -1,0 +1,40 @@
+Config = {}
+
+Config.Dealers = {
+    {
+        name = "Nhận Xe Police",
+        job = "police", -- Job yêu cầu (false = ai cũng mua được)
+        npc = {
+            model = "a_m_y_business_01",
+            coords = vec4(61.72, -374.64, 38.89, 229.40),
+        },
+        spawnPoint = vec4(58.76, -370.96, 38.52, 67.74),
+        vehicles = {
+            { model = "npolvic", label = "Ford Crown Victoria", price = 1500, minGrade = 1 },
+            { model = "clrgtaurus", label = "Ford Taurus", price = 3000, minGrade = 2 },
+            { model = "npolmm", label = "Moto", price = 5000, minGrade = 3 },
+            { model = "npolchal", label = "Dodge Challenger", price = 10000, minGrade = 4 },
+            { model = "npolstang", label = "Ford Mustang", price = 20000, minGrade = 6 },
+            { model = "npolexp", label = "Ford Explorer", price = 25000, minGrade = 7 },
+            { model = "npolvette", label = "Corvette C7", price = 50000, minGrade = 8 },
+            { model = "npolchar", label = "Dodge Charger", price = 100000, minGrade = 9 },
+        },
+    },
+}
+
+-- Cấu hình thông báo
+Config.Notifications = {
+    notEligible = "Bạn không đủ grade để mua xe này!",
+    alreadyPurchased = "Bạn đã mua xe này rồi!",
+    noMoney = "Số dư tài khoản không đủ!",
+    success = "Bạn đã mua thành công xe %s!",
+    spawnBlocked = "Khu vực spawn xe đang bị chặn, vui lòng thử lại sau!",
+    noVehicle = "Không tìm thấy mẫu xe này!",
+    notPolice = "Bạn không phải là cảnh sát!",
+}
+
+-- Bán kính kiểm tra NPC
+Config.NpcInteractionRadius = 2.5
+
+-- Thời gian chờ giữa các lần tương tác (ms)
+Config.Cooldown = 1000

@@ -1,0 +1,55 @@
+{
+  "addcom": {
+    "addkeys": "addkeys",
+    "addkeys_help": "Cấp chìa khóa xe cho người chơi.",
+    "addkeys_id": "id",
+    "addkeys_id_help": "ID người chơi",
+    "addkeys_plate": "bienso",
+    "addkeys_plate_help": "Biển số xe",
+    "givekeys": "givekeys",
+    "givekeys_help": "Đưa chìa khóa cho người khác. Nếu không nhập ID, sẽ đưa cho người gần nhất hoặc tất cả người trong xe.",
+    "givekeys_id": "id",
+    "givekeys_id_help": "ID người chơi",
+    "givekeys_plate": "bienso",
+    "givekeys_plate_help": "Biển số xe",
+    "removekeys": "removekeys",
+    "removekeys_help": "Thu hồi chìa khóa xe của người chơi.",
+    "removekeys_id": "id",
+    "removekeys_id_help": "ID người chơi",
+    "removekeys_plate": "bienso",
+    "removekeys_plate_help": "Biển số xe"
+  },
+  "info": {
+    "engine": "Bật/Tắt động cơ",
+    "search_keys_dispatch": "[H] - Tìm chìa khóa",
+    "search_keys": "Tìm chìa khóa xe",
+    "toggle_locks": "Khóa/Mở khóa xe",
+    "vehicle_theft": "Đang có vụ trộm xe. Loại: "
+  },
+  "notify": {
+    "carjack_failed": "Cướp xe thất bại!",
+    "failed_lockedpick": "Bạn không được khóa.",
+    "failed_keys": "Bạn không tìm thấy chìa khóa và bực bội bỏ đi.",
+    "fpid": "Hãy điền đầy đủ ID người chơi và biển số xe",
+    "gave_keys": "Bạn đã đưa chìa khóa.",
+    "added_keys": "Bạn đã cấp chìa khóa xe %s cho người chơi %s!",
+    "keys_taken": "Bạn đã lấy được chìa khóa xe!",
+    "keys_removed": "Bạn đã mất chìa khóa xe!",
+    "no_keys": "Bạn không có chìa khóa xe này.",
+    "not_near": "Không có ai ở gần để đưa chìa khóa",
+    "vehicle_not_near": "Bạn không đứng đủ gần xe",
+    "vehicle_locked": "Xe đã được khóa!",
+    "vehicle_lockedpick": "Bạn đã được khóa cửa xe!",
+    "vehicle_unlocked": "Xe đã được mở khóa!",
+    "removed_keys": "Đã thu hồi chìa khóa xe biển số %s của người chơi %s!",
+    "removed_keys_player": "Chìa khóa xe biển số %s của bạn đã bị thu hồi!",
+    "player_offline": "Người chơi này không trực tuyến!",
+    "vehicle_is_unlocked": "Xe đã được mở khóa rồi!",
+    "not_optin": "Bạn chưa bật chế độ admin. (/optin để bật/tắt)"
+  },
+  "progress": {
+    "attempting_carjack": "Đang cướp xe...",
+    "searching_keys": "Đang tìm chìa khóa xe...",
+    "takekeys": "Đang lấy chìa khóa từ thi thể..."
+  }
+}

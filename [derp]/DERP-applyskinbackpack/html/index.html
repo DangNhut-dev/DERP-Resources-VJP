@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+    :root {
+        --bg: rgba(8, 8, 12, 0.97);
+        --panel: rgba(16, 16, 22, 0.9);
+        --card: rgba(22, 22, 30, 0.95);
+        --card-hover: rgba(30, 30, 42, 0.95);
+        --cyan: #05f2f2;
+        --cyan-dim: rgba(5, 242, 242, 0.12);
+        --border: rgba(255, 255, 255, 0.04);
+        --text: rgba(255, 255, 255, 0.85);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --common: #b0b0b0;
+        --rare: #4d9eff;
+        --epic: #a64dff;
+        --legendary: #ff4d4d;
+        --mythic: #ffd700;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Chakra Petch', sans-serif;
+        overflow: hidden;
+        background: transparent;
+        user-select: none;
+    }
+
+    #app {
+        display: none;
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 820px;
+        height: 520px;
+        background: var(--bg);
+        border: 1px solid rgba(5, 242, 242, 0.08);
+        border-radius: 12px;
+        /* backdrop-filter: blur(20px); */
+        flex-direction: column;
+        box-shadow: 0 0 80px rgba(0, 0, 0, 0.6), 0 0 30px rgba(5, 242, 242, 0.03);
+    }
+
+    @keyframes appIn {
+        from { opacity: 0; transform: translate(-50%, -50%) scale(0.94) translateY(10px); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1) translateY(0); }
+    }
+
+    #app.visible {
+        display: flex;
+        animation: appIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Header ── */
+    .hdr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    .hdr-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--cyan);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+
+    .hdr-close {
+        width: 28px; height: 28px;
+        display: flex; align-items: center; justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 5px;
+        background: transparent;
+        color: var(--text-dim);
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+
+    .hdr-close:hover { border-color: rgba(255, 80, 80, 0.3); color: #ff5050; }
+
+    /* ── Main layout ── */
+    .main {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    /* ── Panel ── */
+    .panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 12px;
+        overflow: hidden;
+    }
+
+    .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        flex-shrink: 0;
+    }
+
+    .panel-tag {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .panel-count {
+        font-size: 10px;
+        color: rgba(5, 242, 242, 0.3);
+    }
+
+    .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        flex: 1;
+        overflow-y: auto;
+        align-content: start;
+        padding-right: 4px;
+    }
+
+    /* ── Center zone ── */
+    .center {
+        width: 110px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    /* ── Selected preview slots ── */
+    .preview-slot {
+        width: 80px;
+        height: 80px;
+        border: 2px dashed rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.015);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition: all 0.2s;
+        overflow: hidden;
+    }
+
+    .preview-slot.filled {
+        border-style: solid;
+        border-color: var(--cyan-dim);
+        background: rgba(5, 242, 242, 0.03);
+    }
+
+    .preview-slot.filled.rarity-common { border-color: rgba(176, 176, 176, 0.3); }
+    .preview-slot.filled.rarity-rare { border-color: rgba(77, 158, 255, 0.4); }
+    .preview-slot.filled.rarity-epic { border-color: rgba(166, 77, 255, 0.4); }
+    .preview-slot.filled.rarity-legendary { border-color: rgba(255, 77, 77, 0.4); }
+    .preview-slot.filled.rarity-mythic { border-color: rgba(255, 215, 0, 0.5); }
+
+    .preview-slot img {
+        width: 60px; height: 60px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+    }
+
+    .preview-slot .p-label {
+        position: absolute;
+        bottom: 3px;
+        font-size: 8px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .preview-slot .p-clear {
+        position: absolute;
+        top: 3px; right: 3px;
+        width: 14px; height: 14px;
+        border-radius: 50%;
+        background: rgba(255, 80, 80, 0.2);
+        color: #ff5050;
+        font-size: 8px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .preview-slot.filled:hover .p-clear { display: flex; }
+
+    .arrow-icon {
+        color: rgba(255, 255, 255, 0.06);
+        font-size: 20px;
+        margin: 8px 0;
+    }
+
+    /* ── Apply button ── */
+    .apply-wrap {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .apply-btn {
+        width: 52px; height: 52px;
+        border-radius: 50%;
+        border: 2px solid rgba(5, 242, 242, 0.15);
+        background: linear-gradient(135deg, rgba(5, 242, 242, 0.06), rgba(5, 242, 242, 0.02));
+        color: var(--cyan);
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .apply-btn::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, transparent, rgba(5, 242, 242, 0.15), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .apply-btn:hover:not(:disabled)::before { opacity: 1; }
+
+    .apply-btn:hover:not(:disabled) {
+        border-color: rgba(5, 242, 242, 0.5);
+        box-shadow: 0 0 25px rgba(5, 242, 242, 0.15), 0 0 50px rgba(5, 242, 242, 0.05);
+        transform: scale(1.08);
+    }
+
+    .apply-btn:disabled {
+        opacity: 0.15;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .apply-btn .btn-icon { position: relative; z-index: 1; }
+
+    .apply-txt {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 9px;
+        font-weight: 600;
+        color: rgba(5, 242, 242, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-top: 6px;
+    }
+
+    /* ── Processing ── */
+    @keyframes spinGlow {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .apply-btn.processing {
+        pointer-events: none;
+    }
+
+    .apply-btn.processing::before {
+        opacity: 1;
+        animation: spinGlow 1s linear infinite;
+        background: conic-gradient(from 0deg, transparent, var(--cyan), transparent);
+    }
+
+    /* ── Success ── */
+    @keyframes successBurst {
+        0% { box-shadow: 0 0 0 0 rgba(5, 242, 242, 0.6); transform: scale(1); }
+        40% { box-shadow: 0 0 0 15px rgba(5, 242, 242, 0); transform: scale(1.15); }
+        100% { box-shadow: 0 0 0 0 rgba(5, 242, 242, 0); transform: scale(1); }
+    }
+
+    .apply-btn.success { animation: successBurst 0.7s cubic-bezier(0.16, 1, 0.3, 1); border-color: var(--cyan); }
+
+    @keyframes errorShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        75% { transform: translateX(4px); }
+    }
+
+    .apply-btn.error { animation: errorShake 0.3s ease; border-color: #ff5050; }
+
+    /* ── Item Card (grid) ── */
+    .g-card {
+        aspect-ratio: 1;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        background: var(--card);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        position: relative;
+        overflow: hidden;
+        padding: 6px;
+    }
+
+    .g-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 2px;
+        background: transparent;
+        transition: background 0.15s;
+    }
+
+    .g-card:hover {
+        background: var(--card-hover);
+        border-color: rgba(255, 255, 255, 0.06);
+        /* transform: translateY(-1px); */
+    }
+
+    .g-card.selected {
+        border-color: var(--cyan);
+        background: rgba(5, 242, 242, 0.06);
+        box-shadow: 0 0 15px rgba(5, 242, 242, 0.08);
+    }
+
+    /* Rarity bottom bar */
+    .g-card.r-common::after { background: var(--common); }
+    .g-card.r-rare::after { background: var(--rare); }
+    .g-card.r-epic::after { background: var(--epic); }
+    .g-card.r-legendary::after { background: var(--legendary); }
+    .g-card.r-mythic::after { background: var(--mythic); }
+
+    /* Rarity glow on selected */
+    .g-card.r-rare.selected { border-color: var(--rare); box-shadow: 0 0 15px rgba(77, 158, 255, 0.1); }
+    .g-card.r-epic.selected { border-color: var(--epic); box-shadow: 0 0 15px rgba(166, 77, 255, 0.1); }
+    .g-card.r-legendary.selected { border-color: var(--legendary); box-shadow: 0 0 15px rgba(255, 77, 77, 0.12); }
+    .g-card.r-mythic.selected { border-color: var(--mythic); box-shadow: 0 0 20px rgba(255, 215, 0, 0.12); }
+
+    .g-card img {
+        width: 52px; height: 52px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+        transition: transform 0.2s;
+    }
+
+    .g-card:hover img { transform: scale(1.08); }
+    .g-card.selected img { transform: scale(1.05); }
+
+    .g-card .g-name {
+        font-size: 9px;
+        font-weight: 500;
+        color: var(--text-dim);
+        text-align: center;
+        margin-top: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+
+    .g-card .g-badge {
+        position: absolute;
+        top: 4px; right: 4px;
+        font-size: 7px;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .g-card .g-level {
+        position: absolute;
+        top: 4px; left: 4px;
+        font-size: 8px;
+        font-weight: 700;
+        color: var(--cyan);
+        background: rgba(5, 242, 242, 0.1);
+        padding: 1px 5px;
+        border-radius: 2px;
+    }
+
+    /* ── Drag ghost ── */
+    .drag-ghost {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        width: 60px; height: 60px;
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: drop-shadow(0 4px 12px rgba(5, 242, 242, 0.3));
+    }
+
+    /* ── Empty ── */
+    .empty-msg {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 40px 0;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.06); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(5, 242, 242, 0.15); }
+
+    /* ── Particles on success ── */
+    .particle-container {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    @keyframes particleFly {
+        0% { opacity: 1; transform: translate(0, 0) scale(1); }
+        100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0); }
+    }
+
+    .particle {
+        position: absolute;
+        width: 4px; height: 4px;
+        border-radius: 50%;
+        background: var(--cyan);
+        animation: particleFly 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+</style>
+</head>
+<body>
+
+<div id="app">
+    <div class="particle-container" id="particles"></div>
+
+    <div class="hdr">
+        <div class="hdr-title">Đổi Mẫu Balo</div>
+        <div class="hdr-close" onclick="closeUI()">&#x2715;</div>
+    </div>
+
+    <div class="main">
+        <!-- Left: Balo grid -->
+        <div class="panel">
+            <div class="panel-head">
+                <span class="panel-tag">Ba l&#x00F4;</span>
+                <span class="panel-count" id="baloCount"></span>
+            </div>
+            <div class="panel-grid" id="baloGrid"></div>
+        </div>
+
+        <!-- Center -->
+        <div class="center">
+            <div class="preview-slot" id="prevBalo" onclick="clearSelect('balo')">
+                <span class="p-label">Balo</span>
+            </div>
+
+            <div class="arrow-icon">&#x25BC;</div>
+
+            <div class="preview-slot" id="prevSkin" onclick="clearSelect('skin')">
+                <span class="p-label">M&#x1EAB;u</span>
+            </div>
+
+            <div class="apply-wrap">
+                <button class="apply-btn" id="applyBtn" disabled onclick="applyAction()">
+                    <span class="btn-icon">&#x279C;</span>
+                </button>
+                <div class="apply-txt">&#x00C1;p d&#x1EE5;ng</div>
+            </div>
+        </div>
+
+        <!-- Right: Skin grid -->
+        <div class="panel">
+            <div class="panel-head">
+                <span class="panel-tag">M&#x1EAB;u Skin</span>
+                <span class="panel-count" id="skinCount"></span>
+            </div>
+            <div class="panel-grid" id="skinGrid"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const IMG = 'https://newscity.top/fivem/items101/';
+    const img = (n) => IMG + n + '.png';
+    const baloImg = (m) => img('balo_' + m.drawableId + '_' + m.textureId + '_' + m.gender);
+
+    let backpacks = [], skins = [], rarityTiers = {};
+    let selBalo = null, selSkin = null, busy = false;
+    let dragEl = null;
+
+    const RCOLORS = { common: '#b0b0b0', rare: '#4d9eff', epic: '#a64dff', legendary: '#ff4d4d', mythic: '#ffd700' };
+
+    // ── Render ──
+
+    function renderBalo() {
+        const el = document.getElementById('baloGrid');
+        document.getElementById('baloCount').textContent = backpacks.length || '';
+
+        if (!backpacks.length) {
+            el.innerHTML = '<div class="empty-msg">Kh\u00F4ng c\u00F3 balo trong t\u00FAi</div>';
+            return;
+        }
+
+        el.innerHTML = backpacks.map((it, i) => {
+            const sel = selBalo === i ? ' selected' : '';
+            return '<div class="g-card' + sel + '" data-type="balo" data-idx="' + i + '" onmousedown="startDrag(event,\'balo\',' + i + ')" onclick="pickBalo(' + i + ')">' +
+                '<span class="g-level">Lv.' + (it.metadata.level || 0) + '</span>' +
+                '<img src="' + baloImg(it.metadata) + '" onerror="this.src=\'' + img('balo') + '\';this.onerror=null;" draggable="false" />' +
+                '<div class="g-name">' + it.label + '</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    function renderSkin() {
+        const el = document.getElementById('skinGrid');
+        let list = skins;
+
+        if (selBalo !== null) {
+            const g = backpacks[selBalo].metadata.gender;
+            list = skins.filter(s => s.parsed.gender === g);
+        }
+
+        document.getElementById('skinCount').textContent = list.length || '';
+
+        if (!list.length) {
+            el.innerHTML = '<div class="empty-msg">Kh\u00F4ng c\u00F3 m\u1EABu' + (selBalo !== null ? ' ph\u00F9 h\u1EE3p' : '') + '</div>';
+            return;
+        }
+
+        list.sort((a, b) => (b.rarityOrder || 0) - (a.rarityOrder || 0));
+
+        el.innerHTML = list.map(it => {
+            const oi = skins.indexOf(it);
+            const sel = selSkin === oi ? ' selected' : '';
+            const rc = it.rarity ? ' r-' + it.rarity : '';
+            const bc = it.rarityColor || '#666';
+            const bl = it.rarityLabel || '';
+
+            return '<div class="g-card' + sel + rc + '" data-type="skin" data-idx="' + oi + '" onmousedown="startDrag(event,\'skin\',' + oi + ')" onclick="pickSkin(' + oi + ')">' +
+                (bl ? '<span class="g-badge" style="background:' + bc + '22;color:' + bc + '">' + bl + '</span>' : '') +
+                '<img src="' + img(it.name) + '" onerror="this.style.opacity=\'0.2\'" draggable="false" />' +
+                '<div class="g-name">' + it.label + '</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    function renderPreview() {
+        const pb = document.getElementById('prevBalo');
+        const ps = document.getElementById('prevSkin');
+
+        if (selBalo !== null) {
+            const m = backpacks[selBalo].metadata;
+            pb.className = 'preview-slot filled';
+            pb.innerHTML = '<div class="p-clear" onclick="event.stopPropagation();clearSelect(\'balo\')">&#x2715;</div>' +
+                '<img src="' + baloImg(m) + '" onerror="this.src=\'' + img('balo') + '\';this.onerror=null;" />';
+        } else {
+            pb.className = 'preview-slot';
+            pb.innerHTML = '<span class="p-label">Balo</span>';
+        }
+
+        if (selSkin !== null) {
+            const it = skins[selSkin];
+            const rc = it.rarity ? ' rarity-' + it.rarity : '';
+            ps.className = 'preview-slot filled' + rc;
+            ps.innerHTML = '<div class="p-clear" onclick="event.stopPropagation();clearSelect(\'skin\')">&#x2715;</div>' +
+                '<img src="' + img(it.name) + '" onerror="this.style.opacity=\'0.2\'" />';
+        } else {
+            ps.className = 'preview-slot';
+            ps.innerHTML = '<span class="p-label">M\u1EABu</span>';
+        }
+
+        document.getElementById('applyBtn').disabled = selBalo === null || selSkin === null || busy;
+    }
+
+    function renderAll() { renderBalo(); renderSkin(); renderPreview(); }
+
+    // ── Selection ──
+
+    function pickBalo(i) {
+        if (busy) return;
+        selBalo = selBalo === i ? null : i;
+        if (selSkin !== null && selBalo !== null) {
+            const g = backpacks[selBalo].metadata.gender;
+            if (skins[selSkin].parsed.gender !== g) selSkin = null;
+        }
+        renderAll();
+    }
+
+    function pickSkin(i) {
+        if (busy) return;
+        selSkin = selSkin === i ? null : i;
+        renderAll();
+    }
+
+    function clearSelect(type) {
+        if (busy) return;
+        if (type === 'balo') { selBalo = null; selSkin = null; }
+        else selSkin = null;
+        renderAll();
+    }
+
+    // ── Drag & Drop ──
+
+    function startDrag(e, type, idx) {
+        if (busy || e.button !== 0) return;
+
+        const card = e.currentTarget;
+        const imgEl = card.querySelector('img');
+        if (!imgEl) return;
+
+        let moved = false;
+        const ghost = document.createElement('img');
+        ghost.src = imgEl.src;
+        ghost.className = 'drag-ghost';
+        ghost.style.display = 'none';
+        document.body.appendChild(ghost);
+
+        const onMove = (ev) => {
+            if (!moved) {
+                const dx = Math.abs(ev.clientX - e.clientX);
+                const dy = Math.abs(ev.clientY - e.clientY);
+                if (dx < 5 && dy < 5) return;
+                moved = true;
+                ghost.style.display = 'block';
+            }
+            ghost.style.left = ev.clientX + 'px';
+            ghost.style.top = ev.clientY + 'px';
+        };
+
+        const onUp = (ev) => {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+            ghost.remove();
+
+            if (!moved) return; // click handled by onclick
+
+            const target = document.elementFromPoint(ev.clientX, ev.clientY);
+            if (!target) return;
+
+            const slot = target.closest('.preview-slot');
+            if (slot) {
+                const slotId = slot.id;
+                if (type === 'balo' && slotId === 'prevBalo') pickBalo(idx);
+                else if (type === 'skin' && slotId === 'prevSkin') pickSkin(idx);
+            }
+        };
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+    }
+
+    // ── Particles ──
+
+    function spawnParticles() {
+        const cont = document.getElementById('particles');
+        const btn = document.getElementById('applyBtn');
+        const r = btn.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const angle = (Math.PI * 2 / 12) * i + Math.random() * 0.5;
+            const dist = 40 + Math.random() * 60;
+            p.style.left = cx + 'px';
+            p.style.top = cy + 'px';
+            p.style.setProperty('--px', Math.cos(angle) * dist + 'px');
+            p.style.setProperty('--py', Math.sin(angle) * dist + 'px');
+            p.style.background = Object.values(RCOLORS)[Math.floor(Math.random() * 5)];
+            cont.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+    }
+
+    // ── Apply ──
+
+    async function applyAction() {
+        if (selBalo === null || selSkin === null || busy) return;
+
+        busy = true;
+        const btn = document.getElementById('applyBtn');
+        btn.classList.add('processing');
+        btn.disabled = true;
+
+        try {
+            const res = await fetch('https://DERP-applyskinbackpack/apply', {
+                method: 'POST',
+                body: JSON.stringify({
+                    backpackSlot: backpacks[selBalo].slot,
+                    skinSlot: skins[selSkin].slot,
+                }),
+            }).then(r => r.json());
+
+            btn.classList.remove('processing');
+
+            if (res.success) {
+                btn.classList.add('success');
+                spawnParticles();
+                setTimeout(() => btn.classList.remove('success'), 700);
+
+                const d = await fetch('https://DERP-applyskinbackpack/refreshItems', {
+                    method: 'POST', body: JSON.stringify({}),
+                }).then(r => r.json());
+
+                backpacks = d.backpacks || [];
+                skins = d.skins || [];
+                if (d.rarityTiers) rarityTiers = d.rarityTiers;
+                selBalo = null;
+                selSkin = null;
+                renderAll();
+            } else {
+                btn.classList.add('error');
+                setTimeout(() => btn.classList.remove('error'), 300);
+            }
+        } catch (e) {
+            btn.classList.remove('processing');
+            btn.classList.add('error');
+            setTimeout(() => btn.classList.remove('error'), 300);
+        }
+
+        busy = false;
+        document.getElementById('applyBtn').disabled = selBalo === null || selSkin === null;
+    }
+
+    // ── UI ──
+
+    function closeUI() {
+        if (busy) return;
+        document.getElementById('app').classList.remove('visible');
+        document.getElementById('app').style.display = 'none';
+        selBalo = null; selSkin = null;
+        fetch('https://DERP-applyskinbackpack/close', { method: 'POST', body: JSON.stringify({}) });
+    }
+
+    window.addEventListener('message', (e) => {
+        const m = e.data;
+        if (m.action === 'open') {
+            backpacks = m.data.backpacks || [];
+            skins = m.data.skins || [];
+            rarityTiers = m.data.rarityTiers || {};
+            selBalo = null; selSkin = null;
+            renderAll();
+            const app = document.getElementById('app');
+            app.style.display = 'flex';
+            app.classList.add('visible');
+        }
+        if (m.action === 'close') {
+            document.getElementById('app').classList.remove('visible');
+            document.getElementById('app').style.display = 'none';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeUI();
+    });
+</script>
+</body>
+</html>

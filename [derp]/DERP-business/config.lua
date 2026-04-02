@@ -1,0 +1,80 @@
+Config = {}
+
+Config.Businesses = {
+    -- ["burgershot"] = {
+    --     label = "BurgerShot",
+    --     job   = "police",
+
+    --     blip = {
+    --         enable = false,
+    --         coords = vec3(-584.08, -875.72, 24.97),
+    --         sprite = 536,
+    --         color  = 17,
+    --         scale  = 0.8,
+    --         label  = "BurgerShot"
+    --     },
+
+    --     duty = {
+    --         coords = vec3(-584.87, -879.97, 26.28),
+    --         radius = 1.0,
+    --         label  = "On/Off Ca Làm Việc"
+    --     },
+
+    --     crafts = {
+    --         {
+    --             coords = vec3(-589.77, -880.57, 26.33),
+    --             radius = 1.5,
+    --             label  = "Bàn làm Burger",
+    --             -- Items món ăn
+    --             items  = {
+    --                 ["burger"] = {
+    --                     label  = "Burger",
+    --                     type   = "food",
+    --                     hunger = 25,
+    --                     anim   = {
+    --                         dict = "mini@repair",
+    --                         clip = "fixing_a_ped",
+    --                         prop = {
+    --                             model = "prop_bbq_pan_01",
+    --                             bone  = 18905,
+    --                             pos   = vec3(0.0, 0.0, 0.05),
+    --                             rot   = vec3(0.0, 0.0, 0.0)
+    --                         }
+    --                     },
+    --                     recipe = {
+    --                         ["lavi"] = 1,
+    --                     },
+    --                     time = 5000
+    --                 },
+    --             },
+    --         },
+    --         {
+    --             coords = vec3(-589.53, -877.62, 26.33),
+    --             radius = 1.5,
+    --             label  = "Bàn pha nước",
+    --             -- Items nước
+    --             items  = {
+    --                 ["sprunk"] = {
+    --                     label  = "7 Up",
+    --                     type   = "drink",
+    --                     thirst = 20,
+    --                     anim   = {
+    --                         dict = "anim@heists@prison_heiststation@cop_reactions",
+    --                         clip = "cop_b_idle",
+    --                         prop = {
+    --                             model = "prop_cup_coffee_01",
+    --                             bone  = 57005,
+    --                             pos   = vec3(0.0, 0.0, 0.05),
+    --                             rot   = vec3(0.0, 0.0, 0.0)
+    --                         }
+    --                     },
+    --                     recipe = {
+    --                         ["lavi"] = 1,
+    --                     },
+    --                     time = 3000
+    --                 },
+    --             },
+    --         },
+    --     },
+    -- },
+}

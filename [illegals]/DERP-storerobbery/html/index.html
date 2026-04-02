@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Catch Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="overlay" class="hidden">
+        <div id="panel">
+            <div id="panel-header">
+                <span id="panel-title">Gôm Xèn</span>
+                <div id="timer-wrap">
+                    <div id="timer-bar"><div id="timer-bar-inner"></div></div>
+                    <span id="timer-text">160s</span>
+                </div>
+            </div>
+            <div id="arena">
+                <div id="basket">🧺</div>
+            </div>
+            <div id="panel-footer">
+                <span id="hint">A D Di chuyển giỏ</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-overlay" class="hidden">
+        <div id="result-panel">
+            <div id="result-label">GÔM ĐƯỢC</div>
+            <div id="result-amount">$0</div>
+            <button id="confirm-btn" onclick="confirmResult()">NHẬN TIỀN</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

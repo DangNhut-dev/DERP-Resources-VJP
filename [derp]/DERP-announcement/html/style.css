@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500&display=swap');
+
+:root {
+    --cyan:     #05F2F2;
+    --bg-light: rgba(255, 255, 255, 0.04);
+    --border:   rgba(255, 255, 255, 0.08);
+    --text:     #e8edf5;
+    --text-dim: rgba(232, 237, 245, 0.5);
+
+    --logo-half-w: 7vh;   /* width of each logo half */
+    --logo-h:      9vh;   /* logo height — natural ratio */
+    --bar-h:       4.5vh; /* text bar height — must be < logo-h */
+    --bar-w:       44vw;  /* text bar full open width */
+    --overlap:     1.2vh; /* how much logo overlaps each end of bar */
+    --split-dur:   0.7s;  /* logo split + bar expand duration */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: transparent;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+.hidden { display: none !important; }
+
+/* ===================== ANNOUNCE WRAP ===================== */
+
+#announce-wrap {
+    position: fixed;
+    top: 4vh;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    transform: translateX(-50%) translateY(-14px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+#announce-wrap.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+#announce-wrap.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* ===================== LOGO HALVES ===================== */
+/*
+ * Logos use negative margin to always overlap bar ends by --overlap.
+ * z-index keeps logos on top of bar, so bar ends are always hidden.
+ * No translateX needed — bar expanding/collapsing pushes logos apart.
+ */
+
+#logo-left,
+#logo-right {
+    flex-shrink: 0;
+    width: var(--logo-half-w);
+    height: var(--logo-h);
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+
+/* overlap bar ends */
+#logo-left  { margin-right: calc(-1 * var(--overlap)); }
+#logo-right { margin-left:  calc(-1 * var(--overlap)); }
+
+#logo-left img,
+#logo-right img {
+    height: 100%;
+    width: auto;
+    display: block;
+    position: absolute;
+    top: 0;
+}
+
+/* left half: show left portion */
+#logo-left img  { left: 0; }
+
+/* right half: show right portion */
+#logo-right img { right: 0; }
+
+/* ===================== TEXT BAR ===================== */
+/*
+ * Starts at width:0 (logos touching at center).
+ * Expands to --bar-w pushing logos apart — same duration as split.
+ * Logo overlap means bar ends are always hidden behind logos.
+ */
+
+#announce-bar {
+    flex-shrink: 0;
+    width: 0;
+    height: var(--bar-h);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.7);
+    border-top: 1px solid var(--cyan);
+    border-bottom: 1px solid var(--cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    z-index: 1;
+    transition: width var(--split-dur) cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+#announce-wrap.open #announce-bar { width: var(--bar-w); }
+
+#announce-text {
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5vh;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2vw;
+    opacity: 0;
+    /* fade in after bar is mostly open */
+    transition: opacity 0.3s ease 0.45s;
+}
+
+#announce-wrap.open #announce-text { opacity: 1; }
+
+/* ===================== RESTART ===================== */
+
+#restart-wrap {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    pointer-events: none;
+}
+
+#restart-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 35px rgba(5, 242, 242, 0.35);
+    border-radius: 16px;
+    padding: 36px 52px 28px;
+    min-width: 480px;
+    text-align: center;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+
+#restart-box.closing { animation: popOut 0.3s ease-in forwards; }
+
+#restart-icon { width: 44px; height: 44px; margin: 0 auto 14px; color: var(--cyan); }
+#restart-icon svg { width: 100%; height: 100%; animation: spin 2s linear infinite; }
+#restart-label {
+    font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 4px; color: var(--cyan); margin-bottom: 16px; text-transform: uppercase;
+}
+#restart-timer {
+    font-family: 'Rajdhani', sans-serif; font-size: 72px; font-weight: 700;
+    color: #fff; line-height: 1; margin-bottom: 8px; transition: color 0.3s;
+}
+#restart-timer.urgent { color: #ff4d4d; animation: pulse 0.6s ease-in-out infinite; }
+#restart-unit { font-size: 28px; font-weight: 600; color: var(--text-dim); margin-left: 4px; vertical-align: middle; }
+#restart-sub  { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; letter-spacing: 0.5px; }
+#restart-progress-wrap { height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+#restart-progress {
+    height: 100%; width: 100%;
+    background: linear-gradient(90deg, var(--cyan), rgba(5,242,242,0.6));
+    border-radius: 3px; transition: width linear;
+}
+
+/* ===================== ADMIN UI ===================== */
+
+#admin-wrap {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200; pointer-events: all;
+}
+#admin-box {
+    background: rgba(8, 12, 18, 0.96);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(5,242,242,0.2), 0 20px 60px rgba(0,0,0,0.6);
+    border-radius: 14px; width: 420px; overflow: hidden;
+    animation: popIn 0.3s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+#admin-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(5,242,242,0.05);
+}
+#admin-title { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 3px; color: var(--cyan); }
+#admin-close {
+    background: none; border: none; color: var(--text-dim); font-size: 16px;
+    cursor: pointer; padding: 2px 6px; border-radius: 4px; pointer-events: all;
+    transition: color 0.2s, background 0.2s;
+}
+#admin-close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+#admin-body { padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+.admin-label { font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); }
+#admin-message {
+    width: 100%; height: 100px; background: var(--bg-light); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px; color: var(--text); font-family: 'Inter', sans-serif;
+    font-size: 14px; resize: none; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+#admin-message:focus { border-color: rgba(5,242,242,0.4); box-shadow: 0 0 0 3px rgba(5,242,242,0.08); }
+#admin-time {
+    width: 100%; background: var(--bg-light); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'Inter', sans-serif;
+    font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+#admin-time:focus { border-color: rgba(5,242,242,0.4); box-shadow: 0 0 0 3px rgba(5,242,242,0.08); }
+#admin-time::-webkit-inner-spin-button { opacity: 0.4; }
+#admin-actions { margin-top: 4px; }
+#btn-send {
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px; background: rgba(5,242,242,0.12); border: 1px solid rgba(5,242,242,0.35);
+    border-radius: 8px; color: var(--cyan); font-family: 'Rajdhani', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 2px; cursor: pointer; pointer-events: all;
+    transition: background 0.2s, transform 0.1s;
+}
+#btn-send:hover  { background: rgba(5,242,242,0.2); }
+#btn-send:active { transform: scale(0.98); }
+
+/* ===================== KEYFRAMES ===================== */
+
+@keyframes popIn  { from { opacity: 0; transform: scale(0.94) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes popOut { from { opacity: 1; transform: scale(1) translateY(0); } to { opacity: 0; transform: scale(0.94) translateY(-6px); } }
+@keyframes spin   { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes pulse  { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }

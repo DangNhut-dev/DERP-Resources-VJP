@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NPC Market</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="shop-overlay" class="hidden">
+    <div id="shop-panel">
+
+      <div id="shop-header">
+        <div id="shop-header-left">
+          <img src="./assets/myLogo.png" alt="" id="shop-logo">
+          <span id="shop-title">MARKET</span>
+        </div>
+
+        <div id="shop-tabs">
+          <button class="tab-btn active" id="tabBuy" data-tab="buy">MUA</button>
+          <button class="tab-btn" id="tabSell" data-tab="sell">BÁN</button>
+        </div>
+
+        <div id="shop-header-right">
+          <button id="shop-close-btn">✕</button>
+        </div>
+      </div>
+
+      <div id="shop-search-bar">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm...">
+        </div>
+      </div>
+
+      <div id="shop-sell-filters" class="hidden">
+        <label class="filter-toggle" id="filterLabel">
+          <input type="checkbox" id="filterOwned">
+          <span class="filter-checkmark"></span>
+          <span class="filter-text">Đang có</span>
+        </label>
+        
+        <div id="price-filters">
+          <button class="price-filter-btn active" data-filter="none">Mặc định</button>
+          <button class="price-filter-btn" data-filter="low">Giá thấp</button>
+          <button class="price-filter-btn" data-filter="high">Giá cao</button>
+          <button class="price-filter-btn" data-filter="good">Giá tốt</button>
+        </div>
+      </div>
+
+      <div id="shop-body">
+        <div id="shop-grid"></div>
+
+        <div id="cart-panel" class="hidden">
+
+          <div id="player-info-box">
+            <div id="player-info-name"></div>
+            <div id="player-info-money"></div>
+          </div>
+
+          <div id="cart-header">
+            <span id="cart-title">GIỎ HÀNG</span>
+            <button id="clear-cart-btn">XÓA TẤT CẢ</button>
+          </div>
+          <div id="cart-items">
+            <div id="cart-empty">Chưa có sản phẩm</div>
+          </div>
+          <div id="cart-footer">
+            <div id="cart-total-row">
+              <span class="cart-footer-label">TỔNG CỘNG</span>
+              <span id="cart-total">$0</span>
+            </div>
+            <div id="payment-section">
+              <div class="cart-footer-label" style="margin-bottom:8px;">THANH TOÁN QUA</div>
+              <div id="payment-options">
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="cash" checked>
+                  <span class="pay-mark"></span>
+                  <span>TIỀN MẶT</span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="bank">
+                  <span class="pay-mark"></span>
+                  <span>NGÂN HÀNG</span>
+                </label>
+              </div>
+            </div>
+            <button id="checkout-btn" disabled>THANH TOÁN</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Buy Modal (blackmarket) -->
+  <div id="shop-buy-modal" class="hidden">
+    <div id="shop-buy-inner">
+      <div id="buy-item-name">ITEM</div>
+      <div id="buy-item-price-info"></div>
+      <div id="buy-qty-row">
+        <button class="qty-btn" id="qty-dec">−</button>
+        <input id="qty-input" type="number" min="1" max="999" value="1">
+        <button class="qty-btn" id="qty-inc">+</button>
+      </div>
+      <div id="buy-total-display"></div>
+      <div id="buy-action-row">
+        <button id="buy-cancel-btn">HỦY</button>
+        <button id="buy-coin-btn">MUA NGAY</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sell Modal -->
+  <div id="shop-sell-modal" class="hidden">
+    <div id="shop-sell-inner">
+      <div id="sell-item-name">ITEM</div>
+      <div id="sell-item-price-info"></div>
+      <div id="sell-qty-row">
+        <button class="qty-btn" id="sell-qty-dec">−</button>
+        <input id="sell-qty-input" type="number" min="1" value="1">
+        <button class="qty-btn" id="sell-qty-inc">+</button>
+      </div>
+      <div id="sell-total-display"></div>
+      <div id="sell-action-row">
+        <button id="sell-cancel-btn">HỦY</button>
+        <button id="sell-confirm-btn">XÁC NHẬN BÁN</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

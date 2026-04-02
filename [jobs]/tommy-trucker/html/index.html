@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tommy Trucker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="main-container" class="hidden">
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- HEADER -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="header">
+            <div class="header-left">
+                <i class="fas fa-truck-moving"></i>
+                <h1>HỆ THỐNG GIAO HÀNG</h1>
+            </div>
+
+            <button class="cancel-job-btn hidden" id="cancelJobBtn">
+                <i class="fas fa-times-circle"></i>
+                <span>Hủy Đơn</span>
+            </button>
+
+            <div class="header-right">
+                <button class="close-btn" id="closeBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- TAB NAVIGATION -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="orders">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Đơn Hàng</span>
+            </button>
+            <button class="tab-btn" data-tab="party">
+                <i class="fas fa-users"></i>
+                <span>Nhóm</span>
+            </button>
+            <button class="tab-btn" data-tab="driver">
+                <i class="fas fa-user-tie"></i>
+                <span>Tài Xế</span>
+            </button>
+            <button class="tab-btn" data-tab="rental">
+                <i class="fas fa-key"></i>
+                <span>Thuê Xe</span>
+            </button>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- PARTY TAB -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="tab-content" id="party-tab">
+            <!-- Pending Invite -->
+            <div class="party-invite-banner hidden" id="partyInviteBanner">
+                <div class="invite-content">
+                    <i class="fas fa-envelope"></i>
+                    <div class="invite-text">
+                        <span class="invite-title">Lời mời vào nhóm</span>
+                        <span class="invite-from" id="inviteFromName">Player Name</span>
+                    </div>
+                </div>
+                <div class="invite-actions">
+                    <button class="btn btn-accept-invite" id="acceptInviteBtn">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-decline-invite" id="declineInviteBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- No Party State -->
+            <div class="no-party" id="noPartySection">
+                <div class="no-party-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Bạn chưa có nhóm</h3>
+                <p>Tạo nhóm để cùng bạn bè giao hàng và chia đều phần thưởng!</p>
+                <button class="btn btn-primary btn-create-party" id="createPartyBtn">
+                    <i class="fas fa-plus-circle"></i>
+                    Tạo Nhóm
+                </button>
+            </div>
+
+            <!-- In Party State -->
+            <div class="party-card hidden" id="partySection">
+                <div class="party-header">
+                    <h3><i class="fas fa-users"></i> Nhóm của bạn</h3>
+                    <span class="party-id" id="partyIdDisplay">#1</span>
+                </div>
+
+                <!-- Members List -->
+                <div class="party-members" id="partyMembersList">
+                    <!-- Leader -->
+                    <div class="party-member leader">
+                        <div class="member-left">
+                            <div class="member-avatar leader-avatar">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="member-info">
+                                <span class="member-name" id="leaderName">Leader Name</span>
+                                <span class="member-role">Trưởng nhóm</span>
+                            </div>
+                        </div>
+                        <div class="member-status online">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+
+                    <!-- Member Slot -->
+                    <div class="party-member empty" id="memberSlot">
+                        <div class="member-left">
+                            <div class="member-avatar empty-avatar">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="member-info">
+                                <span class="member-name">Chưa có thành viên</span>
+                                <span class="member-role">Ấn nút bên dưới để mời</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Party Actions -->
+                <div class="party-actions">
+                    <button class="btn btn-primary" id="inviteMemberBtn">
+                        <i class="fas fa-user-plus"></i>
+                        Mời Thành Viên
+                    </button>
+                    <button class="btn btn-danger" id="leavePartyBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Rời Nhóm
+                    </button>
+                </div>
+
+                <!-- Party Info -->
+                <div class="party-info">
+                    <div class="info-item">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Phần thưởng sẽ được chia đều 50/50</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Nếu 1 người rời nhóm, đơn hàng sẽ bị hủy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- INVITE MODAL -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="modal hidden" id="inviteModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-user-plus"></i> Mời Thành Viên</h2>
+                    <button class="close-modal-btn" id="closeInviteModalBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="nearby-players-list" id="nearbyPlayersList">
+                        <!-- Players will be dynamically inserted -->
+                    </div>
+                    <div class="no-nearby-players hidden" id="noNearbyPlayers">
+                        <i class="fas fa-search"></i>
+                        <p>Không tìm thấy ai gần đây</p>
+                        <small>Hãy đến gần người muốn mời (trong 10m)</small>
+                    </div>
+                    <div class="loading-players hidden" id="loadingPlayers">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Đang tìm kiếm...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- ORDERS TAB -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="tab-content active" id="orders-tab">
+            <div class="orders-grid" id="ordersGrid">
+                <!-- Orders will be dynamically inserted here -->
+            </div>
+            <div class="no-orders hidden" id="noOrders">
+                <i class="fas fa-box-open"></i>
+                <p>Không có đơn hàng khả dụng</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- DRIVER TAB -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="tab-content" id="driver-tab">
+            <div class="driver-card">
+                <!-- Driver Info -->
+                <div class="driver-header">
+                    <div class="driver-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="driver-info">
+                        <h2 id="driverName">Tài Xế</h2>
+                        <div class="driver-level">
+                            <i class="fas fa-star"></i>
+                            <span>Level <span id="driverLevel">1</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="driver-stats">
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Chuyến Hoàn Thành</span>
+                            <span class="stat-value" id="tripsCompleted">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Kinh Nghiệm</span>
+                            <span class="stat-value" id="totalExp">0 EXP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXP Progress Bar -->
+                <div class="exp-section">
+                    <div class="exp-header">
+                        <span>Tiến Trình Level</span>
+                        <span id="expText">0 / 100</span>
+                    </div>
+                    <div class="exp-bar">
+                        <div class="exp-fill" id="expFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Registered Vehicle -->
+                <div class="vehicle-section">
+                    <h3><i class="fas fa-truck"></i> Xe Đã Đăng Ký</h3>
+                    <div class="vehicle-display" id="vehicleDisplay">
+                        <span class="no-vehicle">Chưa đăng ký xe</span>
+                    </div>
+                    <button class="btn btn-primary" id="registerVehicleBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Đăng Ký Xe
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- RENTAL TAB -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="tab-content" id="rental-tab">
+
+            <!-- Active Rental Banner -->
+            <div class="active-rental-banner hidden" id="activeRentalBanner">
+                <div class="active-rental-left">
+                    <div class="active-rental-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="active-rental-info">
+                        <span class="active-rental-title">Xe đang thuê</span>
+                        <span class="active-rental-plate" id="activeRentalPlate">TRUCK000</span>
+                        <span class="active-rental-model" id="activeRentalModel">Phantom</span>
+                    </div>
+                </div>
+                <div class="active-rental-right">
+                    <div class="active-rental-timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="activeRentalExpire">--:--:--</span>
+                    </div>
+                    <span class="active-rental-label">Còn lại</span>
+                </div>
+            </div>
+
+            <!-- Rental Fleet Grid -->
+            <div class="rental-section-title" id="rentalSectionTitle">
+                <i class="fas fa-truck-moving"></i>
+                <span>Đội Xe Cho Thuê</span>
+            </div>
+
+            <div class="rental-grid" id="rentalGrid">
+                <!-- Rental cards will be dynamically inserted -->
+            </div>
+
+            <div class="no-rental-available hidden" id="noRentalAvailable">
+                <i class="fas fa-truck"></i>
+                <p>Không có xe nào để thuê</p>
+                <small>Vui lòng liên hệ quản lý</small>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- VEHICLE SELECTION MODAL -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="modal hidden" id="vehicleModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-truck"></i> Chọn Xe Của Bạn</h2>
+                    <button class="close-modal-btn" id="closeModalBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="vehicle-list" id="vehicleList">
+                        <!-- Vehicles will be dynamically inserted -->
+                    </div>
+                    <div class="no-vehicles hidden" id="noVehicles">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Bạn không có xe tải nào phù hợp!</p>
+                        <small>Hãy mua một chiếc xe tải giao hàng.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <!-- RENTAL CONFIRM MODAL -->
+        <!-- ═══════════════════════════════════════════════════════════ -->
+        <div class="modal hidden" id="rentalModal">
+            <div class="modal-content rental-modal-content">
+                <div class="modal-header rental-modal-header">
+                    <h2><i class="fas fa-key"></i> Xác Nhận Thuê Xe</h2>
+                    <button class="close-modal-btn" id="closeRentalModalBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Vehicle Preview -->
+                    <div class="rental-vehicle-preview">
+                        <div class="rental-preview-icon">
+                            <i class="fas fa-truck-moving"></i>
+                        </div>
+                        <div class="rental-preview-info">
+                            <div class="rental-preview-name" id="rentalPreviewName">Phantom</div>
+                            <div class="rental-preview-capacity" id="rentalPreviewCapacity">
+                                <i class="fas fa-weight-hanging"></i> 500kg
+                            </div>
+                            <div class="rental-preview-price" id="rentalPreviewPricePerDay">
+                                <i class="fas fa-dollar-sign"></i> 1,000/ngày
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day Selector -->
+                    <div class="rental-day-selector">
+                        <div class="day-selector-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            Chọn số ngày thuê
+                        </div>
+                        <div class="day-selector-controls">
+                            <button class="day-btn" id="dayDecreaseBtn">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="day-display">
+                                <span class="day-number" id="rentalDays">1</span>
+                                <span class="day-label">ngày</span>
+                            </div>
+                            <button class="day-btn" id="dayIncreaseBtn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- Day Quick Picks -->
+                        <div class="day-quick-picks">
+                            <button class="day-pick-btn active" data-days="1">1N</button>
+                            <button class="day-pick-btn" data-days="2">2N</button>
+                            <button class="day-pick-btn" data-days="3">3N</button>
+                            <button class="day-pick-btn" data-days="5">5N</button>
+                            <button class="day-pick-btn" data-days="7">7N</button>
+                        </div>
+                    </div>
+
+                    <!-- Price Summary -->
+                    <div class="rental-price-summary">
+                        <div class="price-row">
+                            <span class="price-label">Giá thuê</span>
+                            <span class="price-value" id="rentalPricePerDay">$1,000 / ngày</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Số ngày</span>
+                            <span class="price-value" id="rentalDaysDisplay">1 ngày</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total-row">
+                            <span class="price-label">Tổng tiền mặt</span>
+                            <span class="price-total" id="rentalTotalPrice">$1,000</span>
+                        </div>
+                        <div class="payment-note">
+                            <i class="fas fa-money-bill-wave"></i>
+                            Thanh toán bằng tiền mặt
+                        </div>
+                    </div>
+
+                    <!-- Confirm Button -->
+                    <button class="btn btn-confirm-rental" id="confirmRentalBtn">
+                        <i class="fas fa-handshake"></i>
+                        Xác Nhận Thuê Xe
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal hidden" id="cancelConfirmModal">
+            <div class="modal-content" style="max-width: 450px;">
+                <div class="modal-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Xác Nhận Hủy Đơn</h2>
+                </div>
+                <div class="modal-body" style="text-align: center; padding: 32px 28px;">
+                    <p style="color: rgba(255,255,255,0.9); font-size: 16px; margin-bottom: 12px;">
+                        Bạn có chắc muốn hủy đơn hàng này?
+                    </p>
+                    <p style="color: #f87171; font-size: 14px; font-weight: 600;">
+                        ⚠️ Sau khi hủy, bạn phải đợi 10 phút mới nhận đơn mới!
+                    </p>
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button class="btn" id="cancelJobConfirm" style="flex: 1; background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff;">
+                            <i class="fas fa-check"></i>
+                            Xác Nhận Hủy
+                        </button>
+                        <button class="btn" id="cancelJobCancel" style="flex: 1; background: rgba(255,255,255,0.1); color: #fff;">
+                            <i class="fas fa-times"></i>
+                            Quay Lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DERP Donate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <div class="panel">
+        <!-- Header -->
+        <div class="panel-header">
+            <h1>DE:RP <span>/</span> Ủng Hộ Thành Phố</h1>
+            <button class="btn-close" id="btnClose">&#x2715;</button>
+        </div>
+
+        <!-- Nav tabs (dynamic based on isAdmin) -->
+        <div class="nav-tabs" id="navTabs">
+            <button class="nav-tab active" data-page="donate">Tạo Ticket</button>
+            <button class="nav-tab" data-page="history">Lịch Sử</button>
+            <button class="nav-tab admin-only" data-page="admin" style="display:none">Quản Lý</button>
+            <button class="nav-tab admin-only" data-page="revenue" style="display:none">Doanh Thu</button>
+        </div>
+
+        <!-- Page: Create Donate -->
+        <div class="page active" id="page-donate">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label class="form-label">Số Tiền Donate (VND)</label>
+                        <input class="form-input" type="number" id="inputAmount" placeholder="100,000">
+                        <div class="amount-hints">
+                            <button class="hint-btn" data-amount="50000">50K</button>
+                            <button class="hint-btn" data-amount="100000">100K</button>
+                            <button class="hint-btn" data-amount="200000">200K</button>
+                            <button class="hint-btn" data-amount="500000">500K</button>
+                            <button class="hint-btn" data-amount="1000000">1M</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ghi Chú (tuỳ chọn)</label>
+                        <textarea class="form-textarea" id="inputNote" placeholder="Ghi chú thêm..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Chọn Đúng Khung Giờ Để Được Xử Lý Nhanh</label>
+                        <select class="form-select" id="selectMethod"></select>
+                    </div>
+                    <button class="btn btn-primary btn-full" id="btnCreateTicket">Tạo Ticket</button>
+                </div>
+                <div class="col">
+                    <div class="ui-notice">
+                        <div class="player-info-row">
+                            <span id="displayPlayerName">—</span>
+                            <span class="coin-badge"><span id="displayCoin">0</span> Coin</span>
+                        </div>
+                        <div style="margin-top:8px">
+                            Sau khi tạo ticket, bạn sẽ nhận được QR code và thông tin chuyển khoản. Nội dung chuyển khoản phải đúng để hệ thống xác nhận tự động.
+                            <br><strong style="color:var(--cyan)">1.000 VNĐ = 1 Coin</strong>
+                        </div>
+                    </div>
+                    <div id="paymentPreview"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page: QR / Payment -->
+        <div class="page" id="page-qr">
+            <div class="ui-notice" id="qrNotice">Vui lòng chuyển khoản đúng nội dung bên dưới để đơn hàng được xử lý. (Đơn sẽ xử lý trong 5 phút)</div>
+            <div class="qr-section" id="qrSection"></div>
+            <hr class="divider">
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button class="btn btn-ghost" id="btnBackFromQR">← Quay Lại</button>
+                <button class="btn btn-primary" id="btnViewHistory">Xem Lịch Sử</button>
+            </div>
+        </div>
+
+        <!-- Page: History -->
+        <div class="page" id="page-history">
+            <div class="ticket-list" id="ticketList">
+                <div class="empty-state">Đang tải...</div>
+            </div>
+        </div>
+
+        <!-- Page: Admin Panel -->
+        <div class="page" id="page-admin">
+            <div class="filter-bar">
+                <input class="form-input" id="adminSearch" placeholder="Tìm theo Ticket ID...">
+                <select class="form-select" id="adminFilter" style="max-width:140px;">
+                    <option value="">Tất cả</option>
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+                <button class="btn btn-primary" id="btnAdminSearch">Tìm</button>
+            </div>
+            <div class="ticket-list" id="adminTicketList">
+                <div class="empty-state">Đang tải...</div>
+            </div>
+        </div>
+
+        <!-- Page: Revenue -->
+        <div class="page" id="page-revenue">
+            <div class="stats-grid" id="revenueStats">
+                <div class="stat-card">
+                    <div class="stat-label">Tổng Doanh Thu</div>
+                    <div class="stat-value" id="statTotal">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Hôm Nay</div>
+                    <div class="stat-value" id="statToday">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Tháng Này</div>
+                    <div class="stat-value" id="statMonth">—</div>
+                </div>
+            </div>
+            <div class="ticket-list" id="revenueList">
+                <div class="empty-state">Đang tải...</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="pendingOverlay">
+    <div class="pending-dot"></div>
+    <span>Có đơn donate đang chờ xử lý</span>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

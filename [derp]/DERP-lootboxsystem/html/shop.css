@@ -1,0 +1,989 @@
+#shop-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.418);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    animation: shopFadeIn 0.3s ease;
+}
+
+#shop-overlay.hidden {
+    display: none !important;
+}
+
+@keyframes shopFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ---- Panel ---- */
+#shop-panel {
+    width: 92%;
+    max-width: 980px;
+    max-height: 82vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.815);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-top: 1px solid rgba(5, 242, 242, 0.22);
+    border-radius: 12px;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.7), 0 0 100px rgba(5, 242, 242, 0.04);
+    overflow: hidden;
+}
+
+#shop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+#shop-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 0.35em;
+    color: #05F2F2;
+    text-shadow: 0 0 24px rgba(5, 242, 242, 0.45);
+}
+
+#shop-close-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+#shop-close-btn:hover {
+    background: rgba(255, 60, 60, 0.15);
+    border-color: rgba(255, 60, 60, 0.4);
+    color: #ff5050;
+}
+
+/* ---- Payment Tabs (Header center) ---- */
+#shop-payment-tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 3px;
+}
+
+.payment-tab {
+    padding: 8px 22px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.payment-tab:hover {
+    color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.payment-tab.active[data-payment="cash"] {
+    background: rgba(77, 255, 145, 0.12);
+    border-color: rgba(77, 255, 145, 0.35);
+    color: #4dff91;
+    box-shadow: 0 0 14px rgba(77, 255, 145, 0.1);
+}
+
+.payment-tab.active[data-payment="coin"] {
+    background: rgba(5, 242, 242, 0.12);
+    border-color: rgba(5, 242, 242, 0.35);
+    color: #05F2F2;
+    box-shadow: 0 0 14px rgba(5, 242, 242, 0.1);
+}
+
+/* ---- Item Grid ---- */
+#shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 16px;
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+#shop-grid::-webkit-scrollbar { width: 3px; }
+#shop-grid::-webkit-scrollbar-track { background: transparent; }
+#shop-grid::-webkit-scrollbar-thumb {
+    background: rgba(5, 242, 242, 0.25);
+    border-radius: 2px;
+}
+
+/* ---- Card ---- */
+.shop-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.shop-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(5, 242, 242, 0.28);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 18px rgba(5, 242, 242, 0.07);
+}
+
+.shop-card-img-wrap {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+}
+
+.shop-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.55));
+}
+
+.shop-card-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #fff;
+    text-align: center;
+}
+
+.shop-card-prices {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.shop-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.price-bank {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #4dff91;
+}
+
+.price-coin {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #05F2F2;
+}
+
+.price-cash {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #4dff91;
+}
+
+.shop-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.shop-btn {
+    flex: 1;
+    padding: 10px 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+}
+
+.shop-btn-buy {
+    background: #05F2F2;
+    color: #000;
+}
+
+.shop-btn-buy:hover {
+    background: #2fffff;
+    box-shadow: 0 0 18px rgba(5, 242, 242, 0.5);
+}
+
+.shop-btn-detail {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.shop-btn-detail:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.24);
+    color: #fff;
+}
+
+/* ---- Modals shared ---- */
+#shop-buy-modal,
+#shop-detail-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 210;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+#shop-buy-modal.hidden,
+#shop-detail-modal.hidden {
+    display: none !important;
+}
+
+/* ---- Buy Modal ---- */
+#shop-buy-inner {
+    min-width: 330px;
+    background: rgba(6, 6, 14, 0.98);
+    border: 1px solid rgba(5, 242, 242, 0.18);
+    border-radius: 12px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.9), 0 0 30px rgba(5, 242, 242, 0.07);
+    animation: shopFadeIn 0.2s ease;
+}
+
+#buy-item-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #fff;
+    text-align: center;
+}
+
+#buy-item-price-info {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.38);
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+#buy-qty-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.qty-btn {
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background: rgba(5, 242, 242, 0.12);
+    border-color: rgba(5, 242, 242, 0.35);
+    color: #05F2F2;
+}
+
+#qty-input {
+    width: 72px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 6px 0;
+    border-radius: 6px;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+#qty-input::-webkit-inner-spin-button,
+#qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+#qty-input:focus {
+    border-color: rgba(5, 242, 242, 0.38);
+}
+
+#buy-total-display {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #05F2F2;
+    text-align: center;
+    min-height: 18px;
+    letter-spacing: 0.05em;
+}
+
+#buy-action-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+#buy-cancel-btn {
+    flex: 1;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: rgba(255, 255, 255, 0.45);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+#buy-cancel-btn:hover {
+    background: rgba(255, 60, 60, 0.1);
+    border-color: rgba(255, 60, 60, 0.3);
+    color: #ff5050;
+}
+
+#buy-bank-btn,
+#buy-coin-btn {
+    flex: 2;
+    min-width: 140px;
+    padding: 12px 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+#buy-bank-btn {
+    background: rgba(77, 255, 145, 0.1);
+    border: 1px solid rgba(77, 255, 145, 0.28);
+    color: #4dff91;
+}
+
+#buy-bank-btn:hover {
+    background: rgba(77, 255, 145, 0.2);
+    box-shadow: 0 0 18px rgba(77, 255, 145, 0.18);
+}
+
+#buy-coin-btn {
+    background: rgba(5, 242, 242, 0.1);
+    border: 1px solid rgba(5, 242, 242, 0.28);
+    color: #05F2F2;
+}
+
+#buy-coin-btn:hover {
+    background: rgba(5, 242, 242, 0.2);
+    box-shadow: 0 0 18px rgba(5, 242, 242, 0.18);
+}
+
+/* ---- Detail Modal ---- */
+#shop-detail-inner {
+    width: 90%;
+    max-width: 720px;
+    max-height: 78vh;
+    background: rgba(6, 6, 14, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-top: 1px solid rgba(5, 242, 242, 0.2);
+    border-radius: 12px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+    animation: shopFadeIn 0.2s ease;
+    overflow: hidden;
+}
+
+#detail-box-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #05F2F2;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+#detail-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    gap: 12px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 4px;
+}
+
+#detail-items-grid::-webkit-scrollbar { width: 3px; }
+#detail-items-grid::-webkit-scrollbar-thumb {
+    background: rgba(5, 242, 242, 0.25);
+    border-radius: 2px;
+}
+
+.detail-item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--rc, rgba(255, 255, 255, 0.09));
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.detail-item-card img {
+    width: 92px;
+    height: 92px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+
+.detail-item-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.65);
+    text-align: center;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.detail-item-rarity {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rc, #fff);
+}
+
+#detail-close-btn {
+    align-self: center;
+    padding: 10px 36px;
+    background: rgba(5, 242, 242, 0.09);
+    border: 1px solid rgba(5, 242, 242, 0.28);
+    color: #05F2F2;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+#detail-close-btn:hover {
+    background: rgba(5, 242, 242, 0.18);
+    box-shadow: 0 0 18px rgba(5, 242, 242, 0.18);
+}
+
+/* ---- Subheader ---- */
+#shop-subheader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+/* ---- Filter Tabs ---- */
+#shop-filter-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* ---- Gender Tabs ---- */
+#shop-gender-tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 3px;
+}
+
+.gender-tab {
+    padding: 5px 14px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.gender-tab:hover {
+    color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.gender-tab.active[data-gender="all"] {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.gender-tab.active[data-gender="male"] {
+    background: rgba(77, 158, 255, 0.12);
+    border-color: rgba(77, 158, 255, 0.35);
+    color: #4d9eff;
+    box-shadow: 0 0 12px rgba(77, 158, 255, 0.1);
+}
+
+.gender-tab.active[data-gender="female"] {
+    background: rgba(255, 119, 170, 0.12);
+    border-color: rgba(255, 119, 170, 0.35);
+    color: #ff77aa;
+    box-shadow: 0 0 12px rgba(255, 119, 170, 0.1);
+}
+
+.filter-tab {
+    padding: 6px 14px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.filter-tab:hover {
+    border-color: rgba(5, 242, 242, 0.3);
+    color: rgba(5, 242, 242, 0.65);
+    background: rgba(5, 242, 242, 0.04);
+}
+
+.filter-tab.active {
+    background: rgba(5, 242, 242, 0.12);
+    border-color: rgba(5, 242, 242, 0.4);
+    color: #05F2F2;
+    box-shadow: 0 0 12px rgba(5, 242, 242, 0.1);
+}
+
+/* ---- Player Info ---- */
+#shop-player-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+#player-name-display {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.05em;
+}
+
+#player-coin-display {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #05F2F2;
+    text-shadow: 0 0 10px rgba(5, 242, 242, 0.4);
+}
+
+/* ---- Shop Body ---- */
+#shop-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+#shop-grid {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ---- Cart Panel ---- */
+#shop-cart {
+    width: 280px;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+#cart-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+#cart-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+#cart-count {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    background: #05F2F2;
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 900;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cart-count.hidden { display: none !important; }
+
+/* ---- Cart Items ---- */
+#cart-items-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 0;
+}
+
+#cart-items-list::-webkit-scrollbar { width: 3px; }
+#cart-items-list::-webkit-scrollbar-track { background: transparent; }
+#cart-items-list::-webkit-scrollbar-thumb {
+    background: rgba(5, 242, 242, 0.2);
+    border-radius: 2px;
+}
+
+#cart-empty {
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.18);
+    margin-top: 28px;
+    letter-spacing: 0.05em;
+}
+
+.cart-item-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 9px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    transition: border-color 0.15s;
+}
+
+.cart-item-row:hover {
+    border-color: rgba(5, 242, 242, 0.12);
+}
+
+.cart-item-img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+}
+
+.cart-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-item-price {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    color: #05F2F2;
+    margin-top: 2px;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.cart-qty-btn {
+    width: 22px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    line-height: 1;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+}
+
+.cart-qty-btn:hover {
+    background: rgba(5, 242, 242, 0.12);
+    border-color: rgba(5, 242, 242, 0.3);
+    color: #05F2F2;
+}
+
+.cart-qty-input {
+    width: 38px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 0;
+    border-radius: 4px;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.cart-qty-input::-webkit-inner-spin-button,
+.cart-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.cart-qty-input:focus {
+    border-color: rgba(5, 242, 242, 0.4);
+    box-shadow: 0 0 6px rgba(5, 242, 242, 0.1);
+}
+
+.cart-remove-btn {
+    width: 18px;
+    height: 18px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 0.72rem;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.1s;
+    margin-left: 1px;
+}
+
+.cart-remove-btn:hover { color: #ff5050; }
+
+/* ---- Cart Footer ---- */
+#cart-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+#cart-summary {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.63rem;
+    color: rgba(255, 255, 255, 0.38);
+    text-align: center;
+    min-height: 14px;
+    letter-spacing: 0.04em;
+}
+
+#cart-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#cart-clear-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.28);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+#cart-clear-btn:hover {
+    border-color: rgba(255, 60, 60, 0.28);
+    color: #ff5050;
+    background: rgba(255, 60, 60, 0.04);
+}
+
+#cart-coin-btn {
+    width: 100%;
+    padding: 11px 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: rgba(5, 242, 242, 0.1);
+    border: 1px solid rgba(5, 242, 242, 0.28);
+    color: #05F2F2;
+}
+
+#cart-coin-btn:hover {
+    background: rgba(5, 242, 242, 0.18);
+    box-shadow: 0 0 14px rgba(5, 242, 242, 0.15);
+}
+
+#cart-coin-btn.hidden { display: none !important; }
+
+#cart-cash-btn {
+    width: 100%;
+    padding: 11px 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: rgba(77, 255, 145, 0.1);
+    border: 1px solid rgba(77, 255, 145, 0.28);
+    color: #4dff91;
+}
+
+#cart-cash-btn:hover {
+    background: rgba(77, 255, 145, 0.18);
+    box-shadow: 0 0 14px rgba(77, 255, 145, 0.15);
+}
+
+#cart-cash-btn.hidden { display: none !important; }
+
+#cart-clear-btn.hidden { display: none !important; }
+
+/* ---- Badges on cards ---- */
+.shop-card-badges {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    z-index: 1;
+}
+
+.badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.badge-hot {
+    background: rgba(255, 77, 77, 0.2);
+    border: 1px solid rgba(255, 77, 77, 0.38);
+    color: #ff7070;
+}
+
+.badge-new {
+    background: rgba(5, 242, 242, 0.12);
+    border: 1px solid rgba(5, 242, 242, 0.32);
+    color: #05F2F2;
+}
+
+.badge-male {
+    background: rgba(77, 158, 255, 0.15);
+    border: 1px solid rgba(77, 158, 255, 0.35);
+    color: #4d9eff;
+}
+
+.badge-female {
+    background: rgba(255, 119, 170, 0.15);
+    border: 1px solid rgba(255, 119, 170, 0.35);
+    color: #ff77aa;
+}

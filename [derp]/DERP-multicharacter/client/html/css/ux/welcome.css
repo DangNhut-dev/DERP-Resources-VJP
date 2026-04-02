@@ -1,0 +1,32 @@
+.welcome-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 9999999999999999999999;
+}
+
+.welcome-screen .bar {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    left: 100%;
+    background-color: #000000;
+}
+
+.welcome-screen .bar.bar-left {bottom: 0;}
+.welcome-screen .bar.bar-right {top: 0}
+
+.welcome-screen img {
+    position: relative;
+    z-index: 3;
+    width: 8vw;
+    height: 8vw;
+    object-fit: contain;
+    opacity: 0;
+}

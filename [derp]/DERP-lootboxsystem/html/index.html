@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lootbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="shop.css" />
+</head>
+<body>
+<div id="overlay" class="hidden">
+
+    <!-- PREVIEW SCREEN -->
+    <div id="preview-screen">
+        <div id="preview-box-img-wrap">
+            <img id="preview-box-img" src="" alt="" />
+            <div id="preview-box-glow"></div>
+        </div>
+        <div id="preview-box-label"></div>
+        <div id="preview-buttons">
+            <span class="preview-text-btn" id="btn-open-x1">[ MỞ × 1 ]</span>
+            <span class="preview-text-btn preview-text-btn-x5" id="btn-open-x5">[ MỞ × 5 ]</span>
+        </div>
+        <div id="preview-hint">BẤM ESC ĐỂ THOÁT</div>
+    </div>
+
+    <!-- SPIN SCREEN -->
+    <div id="spin-screen" class="hidden">
+    <div id="box-header">
+        <span id="box-title">DE:RP</span>
+        <div id="box-subtitle">A DI ĐÀ PHẬT</div>
+    </div>
+
+    <div id="reel-container">
+        <div id="reel-track-wrap">
+            <div id="reel-track"></div>
+        </div>
+        <div id="center-line"></div>
+        <div id="center-glow"></div>
+    </div>
+
+    <div id="multi-reel-container" class="hidden"></div>
+
+    <div id="result-panel" class="hidden">
+        <div id="multi-result-layout">
+            <div id="multi-side-left"></div>
+            <div id="result-card">
+                <img id="result-img" src="" alt="" />
+                <div id="result-name"></div>
+                <div id="result-rarity"></div>
+            </div>
+            <div id="multi-side-right"></div>
+        </div>
+        <button id="btn-claim">NHẬN VẬT PHẨM</button>
+    </div>
+
+    <div id="multi-result-grid" class="hidden"></div>
+
+    </div><!-- end spin-screen -->
+
+</div>
+
+<script src="script.js"></script>
+
+<!-- SHOP OVERLAY -->
+<div id="shop-overlay" class="hidden">
+
+    <div id="shop-panel">
+
+        <!-- Header -->
+        <div id="shop-header">
+            <div id="shop-title">DE:RP SHOP</div>
+            <div id="shop-payment-tabs">
+                <button class="payment-tab active" data-payment="cash">TIỀN MẶT</button>
+                <button class="payment-tab" data-payment="coin">DE COIN</button>
+            </div>
+            <button id="shop-close-btn">✕</button>
+        </div>
+        <!-- Subheader: filter tabs (left) + player info (right) -->
+        <div id="shop-subheader">
+            <div id="shop-filter-tabs">
+                <button class="filter-tab active" data-filter="all">TẤT CẢ</button>
+                <button class="filter-tab" data-filter="bestseller">BÁN CHẠY</button>
+                <button class="filter-tab" data-filter="new">MỚI NHẤT</button>
+                <button class="filter-tab" data-filter="price-asc">GIÁ THẤP</button>
+                <button class="filter-tab" data-filter="price-desc">GIÁ CAO</button>
+            </div>
+            <div id="shop-gender-tabs">
+                <button class="gender-tab active" data-gender="all">TẤT CẢ</button>
+                <button class="gender-tab" data-gender="male">NAM</button>
+                <button class="gender-tab" data-gender="female">NỮ</button>
+            </div>
+            <div id="shop-player-info">
+                <div id="player-name-display"></div>
+                <div id="player-coin-display"></div>
+            </div>
+        </div>
+
+        <!-- Body: grid + cart -->
+        <div id="shop-body">
+            <div id="shop-grid"></div>
+
+            <!-- Cart Panel -->
+            <div id="shop-cart">
+                <div id="cart-header-bar">
+                    <span id="cart-title">GIỎ HÀNG</span>
+                    <span id="cart-count" class="hidden">0</span>
+                </div>
+
+                <div id="cart-items-list">
+                    <div id="cart-empty">Giỏ hàng trống</div>
+                </div>
+
+                <div id="cart-footer">
+                    <div id="cart-summary"></div>
+                    <div id="cart-actions">
+                        <button id="cart-clear-btn" class="hidden">XÓA TẤT CẢ</button>
+                        <button id="cart-cash-btn" class="hidden"></button>
+                        <button id="cart-coin-btn" class="hidden"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="shop-detail-modal" class="hidden">
+        <div id="shop-detail-inner">
+            <div id="detail-box-name"></div>
+            <div id="detail-items-grid"></div>
+            <button id="detail-close-btn">ĐÓNG</button>
+        </div>
+    </div>
+
+</div>
+<script src="shop.js"></script>
+</body>
+</html>

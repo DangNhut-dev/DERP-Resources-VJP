@@ -1,0 +1,181 @@
+{
+    "error": {
+        "not_online": "Người chơi không trực tuyến",
+        "wrong_format": "Định dạng không đúng",
+        "missing_args": "Chưa nhập đủ tham số (x, y, z)",
+        "missing_args2": "Tất cả các tham số phải được điền đầy đủ!",
+        "no_access": "Bạn không có quyền truy cập lệnh này",
+        "company_too_poor": "Công ty của bạn không đủ tiền",
+        "item_not_exist": "Vật phẩm không tồn tại",
+        "too_heavy": "Túi đồ đã đầy",
+        "location_not_exist": "Địa điểm không tồn tại",
+        "duplicate_license": "Phát hiện trùng lặp Rockstar License",
+        "no_valid_license": "Không tìm thấy Rockstar License hợp lệ",
+        "not_whitelisted": "Bạn chưa được whitelist trên server này",
+        "server_already_open": "Server đã được mở trước đó",
+        "server_already_closed": "Server đã được đóng trước đó",
+        "no_permission": "Bạn không có quyền thực hiện điều này..",
+        "no_waypoint": "Chưa đặt Waypoint.",
+        "tp_error": "Lỗi khi dịch chuyển.",
+        "connecting_database_timeout": "Kết nối đến database bị timeout. (SQL server có đang chạy không?)",
+        "connecting_error": "Đã xảy ra lỗi khi kết nối đến server. (Kiểm tra console server)",
+        "no_match_character_registration": "Chỉ được dùng chữ cái, không có khoảng trắng đầu/cuối, mỗi từ phải viết hoa chữ cái đầu. Có thể dùng khoảng trắng giữa các từ.",
+        "already_in_queue": "Bạn đã có trong hàng chờ rồi.",
+        "no_subqueue": "Bạn không được xếp vào hàng chờ nào.",
+        "character_delete_failed": "Xóa nhân vật thất bại. Vui lòng thử lại.",
+        "not_optin": "Bạn chưa đăng ký trực admin. (/optin để bật/tắt)"
+    },
+    "success": {
+        "server_opened": "Server đã được mở",
+        "server_closed": "Server đã được đóng",
+        "teleported_waypoint": "Đã dịch chuyển đến Waypoint.",
+        "character_deleted": "Đã xóa nhân vật!",
+        "character_deleted_citizenid": "Bạn đã xóa thành công nhân vật có Citizen ID %s.",
+        "optin_set": "Bạn đã %s thành công chế độ trực admin."
+    },
+    "info": {
+        "received_paycheck": "Bạn đã nhận lương $%s",
+        "job_info": "Công việc: %s | Cấp bậc: %s | Nhiệm vụ: %s",
+        "gang_info": "Băng nhóm: %s | Cấp bậc: %s",
+        "on_duty": "Bạn đang trong ca làm việc!",
+        "off_duty": "Bạn đã kết thúc ca làm việc!",
+        "checking_ban": "Xin chào %s. Đang kiểm tra trạng thái ban của bạn.",
+        "join_server": "Chào mừng %s đến với %s.",
+        "checking_whitelisted": "Xin chào %s. Đang kiểm tra quyền truy cập của bạn.",
+        "exploit_banned": "Bạn đã bị ban vì gian lận. Kiểm tra Discord của chúng tôi để biết thêm: %s",
+        "exploit_dropped": "QueenBạn đã bị kick vì gian lận",
+        "multichar_title": "Chọn Nhân Vật",
+        "multichar_new_character": "Nhân Vật Mới #%s",
+        "char_male": "Nam",
+        "char_female": "Nữ",
+        "play": "Vào Game",
+        "play_description": "Chơi với %s",
+        "delete_character": "Xóa Nhân Vật",
+        "delete_character_description": "Xóa %s",
+        "logout_command_help": "Đăng xuất khỏi nhân vật hiện tại",
+        "check_id": "Kiểm tra Server ID của bạn",
+        "deletechar_command_help": "Xóa nhân vật của người chơi",
+        "deletechar_command_arg_player_id": "ID Người Chơi",
+        "character_registration_title": "Đăng Ký Nhân Vật",
+        "first_name": "Tên",
+        "last_name": "Họ",
+        "nationality": "Quốc tịch",
+        "gender": "Giới tính",
+        "birth_date": "Ngày sinh",
+        "select_gender": "Chọn giới tính...",
+        "confirm_delete": "Bạn có chắc chắn muốn xóa nhân vật này không?",
+        "in_queue": "🐌 Bạn đang ở vị trí %s/%s trong hàng chờ. (%s) %s",
+        "fetching_user": "Đang tải thông tin người dùng...",
+        "creating_user": "Đang tạo người dùng..."
+    },
+    "command": {
+        "tp": {
+            "help": "Dịch chuyển đến người chơi hoặc tọa độ (Chỉ Admin)",
+            "params": {
+                "x": { "name": "id/x", "help": "ID người chơi hoặc tọa độ X" },
+                "y": { "name": "y", "help": "Tọa độ Y" },
+                "z": { "name": "z", "help": "Tọa độ Z" }
+            }
+        },
+        "tpm": { "help": "Dịch chuyển đến Marker (Chỉ Admin)" },
+        "togglepvp": { "help": "Bật/tắt PVP trên server (Chỉ Admin)" },
+        "addpermission": {
+            "help": "Cấp quyền cho người chơi (Chỉ God)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "permission": { "name": "permission", "help": "Cấp độ quyền" }
+            }
+        },
+        "removepermission": {
+            "help": "Thu hồi quyền của người chơi (Chỉ God)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "permission": { "name": "permission", "help": "Cấp độ quyền" }
+            }
+        },
+        "openserver": { "help": "Mở server cho tất cả mọi người (Chỉ Admin)" },
+        "closeserver": {
+            "help": "Đóng server với người không có quyền (Chỉ Admin)",
+            "params": {
+                "reason": { "name": "reason", "help": "Lý do đóng server (tùy chọn)" }
+            }
+        },
+        "car": {
+            "help": "Triệu hồi xe (Chỉ Admin)",
+            "params": {
+                "model": { "name": "model", "help": "Tên model xe" },
+                "keepCurrentVehicle": { "name": "keepCurrentVehicle", "help": "Giữ lại xe hiện tại (để trống để xóa xe hiện tại)" }
+            }
+        },
+        "dv": {
+            "help": "Xóa xe (Chỉ Admin)",
+            "params": {
+                "radius": { "name": "radius", "help": "Bán kính xóa xe (mét)" }
+            }
+        },
+        "givemoney": {
+            "help": "Cho người chơi tiền (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "moneytype": { "name": "moneytype", "help": "Loại tiền (cash, bank, crypto)" },
+                "amount": { "name": "amount", "help": "Số tiền" }
+            }
+        },
+        "setmoney": {
+            "help": "Đặt số tiền của người chơi (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "moneytype": { "name": "moneytype", "help": "Loại tiền (cash, bank, crypto)" },
+                "amount": { "name": "amount", "help": "Số tiền" }
+            }
+        },
+        "job": { "help": "Kiểm tra công việc của bạn" },
+        "setjob": {
+            "help": "Đặt công việc cho người chơi (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "job": { "name": "job", "help": "Tên công việc" },
+                "grade": { "name": "grade", "help": "Cấp bậc công việc" }
+            }
+        },
+        "changejob": {
+            "help": "Đổi công việc đang hoạt động của người chơi (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "job": { "name": "job", "help": "Tên công việc" }
+            }
+        },
+        "addjob": {
+            "help": "Thêm công việc cho người chơi (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "job": { "name": "job", "help": "Tên công việc" },
+                "grade": { "name": "grade", "help": "Cấp bậc công việc" }
+            }
+        },
+        "removejob": {
+            "help": "Xóa công việc của người chơi (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "job": { "name": "job", "help": "Tên công việc" }
+            }
+        },
+        "gang": { "help": "Kiểm tra băng nhóm của bạn" },
+        "setgang": {
+            "help": "Đặt băng nhóm cho người chơi (Chỉ Admin)",
+            "params": {
+                "id": { "name": "id", "help": "ID người chơi" },
+                "gang": { "name": "gang", "help": "Tên băng nhóm" },
+                "grade": { "name": "grade", "help": "Cấp bậc băng nhóm" }
+            }
+        },
+        "ooc": { "help": "Tin nhắn OOC" },
+        "me": {
+            "help": "Hiển thị tin nhắn cục bộ",
+            "params": {
+                "message": { "name": "message", "help": "Nội dung tin nhắn" }
+            }
+        },
+        "optin": { "help": "Bật/tắt đăng ký trực admin (Chỉ Admin)" }
+    }
+}

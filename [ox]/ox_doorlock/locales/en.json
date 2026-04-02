@@ -1,0 +1,18 @@
+{
+  "unlocked_door": "Cửa đã mở khóa",
+  "locked_door": "Cửa đã khóa",
+  "lock_door": "[E] Khóa cửa",
+  "unlock_door": "[E] Mở khóa cửa",
+  "door_lock": "Khóa cửa",
+  "passcode": "Mã khóa",
+  "lockpick_broke": "Móc khóa của bạn đã gãy",
+  "pick_lock": "Bẻ khóa",
+  "add_lock": "Thêm khóa cửa",
+  "edit_lock": "Chỉnh sửa khóa cửa",
+  "remove_lock": "Xóa khóa cửa",
+  "cannot_unlock": "Không thể mở khóa cửa",
+  "cannot_lock": "Không thể khóa cửa",
+  "create_modify_lock": "Tạo khóa cửa mới hoặc chỉnh sửa khóa hiện có",
+  "add_door_textui": "**Tạo cửa mới**  \nTương tác bằng [LMB]  \nHủy bằng [RMB]",
+  "command_closest": "Mở giao diện trực tiếp đến khóa cửa gần nhất"
+}

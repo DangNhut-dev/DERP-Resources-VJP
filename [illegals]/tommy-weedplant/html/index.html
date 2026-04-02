@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QB Cannabis - Multi-Seed System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="nui-wrapper.js"></script>
+</head>
+<body>
+    <!-- Enhanced Plant Info UI -->
+    <div id="plantInfo" class="plant-info hidden">
+        <div class="plant-info-header">
+            <h2><span id="seedNameHeader">Thông Tin Cây Trồng</span></h2>
+            <button class="close-btn" onclick="closePlantInfo()">✕</button>
+        </div>
+        <div class="plant-info-body">
+            <!-- Seed Name -->
+            <div class="info-row seed-name-row">
+                <span class="info-label">Loại hạt:</span>
+                <span class="info-value seed-name" id="seedName">Indica</span>
+            </div>
+            
+            <!-- Water Level Bar -->
+            <div class="info-section">
+                <div class="info-row">
+                    <span class="info-label">Mức nước:</span>
+                    <span class="info-value" id="waterLevel">0%</span>
+                </div>
+                <div class="water-bar">
+                    <div class="water-fill" id="waterFill"></div>
+                </div>
+            </div>
+            
+            <!-- Time Remaining -->
+            <div class="info-row">
+                <span class="info-label">Thời gian còn lại:</span>
+                <span class="info-value" id="timeRemaining">--:--</span>
+            </div>
+            
+            <!-- Status & Bonuses -->
+            <div class="status-section">
+                <div class="info-row">
+                    <span class="info-label">Trạng thái:</span>
+                    <span class="info-value status-text" id="plantStatus">Đang phát triển...</span>
+                </div>
+                
+                <div class="bonus-indicators">
+                    <div class="bonus-item" id="fertilizerBonus" style="display: none;">
+                        <span class="bonus-text">Đã bón phân (-<span id="fertilizerPercent">0</span>% thời gian)</span>
+                    </div>
+                    <div class="bonus-item" id="uvBonus" style="display: none;">
+                        <span class="bonus-text">Có đèn UV (+<span id="uvAmount">0</span> nụ)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Warnings -->
+            <div class="info-row warning-row" id="waterWarning" style="display: none;">
+                <span class="warning-text">Cây cần được tưới nước dinh dưỡng để bắt đầu phát triển!</span>
+            </div>
+            
+            <div class="info-row warning-row water-depleted" id="waterDepletedWarning" style="display: none;">
+                <span class="warning-text">Cây đã hết nước dinh dưỡng! Tạm ngừng phát triển.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Minigame UI -->
+    <div id="processingGame" class="processing-game hidden">
+        <div class="game-header">
+            <h2>🔥 Sấy Khô Cần Sa</h2>
+            <div class="game-stats">
+                <span class="stat">Vòng tròn: <span id="circleCount">0</span>/10</span>
+                <span class="stat">Tiến độ: <span id="progressPercent">0</span>%</span>
+                <span class="stat">Thời gian: <span id="timeLeft">60</span>s</span>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <div class="cannabis-display fresh">
+                <div class="cannabis-icon">🍃</div>
+                <p>Lá Cần Sa Tươi</p>
+            </div>
+
+            <div class="dryer-machine">
+                <div class="dryer-body">
+                    <div class="dryer-window">
+                        <canvas id="drawingCanvas" width="300" height="300"></canvas>
+                        <div class="dryer-heat"></div>
+                    </div>
+                    <div class="dryer-controls">
+                        <div class="control-light" id="powerLight"></div>
+                        <div class="control-light" id="heatLight"></div>
+                    </div>
+                </div>
+                <div class="instruction">
+                    <p>Giữ chuột trái và vẽ vòng tròn</p>
+                    <p>Vẽ 10 vòng tròn để hoàn thành</p>
+                </div>
+            </div>
+
+            <div class="cannabis-display dried">
+                <div class="cannabis-icon">🌿</div>
+                <p>Lá Cần Sa Khô</p>
+                <div class="progress-indicator">
+                    <div class="progress-circle" id="dryProgress">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-progress-bar">
+            <div class="game-progress-fill" id="gameProgress"></div>
+        </div>
+    </div>
+
+    <!-- Drying Station UI -->
+    <div id="dryingStation" class="drying-station hidden">
+        <div class="drying-header">
+            <h2>KỆ PHƠI CẦN</h2>
+            <button class="close-btn" onclick="closeDryingUI()">✕</button>
+        </div>
+        
+        <div class="drying-body">
+            <!-- Bên trái: Danh sách cần -->
+            <div class="buds-panel">
+                <h3>Loại Cần</h3>
+                <div class="buds-list" id="budsList"></div>
+            </div>
+
+            <!-- Bên phải: Bàn sấy 3x3 -->
+            <div class="rack-panel">
+                <h3>KỆ PHƠI</h3>
+                <div class="drying-table">
+                    <div class="drying-grid" id="dryingGrid">
+                    </div>
+                    <p class="drying-hint">Click vào loại cần bên trái để thêm vào kệ</p>
+                </div>
+
+                <button class="start-drying-btn" id="startDryingBtn" onclick="startDrying()" disabled>
+                    <span class="btn-text">XÁC NHẬN</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Infusion Station UI -->
+    <div id="infusionStation" class="infusion-station hidden">
+        <div class="infusion-header">
+            <h2>TẨM CẦN SA</h2>
+            <button class="close-btn" onclick="closeInfusionUI()">✕</button>
+        </div>
+        
+        <div class="infusion-body">
+            <!-- Bên trái: Danh sách loại cần khô -->
+            <div class="infusion-buds-panel">
+                <h3>Loại Cần Khô</h3>
+                <div class="infusion-buds-list" id="infusionBudsList"></div>
+            </div>
+
+            <!-- Giữa: Danh sách nguyên liệu -->
+            <div class="infusion-ingredients-panel">
+                <h3>Nguyên Liệu</h3>
+                <div class="infusion-ingredients-list" id="infusionIngredientsList"></div>
+            </div>
+
+            <!-- Bên phải: Đã chọn + Nút trộn -->
+            <div class="infusion-selected-panel">
+                <h3>Đã Chọn</h3>
+                
+                <div class="selected-section">
+                    <h4>Loại cần:</h4>
+                    <div class="selected-bud" id="selectedInfusionBud">
+                        <p class="empty-text">Chưa chọn loại cần</p>
+                    </div>
+                </div>
+
+                <div class="selected-section">
+                    <h4>Nguyên liệu:</h4>
+                    <div class="selected-ingredients" id="selectedInfusionIngredients">
+                        <p class="empty-text">Chưa có nguyên liệu</p>
+                    </div>
+                </div>
+
+                <button class="mix-infusion-btn" id="mixInfusionBtn" onclick="startInfusionMixing()" disabled>
+                    <span class="btn-text">BẮT ĐẦU PHA CHẾ</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Overlay khi đang trộn -->
+        <div class="infusion-overlay hidden" id="infusionOverlay">
+            <div class="infusion-timer-display">
+                <h2>THỜI GIAN TRỘN</h2>
+                <div class="infusion-timer-value" id="infusionTimerValue">0.0s</div>
+                <p class="infusion-timer-hint" id="infusionTimerHint">Đang trộn... Bấm "Dừng" khi muốn lấy kết quả.</p>
+                <button class="infusion-stop-btn" id="infusionStopBtn" onclick="stopInfusionMixing()">
+                    DỪNG
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bud Quantity Modal (for Drying) -->
+    <div id="budQuantityModal" class="quantity-modal hidden">
+        <div class="quantity-modal-content">
+            <h3 id="budQuantityItemName">Chọn Số Lượng</h3>
+            <div class="quantity-input-group">
+                <button class="quantity-btn" onclick="decreaseBudQuantity()">-</button>
+                <input type="number" id="budQuantityInput" value="1" min="1" max="999">
+                <button class="quantity-btn" onclick="increaseBudQuantity()">+</button>
+            </div>
+            <div class="quantity-info">
+                <p>Có thể thêm: <span id="budQuantityAvailable">0</span></p>
+            </div>
+            <div class="quantity-actions">
+                <button class="btn-cancel" onclick="closeBudQuantityModal()">Hủy</button>
+                <button class="btn-confirm" onclick="confirmBudQuantity()">Xác Nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Infusion Quantity Modal -->
+    <div id="infusionQuantityModal" class="quantity-modal hidden">
+        <div class="quantity-modal-content">
+            <h3 id="infusionQuantityTitle">Chọn Số Lượng</h3>
+            <div class="quantity-input-group">
+                <button class="quantity-btn" onclick="decreaseInfusionQuantity()">-</button>
+                <input type="number" id="infusionQuantityInput" value="1" min="1" max="999">
+                <button class="quantity-btn" onclick="increaseInfusionQuantity()">+</button>
+            </div>
+            <div class="quantity-info">
+                <p>Có thể thêm: <span id="infusionQuantityAvailable">0</span></p>
+            </div>
+            <div class="quantity-actions">
+                <button class="btn-cancel" onclick="closeInfusionQuantityModal()">Hủy</button>
+                <button class="btn-confirm" onclick="confirmInfusionQuantity()">Xác Nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "error": {
+    "no_people_nearby": "Không có ai ở gần.",
+    "no_vehicle_nearby": "Không có xe nào gần đây để lật.",
+    "no_vehicle_found": "Không tìm thấy xe.",
+    "extra_deactivated": "Extra %s đã được tắt.",
+    "extra_not_present": "Extra %s không có trên xe này.",
+    "not_driver": "Bạn không phải tài xế.",
+    "vehicle_driving_fast": "Xe đang chạy quá nhanh.",
+    "seat_occupied": "Ghế này đã có người.",
+    "race_harness_on": "Bạn đang đeo dây đua, không thể đổi ghế.",
+    "obj_not_found": "Không thể tạo vật thể.",
+    "not_near_ambulance": "Bạn không ở gần xe cứu thương.",
+    "far_away": "Bạn ở quá xa.",
+    "not_kidnapped": "Bạn chưa bắt cóc người này.",
+    "trunk_closed": "Cốp xe đã đóng.",
+    "cant_enter_trunk": "Bạn không thể vào cốp xe này.",
+    "already_in_trunk": "Bạn đã ở trong cốp rồi.",
+    "someone_in_trunk": "Đã có người trong cốp.",
+    "cancel_task": "Đã hủy"
+  },
+  "progress": {
+    "flipping_car": "Đang lật xe..."
+  },
+  "success": {
+    "extra_activated": "Extra %s đã được bật.",
+    "entered_trunk": "Bạn đã vào cốp xe.",
+    "flipped_car": "Đã lật xe thành công!"
+  },
+  "info": {
+    "no_variants": "Không có biến thể nào cho cái này.",
+    "wrong_ped": "Model nhân vật này không hỗ trợ tùy chọn này.",
+    "nothing_to_remove": "Bạn không có gì để tháo.",
+    "already_wearing": "Bạn đã mặc rồi.",
+    "switched_seats": "Bạn đã chuyển sang %s."
+  },
+  "general": {
+    "command_description": "Mở Menu Tròn",
+    "get_out_trunk_button": "[E] Thoát cốp xe",
+    "close_trunk_button": "[G] Đóng cốp xe",
+    "open_trunk_button": "[G] Mở cốp xe",
+    "getintrunk_command_desc": "Vào cốp xe",
+    "putintrunk_command_desc": "Nhét người vào cốp xe",
+    "gang_radial": "Băng nhóm",
+    "job_radial": "Công việc"
+  },
+  "options": {
+    "flip": "Lật xe",
+    "vehicle": "Xe",
+    "emergency_button": "Nút khẩn cấp",
+    "driver_seat": "Ghế tài xế",
+    "passenger_seat": "Ghế phụ",
+    "other_seats": "Ghế khác",
+    "rear_left_seat": "Ghế sau trái",
+    "rear_right_seat": "Ghế sau phải"
+  }
+}

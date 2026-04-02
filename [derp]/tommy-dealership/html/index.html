@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealership Tablet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="tablet-container" id="tabletContainer">
+        <div class="tablet-header">
+            <div class="header-left">
+                <h1>Dealership Management</h1>
+                <p class="shop-name" id="shopName"></p>
+            </div>
+            <div class="header-right">
+                <div class="language-selector" id="languageSelector">
+                    <button class="lang-btn active" data-lang="vi" title="Tiếng Việt">
+                        <span class="flag">🇻🇳</span>
+                    </button>
+                    <button class="lang-btn" data-lang="en" title="English">
+                        <span class="flag">🇺🇸</span>
+                    </button>
+                </div>
+                <button class="close-btn" id="closeBtn">✕</button>
+            </div>
+        </div>
+
+        <div class="tablet-nav">
+            <button class="nav-btn active" data-tab="dashboard">
+                <span class="nav-text" id="navDashboard">Dashboard</span>
+            </button>
+            <button class="nav-btn" data-tab="inventory">
+                <span class="nav-text" id="navInventory">Inventory</span>
+            </button>
+            <button class="nav-btn management-only" data-tab="statistics" style="display: none;">
+                <span class="nav-text" id="navStatistics">Statistics</span>
+            </button>
+        </div>
+
+        <div class="tablet-content">
+            <div class="tab-content active" id="dashboardTab">
+                <div class="showroom-grid" id="showroomGrid"></div>
+            </div>
+
+            <div class="tab-content" id="inventoryTab">
+                <div class="inventory-header">
+                    <h2 id="inventoryTitle">Vehicle Inventory</h2>
+                    <button class="btn-primary management-only" id="importBtn" style="display: none;">
+                        <span>➕</span>
+                        <span id="importBtnText">Import Vehicle</span>
+                    </button>
+                </div>
+                
+                <div class="inventory-filters">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="inventorySearch" placeholder="Tìm kiếm xe..." />
+                        <button class="clear-search" id="clearSearch" style="display: none;">✕</button>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="inventory-filter-btn" id="filterPriceLow">
+                            <span>💰</span>
+                            <span id="filterPriceLowText">Giá Thấp</span>
+                        </button>
+                        <button class="inventory-filter-btn" id="filterPriceHigh">
+                            <span>💎</span>
+                            <span id="filterPriceHighText">Giá Cao</span>
+                        </button>
+                        <button class="inventory-filter-btn" id="filterAutoSell">
+                            <span>🤖</span>
+                            <span id="filterAutoSellText">Bán Tự Động</span>
+                        </button>
+                        <button class="inventory-filter-btn" id="filterStockHigh">
+                            <span>📦</span>
+                            <span id="filterStockHighText">Tồn Kho Cao</span>
+                        </button>
+                        <button class="inventory-filter-btn reset-filter" id="resetFilters">
+                            <span>🔄</span>
+                            <span id="resetFiltersText">Xóa Bộ Lọc</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="inventory-list" id="inventoryList"></div>
+            </div>
+
+            <div class="tab-content" id="statisticsTab">
+                <div class="stats-summary">
+                    <div class="stat-card">
+                        <h3 id="totalSalesLabel">Total Sales</h3>
+                        <p class="stat-value" id="totalSalesValue">$0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalCommissionLabel">Total Commission</h3>
+                        <p class="stat-value" id="totalCommissionValue">$0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalSelfPurchaseLabel">Self Purchase Sales</h3>
+                        <p class="stat-value" id="totalSelfPurchaseValue">$0</p>
+                    </div>
+                </div>
+                
+                <div class="stats-nav">
+                    <button class="stats-nav-btn active" data-stats-tab="employee-sales">
+                        <span>👥</span>
+                        <span id="navEmployeeSales">Employee Sales</span>
+                    </button>
+                    <button class="stats-nav-btn" data-stats-tab="self-purchases">
+                        <span>🛒</span>
+                        <span id="navSelfPurchases">Self Purchases</span>
+                    </button>
+                </div>
+                
+                <div class="stats-section active" id="employeeSalesSection">
+                    <div class="sales-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th id="thSeller">Seller</th>
+                                    <th id="thBuyer">Buyer</th>
+                                    <th id="thVehicle">Vehicle</th>
+                                    <th id="thPlate">Plate</th>
+                                    <th id="thPrice">Price</th>
+                                    <th id="thCommission">Commission</th>
+                                    <th id="thDate">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="load-more-container" id="salesLoadMoreContainer" style="display: none;">
+                        <button class="btn-load-more" id="salesLoadMoreBtn">
+                            <span>📋</span>
+                            <span id="salesLoadMoreText">Load More</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats-section" id="selfPurchasesSection">
+                    <div class="sales-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th id="thSpBuyer">Buyer</th>
+                                    <th id="thSpVehicle">Vehicle</th>
+                                    <th id="thSpPlate">Plate</th>
+                                    <th id="thSpPrice">Price</th>
+                                    <th id="thSpPayment">Payment</th>
+                                    <th id="thSpDate">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="selfPurchaseTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="load-more-container" id="selfPurchaseLoadMoreContainer" style="display: none;">
+                        <button class="btn-load-more" id="selfPurchaseLoadMoreBtn">
+                            <span>📋</span>
+                            <span id="selfPurchaseLoadMoreText">Load More</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="self-purchase-container" id="selfPurchaseContainer">
+        <div class="self-purchase-header">
+            <div class="header-left">
+                <h1 id="selfPurchaseTitle">Mua Xe</h1>
+                <p class="markup-notice" id="markupNotice">
+                    <span class="notice-icon">ℹ️</span>
+                    <span id="markupNoticeText">Tự mua có giá cao hơn 10% so với mua từ nhân viên</span>
+                </p>
+            </div>
+            <div class="header-right">
+                <div class="self-purchase-balance">
+                    <!-- <span class="balance-icon">🪙</span> -->
+                    <span id="playerGCDisplay">DE-Coin: 0</span>
+                </div>
+                <div class="language-selector">
+                    <button class="lang-btn active" data-lang="vi" title="Tiếng Việt">
+                        <span class="flag">🇻🇳</span>
+                    </button>
+                    <button class="lang-btn" data-lang="en" title="English">
+                        <span class="flag">🇺🇸</span>
+                    </button>
+                </div>
+                <button class="close-btn" id="closeSelfPurchaseBtn">✕</button>
+            </div>
+        </div>
+        
+        <div class="self-purchase-search">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="selfPurchaseSearchInput" placeholder="Tìm kiếm xe..." />
+                <button class="clear-search" id="clearSelfPurchaseSearch" style="display: none;">✕</button>
+            </div>
+        </div>
+        
+        <div class="self-purchase-filters">
+            <button class="filter-btn active" id="sortAvailableBtn">
+                <span>✅</span>
+                <span id="sortAvailableBtnText">Có Thể Mua</span>
+            </button>
+            <button class="filter-btn" id="sortCheapBtn">
+                <span>💰</span>
+                <span id="sortCheapBtnText">Giá Thấp</span>
+            </button>
+            <button class="filter-btn" id="sortExpensiveBtn">
+                <span>💎</span>
+                <span id="sortExpensiveBtnText">Giá Cao</span>
+            </button>
+        </div>
+        
+        <div class="self-purchase-content">
+            <div class="self-purchase-grid" id="selfPurchaseGrid"></div>
+        </div>
+    </div>
+
+    <!-- Vehicle Modal -->
+    <div class="modal" id="vehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalVehicleName"></h2>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-info">
+                    <div class="info-row">
+                        <span class="info-label" id="labelStock">Stock:</span>
+                        <span class="info-value" id="modalStock">0</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelPrice">Price:</span>
+                        <span class="info-value" id="modalPrice">$0</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label" id="labelColor">Color:</span>
+                        <span class="info-value" id="modalColor">Black</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-action btn-sell" id="sellBtn">
+                        <span>💰</span>
+                        <span id="sellBtnText">Sell Vehicle</span>
+                    </button>
+                    <button class="btn-action btn-test" id="testDriveBtn">
+                        <span>🚗</span>
+                        <span id="testDriveBtnText">Test Drive</span>
+                    </button>
+                    <button class="btn-action btn-restock management-only" id="restockBtn" style="display: none;">
+                        <span>📦</span>
+                        <span id="restockBtnText">Restock</span>
+                    </button>
+                    <button class="btn-action btn-change" id="changeVehicleBtn">
+                        <span>🔄</span>
+                        <span id="changeVehicleBtnText">Change Vehicle</span>
+                    </button>
+                    <button class="btn-action btn-color" id="changeColorBtn">
+                        <span>🎨</span>
+                        <span id="changeColorBtnText">Change Color</span>
+                    </button>
+                    <button class="btn-action btn-clear" id="clearSlotBtn">
+                        <span>🗑️</span>
+                        <span id="clearSlotBtnText">Clear Slot</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Modal -->
+    <div class="modal" id="playerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="selectCustomerTitle">Select Customer</h2>
+                <button class="modal-close" id="playerModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="player-list" id="playerList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="paymentMethodTitle">Payment Method</h2>
+                <button class="modal-close" id="paymentModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-info">
+                    <p><strong id="paymentCustomer">Customer:</strong> <span id="paymentCustomerName"></span></p>
+                    <p><strong id="paymentVehicle">Vehicle:</strong> <span id="paymentVehicleName"></span></p>
+                    <p><strong id="paymentPrice">Price:</strong> <span id="paymentPriceValue"></span></p>
+                    <p><strong>DE-Coin:</strong> <span id="paymentGCPriceValue"></span></p>
+                </div>
+                <div class="payment-buttons payment-buttons-3">
+                    <button class="btn-payment btn-cash" id="payCashBtn">
+                        <span>💵</span>
+                        <span id="payCashText">Cash</span>
+                    </button>
+                    <button class="btn-payment btn-bank" id="payBankBtn">
+                        <span>🏦</span>
+                        <span id="payBankText">Bank</span>
+                    </button>
+                    <button class="btn-payment btn-gc" id="payGCBtn">
+                        <span>🪙</span>
+                        <span id="payGCText">DE-Coin</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restock Modal -->
+    <div class="modal" id="restockModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="restockTitle">Restock Vehicle</h2>
+                <button class="modal-close" id="restockModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="restockAmount" id="restockAmountLabel">Amount:</label>
+                    <input type="number" id="restockAmount" min="1" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="restockPrice" id="restockPriceLabel">New Price:</label>
+                    <input type="number" id="restockPrice" min="0" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="restockGCPrice" id="restockGCPriceLabel">DE-Coin:</label>
+                    <input type="number" id="restockGCPrice" min="0" value="0">
+                </div>
+                <button class="btn-primary" id="confirmRestockBtn">
+                    <span id="confirmRestockText">Confirm</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="importTitle">Import New Vehicle</h2>
+                <button class="modal-close" id="importModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="importVehicleName" id="importVehicleLabel">Vehicle Name:</label>
+                    <input type="text" id="importVehicleName" placeholder="e.g. sultan, italirsx">
+                </div>
+                <div class="input-group">
+                    <label for="importQuantity" id="importQuantityLabel">Quantity:</label>
+                    <input type="number" id="importQuantity" min="1" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="importPrice" id="importPriceLabel">Price:</label>
+                    <input type="number" id="importPrice" min="0" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="importGCPrice" id="importGCPriceLabel">DE-Coin:</label>
+                    <input type="number" id="importGCPrice" min="0" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="importDescription" id="importDescriptionLabel">Description:</label>
+                    <textarea id="importDescription" rows="4" placeholder="Enter vehicle description..."></textarea>
+                </div>
+                <button class="btn-primary" id="confirmImportBtn">
+                    <span id="confirmImportText">Import</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Vehicle Modal -->
+    <div class="modal" id="changeVehicleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="changeVehicleTitle">Change Showroom Vehicle</h2>
+                <button class="modal-close" id="changeVehicleModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="changeVehicleSearch" placeholder="Tìm kiếm xe..." />
+                    <button class="clear-search" id="clearChangeVehicleSearch" style="display: none;">✕</button>
+                </div>
+                <div class="vehicle-select-list" id="vehicleSelectList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Color Picker Modal -->
+    <div class="modal" id="colorPickerModal">
+        <div class="modal-content modal-wide">
+            <div class="modal-header">
+                <h2 id="colorPickerTitle">Select Vehicle Color</h2>
+                <button class="modal-close" id="colorPickerModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="color-grid" id="colorGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Self Purchase Color Modal -->
+    <div class="modal" id="selfPurchaseColorModal">
+        <div class="modal-content modal-wide">
+            <div class="modal-header">
+                <h2 id="selfPurchaseColorModalTitle">Chọn Màu</h2>
+                <button class="modal-close" id="selfPurchaseColorModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="color-grid" id="selfPurchaseColorGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Self Purchase Payment Modal -->
+    <div class="modal" id="selfPurchasePaymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="selfPurchasePaymentTitle">Phương Thức Thanh Toán</h2>
+                <button class="modal-close" id="selfPurchasePaymentModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-info">
+                    <p><strong id="spPaymentVehicleLabel">Xe:</strong> <span id="spPaymentVehicleName"></span></p>
+                    <p><strong id="spPaymentPriceLabel">Giá:</strong> <span id="spPaymentPrice"></span></p>
+                    <p><strong id="spPaymentGCPriceLabel">Giá DE-Coin:</strong> <span id="spPaymentGCPrice"></span></p>
+                    <p><strong id="spPaymentColorLabel">Màu:</strong> <span id="spPaymentColor"></span></p>
+                </div>
+                <div class="payment-buttons payment-buttons-3">
+                    <button class="btn-payment btn-cash" id="spPayCashBtn">
+                        <span id="spPayCashText">Tiền Mặt</span>
+                    </button>
+                    <button class="btn-payment btn-bank" id="spPayBankBtn">
+                        <span id="spPayBankText">Ngân Hàng</span>
+                    </button>
+                    <button class="btn-payment btn-gc" id="spPayGCBtn">
+                        <span id="spPayGCText">DE-Coin</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Price Modal -->
+    <div class="modal" id="editPriceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="editPriceTitle">Thay Đổi Giá Xe</h2>
+                <button class="modal-close" id="editPriceModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-info">
+                    <div class="info-row">
+                        <span class="info-label">Xe:</span>
+                        <span class="info-value" id="editPriceVehicleName"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Giá Hiện Tại:</span>
+                        <span class="info-value" id="editPriceCurrentPrice"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="newPriceInput">Giá Mới:</label>
+                    <input type="number" id="newPriceInput" min="0" value="0" placeholder="Nhập giá mới">
+                </div>
+                <button class="btn-primary" id="confirmEditPriceBtn">
+                    <span>Xác Nhận Thay Đổi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit DE-Coin Price Modal -->
+    <div class="modal" id="editGCPriceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="editGCPriceTitle">Thay Đổi Giá DE-Coin</h2>
+                <button class="modal-close" id="editGCPriceModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-info">
+                    <div class="info-row">
+                        <span class="info-label">Xe:</span>
+                        <span class="info-value" id="editGCPriceVehicleName"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Giá DE-Coin Hiện Tại:</span>
+                        <span class="info-value" id="editGCPriceCurrentPrice"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="newGCPriceInput">Giá DE-Coin Mới:</label>
+                    <input type="number" id="newGCPriceInput" min="0" value="0" placeholder="Nhập giá DE-Coin mới">
+                </div>
+                <button class="btn-primary" id="confirmEditGCPriceBtn">
+                    <span>Xác Nhận Thay Đổi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Description Modal -->
+    <div class="modal" id="editDescriptionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="editDescriptionTitle">Sửa Mô Tả Xe</h2>
+                <button class="modal-close" id="editDescriptionModalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="vehicle-info">
+                    <div class="info-row">
+                        <span class="info-label">Xe:</span>
+                        <span class="info-value" id="editDescriptionVehicleName"></span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="newDescriptionInput">Mô Tả:</label>
+                    <textarea id="newDescriptionInput" rows="6" placeholder="Nhập mô tả xe..."></textarea>
+                </div>
+                <button class="btn-primary" id="confirmEditDescriptionBtn">
+                    <span>Xác Nhận Thay Đổi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

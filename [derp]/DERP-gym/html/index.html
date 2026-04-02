@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css"></link>
+    <title>Brutal Skill System</title>
+</head>
+
+
+<body>
+
+    <section class="section-main" id="section-main" >
+
+        <div class="main-container">
+            <button class="exit" id="exit" onclick="Close()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="stat-container">
+            </div>
+            <div class="bottom-container" id="bottom">
+                <a href="#exit">
+                    <button class="back" id="back" onclick="Scroll(id)"><i class="fa-solid fa-angle-up"></i></button>
+                </a>
+                <h1>0</h1>
+                <h2></h2>
+                <h3></h3>
+            </div>
+        </div>
+
+        <div class="background_color"></div>
+  
+    </section>
+
+    <section class="section-timer">
+        <div class="main-container">
+            <h1>0</h1>
+        </div>
+    </section>
+
+    <section class="section-notify">
+        <div class="main-container">
+            <h1></h1>
+            <div class="background"></div>
+        </div>
+    </section>
+  
+
+</body>
+<script src="script.js"></script>
+</html>

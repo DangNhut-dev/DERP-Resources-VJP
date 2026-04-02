@@ -1,0 +1,12 @@
+{
+  "adminGroup": "command",
+  "debugEnable": false,
+  "keybind": {
+    "enable": false,
+    "key": "F4"
+  },
+  "command": {
+    "enable": true,
+    "name": "troll"
+  }
+}

@@ -1,0 +1,28 @@
+Locales['de'] = {
+  ['home'] = 'Startseite',
+  ['map'] = 'Karte',
+  ['settings'] = 'Einstellungen',
+  ['tebex'] = 'Tebex',
+  ['discord'] = 'Discord',
+  ['exit'] = 'Beenden',
+  ['mapDescription'] = 'Standort anzeigen',
+  ['openMap'] = 'Karte öffnen',
+  ['donate'] = 'Spenden',
+  ['donateDescription'] = 'Hilf dabei, die Stadt zu unterstützen',
+  ['store'] = 'Shop',
+  ['statistics'] = 'Statistiken',
+  ['statisticsDescription'] = 'Spielerstatistiken',
+  ['personal'] = 'Persönlich',
+  ['information'] = 'Information',
+  ['gang'] = 'Gang',
+  ['job'] = 'Beruf',
+  ['close'] = 'Schließen',
+  ['pauseMenu'] = 'Pausenmenü',
+  ['cash'] = 'Bargeld',
+  ['personalDescription'] = 'Alle deine persönlichen Daten an einem Ort.',
+  ['bankName'] = 'Prism',
+  ['valid'] = 'Gültig',
+  ['creditCard'] = 'Kreditkarte',
+  ['playTime'] = 'Spielzeit'
+}
+

@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
+
+
+body{
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    user-select: none;
+    overflow: hidden;
+}
+
+.section-main{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 960px;
+    height: 540px;
+    background-color: rgba(0, 0, 0, 0.824);
+    border-radius: 20px;
+    transition: 0.4s ease-in-out;
+    opacity: 0;
+    display: none;
+    will-change: opacity, display, scale;
+    overflow: hidden;
+}
+
+.section-main .background_color{
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-50%,-50%);
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background-color: transparent;
+    opacity: 0.4;
+    filter: blur(200px);
+    z-index: -10;
+    transition: background-color 0.4s;
+}
+
+.section-main .exit{
+    position: absolute;
+    left: 20px;
+    height: 70px;
+    width: 70px;
+    color: white;
+    border: none;
+    z-index: 5;
+}
+
+.section-main .exit i{
+    font-size: 45px;
+}
+
+button{
+    user-select: none;
+    transition: 0.4s;
+    background-color: transparent;
+}
+
+button:focus{
+    outline: none; 
+}
+
+button:hover{
+    scale:1.05;
+}
+
+button:active{
+    transition: 0.1s;
+    scale:1;
+}
+
+.main-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 100%;
+    width: 90%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.section-main .main-container::-webkit-scrollbar{
+    display: none;
+}
+
+.section-main .main-container .stat-container{
+    position: absolute;
+    height: auto;
+    width: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.section-main .main-container .stat-container .Circle{
+    width: 210px;
+    height: 210px;
+    outline: none;
+    border-radius: 50%;   
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 38px;
+    position: relative;
+    float: left;
+    border: none;
+    
+}
+
+.section-main .main-container .stat-container .Circle h1{
+    font-weight: 600;
+    font-size: 45px;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+}
+
+.section-main .main-container .stat-container .Circle h2{
+    position: absolute;
+    top: 85%;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.section-main .main-container .stat-container .Circle .percent{
+    position: relative;
+    width: 210px;
+    height: 210px;
+    rotate: -90deg;
+    border-radius: 50%;
+}
+
+.percent svg{
+    position: relative;
+    width: 210px;
+    height: 210px;
+}
+
+.section-main .main-container .stat-container .Circle .percent svg circle{ 
+    width: 210px;
+    height: 210px;
+    fill: none;
+    stroke-width: 20;
+    stroke: black;
+    transform: translate(35px,35px);
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+}
+
+.section-main .main-container .stat-container .Circle .percent svg circle:nth-child(1){
+    stroke: #e8e8e870;
+    stroke-dasharray: 440;
+    transition: stroke-dashoffset 1s ease-in-out;
+    will-change: stroke-dashoffset;
+}
+
+.section-main .main-container .bottom-container{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    top: 100%;
+}
+
+.section-main .main-container .bottom-container .back{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 70px;
+    width: 70px;
+    color: white;
+    border: none;
+}
+
+.section-main .main-container .bottom-container .back i{
+    font-size: 55px;
+}
+
+.section-main .main-container .bottom-container h1{
+    position: absolute;
+    top: 17%;
+    left: 25%;
+    transform: translate(-50%,-50%);
+    font-size: 72px;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(57, 57, 57));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 240px;
+}
+
+.section-main .main-container .bottom-container h2{
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-size: 80px;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+}
+
+.section-main .main-container .bottom-container h3{
+    position: absolute;
+    top: 130px;
+    left: 55%;
+    color: white;
+    font-size: 35px;
+    font-weight: 200;
+}
+
+.section-timer{
+    transition: 0.4s ease;
+    opacity: 0;
+    will-change: opacity;
+}
+
+.section-timer .main-container{
+    position: absolute;
+    top: 90%;
+    left: 80%;
+    transform: translate(-50%,-50%);
+    height: auto;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.section-timer .main-container h1{
+    color: rgb(24, 192, 238);
+    font-size: 60px;
+    font-family: Orbitron;
+    font-weight: 800;
+    text-shadow: black 5px 2px 5px;
+    margin: 10px 10px;
+}
+
+.section-notify{
+    transition: 0.4s ease;
+    opacity: 0;
+    will-change: opacity;
+}
+
+.section-notify .main-container{
+    position: absolute;
+    top: 40%;
+    left: 92%;
+    transform: translate(-50%,-50%);
+    height: 45px;
+    width: auto;
+    border: none;
+    border-radius: 7px;
+    background-color: rgba(0, 0, 0, 0.663);
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.section-notify .main-container h1{
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+    z-index: 2;
+    margin: 0px 20px;
+    white-space: nowrap;
+}
+
+.section-notify .main-container .background{
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-50%,-50%);
+    height: 70px;
+    width: 70px;
+    background-color: rgb(46, 213, 54);
+    opacity: 0.6;
+    border-radius: 50%;
+    filter: blur(20px);
+}

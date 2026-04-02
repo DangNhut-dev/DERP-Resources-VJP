@@ -1,0 +1,1961 @@
+{
+    "LABEL": "Tiếng Việt",
+    "SEARCH": "Tìm kiếm",
+    "CANCEL": "Hủy",
+    "NOW": "bây giờ",
+    "D": "ngày",
+    "H": "giờ",
+    "M": "phút",
+    "S": "giây",
+
+    "APP_NAMES": {
+        "Police": "Cảnh sát",
+        "Ambulance": "Cấp cứu",
+        "Registration": "Đăng ký",
+        "Notes": "Ghi chú",
+        "Browser": "Trình duyệt",
+        "Settings": "Cài đặt",
+        "Photos": "Ảnh",
+        "Camera": "Máy ảnh",
+        "Calculator": "Máy tính",
+        "Apps": "Ứng dụng",
+        "Clock": "Đồng hồ",
+        "Maps": "Bản đồ",
+        "Mail": "Thư",
+        "Services": "Dịch vụ",
+        "VoiceMemo": "Ghi âm"
+    },
+
+    "APPS": {
+        "SETTINGS": {
+            "TITLE": "Cài đặt",
+            "BACK": "Quay lại",
+            "DONE": "Xong",
+            "EDIT": "Sửa",
+            "AIRPLANE_MODE": "Chế độ máy bay",
+            "AIRPLANE_MODE_DESCRIPTION": "Tắt cuộc gọi, dữ liệu di động, v.v.",
+            "STREAMER_MODE": "Chế độ Streamer",
+            "STREAMER_MODE_DESCRIPTION": "Làm mờ các thông tin nhạy cảm",
+            "GENERAL": "Cài đặt chung",
+            "GENERAL_DESCRIPTION": "Cài đặt chung cho máy tính bảng của bạn",
+            "ABOUT": "Giới thiệu",
+            "NAME": "Tên",
+            "VERSION": "Phiên bản",
+            "MODEL_NAME": "Tên kiểu máy",
+            "SERIAL_NUMBER": "Số sê-ri",
+            "DEVELOPED_BY": "Phát triển bởi",
+            "PURCHASE_AT": "Mua tại",
+            "SONGS": "Bài hát",
+            "VIDEOS": "Video",
+            "PHOTOS": "Ảnh",
+            "APPLICATIONS": "Ứng dụng",
+            "CAPACITY": "Dung lượng",
+            "AVAILABLE": "Còn trống",
+            "SOFTWARE_UPDATE": "Cập nhật phần mềm",
+            "AUTOMATIC_UPDATES": "Cập nhật tự động",
+            "DATE_TIME": "Ngày & Giờ",
+            "24_HOUR_TIME": "Định dạng 24 giờ",
+            "SET_AUTOMATICALLY": "Đặt tự động",
+            "TIME_ZONE": "Múi giờ",
+            "LANGUAGE_REGION": "Ngôn ngữ & Vùng",
+            "LANGUAGE": "Ngôn ngữ",
+            "TEMPERATURE": "Nhiệt độ",
+            "CELCIUS": "Độ C",
+            "FAHRENHEIT": "Độ F",
+            "BATTERY": "Pin",
+            "BATTERY_DESCRIPTION": "Xem thời lượng và mức sử dụng pin",
+            "SOUND_HAPTICS": "Âm thanh & Cảm ứng",
+            "SOUND_HAPTICS_DESCRIPTION": "Thay đổi âm thanh và rung",
+            "SOUND_HAPTICS_PATTERNS": "Kiểu âm thanh và cảm ứng",
+            "RINGTONE": "Nhạc chuông",
+            "RINGTONE_VOLUME": "Âm lượng nhạc chuông",
+            "TEXT_TONE": "Âm báo tin nhắn",
+            "DEFAULT": "Mặc định",
+            "PHONE_STORAGE": "Bộ nhớ máy tính bảng",
+            "STORAGE": "Bộ nhớ",
+            "USED": "Đã dùng",
+            "OF": "trên",
+            "DISPLAY_BRIGHTNESS": "Màn hình & Độ sáng",
+            "DISPLAY_BRIGHTNESS_DESCRIPTION": "Điều chỉnh màn hình & độ sáng",
+            "DARK": "Tối",
+            "LIGHT": "Sáng",
+            "APPEARANCE": "Giao diện",
+            "AUTOMATIC": "Tự động",
+            "BRIGHTNESS": "Độ sáng",
+            "FRAME_COLOR": "Màu khung",
+            "TABLET_SCALE": "Tỷ lệ máy tính bảng",
+            "WALLPAPER": "Hình nền",
+            "WALLPAPER_DESCRIPTION": "Thay đổi hình nền và cài đặt nền khác",
+            "WALLPAPERS": "Hình nền",
+            "CHOOSE_NEW_WALLPAPER": "Chọn hình nền mới",
+            "NOTIFICATIONS": "Thông báo",
+            "NOTIFICATIONS_DESCRIPTION": "Chọn ứng dụng có thể gửi thông báo",
+            "ALLOW_NOTIFICATIONS": "Cho phép thông báo",
+            "SOUNDS": "Âm thanh",
+            "CLOUD_BACKUP": "Sao lưu đám mây",
+            "YOUR_PROFILE": "Hồ sơ của bạn",
+            "SUCCESS": "Thành công",
+            "SUCCESS_TEXT": "Máy tính bảng sẽ khởi động lại sau 5 giây...",
+            "OK": "OK",
+            "ON": "Bật",
+            "OFF": "Tắt",
+
+            "RESET_POPUP": {
+                "TITLE": "Đặt lại máy tính bảng",
+                "TEXT": "Bạn có chắc chắn muốn đặt lại máy tính bảng không? [HÀNH ĐỘNG NÀY SẼ XÓA TẤT CẢ MỌI THỨ]",
+                "CANCEL": "Hủy",
+                "CONFIRM": "Đặt lại"
+            },
+            "UP_TO_DATE": "Máy tính bảng của bạn đã được cập nhật",
+            "BLUR_HOMESCREEN": "Làm mờ màn hình chính"
+        },
+        "NOTES": {
+            "TITLE": "Ghi chú",
+            "SEARCH_PLACEHOLDER": "Tìm kiếm",
+            "FOOTER": "{amount} Ghi chú",
+            "NEW_NOTE": "Ghi chú mới",
+            "LAST_EDITED": "Sửa lần cuối: {date}",
+            "DELETE_TITLE": "Xóa {title}",
+            "DELETE_TEXT": "Bạn có chắc chắn muốn xóa '{title}' không?",
+            "BUTTON_CANCEL": "Hủy",
+            "BUTTON_DELETE": "Xóa",
+            "PHONE": "Điện thoại",
+            "TABLET": "Máy tính bảng"
+        },
+        "CLOCK": {
+            "WORLDCLOCK": {
+                "TITLE": "Giờ thế giới",
+                "TODAY": "Hôm nay",
+                "TOMORROW": "Ngày mai",
+                "YESTERDAY": "Hôm qua",
+                "LOCAL_TIME": "Giờ địa phương",
+                "HRS": "{time} giờ"
+            },
+            "ALARM": {
+                "TITLE": "Báo thức",
+                "ADD": "Thêm báo thức",
+                "CANCEL": "Hủy",
+                "EDIT": "Sửa",
+                "DONE": "Xong",
+                "SAVE": "Lưu",
+                "LABEL": "Nhãn",
+                "SOUND": "Âm thanh",
+                "SNOOZE": "Báo lại",
+                "DELETE_TITLE": "Xóa báo thức",
+                "DELETE_TEXT": "Bạn có chắc chắn muốn xóa báo thức này không?",
+                "BUTTON_CANCEL": "Hủy",
+                "BUTTON_DELETE": "Xóa",
+                "ALARMS": "Báo thức",
+                "NEW_ALARM": "Báo thức mới",
+                "EDIT_ALARM": "Sửa báo thức"
+            },
+            "STOPWATCH": {
+                "TITLE": "Bấm giờ",
+                "START": "Bắt đầu",
+                "STOP": "Dừng",
+                "RESET": "Đặt lại",
+                "LAP": "Vòng",
+                "TIME": "Thời gian",
+                "TOTAL": "Tổng cộng",
+                "NO_LAPS": "Không có vòng nào"
+            },
+            "TIMER": {
+                "TITLE": "Hẹn giờ",
+                "START": "Bắt đầu",
+                "STOP": "Dừng",
+                "CANCEL": "Hủy",
+                "HOURS": "Giờ",
+                "MINUTES": "Phút",
+                "SECONDS": "Giây",
+                "NO_RECENTS": "Không có lịch sử gần đây"
+            },
+            "ALERT": {
+                "STOP": "Dừng",
+                "RESTART": "Khởi động lại"
+            }
+        },
+        "CAMERA": {
+            "VIDEO": "Video",
+            "PHOTO": "Ảnh",
+            "LANDSCAPE": "Phong cảnh",
+            "UPLOADING": "Đang tải lên"
+        },
+        "APPSTORE": {
+            "TITLE": "Ứng dụng",
+            "SEARCH": "Tìm kiếm",
+            "GET": "Nhận",
+            "OPEN": "Mở",
+            "TODAY": "Hôm nay",
+            "POPULAR_APPS": "Ứng dụng phổ biến",
+            "GAMES": "Trò chơi",
+            "APPS": "Ứng dụng",
+            "WHAT_WE_PLAYING": "Trò chơi nổi bật",
+            "INFORMATION": "Thông tin",
+            "PROVIDER": "Nhà cung cấp",
+            "SIZE": "Kích thước",
+            "COMPATIBILITY": "Khả năng tương thích",
+            "IN_APP_PURCHASES": "Mua trong ứng dụng",
+            "WORKS_WITH_PHONE": "Hoạt động trên máy tính bảng này",
+            "NO": "Không",
+            "YES": "Có",
+            "PURCHASE_APP_POPUP": {
+                "TITLE": "Mua ứng dụng",
+                "DESCRIPTION": "Bạn có muốn mua {app} với giá {price} không?",
+                "CANCEL": "Hủy",
+                "PROCEED": "Mua"
+            }
+        },
+        "PHOTOS": {
+            "TITLE": "Ảnh",
+            "SELECT": "Chọn",
+            "CANCEL": "Hủy",
+            "EDIT": "Sửa",
+            "DONE": "Xong",
+            "DELETE": "Xóa",
+            "SELECT_ITEMS": "Chọn các mục",
+            "SELECTED_COUNT": "Đã chọn {count} mục",
+
+            "PHOTOS": "Ảnh",
+            "ALBUMS": "Album",
+            "LIBRARY": "Thư viện",
+            "GALLERY": "Bộ sưu tập",
+            "MY_ALBUMS": "Album của tôi",
+            "MEDIA_TYPES": "Loại phương tiện",
+            "FROM_MY_PHONE": "Từ điện thoại của tôi",
+            "NEW_ALBUM_POPUP": {
+                "TITLE": "Album mới",
+                "DESCRIPTION": "Nhập tên cho album này",
+                "PLACEHOLDER": "Tiêu đề",
+                "CANCEL": "Hủy",
+                "PROCEED": "Lưu"
+            },
+            "REMOVE_ALBUM": {
+                "TITLE": "Xóa \"{name}\"",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa album \"{name}\" không? Các ảnh bên trong sẽ không bị xóa",
+                "CANCEL": "Hủy",
+                "PROCEED": "Xóa"
+            },
+            "RENAME_ALBUM_POPUP": {
+                "TITLE": "Đổi tên Album",
+                "DESCRIPTION": "Nhập tên mới cho album này",
+                "PLACEHOLDER": "Tên album mới",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "DELETE_IMAGE_POPUP": {
+                "TITLE": "Xóa ảnh",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa ảnh này không?",
+                "CANCEL": "Hủy",
+                "PROCEED": "Xóa"
+            },
+            "IMPORT_IMAGE_POPUP": {
+                "TITLE": "Nhập vào Album",
+                "DESCRIPTION": "Nhập một ảnh vào album này",
+                "CANCEL": "Hủy",
+                "PROCEED": "Nhập",
+                "PLACEHOLDER": "URL hình ảnh"
+            },
+
+            "NO_PHOTOS": "Không có ảnh hoặc video",
+            "NO_PHOTOS_INSTRUCTIONS": "Bạn có thể chụp ảnh và quay video bằng máy ảnh",
+            "PHOTO_COUNT": "{amount} Ảnh",
+            "VIDEO_COUNT": "{amount} Video",
+
+            "DELETE_CONTEXT_TITLE": "Bạn muốn xóa {type} hay gỡ chúng khỏi album này?",
+            "THESE_PHOTOS": "những ảnh này",
+            "THIS_PHOTO": "ảnh này",
+            "REMOVE_FROM_ALBUM": "Xóa khỏi Album",
+            "ADD_TO_ALBUM": "Thêm vào Album",
+            "ADD_TO_FAVOURITES": "Thêm vào Yêu thích",
+            "REMOVE_FROM_FAVOURITES": "Xóa khỏi Yêu thích",
+            "VIDEOS": "Video",
+            "SELFIES": "Ảnh tự sướng",
+            "SCREENSHOTS": "Ảnh chụp màn hình",
+            "IMPORTS": "Ảnh đã nhập",
+            "DUPLICATES": "Ảnh trùng lặp",
+            "YEARS": "Năm",
+            "MONTHS": "Tháng",
+            "DAYS": "Ngày",
+            "ALL_PHOTOS": "Tất cả ảnh",
+
+            "FAVOURITES": "Yêu thích",
+            "RECENTS": "Gần đây"
+        },
+        "MAIL": {
+            "TITLE": "Thư",
+            "YOU": "Bạn",
+            "UPDATED_NOW": "Vừa cập nhật",
+            "NEW_MESSAGE": "Tin nhắn mới",
+            "INBOX": "Hộp thư đến",
+            "TO": "Đến",
+            "FROM": "Từ",
+            "SUBJECT": "Chủ đề",
+            "MESSAGE": "Nội dung",
+            "CANCEL": "Hủy",
+            "SEND": "Gửi",
+            "EMAIL": "Email",
+            "EMAIL_INVALID": "Địa chỉ email không hợp lệ",
+            "EMAIL_EXISTS": "Email đã tồn tại",
+            "PASSWORD": "Mật khẩu",
+            "WRONG_PASSWORD": "Sai mật khẩu",
+            "LOGIN": "Đăng nhập",
+            "NO_EMAIL": "Chưa có địa chỉ email?",
+            "CREATE_ONE": "Tạo tài khoản",
+            "UNREAD": "Chưa đọc",
+            "CREATE_MAIL": "Soạn Email",
+            "ALREADY_HAVE": "Đã có địa chỉ email?",
+            "ADD_EMAIL": "Thêm Email",
+            "RE": "Re: {subject}",
+            "CHANGE_ACCOUNT": "Đổi tài khoản",
+            "CHANGE_PASSWORD": "Đổi mật khẩu",
+            "DELETE_ACCOUNT": "Xóa tài khoản",
+            "SIGN_OUT_POPUP": {
+                "TITLE": "Đăng xuất",
+                "DESCRIPTION": "Bạn có chắc chắn muốn đăng xuất không?",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "DELETE_MAIL_POPUP": {
+                "TITLE": "Xóa Email",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa email này không?",
+                "CANCEL": "Hủy",
+                "DELETE": "Xóa"
+            }
+        },
+        "VOICEMEMO": {
+            "TITLE": "Ghi âm",
+            "VOICE_RECORDINGS": "Bản ghi âm",
+            "SEARCH_RECORDINGS": "Tìm kiếm bản ghi",
+            "DEFAULT_NAME": "Bản ghi mới",
+            "DELETE_POPUP": {
+                "TITLE": "Xóa ghi âm",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa bản ghi âm này không?",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "NO_MICROPHONE_POPUP": {
+                "TITLE": "Không có Micro",
+                "DESCRIPTION": "Chúng tôi không có quyền truy cập vào micro của bạn, hãy đảm bảo đã kết nối micro và chấp nhận thông báo ở góc trên bên phải màn hình",
+                "OK": "OK"
+            },
+            "EMPTY_RECORDING_POPUP": {
+                "TITLE": "Bản ghi trống",
+                "DESCRIPTION": "Bạn không thể lưu bản ghi mà không có âm thanh",
+                "OK": "OK"
+            }
+        },
+        "SERVICES": {
+            "ACTIONS": "Hành động",
+            "COMPANIES": "Công ty",
+            "MESSAGES": "Tin nhắn",
+            "SETTINGS": "Cài đặt",
+
+            "CLOSED": "Đã đóng",
+            "YOUR_MESSAGES": "Tin nhắn của bạn",
+            "JOB_MESSAGES": "Tin nhắn công việc",
+
+            "DUTY": "Trực",
+            "DUTY_DESCRIPTION": "Bật/Tắt trạng thái trực",
+            "GO_ON_DUTY": "Vào ca",
+            "GO_OFF_DUTY": "Tan ca",
+            "JOB_CALLS": "Cuộc gọi công việc",
+            "JOB_CALLS_DESCRIPTION": "{toggle} nhận cuộc gọi từ khách hàng.",
+
+            "ENABLE": "Bật",
+            "DISABLE": "Tắt",
+
+            "DISABLE_CALLS": "Tắt cuộc gọi",
+            "ENABLE_CALLS": "Bật cuộc gọi",
+            "BALANCE": "Số dư",
+            "CURRENT_BALANCE": "Số dư hiện tại của công ty",
+            "MANAGE_EMPLOYEES": "Quản lý nhân viên",
+            "HIRE": "Tuyển dụng",
+            "SET_GRADE": "Đặt cấp bậc",
+            "UNEMPLOYED": "Bạn đang thất nghiệp",
+
+            "ALL": "Tất cả",
+            "AVAILABLE": "Sẵn sàng",
+            "SEARCH_EMPLOYEES": "Tìm kiếm nhân viên",
+
+            "PERSONAL": "Cá nhân",
+            "JOB": "Công việc",
+            "PLACEHOLDER": "Tin nhắn văn bản",
+            "NOT_DELIVERED": "Không thể gửi",
+            "SENT_LOCATION": "Đã chia sẻ vị trí, nhấn để mở trong Bản đồ",
+            "SENT_LOCATION_SHORT": "Đã chia sẻ vị trí",
+            "SEND_LOCATION_POPUP": {
+                "TITLE": "Chia sẻ vị trí",
+                "TEXT": "Bạn có muốn chia sẻ vị trí của mình không?",
+                "CANCEL": "Hủy",
+                "SEND": "Gửi"
+            },
+            "DELETE_CONVERSATION": {
+                "TITLE": "Xóa cuộc trò chuyện",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa cuộc trò chuyện này không?",
+                "CANCEL": "Hủy",
+                "DELETE": "Xóa"
+            },
+
+            "DEPOSIT_POPUP": {
+                "TITLE": "Nạp tiền",
+                "DESCRIPTION": "Nạp tiền vào tài khoản công ty",
+                "AMOUNT": "Số tiền",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "WITHDRAW_POPUP": {
+                "TITLE": "Rút tiền",
+                "DESCRIPTION": "Rút tiền từ tài khoản công ty",
+                "NOT_ENOUGH_MONEY": "Tài khoản công ty không đủ tiền",
+                "AMOUNT": "Số tiền",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "HIRE_POPUP": {
+                "TITLE": "Tuyển dụng",
+                "DESCRIPTION": "Tuyển nhân viên mới",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "FIRE_POPUP": {
+                "TITLE": "Sa thải",
+                "DESCRIPTION": "Bạn có chắc chắn muốn sa thải {name} không?",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            }
+        },
+        "POLICE": {
+            "CANCEL": "Hủy",
+            "CLOSE": "Đóng",
+            "BACK": "Quay lại",
+            "EDIT": "Sửa",
+            "DELETE": "Xóa",
+            "REMOVE": "Gỡ bỏ",
+            "SAVE": "Lưu",
+            "CREATE": "Tạo",
+            "OK": "OK",
+            "ADD": "Thêm",
+            "NEW": "Mới",
+            "PROCEED": "Tiếp tục",
+            "YES": "Có",
+            "NO": "Không",
+            "ALL": "Tất cả",
+            "ADD_TAB": "Thêm Tab",
+
+            "SEARCH": "Tìm kiếm",
+            "SEARCH_FOR": "Tìm kiếm {query} để bắt đầu",
+            "NO_RESULTS_FOR": "Không tìm thấy kết quả cho '{query}'",
+            "CLEAR_HISTORY": "Xóa lịch sử",
+
+            "HOME": {
+                "TITLE": "Trang chủ",
+                "CREATE": "Tạo",
+
+                "RECENT_REPORTS": "Báo cáo gần đây",
+                "REPORT_FOOTER": "{timestamp} - {author}",
+                "BULLETIN_BOARD": "Bảng tin",
+                "PIN": "Ghim",
+                "UNPIN": "Bỏ ghim",
+                "SEARCH_BULLETIN": "Tìm tin nhắn",
+                "SEARCH_UNITS": "Tìm đơn vị",
+                "DELETE_BULLETIN": {
+                    "TITLE": "Xóa bảng tin",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa bài đăng này không?",
+                    "CANCEL": "Hủy",
+                    "DELETE": "Xóa"
+                },
+                "RECENT_WARRANTS": "Lệnh truy nã gần đây",
+                "ACTIVE_UNITS": "Đơn vị đang hoạt động"
+            },
+            "BULLETIN": {
+                "TITLE": "Bảng tin",
+                "LABEL": "Bảng thông báo",
+                "SEARCH": "Tìm kiếm bảng tin",
+                "SEARCH_PLACEHOLDER": "Tìm kiếm bảng tin",
+                "SEARCH_FOR": "Tìm kiếm {query} để bắt đầu",
+                "NO_RESULTS_FOR": "Không tìm thấy kết quả cho '{query}'",
+                "NEW_BULLETIN": "Bảng tin mới",
+
+                "DELETE_BULLETIN": {
+                    "TITLE": "Xóa bảng tin",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa bài đăng này không?"
+                }
+            },
+
+            "DISPATCH": {
+                "TITLE": "Điều phối",
+                "SEARCH_ALARMS": "Tìm báo động",
+                "SHOW_OFFICERS": "Hiện sĩ quan",
+                "SHOW_EMPLOYEES": "Hiện nhân viên",
+                "SHOW_ALARMS": "Hiện báo động",
+                "SHOW_POPUPS": "Hiện thông báo nổi",
+                "OPTIONS": "Tùy chọn",
+                "OFFICERS": "Sĩ quan",
+                "ALARMS": "Báo động",
+                "MAP": "Bản đồ",
+                "LIST": "Danh sách",
+
+                "RESPOND": "Phản hồi",
+                "RESPONDED": "Đã phản hồi",
+                "COLLAPSE": "Thu gọn",
+                "EXPAND": "Mở rộng",
+                "DISMISS": "Bỏ qua",
+                "VIEW_IN_TABLET": "Xem trên máy tính bảng",
+                "SET_WAYPOINT": "Đặt điểm đến",
+                "LOS_SANTOS": "Los Santos",
+                "CAYO_PERICO": "Cayo Perico",
+                "OLD_NOTIFICATION": "{count} thông báo cũ",
+                "OLD_NOTIFICATIONS": "{count} thông báo cũ",
+                "NEW_NOTIFICATION": "{count} thông báo mới",
+                "NEW_NOTIFICATIONS": "{count} thông báo mới",
+
+                "PRIORITY_LEVELS": {
+                    "HIGH": "Cao",
+                    "MEDIUM": "Trung bình",
+                    "LOW": "Thấp"
+                },
+                "PRIORITY": "Độ ưu tiên",
+                "TIME": "Thời gian",
+                "CODE": "Mã",
+                "LOCATION": "Vị trí",
+                "RESPONDERS": "Người phản hồi",
+                "ACTIONS": "Hành động",
+                "NONE": "Không có",
+                "REMOVE": "Gỡ bỏ",
+                "REMOVE_ALL": "Gỡ bỏ tất cả",
+                "VIEW": "Xem",
+
+                "JUST_NOW": "Vừa xong",
+                "MINUTES_AGO": "{minutes} phút trước",
+                "HOURS_AGO": "{hours} giờ trước",
+                "REMOVE_ALARM": {
+                    "TITLE": "Gỡ báo động",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ báo động này? (Hành động này sẽ gỡ điều phối đối với tất cả nhân viên)",
+                    "CANCEL": "Hủy",
+                    "REMOVE": "Gỡ bỏ"
+                },
+                "REMOVE_ALL_ALARMS": {
+                    "TITLE": "Gỡ tất cả báo động",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ tất cả báo động? (Hành động này sẽ gỡ điều phối đối với tất cả nhân viên)"
+                },
+
+                "REMOVE_FOR_YOURSELF": "Gỡ cho bản thân",
+                "REMOVE_FOR_EVERYONE": "Gỡ cho mọi người"
+            },
+            "UNITS": {
+                "TITLE": "Đơn vị",
+                "AVALIABLE_OFFICERS": "Sĩ quan sẵn sàng",
+                "SEARCH_OFFICERS": "Tìm sĩ quan",
+                "DROP_OFFICER": "Kéo sĩ quan vào đây",
+                "DROP_OFFICER_AVAILABLE": "Kéo sĩ quan vào đây để đặt trạng thái sẵn sàng",
+                "OFFICER": "Sĩ quan",
+                "OFFICERS": "Sĩ quan",
+                "NO_UNITS": "Thêm một đơn vị để bắt đầu",
+                "ADD_UNIT": {
+                    "TITLE": "Thêm đơn vị",
+                    "DESCRIPTION": "Tạo đơn vị mới",
+                    "PLACEHOLDER": "Tên đơn vị"
+                },
+                "RENAME_UNIT": {
+                    "TITLE": "Đổi tên đơn vị",
+                    "DESCRIPTION": "Đổi tên đơn vị",
+                    "PLACEHOLDER": "Tên đơn vị"
+                },
+                "DELETE_UNIT": {
+                    "TITLE": "Xóa đơn vị",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa đơn vị này không?"
+                }
+            },
+
+            "PROFILES": {
+                "TITLE": "Hồ sơ",
+                "PERSON": "Người",
+                "SEARCH": "Tìm hồ sơ",
+                "REMOVE_AVATAR": "Xóa ảnh đại diện",
+                "IDENTIFIER": "Mã định danh",
+                "FINGERPRINT": "Vân tay",
+                "DOB": "Ngày sinh",
+                "PHONE_NR": "Số điện thoại",
+                "GENDER": "Giới tính",
+                "JOB": "Công việc",
+                "MALE": "Nam",
+                "FEMALE": "Nữ",
+                "NOTES": "Ghi chú",
+                "NOTES_PLACEHOLDER": "Nhập ghi chú tại đây...",
+
+                "LICENSES": {
+                    "TITLE": "Giấy phép",
+                    "ADD_LICENSE": "Thêm giấy phép",
+                    "ADD": "Thêm",
+                    "NO_LICENSES": "Không có giấy phép",
+                    "REVOKE_LICENSE": {
+                        "TITLE": "Thu hồi giấy phép",
+                        "DESCRIPTION": "Bạn có chắc chắn muốn thu hồi giấy phép {license} không?",
+                        "CANCEL": "Hủy",
+                        "REVOKE": "Thu hồi"
+                    }
+                },
+
+                "ADD_AVATAR": {
+                    "TITLE": "Thêm ảnh đại diện",
+                    "SET_PHOTO": "Đặt ảnh",
+                    "PASTE_URL": "Dán URL",
+                    "PASTE_URL_DESCRIPTION": "Nhập URL dẫn đến hình ảnh",
+                    "PASTE_URL_PLACEHOLDER": "URL hình ảnh",
+
+                    "INVALID_URL": "URL không hợp lệ",
+                    "INVALID_URL_DESCRIPTION": "URL bạn nhập không phải là URL hình ảnh hợp lệ",
+                    "OK": "OK"
+                },
+
+                "VEHICLES": "Phương tiện",
+                "NO_VEHICLES": "Không có phương tiện",
+                "PROPERTIES": "Tài sản",
+                "NO_PROPERTIES": "Không có tài sản",
+                "REPORTS": "Báo cáo",
+                "NO_REPORTS": "Không có báo cáo",
+                "CASES": "Vụ án",
+                "NO_CASES": "Không có vụ án",
+                "WEAPONS": "Vũ khí",
+                "NO_WEAPONS": "Không có vũ khí",
+                "WARRANTS": "Lệnh truy nã",
+                "NO_WARRANTS": "Không có lệnh truy nã",
+                "ACTIVE_WARRANTS": "Lệnh truy nã đang hiệu lực",
+                "INVOLVED": "Liên quan",
+                "CHARGES": "Cáo buộc",
+                "NO_CHARGES": "Không có cáo buộc",
+                "FINE_PLAYER": {
+                    "TITLE": "Phạt người chơi",
+                    "DESCRIPTION": "Bạn có muốn phạt {name} không?",
+                    "DESCRIPTION_DETAILS": "Vui lòng điền số tiền và mô tả",
+                    "FINE_WITH_OFFENCE": "Phạt kèm tội danh",
+                    "FINE_WITHOUT_OFFENCE": "Phạt không kèm tội danh",
+                    "CANCEL": "Hủy",
+                    "PROCEED": "Tiếp tục",
+                    "FINE": "Phạt",
+                    "AMOUNT_PLACEHOLDER": "Số tiền",
+                    "DESCRIPTION_PLACEHOLDER": "Mô tả",
+                    "SEND_FINE": "Gửi phiếu phạt",
+                    "SUCCESS": "Thành công",
+                    "FINE_SENT": "Đã gửi phiếu phạt cho {name}",
+                    "OK": "OK"
+                }
+            },
+
+            "VEHICLES": {
+                "TITLE": "Phương tiện",
+                "VEHICLE": "Phương tiện",
+                "SEARCH": "Tìm phương tiện",
+                "REMOVE_PICTURE": "Xóa ảnh",
+                "DETAILS": "Chi tiết",
+
+                "ADD_PHOTO": {
+                    "TITLE": "Thêm ảnh",
+                    "SELECT_PHOTO": "Chọn ảnh",
+                    "PASTE_URL": "Dán URL",
+                    "PASTE_URL_DESCRIPTION": "Nhập URL dẫn đến hình ảnh",
+                    "PASTE_URL_PLACEHOLDER": "URL hình ảnh",
+
+                    "INVALID_URL": "URL không hợp lệ",
+                    "INVALID_URL_DESCRIPTION": "URL bạn nhập không phải là URL hình ảnh hợp lệ",
+                    "OK": "OK"
+                },
+                "MODEL": "Kiểu máy",
+                "PLATE": "Biển số",
+                "COLOR": "Màu sắc",
+                "LOCATION": "Vị trí",
+                "OWNER": "Chủ sở hữu",
+                "NOTES": "Ghi chú",
+                "NOTES_PLACEHOLDER": "Nhập ghi chú tại đây...",
+                "SET_WAYPOINT": "Đặt điểm đến",
+                "OPEN_IN_MAPS": "Mở trong Bản đồ",
+                "WAYPOINT_SET": "Đã đặt điểm đến",
+                "WAYPOINT_SET_DESCRIPTION": "Điểm đến đã được đặt tới vị trí của phương tiện",
+                "CASES": "Vụ án",
+                "NO_CASES": "Không có vụ án",
+                "WARRANTS": "Lệnh truy nã",
+                "NO_WARRANTS": "Không có lệnh truy nã",
+                "ACTIVE_WARRANTS": "Lệnh truy nã đang hiệu lực"
+            },
+            "PROPERTIES": {
+                "TITLE": "Tài sản",
+                "PROPERTY": "Tài sản",
+                "SEARCH": "Tìm tài sản",
+                "REMOVE_PICTURE": "Xóa ảnh",
+                "DETAILS": "Chi tiết",
+                "ADD_PHOTO": {
+                    "TITLE": "Thêm ảnh",
+                    "SELECT_PHOTO": "Chọn ảnh",
+                    "PASTE_URL": "Dán URL",
+                    "PASTE_URL_DESCRIPTION": "Nhập URL dẫn đến hình ảnh",
+                    "PASTE_URL_PLACEHOLDER": "URL hình ảnh",
+
+                    "INVALID_URL": "URL không hợp lệ",
+                    "INVALID_URL_DESCRIPTION": "URL bạn nhập không phải là URL hình ảnh hợp lệ",
+                    "OK": "OK"
+                },
+                "LABEL": "Nhãn",
+                "ADDRESS": "Địa chỉ",
+                "OWNER": "Chủ sở hữu",
+                "LOCATION": "Vị trí",
+                "OPEN_IN_MAPS": "Mở trong Bản đồ",
+                "NOTES": "Ghi chú",
+                "NOTES_PLACEHOLDER": "Nhập ghi chú tại đây..."
+            },
+            "WEAPONS": {
+                "TITLE": "Vũ khí",
+                "WEAPON": "Vũ khí",
+                "SEARCH": "Tìm vũ khí",
+                "REMOVE_PICTURE": "Xóa ảnh",
+                "DETAILS": "Chi tiết",
+                "ADD_PHOTO": {
+                    "TITLE": "Thêm ảnh",
+                    "SELECT_PHOTO": "Chọn ảnh",
+                    "PASTE_URL": "Dán URL",
+                    "PASTE_URL_DESCRIPTION": "Nhập URL dẫn đến hình ảnh",
+                    "PASTE_URL_PLACEHOLDER": "URL hình ảnh",
+
+                    "INVALID_URL": "URL không hợp lệ",
+                    "INVALID_URL_DESCRIPTION": "URL bạn nhập không phải là URL hình ảnh hợp lệ",
+                    "OK": "OK"
+                },
+                "MODEL_MAKE": "Mẫu",
+                "SERIAL_NUMBER": "Số sê-ri",
+                "NOTES": "Ghi chú",
+                "NOTES_PLACEHOLDER": "Nhập ghi chú tại đây...",
+                "LINKED_REPORTS": "Báo cáo liên quan",
+                "NO_LINKED_REPORTS": "Không có báo cáo liên quan",
+                "LINKED_CASES": "Vụ án liên quan",
+                "NO_LINKED_CASES": "Không có vụ án liên quan",
+                "UNREGISTERED": "Chưa đăng ký",
+                "OWNER": "Chủ sở hữu",
+                "SELECT_MODEL": "Chọn mẫu",
+                "SELECT_OWNER": "Chọn chủ sở hữu",
+                "DELETE_WEAPON": {
+                    "TITLE": "Xóa vũ khí",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa vũ khí này không?"
+                }
+            },
+
+            "REPORTS": {
+                "TITLE": "Báo cáo",
+                "REPORT": "Báo cáo",
+                "SEARCH": "Tìm báo cáo",
+                "FOOTER": "{author} - ID Báo cáo: {id}",
+                "NEW_REPORT_TITLE": "Báo cáo mới",
+                "TYPE": "Loại",
+                "DESCRIPTION": "Mô tả",
+                "DESCRIPTION_PLACEHOLDER": "Nhập mô tả...",
+                "GALLERY": "Bộ sưu tập",
+                "NO_ATTACHMENTS": "Không có tệp đính kèm",
+                "WEAPONS_INVOLVED": "Vũ khí liên quan",
+                "NO_WEAPONS_INVOLVED": "Không có vũ khí liên quan",
+                "REMOVE_WEAPON": {
+                    "TITLE": "Gỡ vũ khí",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ vũ khí này khỏi báo cáo không?"
+                },
+                "OFFICERS_INVOLVED": "Sĩ quan liên quan",
+                "NO_OFFICERS_INVOLVED": "Không có sĩ quan liên quan",
+                "REMOVE_OFFICER": {
+                    "TITLE": "Gỡ sĩ quan",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ {name} khỏi báo cáo không?"
+                },
+                "CIVILLIANS_INVOLVED": "Thường dân liên quan",
+                "NO_CIVILLIANS_INVOLVED": "Không có thường dân liên quan",
+                "REMOVE_CIVILIAN": {
+                    "TITLE": "Gỡ thường dân",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ {name} khỏi báo cáo không?"
+                },
+                "SUSPECTS_INVOLVED": "Nghi phạm liên quan",
+                "NO_SUSPECTS_INVOLVED": "Không có nghi phạm liên quan",
+                "REMOVE_SUSPECT": {
+                    "TITLE": "Gỡ nghi phạm",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ {name} khỏi báo cáo không?"
+                },
+                "DELETE_REPORT": {
+                    "TITLE": "Xóa báo cáo",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa báo cáo này không?"
+                },
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "NO_TYPE": "Bạn phải chọn một loại báo cáo",
+                    "TITLE_LENGTH": "Tiêu đề phải dài ít nhất 3 ký tự",
+                    "DESCRIPTION_LENGTH": "Mô tả phải dài ít nhất 10 ký tự"
+                }
+            },
+
+            "CASES": {
+                "TITLE": "Vụ án",
+                "SEARCH": "Tìm vụ án",
+                "CASE": "Vụ án",
+                "FOOTER": "{author} - ID Vụ án: {id}",
+                "TITLE_PLACEHOLDER": "Vụ án mới",
+                "DESCRIPTION": "Mô tả",
+                "DESCRIPTION_PLACEHOLDER": "Nhập mô tả...",
+                "EVIDENCE": "Chứng cứ",
+                "NO_EVIDENCE": "Không có chứng cứ đính kèm",
+                "OPEN_STASH": "Mở kho bằng chứng",
+                "VEHICLES_INVOLVED": "Phương tiện liên quan",
+                "NO_VEHICLES_INVOLVED": "Không có phương tiện liên quan",
+                "VIEW_PROFILE": "Xem hồ sơ",
+                "CHARGES": "{amount} tội danh",
+                "NO_CHARGES": "Không có tội danh",
+                "REMOVE_VEHICLE": {
+                    "TITLE": "Gỡ phương tiện",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ phương tiện khỏi vụ án không?"
+                },
+
+                "REMOVE_WARRANT": {
+                    "TITLE": "Gỡ lệnh truy nã",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ lệnh truy nã khỏi vụ án không?"
+                },
+                "OFFICERS_INVOLVED": "Sĩ quan liên quan",
+                "NO_OFFICERS_INVOLVED": "Không có sĩ quan liên quan",
+                "REMOVE_OFFICER": {
+                    "TITLE": "Gỡ sĩ quan",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ sĩ quan khỏi vụ án không?"
+                },
+                "CIVILLIANS_INVOLVED": "Thường dân liên quan",
+                "NO_CIVILLIANS_INVOLVED": "Không có thường dân liên quan",
+                "REMOVE_CIVILIAN": {
+                    "TITLE": "Gỡ thường dân",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ thường dân khỏi vụ án không?"
+                },
+                "CRIMINALS_INVOLVED": "Tội phạm liên quan",
+                "NO_CRIMINALS_INVOLVED": "Không có tội phạm liên quan",
+                "REMOVE_CRIMINAL": {
+                    "TITLE": "Gỡ tội phạm",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ tội phạm khỏi vụ án không?"
+                },
+                "ADD_CHARGE": "Thêm tội danh",
+                "FINE": "Tiền phạt (khuyến nghị {amount})",
+                "SENTENCE": "Thời gian tù (khuyến nghị {amount} tháng)",
+                "SEND_FINE": {
+                    "TITLE": "Gửi phiếu phạt",
+                    "DESCRIPTION": "Bạn có muốn gửi mức phạt {fine} cho {name} không?"
+                },
+                "JAIL_PLAYER": {
+                    "TITLE": "Bỏ tù người chơi",
+                    "DESCRIPTION": "Bạn có muốn tống {name} vào tù trong {sentence} tháng không?",
+                    "JAILED_DESCRIPTION": "Tự động bỏ tù vì các tội danh {charges}"
+                },
+                "DELETE_CASE": {
+                    "TITLE": "Xóa vụ án",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa vụ án này không?"
+                },
+
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "TITLE_LENGTH": "Tiêu đề phải dài ít nhất 3 ký tự",
+                    "DESCRIPTION_LENGTH": "Mô tả phải dài ít nhất 10 ký tự",
+                    "OK": "OK"
+                }
+            },
+
+            "WARRANTS": {
+                "TITLE": "Lệnh truy nã",
+                "SEARCH": "Tìm lệnh truy nã",
+
+                "HIGH_PRIORITY": "Ưu tiên cao",
+                "MEDIUM_PRIORITY": "Ưu tiên trung bình",
+                "LOW_PRIORITY": "Ưu tiên thấp",
+                "FOOTER": "{author} - ID Lệnh: {id}",
+                "TITLE_PLACEHOLDER": "Lệnh truy nã mới",
+                "DESCRIPTION": "Mô tả",
+                "DESCRIPTION_PLACEHOLDER": "Nhập mô tả...",
+                "TYPE": "Loại",
+                "STATUS": "Trạng thái",
+                "PRIORITY": "Độ ưu tiên",
+                "GALLERY": "Bộ sưu tập",
+                "NO_ATTACHMENTS": "Không có tệp đính kèm",
+                "LINKED_REPORTS": "Báo cáo liên quan",
+                "NO_LINKED_REPORTS": "Không có báo cáo liên quan",
+                "SELECT_VEHICLE": "Chọn phương tiện",
+                "NO_VEHICLE_SELECTED": "Chưa chọn phương tiện",
+                "SELECT_PERSON": "Chọn người",
+                "NO_PERSON_SELECTED": "Chưa chọn người",
+                "ACTIVE": "Đang hiệu lực",
+                "INACTIVE": "Không hiệu lực",
+                "CLOSED": "Đã đóng",
+                "REMOVE_REPORT": {
+                    "TITLE": "Gỡ báo cáo",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ báo cáo khỏi lệnh truy nã không?"
+                },
+                "DELETE_WARRANT": {
+                    "TITLE": "Xóa lệnh truy nã",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa lệnh truy nã này không?"
+                },
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "TITLE_LENGTH": "Tiêu đề phải dài ít nhất 3 ký tự",
+                    "DESCRIPTION_LENGTH": "Mô tả phải dài ít nhất 10 ký tự",
+                    "NO_TYPE": "Bạn phải chọn loại lệnh truy nã",
+                    "NO_TARGET": "Bạn phải chọn mục tiêu cho lệnh truy nã",
+                    "OK": "OK"
+                }
+            },
+            "EVIDENCE": {
+                "TITLE": "Chứng cứ"
+            },
+
+            "OFFENCES": {
+                "TITLE": "Tội danh",
+                "SEARCH": "Tìm tội danh",
+                "MONTHS": "{amount} Tháng",
+                "FINE": "Phạt {amount}",
+
+                "SELECT_SEVERITY": "Chọn mức độ nghiêm trọng",
+                "SEVERITIES": {
+                    "INFRACTION": "Vi phạm nhẹ",
+                    "MISDEMEANOR": "Tội ít nghiêm trọng",
+                    "FELONY": "Tội nghiêm trọng"
+                },
+                "NO_OFFENCES_FOUND": "Không tìm thấy tội danh nào",
+                "ADD_OFFENCE": {
+                    "TITLE": "Thêm tội danh",
+                    "DESCRIPTION": "Tạo tội danh mới",
+                    "PLACEHOLDER": "Nhập tên tội danh",
+                    "DESCRIPTION_PLACEHOLDER": "Nhập mô tả..."
+                },
+                "EDIT_OFFENCE": {
+                    "TITLE": "Sửa tội danh",
+                    "DESCRIPTION": "Sửa chi tiết tội danh"
+                },
+                "SET_JAILTIME": {
+                    "TITLE": "Thời gian tù khuyến nghị",
+                    "DESCRIPTION": "Đặt thời gian tù khuyến nghị cho tội danh",
+                    "PLACEHOLDER": "Thời gian tù khuyến nghị (tính bằng tháng) (0 nếu chỉ phạt tiền)"
+                },
+                "SET_FINE": {
+                    "TITLE": "Tiền phạt khuyến nghị",
+                    "DESCRIPTION": "Đặt số tiền phạt khuyến nghị cho tội danh",
+                    "PLACEHOLDER": "Số tiền phạt khuyến nghị (0 nếu chỉ đi tù)"
+                },
+
+                "DELETE_OFFENCE": {
+                    "TITLE": "Xóa tội danh",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa tội danh này không?"
+                },
+                "ADD_CATEGORY": {
+                    "TITLE": "Thêm danh mục",
+                    "DESCRIPTION": "Thêm danh mục mới vào danh sách tội danh",
+                    "PLACEHOLDER": "Nhập tên danh mục"
+                },
+                "EDIT_CATEGORY": {
+                    "TITLE": "Sửa danh mục",
+                    "DESCRIPTION": "Sửa chi tiết danh mục",
+                    "PLACEHOLDER": "Nhập tên danh mục mới"
+                },
+                "DELETE_CATEGORY": {
+                    "TITLE": "Xóa danh mục",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa danh mục này không?"
+                }
+            },
+
+            "EMPLOYEES": {
+                "TITLE": "Nhân viên",
+                "SEARCH": "Tìm nhân viên"
+            },
+
+            "CHAT": {
+                "TITLE": "Trò chuyện",
+                "SEARCH": "Tìm cuộc trò chuyện",
+                "PLACEHOLDER": "Gửi tin nhắn...",
+                "JOINED_CHATS": "Phòng đã tham gia",
+                "PUBLIC_CHATS": "Phòng công khai",
+                "JOINED": "Đã tham gia",
+                "PUBLIC": "Công khai",
+                "PRIVATE_CHATS": "Phòng riêng tư",
+                "ROOM_ID": "ID Phòng: {id}",
+                "TOGGLE_PRIVATE": "Chuyển sang riêng tư",
+                "CHANGE_AVATAR": "Đổi ảnh đại diện",
+                "SET_AVATAR": "Đặt ảnh đại diện",
+                "REMOVE_AVATAR": "Xóa ảnh đại diện",
+                "MANAGE": "Quản lý",
+                "LEAVE": {
+                    "TITLE": "Rời khỏi",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn rời khỏi phòng trò chuyện?"
+                },
+                "KICK": {
+                    "TITLE": "Trục xuất",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn trục xuất {name} khỏi phòng trò chuyện?"
+                },
+
+                "CREATE_CHATROOM": {
+                    "TITLE": "Tạo phòng trò chuyện",
+                    "DESCRIPTION": "Nhập tên cho phòng trò chuyện",
+                    "PLACEHOLDER": "Tên phòng",
+                    "CREATE": "Tạo",
+                    "SET_VISIBILITY": "Đặt chế độ hiển thị",
+                    "PUBLIC": "Công khai",
+                    "PRIVATE": "Riêng tư"
+                },
+                "JOIN_CHAT": {
+                    "TITLE": "Tham gia trò chuyện",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn tham gia {channel}?",
+                    "JOIN": "Tham gia"
+                },
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "FAILED_JOIN": "Không thể tham gia phòng trò chuyện",
+                    "FAILED_INVITE": "Không thể mời {name} vào phòng trò chuyện",
+                    "FAILED_SET_AVATAR": "Không thể đặt ảnh đại diện phòng",
+                    "FAILED_REMOVE_AVATAR": "Không thể xóa ảnh đại diện phòng",
+                    "FAILED_GET_MEMBERS": "Không thể lấy danh sách thành viên",
+                    "FAILED_KICK": "Không thể trục xuất {name} khỏi phòng trò chuyện",
+                    "FAILED_LEAVE": "Không thể rời khỏi phòng trò chuyện"
+                },
+                "SUCCESS": {
+                    "TITLE": "Thành công",
+                    "INVITED": "Bạn đã mời {name} vào phòng trò chuyện",
+                    "KICKED": "Bạn đã trục xuất {name} khỏi phòng trò chuyện"
+                }
+            },
+
+            "PHONE": {
+                "TITLE": "Điện thoại",
+                "MESSAGES": "Tin nhắn",
+
+                "TRIANGULATE": {
+                    "TITLE": "Định vị tam giác",
+                    "DESCRIPTION": "Nhập số điện thoại bạn muốn định vị",
+                    "PLACEHOLDER": "Số điện thoại",
+
+                    "SUCCESS": {
+                        "TITLE": "Định vị thành công",
+                        "DESCRIPTION": "Số điện thoại bạn đang tìm được ghi nhận tại một trạm phát sóng trong khu vực. Kiểm tra bản đồ để biết vị trí."
+                    },
+                    "FAILED": {
+                        "TITLE": "Định vị thất bại",
+                        "DESCRIPTION": "Số điện thoại bạn đang tìm không được ghi nhận tại bất kỳ trạm phát sóng nào trong khu vực."
+                    }
+                },
+                "CALLS": {
+                    "TITLE": "Cuộc gọi",
+                    "CALL_HISTORY": "Lịch sử cuộc gọi",
+                    "CALL_STATUS": "Trạng thái cuộc gọi",
+                    "SEARCH": "Tìm cuộc gọi",
+                    "NO_CALLER_ID": "Không ID người gọi",
+                    "UNKNOWN": "Không xác định",
+                    "INCOMING": "Cuộc gọi đến",
+                    "OUTGOING": "Cuộc gọi đi",
+                    "IN_CALL": "Đang trong cuộc gọi",
+                    "NOT_IN_CALL": "Không trong cuộc gọi",
+                    "SUBSCRIBED": "Đã đăng ký theo dõi",
+                    "NOT_SUBSCRIBED": "Chưa đăng ký theo dõi",
+                    "YES": "Có",
+                    "NO": "Không",
+                    "GET_NOTIFIED": "Nhận thông báo",
+                    "LISTEN_TO_CALL": "Nghe lén cuộc gọi",
+                    "LISTEN_TO_CALL_DESCRIPTION": "Bạn có chắc chắn muốn nghe lén cuộc gọi này không?",
+                    "STOP_LISTENING": "Dừng nghe lén",
+                    "STOP_LISTENING_DESCRIPTION": "Bạn có chắc chắn muốn dừng nghe lén cuộc gọi này không?",
+                    "SUBSCRIBE_TO_CALLS": "Đăng ký theo dõi cuộc gọi",
+                    "SUBSCRIBE_TO_CALLS_DESCRIPTION": "Bạn có chắc chắn muốn đăng ký theo dõi các cuộc gọi không?",
+                    "UNSUBSCRIBE_FROM_CALLS": "Hủy đăng ký theo dõi",
+                    "UNSUBSCRIBE_FROM_CALLS_DESCRIPTION": "Bạn có chắc chắn muốn hủy đăng ký theo dõi các cuộc gọi không?",
+                    "FOOTER": "bởi {name}",
+
+                    "WIRETAP_PHONENUMBER": {
+                        "TITLE": "Nghe lén số điện thoại",
+                        "DESCRIPTION": "Nhập số điện thoại bạn muốn nghe lén",
+                        "PLACEHOLDER": "Số điện thoại"
+                    },
+                    "REMOVE_WIRETAP": {
+                        "TITLE": "Gỡ nghe lén",
+                        "DESCRIPTION": "Bạn có chắc chắn muốn gỡ nghe lén khỏi số điện thoại {phoneNumber} không?"
+                    },
+
+                    "CALL_ENDED": {
+                        "TITLE": "Cuộc gọi đã kết thúc",
+                        "DESCRIPTION": "Cuộc gọi bạn đang nghe lén đã kết thúc."
+                    }
+                },
+                "UNLOCK": {
+                    "TITLE": "Mở khóa",
+                    "NO_PHONES": "Không có điện thoại nào trong kho đồ",
+                    "SEARCH": "Tìm kiếm điện thoại",
+                    "SELECT_PHONE": "Chọn một điện thoại",
+                    "PHONE": "Điện thoại",
+                    "PROCESSED": "Đã xử lý",
+                    "PROCESSING": "Đang xử lý",
+                    "LOCKED": "Đã khóa",
+                    "PROCESS_PHONE": "Xử lý điện thoại",
+                    "PHONE_PROCESSED": "Điện thoại đã được xử lý",
+                    "REMAINING_TIME": "Thời gian còn lại: {time}",
+                    "PROCESSING_PHONE": "Đang xử lý {phone}...",
+                    "ATTEMPTS": "Số lần thử: {attempts}/{maxAttempts}",
+                    "RESET_PIN": {
+                        "TITLE": "Đặt lại Mã PIN",
+                        "SUCCESS": "Đã đặt lại mã pin cho điện thoại thành công."
+                    },
+                    "SUCCESS": {
+                        "TITLE": "Xử lý hoàn tất",
+                        "DESCRIPTION": "Điện thoại đã được xử lý thành công."
+                    },
+                    "FAILED": {
+                        "TITLE": "Xử lý thất bại",
+                        "DESCRIPTION": "Không thể xử lý điện thoại. Vui lòng thử lại."
+                    }
+                }
+            },
+
+            "JAIL": {
+                "TITLE": "Nhà tù",
+                "SEARCH": "Tìm tù nhân",
+                "JAILED_PERSON": "Người bị giam",
+                "JAILED_BY": "Người tống giam",
+                "JAILED_BY_NAME": "Bị giam bởi {name}",
+                "REMAINING_TIME": "Thời gian còn lại",
+                "REMAINING_TIME_DATE": "Còn lại {time} ({date})",
+                "ORIGINAL_SENTENCE": "Bản án gốc",
+                "RELEASE_DATE": "Ngày trả tự do",
+                "DESCRIPTION": "Mô tả",
+                "DESCRIPTION_PLACEHOLDER": "Nhập mô tả...",
+                "RELEASED": "Đã trả tự do",
+                "LESS_THAN_MINUTE": "Ít hơn một phút",
+                "UNJAIL": "Thả tự do",
+                "PROFILE": "Hồ sơ",
+                "JAILED_AT": "Bị giam lúc",
+                "LINKED_CASE": "Vụ án liên quan",
+                "NO_LINKED_CASE": "Không có vụ án liên quan",
+                "REMOVE_LINKED_CASE": {
+                    "TITLE": "Gỡ vụ án liên quan",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ vụ án liên quan không?"
+                },
+                "JAIL_PERSON": {
+                    "TITLE": "Tống giam",
+                    "DESCRIPTION": "Điền chi tiết bên dưới để tống giam {name}",
+                    "SENTENCE_PLACEHOLDER": "Thời gian giam (tính bằng phút)",
+                    "REASON_PLACEHOLDER": "Lý do",
+                    "JAIL_WITH_CASE": "Giam kèm vụ án liên quan",
+                    "JAIL_WITHOUT_CASE": "Giam không kèm vụ án",
+                    "PROCEED": "Tiếp tục"
+                },
+                "UNJAIL_PERSON": {
+                    "TITLE": "Thả tự do",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn thả tự do cho {name} không?",
+                    "PROCEED": "Tiếp tục"
+                },
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "MISSING_DETAILS": "Bạn phải nhập thời gian giam và lý do"
+                }
+            },
+
+            "LOGS": {
+                "TITLE": "Nhật ký",
+                "SEARCH": "Tìm nhật ký",
+                "FILTER": "Lọc",
+                "CREATED": "Đã tạo",
+                "UPDATED": "Đã cập nhật",
+                "DELETED": "Đã xóa",
+                "VIEW_FOOTER": "Xem {type} ({id})",
+                "TAG_TYPES": {
+                    "PROFILE": "hồ sơ",
+                    "VEHICLE": "phương tiện",
+                    "REPORT": "báo cáo",
+                    "WARRANT": "lệnh truy nã",
+                    "INCIDENT": "vụ án"
+                },
+
+                "CREATE_TAG_TITLE": "Đã tạo một thẻ",
+                "CREATE_TAG_DESCRIPTION": "Đã tạo thẻ {type} \"{name}\"",
+                "DELETE_TAG_TITLE": "Đã xóa một thẻ",
+                "DELETE_TAG_DESCRIPTION": "Đã xóa thẻ {type} \"{name}\"",
+                "UPDATE_PROFILE_TITLE": "Đã cập nhật hồ sơ",
+                "UPDATE_PROFILE_DESCRIPTION": "Đã cập nhật hồ sơ của {name}",
+                "UPDATE_VEHICLE_TITLE": "Đã cập nhật phương tiện",
+                "UPDATE_VEHICLE_DESCRIPTION": "Đã cập nhật phương tiện biển số {plate}",
+                "UPDATE_PROPERTY_TITLE": "Đã cập nhật tài sản",
+                "UPDATE_PROPERTY_DESCRIPTION": "Đã cập nhật một tài sản",
+                "UPDATE_WEAPON_TITLE": "Đã cập nhật vũ khí",
+                "UPDATE_WEAPON_DESCRIPTION": "Đã cập nhật vũ khí có số sê-ri {serial}",
+                "CREATE_REPORT_TITLE": "Đã tạo báo cáo",
+                "CREATE_REPORT_DESCRIPTION": "Đã tạo báo cáo {type} với tiêu đề \"{title}\"",
+                "UPDATE_REPORT_TITLE": "Đã cập nhật báo cáo",
+                "UPDATE_REPORT_DESCRIPTION": "Đã cập nhật báo cáo {type} với tiêu đề \"{title}\"",
+                "DELETE_REPORT_TITLE": "Đã xóa báo cáo",
+                "DELETE_REPORT_DESCRIPTION": "Đã xóa báo cáo có id {id}",
+                "ISSUED_LICENSE_TITLE": "Đã cấp giấy phép",
+                "ISSUED_LICENSE_DESCRIPTION": "Đã cấp giấy phép {license} cho {name}",
+                "REVOKED_LICENSE_TITLE": "Đã thu hồi giấy phép",
+                "REVOKED_LICENSE_DESCRIPTION": "Đã thu hồi giấy phép {license} từ {name}",
+                "PINNED_BULLETIN_TITLE": "Đã ghim bài đăng bảng tin",
+                "PINNED_BULLETIN_DESCRIPTION": "Đã ghim bài đăng bảng tin có id {id}",
+                "UNPINNED_BULLETIN_TITLE": "Đã bỏ ghim bài đăng bảng tin",
+                "UNPINNED_BULLETIN_DESCRIPTION": "Đã bỏ ghim bài đăng bảng tin có id {id}",
+                "CREATE_BULLETIN_TITLE": "Đã tạo bài đăng bảng tin",
+                "CREATE_BULLETIN_DESCRIPTION": "Đã tạo bài đăng bảng tin với tiêu đề \"{title}\"",
+                "UPDATE_BULLETIN_TITLE": "Đã cập nhật bài đăng bảng tin",
+                "UPDATE_BULLETIN_DESCRIPTION": "Đã cập nhật bài đăng bảng tin với tiêu đề \"{title}\"",
+                "DELETE_BULLETIN_TITLE": "Đã xóa bài đăng bảng tin",
+                "DELETE_BULLETIN_DESCRIPTION": "Đã xóa bài đăng bảng tin có id {id}",
+                "CREATE_WARRANT_TITLE": "Đã tạo lệnh truy nã",
+                "CREATE_WARRANT_DESCRIPTION": "Đã tạo lệnh truy nã {type} với tiêu đề \"{title}\"",
+                "UPDATE_WARRANT_TITLE": "Đã cập nhật lệnh truy nã",
+                "UPDATE_WARRANT_DESCRIPTION": "Đã cập nhật lệnh truy nã \"{title}\"",
+                "CREATE_CASE_TITLE": "Đã tạo vụ án",
+                "CREATE_CASE_DESCRIPTION": "Đã tạo vụ án với tiêu đề \"{title}\"",
+                "UPDATE_CASE_TITLE": "Đã cập nhật vụ án",
+                "UPDATE_CASE_DESCRIPTION": "Đã cập nhật vụ án với tiêu đề \"{title}\"",
+                "DELETE_CASE_TITLE": "Đã xóa vụ án",
+                "DELETE_CASE_DESCRIPTION": "Đã xóa vụ án có id {id}"
+            },
+
+            "TAGS": {
+                "TITLE": "Thẻ",
+                "ADD": "Thêm",
+                "NO_TAGS": "Không có thẻ",
+                "CREATE_TAG": {
+                    "TITLE": "Tạo thẻ",
+                    "DESCRIPTION": "Nhập tên thẻ",
+                    "PLACEHOLDER": "Tên thẻ",
+                    "CANCEL": "Hủy",
+                    "NEXT": "Tiếp theo",
+                    "SELECT_COLOR": "Chọn màu"
+                },
+                "DELETE_TAG": {
+                    "TITLE": "Xóa thẻ",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa thẻ này không?",
+                    "CANCEL": "Hủy",
+                    "DELETE": "Xóa"
+                },
+                "REMOVE_TAG": {
+                    "TITLE": "Gỡ thẻ",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ thẻ '{tag}' không?",
+                    "CANCEL": "Hủy",
+                    "REMOVE": "Gỡ bỏ"
+                }
+            },
+            "MISC": {
+                "SOON": "Sắp tới",
+                "UNKNOWN": "Không xác định",
+                "MINUTES": "{minutes} phút",
+                "HOURS": "{hours} giờ",
+                "DAYS": "{days} ngày",
+                "FORMATTED_DATE": "{day} {month} {year} lúc {hours}:{minutes}",
+                "CHANGE_AVATAR": "Đổi ảnh đại diện",
+                "REMOVE_AVATAR": "Xóa ảnh đại diện",
+                "SET_CALLSIGN": "Đặt số hiệu",
+                "CALLSIGN": {
+                    "TITLE": "Số hiệu",
+                    "DESCRIPTION": "Nhập số hiệu",
+                    "CANCEL": "Hủy",
+                    "PROCEED": "Tiếp tục",
+                    "ERROR": {
+                        "TITLE": "Lỗi",
+                        "DESCRIPTION": "Số hiệu bạn nhập không đúng định dạng yêu cầu ({format}). Vui lòng thử lại."
+                    }
+                }
+            }
+        },
+        "AMBULANCE": {
+            "TITLE": "Cấp cứu",
+
+            "SEARCH": "Tìm kiếm",
+            "CANCEL": "Hủy",
+            "CLOSE": "Đóng",
+            "BACK": "Quay lại",
+            "EDIT": "Sửa",
+            "DELETE": "Xóa",
+            "REMOVE": "Gỡ bỏ",
+            "SAVE": "Lưu",
+            "CREATE": "Tạo",
+            "PROCEED": "Tiếp tục",
+            "OK": "OK",
+            "ADD": "Thêm",
+            "NEW": "Mới",
+
+            "SEARCH_FOR": "Tìm kiếm {query} để bắt đầu",
+            "NO_RESULTS_FOR": "Không tìm thấy kết quả cho '{query}'",
+            "CLEAR_HISTORY": "Xóa lịch sử",
+
+            "HOME": {
+                "TITLE": "Trang chủ",
+                "CREATE": "Tạo",
+
+                "RECENT_REPORTS": "Báo cáo gần đây",
+                "REPORT_FOOTER": "{timestamp} - {author}",
+                "BULLETIN_BOARD": "Bảng tin",
+                "PIN": "Ghim",
+                "UNPIN": "Bỏ ghim",
+                "SEARCH_BULLETIN": "Tìm tin nhắn",
+                "SEARCH_UNITS": "Tìm đơn vị",
+                "ADD_BULLETIN": {
+                    "TITLE": "Thêm bảng tin",
+                    "DESCRIPTION": "Tạo bài đăng bảng tin mới",
+                    "PLACEHOLDER": "Tiêu đề",
+                    "CONTENT": "Nội dung",
+                    "CANCEL": "Hủy",
+                    "PROCEED": "Tiếp tục"
+                },
+                "DELETE_BULLETIN": {
+                    "TITLE": "Xóa bảng tin",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa bài đăng này không?",
+                    "CANCEL": "Hủy",
+                    "DELETE": "Xóa"
+                },
+                "ACTIVE_UNITS": "Đơn vị đang hoạt động"
+            },
+            "BULLETIN": {
+                "TITLE": "Bảng tin"
+            },
+            "DISPATCH": {
+                "TITLE": "Điều phối",
+                "TOGGLE_EMPLOYEES": "Bật/Tắt nhân viên",
+                "TOGGLE_ALARMS": "Bật/Tắt báo động",
+                "EMPLOYEES": "Nhân viên",
+                "ALARMS": "Báo động",
+
+                "RESPOND": "Phản hồi",
+                "RESPONDED": "Đã phản hồi",
+                "COLLAPSE": "Thu gọn",
+                "EXPAND": "Mở rộng",
+                "DISMISS": "Bỏ qua",
+                "VIEW_IN_TABLET": "Xem trên máy tính bảng",
+                "SET_WAYPOINT": "Đặt điểm đến",
+                "OLD_NOTIFICATION": "{count} thông báo cũ",
+                "OLD_NOTIFICATIONS": "{count} thông báo cũ",
+                "NEW_NOTIFICATION": "{count} thông báo mới",
+                "NEW_NOTIFICATIONS": "{count} thông báo mới",
+
+                "PRIORITY_LEVELS": {
+                    "HIGH": "Cao",
+                    "MEDIUM": "Trung bình",
+                    "LOW": "Thấp"
+                },
+
+                "JUST_NOW": "Vừa xong",
+                "MINUTES_AGO": "{minutes} phút trước",
+                "HOURS_AGO": "{hours} giờ trước"
+            },
+            "UNITS": {
+                "TITLE": "Đơn vị",
+                "EMPLOYEE": "Nhân viên",
+                "EMPLOYEES": "Nhân viên",
+                "AVALIABLE_EMPLOYEES": "Nhân viên sẵn sàng",
+                "SEARCH_EMPLOYEES": "Tìm nhân viên",
+                "DROP_EMPLOYEE": "Kéo nhân viên vào đây",
+                "DROP_EMPLOYEE_AVAILABLE": "Kéo nhân viên vào đây để đặt trạng thái sẵn sàng"
+            },
+
+            "JOURNALS": {
+                "TITLE": "Bệnh án",
+                "PROFILES": "Hồ sơ",
+                "PERSON": "Người",
+                "SEARCH": "Tìm hồ sơ",
+                "REMOVE_AVATAR": "Xóa ảnh đại diện",
+                "IDENTIFIER": "Mã định danh",
+                "FINGERPRINT": "Vân tay",
+                "DOB": "Ngày sinh",
+                "PHONE_NR": "Số điện thoại",
+                "GENDER": "Giới tính",
+                "JOB": "Công việc",
+                "MALE": "Nam",
+                "FEMALE": "Nữ",
+                "HEIGHT": "Chiều cao",
+                "HEIGHT_FORMAT": "{height}cm",
+                "BLOOD_TYPE": "Nhóm máu",
+                "NOTES": "Ghi chú",
+                "NOTES_PLACEHOLDER": "Nhập ghi chú tại đây...",
+                "DIAGNOSES_DISEASES": "Chẩn đoán / Bệnh lý",
+                "NO_DIAGNOSES": "Không có chẩn đoán / bệnh lý",
+                "REPORTS": "Báo cáo",
+                "NO_REPORTS": "Không có báo cáo",
+
+                "ADD_AVATAR": {
+                    "TITLE": "Thêm ảnh đại diện",
+                    "SET_PHOTO": "Đặt ảnh",
+                    "PASTE_URL": "Dán URL",
+                    "PASTE_URL_DESCRIPTION": "Nhập URL dẫn đến hình ảnh",
+                    "PASTE_URL_PLACEHOLDER": "URL hình ảnh",
+
+                    "INVALID_URL": "URL không hợp lệ",
+                    "INVALID_URL_DESCRIPTION": "URL bạn nhập không phải là URL hình ảnh hợp lệ",
+                    "OK": "OK"
+                },
+
+                "BILL_PLAYER": {
+                    "TITLE": "Tính phí người chơi",
+                    "DESCRIPTION": "Bạn có muốn gửi hóa đơn cho {name} không?",
+                    "BILL": "Hóa đơn",
+                    "DESCRIPTION_DETAILS": "Vui lòng điền số tiền và mô tả",
+                    "AMOUNT_PLACEHOLDER": "Số tiền",
+                    "DESCRIPTION_PLACEHOLDER": "Mô tả",
+                    "CANCEL": "Hủy",
+                    "PROCEED": "Tiếp tục",
+                    "SUCCESS": "Thành công",
+                    "BILL_SENT": "Đã gửi hóa đơn cho {name}",
+                    "OK": "OK"
+                }
+            },
+
+            "REPORTS": {
+                "TITLE": "Báo cáo",
+                "REPORT": "Báo cáo",
+                "SEARCH": "Tìm báo cáo",
+                "FOOTER": "{author} - ID Báo cáo: {id}",
+                "NEW_REPORT_TITLE": "Báo cáo mới",
+                "TYPE": "Loại",
+                "DESCRIPTION": "Mô tả",
+                "DESCRIPTION_PLACEHOLDER": "Nhập mô tả...",
+                "GALLERY": "Bộ sưu tập",
+                "NO_ATTACHMENTS": "Không có tệp đính kèm",
+                "INJURIES_CONDITIONS": "Chấn thương / Tình trạng",
+                "NO_INJURIES": "Không có chấn thương / tình trạng",
+                "DOCTORS_INVOLVED": "Bác sĩ liên quan",
+                "NO_DOCTORS_INVOLVED": "Không có bác sĩ liên quan",
+                "ADD_PATIENT": "Thêm bệnh nhân",
+
+                "REMOVE_INJURY": {
+                    "TITLE": "Gỡ chấn thương",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ chấn thương khỏi báo cáo không?"
+                },
+                "REMOVE_DOCTOR": {
+                    "TITLE": "Gỡ bác sĩ",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn gỡ {name} khỏi báo cáo không?"
+                },
+
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "NO_TYPE": "Bạn phải chọn một loại báo cáo",
+                    "TITLE_LENGTH": "Tiêu đề phải dài ít nhất 3 ký tự",
+                    "DESCRIPTION_LENGTH": "Mô tả phải dài ít nhất 10 ký tự"
+                }
+            },
+
+            "EMPLOYEES": {
+                "TITLE": "Nhân viên",
+                "SEARCH": "Tìm nhân viên"
+            },
+
+            "CHAT": {
+                "TITLE": "Trò chuyện",
+                "SEARCH": "Tìm cuộc trò chuyện",
+                "PLACEHOLDER": "Gửi tin nhắn...",
+                "JOINED_CHATS": "Phòng đã tham gia",
+                "PUBLIC_CHATS": "Phòng công khai",
+                "JOINED": "Đã tham gia",
+                "PUBLIC": "Công khai",
+                "PRIVATE_CHATS": "Phòng riêng tư",
+                "ROOM_ID": "ID Phòng: {id}",
+                "TOGGLE_PRIVATE": "Chuyển sang riêng tư",
+                "CHANGE_AVATAR": "Đổi ảnh đại diện",
+                "SET_AVATAR": "Đặt ảnh đại diện",
+                "REMOVE_AVATAR": "Xóa ảnh đại diện",
+                "MANAGE": "Quản lý",
+                "LEAVE": {
+                    "TITLE": "Rời khỏi",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn rời khỏi phòng trò chuyện?"
+                },
+                "KICK": {
+                    "TITLE": "Trục xuất",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn trục xuất {name} khỏi phòng trò chuyện?"
+                },
+
+                "CREATE_CHATROOM": {
+                    "TITLE": "Tạo phòng trò chuyện",
+                    "DESCRIPTION": "Nhập tên cho phòng trò chuyện",
+                    "PLACEHOLDER": "Tên phòng",
+                    "CREATE": "Tạo",
+                    "SET_VISIBILITY": "Đặt chế độ hiển thị",
+                    "PUBLIC": "Công khai",
+                    "PRIVATE": "Riêng tư"
+                },
+                "JOIN_CHAT": {
+                    "TITLE": "Tham gia trò chuyện",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn tham gia {channel}?",
+                    "JOIN": "Tham gia"
+                },
+                "ERROR": {
+                    "TITLE": "Lỗi",
+                    "FAILED_JOIN": "Không thể tham gia phòng trò chuyện",
+                    "FAILED_INVITE": "Không thể mời {name} vào phòng trò chuyện",
+                    "FAILED_SET_AVATAR": "Không thể đặt ảnh đại diện phòng",
+                    "FAILED_REMOVE_AVATAR": "Không thể xóa ảnh đại diện phòng",
+                    "FAILED_GET_MEMBERS": "Không thể lấy danh sách thành viên",
+                    "FAILED_KICK": "Không thể trục xuất {name} khỏi phòng trò chuyện",
+                    "FAILED_LEAVE": "Không thể rời khỏi phòng trò chuyện"
+                },
+                "SUCCESS": {
+                    "TITLE": "Thành công",
+                    "INVITED": "Bạn đã mời {name} vào phòng trò chuyện",
+                    "KICKED": "Bạn đã trục xuất {name} khỏi phòng trò chuyện"
+                }
+            },
+
+            "CONDITIONS": {
+                "TITLE": "Tình trạng",
+                "CONDITION": "Tình trạng",
+                "SEARCH": "Tìm tình trạng",
+
+                "SELECT_SEVERITY": "Chọn mức độ nghiêm trọng",
+                "SEVERITIES": {
+                    "MINOR": "Nhẹ",
+                    "MODERATE": "Trung bình",
+                    "SEVERE": "Nặng",
+                    "CRITICAL": "Nguy kịch"
+                },
+                "NO_CONDITIONS_FOUND": "Không tìm thấy tình trạng nào",
+                "ADD_CONDITION": {
+                    "TITLE": "Thêm tình trạng",
+                    "DESCRIPTION": "Tạo tình trạng bệnh lý mới",
+                    "PLACEHOLDER": "Nhập tiêu đề tình trạng"
+                },
+                "DELETE_CONDITION": {
+                    "TITLE": "Xóa tình trạng",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa tình trạng này không?"
+                },
+                "ADD_CATEGORY": {
+                    "TITLE": "Thêm danh mục",
+                    "DESCRIPTION": "Thêm danh mục mới vào danh sách tình trạng",
+                    "PLACEHOLDER": "Nhập tên danh mục"
+                },
+                "DELETE_CATEGORY": {
+                    "TITLE": "Xóa danh mục",
+                    "DESCRIPTION": "Bạn có chắc chắn muốn xóa danh mục này không?"
+                }
+            },
+
+            "LOGS": {
+                "TITLE": "Nhật ký"
+            }
+        },
+        "BROWSER": {
+            "TITLE": "Trình duyệt",
+            "SEARCH_PLACEHOLDER": "Tìm kiếm hoặc nhập URL",
+            "FAILED_LOAD_PAGE": "Không thể tải trang, có thể trang này không cho phép hiển thị trong iframe?"
+        },
+        "REGISTRATION": {
+            "TITLE": "Đăng ký",
+            "SELECT_CHARACTER": " Chọn nhân vật",
+            "PLEASE_SELECT_CHARACTER": "Vui lòng chọn một nhân vật",
+            "CREATE_NEW": "Tạo mới",
+            "EDIT": "Sửa",
+            "SAVE": "Lưu",
+            "DELETE": "Xóa",
+            "CANCEL": "Hủy",
+            "DELETE_CHARACTER": "Xóa nhân vật",
+            "DESCRIPTION": "Mô tả",
+            "DESCRIPTION_PLACEHOLDER": "Đây là mô tả...",
+            "ADD": "Thêm",
+
+            "CHARACTER_INFO": "Thông tin nhân vật",
+            "REMOVE_AVATAR": "Xóa ảnh đại diện",
+            "FIRSTNAME": "Tên",
+            "LASTNAME": "Họ",
+            "DOB": "Ngày sinh",
+            "PHONE_NUMBER": "Số điện thoại",
+            "GENDER": "Giới tính",
+            "MALE": "Nam",
+            "FEMALE": "Nữ",
+            "JOB": "Công việc",
+            "HEIGHT": "Chiều cao",
+            "FORMATTED_HEIGHT": "{height}cm",
+
+            "VEHICLES": "Phương tiện",
+            "VEHICLE": "Phương tiện",
+            "REMOVE_PICTURE": "Xóa ảnh",
+            "SEARCH_VEHICLES": "Tìm phương tiện",
+            "MODEL": "Kiểu máy",
+            "PLATE": "Biển số",
+            "COLOR": "Màu sắc",
+            "CREATE": "Tạo",
+            "DELETE_VEHICLE": "Xóa phương tiện",
+            "DELETE_VEHICLE_POPUP": {
+                "TITLE": "Xóa phương tiện",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa phương tiện này không?"
+            },
+
+            "LICENSES": "Giấy phép",
+            "ADD_LICENSE": "Thêm giấy phép",
+            "DELETE_LICENSE_POPUP": {
+                "TITLE": "Xóa giấy phép",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa giấy phép này không?"
+            },
+
+            "PROPERTIES": "Tài sản",
+            "ADD_PROPERTY_POPUP": {
+                "TITLE": "Tài sản mới",
+                "DESCRIPTION": "Tạo tài sản mới",
+                "LABEL": "Nhãn tài sản",
+                "ADDRESS": "Địa chỉ tài sản"
+            },
+            "DELETE_PROPERTY_POPUP": {
+                "TITLE": "Xóa tài sản",
+                "DESCRIPTION": "Bạn có chắc chắn muốn xóa tài sản này không?"
+            },
+
+            "ERROR": {
+                "TITLE": "Lỗi",
+                "MISSING_FIELDS": "Bạn còn thiếu các trường sau: {fields}",
+                "OK": "OK"
+            }
+        },
+        "MAPS": {
+            "GO": "Đi"
+        }
+    },
+    "COMPONENTS": {
+        "CONTEXT_MENU": {
+            "CANCEL": "Hủy"
+        },
+        "IMAGE": {
+            "SAVE_TO_GALLERY": "Lưu vào Bộ sưu tập"
+        },
+        "GALLERY": {
+            "CANCEL": "Hủy",
+            "EXTERNAL_URL": "URL bên ngoài",
+            "EXTERNAL_URL_BLACKLISTED": "URL này nằm trong danh sách đen",
+            "NO_IMAGES": "Không có ảnh"
+        },
+        "NOTIFICATIONS": {
+            "SENT_PHOTO": "Đã gửi một ảnh",
+            "SENT_GIF": "Đã gửi một ảnh GIF",
+            "NOW": "bây giờ"
+        },
+        "SHARE": {
+            "COPY_PHOTO": "Sao chép ảnh",
+            "COPY_VIDEO": "Sao chép video",
+            "USE_WALLPAPER": "Dùng làm hình nền",
+            "COPY_NUMBER": "Sao chép số điện thoại",
+            "COPY_LINK": "Sao chép liên kết",
+            "AIRDROP_SENT": "Đã gửi",
+            "AIRDROP_ACCEPTED": "Đã chấp nhận",
+            "AIRDROP_DECLINED": "Đã từ chối",
+            "AIRDROP_NO_USERS": "Không có điện thoại nào lân cận",
+            "WALLPAPER_POPUP": {
+                "TITLE": "Dùng làm hình nền",
+                "TEXT": "Bạn có chắc chắn muốn đặt ảnh này làm hình nền không?",
+                "CANCEL": "Hủy",
+                "PROCEED": "Tiếp tục"
+            },
+            "COPY_POPUP": {
+                "TITLE": "Thành công",
+                "DESCRIPTION": "Đã sao chép vào bộ nhớ tạm",
+                "OK": "OK"
+            }
+        },
+        "AIRDROP": {
+            "TITLE": "AirShare",
+            "TEXT": "{sender} muốn chia sẻ một {type}",
+            "VIDEO": "video",
+            "PHOTO": "ảnh",
+            "CONTACT": "liên hệ",
+            "LOCATION": "vị trí",
+            "NOTE": "ghi chú",
+            "VOICEMEMO": "ghi âm",
+            "PLAYLIST": "danh sách phát",
+            "DECLINE": "Từ chối",
+            "ACCEPT": "Chấp nhận"
+        },
+
+        "BATTERY": {
+            "LOW_BATTERY": "Pin yếu",
+            "BATTERY_REMAINING": "Còn {percent}% pin",
+            "LOW_POWER_MODE": "Chế độ nguồn điện thấp",
+            "CLOSE": "Đóng"
+        },
+        "COLOR_PICKER": {
+            "COLOR": "Màu sắc"
+        }
+    },
+    "SETUP": {
+        "HELLO": "Xin chào",
+        "SELECT_LANGUAGE": "Chọn ngôn ngữ của bạn",
+        "NEXT": "Nhấn để mở",
+        "APPEARANCE": "Chủ đề",
+        "APPEARANCE_TEXT": "Chọn chủ đề Sáng hoặc Tối cho thiết bị của bạn",
+        "CONTINUE": "Tiếp tục",
+        "WELCOME_TO": "Chào mừng bạn đến với",
+        "CLICK": "Nhấn để bắt đầu"
+    },
+    "HOMESCREEN": {
+        "DONE": "Xong",
+        "CLOSE_ALL": "Đóng tất cả",
+        "REMOVE_APP_POPUP": {
+            "TITLE": "Xóa '{app}'?",
+            "DESCRIPTION": "Xóa ứng dụng này sẽ KHÔNG xóa dữ liệu của nó. Bạn có thể cài đặt lại ứng dụng sau này từ Cửa hàng ứng dụng.",
+            "CANCEL": "Hủy",
+            "PROCEED": "Xóa"
+        }
+    },
+    "LOCKSCREEN": {
+        "DELETE": "Xóa",
+        "FONT_AND_COLOR": "Phông chữ & Màu sắc"
+    },
+    "MISC": {
+        "GENDERS": {
+            "MALE": "Nam",
+            "FEMALE": "Nữ"
+        },
+        "AIRPLANE_MODE_POPUP": {
+            "TITLE": "Lỗi",
+            "DESCRIPTION": "Bạn đang thực hiện hành động yêu cầu truy cập internet, hãy tắt chế độ máy bay để tiếp tục.",
+            "OK": "OK"
+        }
+    },
+    "BACKEND": {
+        "CAMERA": {
+            "TAKE_PHOTO": "{key} Chụp",
+            "FLIP_CAMERA": "{key} Lật",
+            "TOGGLE_FLASH": "{key} Flash",
+            "TOGGLE_CURSOR": "{key} Con trỏ",
+            "CHANGE_MODE": "{key} {key2} Chế độ",
+            "ROLL": "{key} {key2} Cuộn",
+            "FREEZE": "{key} Đóng băng",
+            "UNFREEZE": "{key} Bỏ đóng băng",
+            "TOGGLE_TIP": "{key} Ẩn"
+        },
+        "SERVICES": {
+            "NEW_MESSAGE": "Tin nhắn mới",
+            "ANONYMOUS": "Ẩn danh"
+        },
+        "MISC": {
+            "X_TABLET": "Máy tính bảng của {firstname}"
+        },
+        "MAIL": {
+            "AUTOMATIC_PASSWORD": {
+                "SENDER": "Hệ thống",
+                "SUBJECT": "Mật khẩu của bạn",
+                "MESSAGE": "Chào bạn,\n\nĐịa chỉ email tự động của bạn là {address} và mật khẩu của bạn là {password}"
+            }
+        },
+        "LOGS": {
+            "TOOK_PHOTO": "Đã chụp một ảnh",
+            "TOOK_VIDEO": "Đã quay một video",
+            "NEW_DISPATCH": "Điều phối mới: {title}"
+        },
+        "BASE_DISPATCH": {
+            "VEHICLE_CLASSES": {
+                "0": "xe nhỏ gọn",
+                "1": "xe sedan",
+                "2": "xe SUV",
+                "3": "xe coupe",
+                "4": "xe cơ bắp",
+                "5": "xe thể thao cổ điển",
+                "6": "xe thể thao",
+                "7": "siêu xe",
+                "8": "xe máy",
+                "9": "xe địa hình",
+                "10": "xe công nghiệp",
+                "11": "xe tiện ích",
+                "12": "xe van",
+                "13": "xe đạp",
+                "14": "thuyền",
+                "15": "trực thăng",
+                "16": "máy bay",
+                "17": "xe dịch vụ",
+                "18": "xe khẩn cấp",
+                "19": "xe quân sự",
+                "20": "xe thương mại",
+                "21": "tàu hỏa",
+                "22": "xe đua bánh hở"
+            },
+            "VEHICLE_DATA": {
+                "BODY_TYPE": "Loại thân xe",
+                "MANUFACTURER": "Nhà sản xuất",
+                "MODEL": "Kiểu xe",
+                "COLOR": "Màu sắc",
+                "PLATE": "Biển số"
+            },
+            "VEHICLE_THEFT": {
+                "CODE": "10-31",
+                "TITLE": "Trộm xe - {plate}",
+                "DESCRIPTION": "Một {gender_lower} đã được nhìn thấy đang trộm một chiếc {class} {manufacturer} {model} màu {color_lower} có biển số {plate}."
+            },
+            "VEHICLE_JACKING": {
+                "CODE": "10-31",
+                "TITLE": "Cướp xe - {plate}",
+                "DESCRIPTION": "Một {gender_lower} đã được nhìn thấy đang cướp một chiếc {class} {manufacturer} {model} màu {color_lower} có biển số {plate}."
+            },
+            "WEAPON_TYPES": {
+                "DIGISCANNER": "Máy quét kỹ thuật số",
+                "FIREEXTINGUISHER": "Bình chữa cháy",
+                "HACKINGDEVICE": "Thiết bị hack",
+                "HEAVY": "Vũ khí hạng nặng",
+                "MELEE": "Vũ khí cận chiến",
+                "METALDETECTOR": "Máy dò kim loại",
+                "MG": "Súng máy",
+                "NIGHTVISION": "Kính nhìn đêm",
+                "PARACHUTE": "Dù",
+                "PETROLCAN": "Bình xăng",
+                "PISTOL": "Súng lục",
+                "RIFLE": "Súng trường",
+                "SHOTGUN": "Súng săn",
+                "SMG": "Súng tiểu liên",
+                "SNIPER": "Súng bắn tỉa",
+                "STUNGUN": "Súng điện",
+                "THROWN": "Vũ khí ném",
+                "TRANQILIZER": "Súng gây mê",
+                "UNARMED": "Tay không",
+                "UNKNOWN": "Súng"
+            },
+            "GUNSHOT": {
+                "CODE": "10-31",
+                "TITLE": "Tiếng súng - {location}",
+                "DESCRIPTION": "Một {gender_lower} đã được nhìn thấy đang bắn một loại {weapon_type_lower} tại {location}."
+            },
+            "EXPLOSION": {
+                "TITLE": "Vụ nổ",
+                "DESCRIPTION": "Một vụ nổ đã được nghe thấy tại {location}.",
+                "CODE": "10-31"
+            },
+            "ARMED": {
+                "TITLE": "{gender} có vũ khí",
+                "DESCRIPTION": "Một {gender_lower} đã được nhìn thấy có trang bị {weapon_type_lower} tại {location}.",
+                "CODE": "10-31"
+            }
+        },
+        "POLICE": {
+            "EVIDENCE_LABEL": "Chứng cứ: Vụ án {id}",
+            "NEW_BULLETIN_NOTIFICATION": {
+                "TITLE": "Bảng tin mới",
+                "CONTENT": "{title}"
+            },
+            "NEW_CASE_NOTIFICATION": {
+                "TITLE": "Vụ án mới",
+                "CONTENT": "{title}"
+            },
+            "NEW_REPORT_NOTIFICATION": {
+                "TITLE": "Báo cáo mới",
+                "CONTENT": "{title}"
+            },
+            "NEW_WARRANT_NOTIFICATION": {
+                "TITLE": "Lệnh truy nã mới",
+                "CONTENT": "{title}"
+            },
+            "NEW_CHAT_CHANNEL_NOTIFICATION": {
+                "TITLE": "Cuộc trò chuyện mới",
+                "CONTENT": "{channel}"
+            },
+            "CHAT_MESSAGE_NOTIFICATION": {
+                "TITLE": "Tin nhắn mới trong {channel}",
+                "CONTENT": "{message}"
+            },
+            "LOGS": {
+                "CREATE_OFFENCE_CATEGORY": {
+                    "TITLE": "Đã tạo danh mục tội danh",
+                    "DESCRIPTION": "Đã tạo danh mục '{name}'"
+                },
+                "DELETE_OFFENCE_CATEGORY": {
+                    "TITLE": "Đã xóa danh mục tội danh",
+                    "DESCRIPTION": "Đã xóa danh mục '{name}'"
+                },
+                "UPDATE_OFFENCE_CATEGORY": {
+                    "TITLE": "Đã cập nhật danh mục tội danh",
+                    "DESCRIPTION": "Đã đổi tên danh mục tội danh từ '{oldName}' thành {newName}"
+                },
+                "CREATE_OFFENCE": {
+                    "TITLE": "Đã tạo tội danh",
+                    "DESCRIPTION": "Đã tạo tội danh {class} '{name}' trong mục '{category}'"
+                },
+                "DELETE_OFFENCE": {
+                    "TITLE": "Đã xóa tội danh",
+                    "DESCRIPTION": "Đã xóa tội danh '{name}' trong mục '{category}'"
+                },
+                "UPDATE_OFFENCE": {
+                    "TITLE": "Đã cập nhật tội danh",
+                    "DESCRIPTION": "Đã cập nhật tội danh '{name}' trong mục '{category}'"
+                }
+            },
+            "WIRETAP_NOTIFICATION": {
+                "TITLE": "Cuộc gọi bị nghe lén",
+                "CONTENT": "Số điện thoại bị nghe lén {number} đang trong một cuộc gọi."
+            }
+        },
+        "AMBULANCE": {
+            "NOTIFICATIONS": {
+                "CHAT": {
+                    "NEW_CHANNEL": {
+                        "TITLE": "Cuộc trò chuyện mới",
+                        "CONTENT": "{channel}"
+                    },
+                    "NEW_MESSAGE": {
+                        "TITLE": "Tin nhắn mới trong {channel}",
+                        "CONTENT": "{message}"
+                    }
+                },
+                "NEW_BULLETIN": {
+                    "TITLE": "Bảng tin mới",
+                    "CONTENT": "{title}"
+                },
+                "NEW_REPORT": {
+                    "TITLE": "Báo cáo mới",
+                    "CONTENT": "{title}"
+                }
+            },
+            "TAG_TYPES": {
+                "PROFILE": "hồ sơ",
+                "REPORT": "báo cáo",
+                "PROPERTY": "tài sản",
+                "WEAPON": "vũ khí"
+            },
+            "LOGS": {
+                "CREATE_CONDITION_CATEGORY": {
+                    "TITLE": "Đã tạo danh mục tình trạng",
+                    "DESCRIPTION": "Đã tạo danh mục '{name}'"
+                },
+                "DELETE_CONDITION_CATEGORY": {
+                    "TITLE": "Đã xóa danh mục tình trạng",
+                    "DESCRIPTION": "Đã xóa danh mục '{name}'"
+                },
+                "UPDATE_CONDITION_CATEGORY": {
+                    "TITLE": "Đã cập nhật danh mục tình trạng",
+                    "DESCRIPTION": "Đã đổi tên danh mục tình trạng từ '{oldName}' thành {newName}"
+                },
+                "CREATE_CONDITION": {
+                    "TITLE": "Đã tạo tình trạng",
+                    "DESCRIPTION": "Đã tạo tình trạng mức độ {severity} '{name}' trong mục '{category}'"
+                },
+                "DELETE_CONDITION": {
+                    "TITLE": "Đã xóa tình trạng",
+                    "DESCRIPTION": "Đã xóa tình trạng '{name}' trong mục '{category}'"
+                },
+                "UPDATE_CONDITION": {
+                    "TITLE": "Đã cập nhật tình trạng",
+                    "DESCRIPTION": "Đã cập nhật tình trạng '{name}' trong mục '{category}'"
+                },
+                "CREATE_BULLETIN": {
+                    "TITLE": "Đã tạo bài đăng bảng tin",
+                    "DESCRIPTION": "Đã tạo bài đăng bảng tin '{title}'"
+                },
+                "UPDATE_BULLETIN": {
+                    "TITLE": "Đã cập nhật bài đăng bảng tin",
+                    "DESCRIPTION": "Đã cập nhật bài đăng bảng tin '{title}'"
+                },
+                "DELETE_BULLETIN": {
+                    "TITLE": "Đã xóa bài đăng bảng tin",
+                    "DESCRIPTION": "Đã xóa bài đăng bảng tin có id {id}"
+                },
+                "PIN_BULLETIN": {
+                    "TITLE": "Đã ghim bài đăng bảng tin",
+                    "DESCRIPTION": "Đã ghim bài đăng bảng tin có id {id}"
+                },
+                "UNPIN_BULLETIN": {
+                    "TITLE": "Đã bỏ ghim bài đăng bảng tin",
+                    "DESCRIPTION": "Đã bỏ ghim bài đăng bảng tin có id {id}"
+                },
+                "DELETE_TAG": {
+                    "TITLE": "Đã xóa thẻ",
+                    "DESCRIPTION": "Đã xóa thẻ '{name}'"
+                },
+                "UPDATE_PROFILE": {
+                    "TITLE": "Đã cập nhật hồ sơ",
+                    "DESCRIPTION": "Đã cập nhật hồ sơ của {name}"
+                },
+                "CREATE_REPORT": {
+                    "TITLE": "Đã tạo báo cáo",
+                    "DESCRIPTION": "Đã tạo báo cáo {type} '{title}' cho bệnh nhân {patient} với id {id}"
+                },
+                "UPDATE_REPORT": {
+                    "TITLE": "Đã cập nhật báo cáo",
+                    "DESCRIPTION": "Đã cập nhật báo cáo {type} '{title}' có id {id}"
+                }
+            }
+        }
+    }
+}

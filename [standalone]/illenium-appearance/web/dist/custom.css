@@ -1,0 +1,93 @@
+/* custom.css — Color override only, no effects */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&display=swap');
+
+:root {
+  --cyan: #05F2F2;
+  --cyan-bg: rgba(5, 242, 242, 0.10);
+  --cyan-border: rgba(5, 242, 242, 0.30);
+  --dark: rgba(6, 8, 14, 0.92);
+  --dark-card: rgba(5, 10, 18, 0.85);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: rgba(255, 255, 255, 0.65);
+}
+
+/* Font */
+* { font-family: 'Rajdhani', sans-serif !important; }
+
+/* Buttons */
+button {
+  background: var(--dark-card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+button:hover {
+  background: var(--cyan-bg) !important;
+  border-color: var(--cyan-border) !important;
+  color: var(--cyan) !important;
+}
+
+/* Section headers */
+div[class*="my"] { background: var(--dark-card) !important; }
+div[class*="my"] span { font-family: 'Orbitron', sans-serif !important; letter-spacing: 0.12em !important; }
+
+/* Group cards */
+div[class*="gy"] {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid var(--border) !important;
+}
+div[class*="gy"] > span {
+  font-family: 'Orbitron', sans-serif !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.12em !important;
+  color: var(--cyan) !important;
+}
+
+/* Slider */
+input[type='range'] { background: rgba(5, 242, 242, 0.08) !important; }
+input[type='range']::-webkit-slider-thumb { background: var(--cyan) !important; }
+
+/* Number input */
+input[type='number'] {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid var(--border) !important;
+  color: #fff !important;
+}
+input[type='number']:focus { border-color: var(--cyan-border) !important; outline: none !important; }
+
+/* Color swatches */
+button[style*="backgroundColor"] { border: 2px solid rgba(255,255,255,0.1) !important; }
+button[style*="backgroundColor"]:hover { border-color: var(--cyan) !important; }
+
+/* React-Select */
+div[class*="__control"] {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid var(--border) !important;
+}
+div[class*="__menu"] {
+  background: rgba(6, 8, 16, 0.97) !important;
+  border: 1px solid var(--cyan-border) !important;
+}
+div[class*="__option"]:hover,
+div[class*="__option--is-focused"] { background: var(--cyan-bg) !important; color: var(--cyan) !important; }
+div[class*="__option--is-selected"] { background: var(--cyan-bg) !important; color: var(--cyan) !important; }
+div[class*="__single-value"],
+div[class*="__input-container"] { color: #fff !important; }
+
+/* Chips / action buttons */
+span[style*="cursor: pointer"] {
+  background: var(--cyan-bg) !important;
+  border: 1px solid var(--cyan-border) !important;
+  color: var(--cyan) !important;
+  font-family: 'Orbitron', sans-serif !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Modal */
+div[class*="Zw"] { background: var(--dark) !important; }
+div[class*="Zw"] > p { font-family: 'Orbitron', sans-serif !important; color: var(--cyan) !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px !important; }
+::-webkit-scrollbar-track { background: transparent !important; }
+::-webkit-scrollbar-thumb { background: var(--cyan-border) !important; border-radius: 2px !important; }

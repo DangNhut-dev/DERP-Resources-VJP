@@ -1,0 +1,33 @@
+{
+  "language": "Tiếng Việt",
+  "settings": "Cài đặt",
+  "ui": {
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "more": "Xem thêm...",
+    "settings": {
+      "locale": "Thay đổi ngôn ngữ",
+      "locale_description": "Ngôn ngữ hiện tại: ${language} (%s)",
+      "notification_audio": "Âm thanh thông báo",
+      "notification_position": "Vị trí thông báo"
+    },
+    "position": {
+      "bottom": "Phía dưới",
+      "bottom-left": "Dưới bên trái",
+      "bottom-right": "Dưới bên phải",
+      "center-left": "Giữa bên trái",
+      "center-right": "Giữa bên phải",
+      "top": "Phía trên",
+      "top-left": "Trên bên trái",
+      "top-right": "Trên bên phải"
+    }
+  },
+  "open_radial_menu": "Mở menu vòng",
+  "cancel_progress": "Hủy thanh tiến trình hiện tại",
+  "txadmin_announcement": "Thông báo máy chủ từ %s",
+  "txadmin_dm": "Tin nhắn riêng từ %s",
+  "txadmin_warn": "Bạn đã bị cảnh cáo bởi %s",
+  "txadmin_warn_content": "%s  \nMã hành động: %s",
+  "txadmin_scheduledrestart": "Khởi động lại theo lịch"
+}

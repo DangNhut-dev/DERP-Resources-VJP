@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN playtime INT DEFAULT 0;

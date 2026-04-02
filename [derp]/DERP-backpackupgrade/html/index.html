@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backpack Upgrade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="hidden">
+    <div class="overlay">
+        <div class="container">
+
+            <div class="header">
+                <span class="header-title">NÂNG CẤP BALO</span>
+                <button id="btn-close">✕</button>
+            </div>
+
+            <div class="main">
+                <!-- LEFT: item selection -->
+                <div class="panel-left">
+                    <div class="section-label">CHỌN BALO</div>
+                    <div id="balo-grid" class="item-grid"></div>
+
+                    <div class="section-label">
+                        NGUYÊN LIỆU
+                        <span id="mat-count" class="badge">0 / 5</span>
+                    </div>
+                    <div id="mat-grid" class="item-grid scrollable"></div>
+                </div>
+
+                <!-- RIGHT: wheel -->
+                <div class="panel-right">
+                    <div class="wheel-wrapper">
+                        <canvas id="wheel-canvas" width="300" height="300"></canvas>
+                        <div class="wheel-center-info">
+                        </div>
+                    </div>
+                    <div id="lv-display" class="lv-display">LV -- → --</div>
+                    <div class="hint-text" id="hint-text">Kéo vòng tròn để chọn vị trí</div>
+                    <button id="btn-upgrade" disabled>NÂNG CẤP</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

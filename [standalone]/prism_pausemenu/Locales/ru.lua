@@ -1,0 +1,28 @@
+Locales['ru'] = {
+  ['home'] = 'Главная',
+  ['map'] = 'Карта',
+  ['settings'] = 'Настройки',
+  ['tebex'] = 'Tebex',
+  ['discord'] = 'Дискорд',
+  ['exit'] = 'Выход',
+  ['mapDescription'] = 'Просмотр местоположения',
+  ['openMap'] = 'Открыть карту',
+  ['donate'] = 'Пожертвовать',
+  ['donateDescription'] = 'Помогите поддержать город',
+  ['store'] = 'Магазин',
+  ['statistics'] = 'Статистика',
+  ['statisticsDescription'] = 'Статистика игрока',
+  ['personal'] = 'Личное',
+  ['information'] = 'Информация',
+  ['gang'] = 'Банда',
+  ['job'] = 'Работа',
+  ['close'] = 'Закрыть',
+  ['pauseMenu'] = 'Меню паузы',
+  ['cash'] = 'Наличные',
+  ['personalDescription'] = 'Все ваши личные данные в одном месте.',
+  ['bankName'] = 'Prism',
+  ['valid'] = 'Действительно',
+  ['creditCard'] = 'Кредитная карта',
+  ['playTime'] = 'Время в игре'
+}
+

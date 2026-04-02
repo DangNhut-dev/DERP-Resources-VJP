@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    width:100vw;height:100vh;
+    background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Be Vietnam Pro',sans-serif;
+    overflow:hidden;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+#wrapper{
+    display:none;
+    pointer-events:all;
+}
+#wrapper.visible{
+    display:block;
+    animation:panelIn .22s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes panelIn{
+    from{opacity:0;transform:scale(.9) translateY(10px);}
+    to  {opacity:1;transform:scale(1)  translateY(0);}
+}
+
+/* ── PANEL ─────────────────────────────────────────── */
+.panel{
+    width:1000px;
+    background:linear-gradient(155deg,#0b0e18 0%,#0f1520 100%);
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.07);
+    box-shadow:0 28px 90px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.03) inset;
+    overflow:hidden;
+    position:relative;
+}
+.panel::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:20px 20px 0 0;
+}
+.panel.drink::before{background:linear-gradient(90deg,#0ea5e9,#38bdf8,#7dd3fc,#38bdf8,#0ea5e9);}
+.panel.food::before {background:linear-gradient(90deg,#16a34a,#4ade80,#86efac,#4ade80,#16a34a);}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.hdr{
+    padding:16px 20px 12px;
+    display:flex;align-items:center;gap:12px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+.hdr-icon{
+    width:38px;height:38px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;
+}
+.drink .hdr-icon{background:rgba(14,165,233,.15);}
+.food  .hdr-icon{background:rgba(74,222,128,.15);}
+.hdr-info{flex:1;}
+.hdr-info h2{
+    font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:.4px;
+}
+.drink .hdr-info h2{color:#7dd3fc;}
+.food  .hdr-info h2{color:#86efac;}
+.hdr-info p{font-size:11.5px;color:rgba(255,255,255,.38);margin-top:1px;}
+
+.lives{display:flex;gap:5px;align-items:center;}
+.heart{font-size:15px;transition:transform .15s,opacity .15s;}
+.heart.lost{opacity:.2;transform:scale(.8);}
+
+/* ── ESC BUTTON ─────────────────────────────────────── */
+#esc-btn{
+    margin-left:10px;
+    padding:4px 11px;
+    border-radius:6px;
+    border:1px solid rgba(248,113,113,.3);
+    background:rgba(248,113,113,.1);
+    color:rgba(248,113,113,.8);
+    font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;
+    cursor:pointer;
+    transition:background .15s,transform .1s;
+    flex-shrink:0;
+}
+#esc-btn:hover {background:rgba(248,113,113,.22);color:#fca5a5;}
+#esc-btn:active{transform:scale(.95);}
+
+
+
+/* ── GAME AREA ──────────────────────────────────────── */
+.game-area{
+    width:1000px;height:640px;
+    position:relative;overflow:hidden;
+}
+.drink-bg{
+    background:radial-gradient(ellipse at 50% 110%,rgba(14,165,233,.14) 0%,#060b12 65%);
+    cursor:none;
+}
+.food-bg{
+    background:radial-gradient(ellipse at 50% -10%,rgba(74,222,128,.10) 0%,#060c08 65%);
+    cursor:none;
+}
+
+/* ── HUD ─────────────────────────────────────────────── */
+.hud{
+    padding:18px 26px 20px;
+    display:flex;gap:16px;align-items:center;
+    border-top:2px solid rgba(255,255,255,.3);
+    background:#1a1f2e;
+}
+.hud-seg{flex:1;}
+.hud-lbl{font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:#ffffff;margin-bottom:8px;font-weight:800;}
+.bar-track{height:18px;background:#2a3040;border-radius:9px;overflow:hidden;border:2px solid rgba(255,255,255,.4);}
+.bar-fill{height:100%;border-radius:9px;transition:width .12s linear;}
+.bar-time{background:linear-gradient(90deg,#ff6a00,#ff9500);}
+.bar-score{background:linear-gradient(90deg,#0077ff,#00c3ff);}
+.drink .bar-score{background:linear-gradient(90deg,#0077ff,#00c3ff);}
+.food  .bar-score{background:linear-gradient(90deg,#0077ff,#00c3ff);}
+.score-txt{
+    font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:800;
+    color:#ffffff;background:#2a3040;
+    border:2px solid rgba(255,255,255,.4);
+    border-radius:8px;padding:4px 14px;white-space:nowrap;
+}
+
+/* ── DRINK: CUP ─────────────────────────────────────── */
+#cup-wrap{
+    position:absolute;
+    bottom:14px;
+    transform:translateX(-50%);
+    pointer-events:none;
+}
+.cup-straw{
+    position:absolute;top:-30px;right:9px;
+    width:5px;height:40px;
+    background:linear-gradient(180deg,#f87171,#fca5a5);
+    border-radius:3px;
+    transform:rotate(10deg);
+}
+.cup-rim{
+    width:70px;height:6px;
+    background:rgba(56,189,248,.55);
+    border-radius:4px 4px 0 0;
+    margin-left:-6px;
+}
+.cup-body{
+    width:58px;height:54px;
+    background:linear-gradient(180deg,rgba(14,165,233,.08) 0%,rgba(7,89,133,.4) 100%);
+    border:2px solid rgba(56,189,248,.6);
+    border-top:none;
+    border-radius:0 0 16px 16px;
+    position:relative;overflow:hidden;
+}
+.cup-liquid{
+    position:absolute;bottom:0;left:0;right:0;
+    background:rgba(56,189,248,.32);
+    transition:height .2s ease;
+    height:0;
+}
+.cup-shine{
+    position:absolute;top:0;left:8px;
+    width:7px;height:100%;
+    background:linear-gradient(180deg,rgba(255,255,255,.22),transparent);
+    border-radius:4px;
+}
+
+/* ── DRINK: ICE ─────────────────────────────────────── */
+.ice{
+    position:absolute;
+    width:28px;height:28px;
+    background:linear-gradient(135deg,#bae6fd 20%,#e0f2fe 55%,rgba(186,230,253,.75) 100%);
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 0 10px rgba(147,210,255,.4),inset 0 1px 0 rgba(255,255,255,.65);
+    pointer-events:none;
+}
+.ice-inner{
+    position:absolute;top:6px;left:9px;
+    width:2px;height:13px;
+    background:rgba(255,255,255,.45);
+    border-radius:1px;
+    transform:rotate(22deg);
+}
+
+/* ── DRINK: SPLASH ──────────────────────────────────── */
+.splash{
+    position:absolute;pointer-events:none;
+    width:7px;height:7px;border-radius:50%;
+    background:#7dd3fc;
+    animation:splashAnim .55s ease-out forwards;
+}
+@keyframes splashAnim{
+    0%  {opacity:.9;transform:translate(0,0) scale(1);}
+    100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.2);}
+}
+
+/* ── DRINK: CURSOR HINT ─────────────────────────────── */
+#grab-hint{
+    position:absolute;
+    font-size:11px;color:rgba(255,255,255,.35);
+    letter-spacing:.4px;
+    pointer-events:none;
+    bottom:80px;left:50%;transform:translateX(-50%);
+    transition:opacity .3s;
+    white-space:nowrap;
+}
+
+/* ── FOOD: CANVAS ───────────────────────────────────── */
+#slash-canvas{
+    position:absolute;inset:0;
+    pointer-events:none;
+    z-index:10;
+}
+
+/* ── FOOD: VEGGIE ───────────────────────────────────── */
+.veggie{
+    position:absolute;
+    font-size:40px;line-height:1;
+    pointer-events:none;
+    filter:drop-shadow(0 3px 7px rgba(0,0,0,.6));
+    z-index:5;
+}
+
+/* ── FOOD: SLICE BURST ──────────────────────────────── */
+.slice-burst{
+    position:absolute;pointer-events:none;
+    transform:translate(-50%,-50%);
+    animation:sliceBurst .4s ease-out forwards;
+    z-index:20;
+}
+@keyframes sliceBurst{
+    0%  {opacity:1;transform:translate(-50%,-50%) scale(.4);}
+    100%{opacity:0;transform:translate(-50%,-50%) scale(2.2);}
+}
+.slice-ring{
+    width:52px;height:52px;border-radius:50%;
+    border:2.5px solid #4ade80;
+}
+
+/* ── FOOD: HALF ─────────────────────────────────────── */
+.half{
+    position:absolute;pointer-events:none;
+    font-size:36px;line-height:1;
+    z-index:4;
+    animation:halfFly var(--dur) ease-in forwards;
+}
+@keyframes halfFly{
+    0%  {opacity:1;transform:translate(0,0) rotate(0deg) scale(1);}
+    100%{opacity:0;transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(.5);}
+}
+
+/* ── RESULT OVERLAY ─────────────────────────────────── */
+#result{
+    display:none;position:absolute;inset:0;
+    background:rgba(6,9,18,.93);
+    backdrop-filter:blur(8px);
+    align-items:center;justify-content:center;flex-direction:column;gap:8px;
+    z-index:99;
+}
+#result.visible{
+    display:flex;
+    animation:resultIn .28s ease-out;
+}
+@keyframes resultIn{from{opacity:0;}to{opacity:1;}}
+.res-emoji{font-size:54px;line-height:1;}
+.res-title{
+    font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;margin-top:4px;
+}
+.res-title.win {color:#4ade80;}
+.res-title.lose{color:#f87171;}
+.res-sub{font-size:12px;color:rgba(255,255,255,.38);margin-bottom:6px;}
+#retry-btn{
+    padding:9px 30px;border-radius:8px;
+    border:1px solid rgba(248,113,113,.35);
+    background:rgba(248,113,113,.12);
+    color:#fca5a5;
+    font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;letter-spacing:.4px;
+    cursor:pointer;transition:background .18s,transform .1s;
+    display:none;
+}
+#retry-btn:hover {background:rgba(248,113,113,.25);transform:scale(1.03);}
+#retry-btn:active{transform:scale(.97);}
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+    <div class="panel" id="panel">
+
+        <div class="hdr">
+            <div class="hdr-icon"  id="hdr-icon"></div>
+            <div class="hdr-info">
+                <h2 id="hdr-title"></h2>
+                <p  id="hdr-sub"></p>
+            </div>
+            <div class="lives" id="lives"></div>
+            <button id="esc-btn">ESC</button>
+        </div>
+
+        <div class="game-area" id="game-area">
+            <canvas id="slash-canvas"></canvas>
+        </div>
+
+        <div class="hud">
+            <div class="hud-seg">
+                <div class="hud-lbl">Thời gian</div>
+                <div class="bar-track">
+                    <div class="bar-fill bar-time" id="bar-time" style="width:100%"></div>
+                </div>
+            </div>
+            <div class="hud-seg">
+                <div class="hud-lbl">Tiến độ</div>
+                <div class="bar-track">
+                    <div class="bar-fill bar-score" id="bar-score" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="score-txt" id="score-txt">0/6</div>
+        </div>
+
+        <div id="result">
+            <div class="res-emoji" id="res-emoji"></div>
+            <div class="res-title" id="res-title"></div>
+            <div class="res-sub"   id="res-sub"></div>
+            <button id="retry-btn">Thử Lại</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════
+var REQUIRED      = 5
+var MAX_LIVES     = 3
+
+
+// ═══════════════════════════════════════════════════════
+// SOUND ENGINE (Web Audio API - không cần file)
+// ═══════════════════════════════════════════════════════
+var audioCtx = null
+function getAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+    return audioCtx
+}
+
+function playHit() {
+    try {
+        var ctx = getAudio()
+        var osc = ctx.createOscillator()
+        var gain = ctx.createGain()
+        osc.connect(gain); gain.connect(ctx.destination)
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(880, ctx.currentTime)
+        osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.06)
+        gain.gain.setValueAtTime(0.35, ctx.currentTime)
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12)
+        osc.start(ctx.currentTime)
+        osc.stop(ctx.currentTime + 0.12)
+    } catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════
+// GLOBALS
+// ═══════════════════════════════════════════════════════
+var currentType  = null
+var score        = 0
+var lives        = MAX_LIVES
+var gameActive   = false
+var timerRafId   = null
+var physRafId    = null
+var trailRafId   = null
+var gameStartTs  = 0
+var spawnTimerId = null
+
+// ═══════════════════════════════════════════════════════
+// NUI BRIDGE
+// ═══════════════════════════════════════════════════════
+window.addEventListener('message', function(e) {
+    if (e.data.action === 'show') initGame(e.data.itemType)
+    if (e.data.action === 'hide') doHide()
+})
+
+// Debug: log all NUI messages
+window.addEventListener('message', function(e) {
+    console.log('[DERP-minigame] message received:', JSON.stringify(e.data))
+})
+
+function sendResult(success) {
+    fetch('https://DERP-business/minigameResult', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ success: success })
+    }).catch(function(){})
+}
+
+// ESC to cancel
+function cancelGame() {
+    doHide()
+    sendResult(false)
+}
+
+document.getElementById('esc-btn').addEventListener('click', function() {
+    if (!gameActive) return
+    cancelGame()
+})
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && gameActive) cancelGame()
+})
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function initGame(type) {
+    currentType = type
+    score       = 0
+    lives       = MAX_LIVES
+    gameActive  = true
+    gameStartTs = performance.now()
+    timerPct    = 1.0
+
+    stopAll()
+
+    var panel   = document.getElementById('panel')
+    var wrapper = document.getElementById('wrapper')
+    var result  = document.getElementById('result')
+    var area    = document.getElementById('game-area')
+
+    result.classList.remove('visible')
+    wrapper.classList.add('visible')
+    panel.className = 'panel ' + type
+
+    updateLives()
+    updateScore()
+
+    var barTime = document.getElementById('bar-time')
+    barTime.style.width      = '100%'
+    barTime.style.background = 'linear-gradient(90deg,#ff6a00,#ff9500)'
+
+    // Clear game area children except canvas
+    var toRemove = []
+    for (var i = 0; i < area.children.length; i++) {
+        if (area.children[i].id !== 'slash-canvas') toRemove.push(area.children[i])
+    }
+    toRemove.forEach(function(el){ el.remove() })
+
+    // Reset canvas
+    var cv = document.getElementById('slash-canvas')
+    cv.getContext('2d').clearRect(0, 0, cv.width, cv.height)
+
+    if (type === 'drink') {
+        document.getElementById('hdr-icon').textContent  = '🥤'
+        document.getElementById('hdr-title').textContent = 'Pha Chế Nước'
+        document.getElementById('hdr-sub').textContent   = 'Giữ chuột trái + kéo để di chuyển ly hứng đá!'
+        area.className = 'game-area drink-bg'
+        startDrink(area)
+    } else {
+        document.getElementById('hdr-icon').textContent  = '🔪'
+        document.getElementById('hdr-title').textContent = 'Thái Rau Củ'
+        document.getElementById('hdr-sub').textContent   = 'Giữ chuột + chém qua rau củ!'
+        area.className = 'game-area food-bg'
+        startFood(area)
+    }
+
+    startTimerLoop()
+}
+
+function doHide() {
+    gameActive = false
+    stopAll()
+    document.getElementById('wrapper').classList.remove('visible')
+    clearGameArea()
+}
+
+function stopAll() {
+    if (timerRafId)   { cancelAnimationFrame(timerRafId);  timerRafId  = null }
+    if (physRafId)    { cancelAnimationFrame(physRafId);   physRafId   = null }
+    if (trailRafId)   { cancelAnimationFrame(trailRafId);  trailRafId  = null }
+    if (spawnTimerId) { clearInterval(spawnTimerId);        spawnTimerId = null }
+}
+
+function clearGameArea() {
+    var area = document.getElementById('game-area')
+    var toRemove = []
+    for (var i = 0; i < area.children.length; i++) {
+        if (area.children[i].id !== 'slash-canvas') toRemove.push(area.children[i])
+    }
+    toRemove.forEach(function(el){ el.remove() })
+    var cv = document.getElementById('slash-canvas')
+    if (cv) cv.getContext('2d').clearRect(0, 0, cv.width, cv.height)
+}
+
+// ═══════════════════════════════════════════════════════
+// TIMER LOOP
+// ═══════════════════════════════════════════════════════
+// timerPct: 0.0 -> 1.0, giảm dần theo tốc độ động
+var timerPct = 1.0
+
+function startTimerLoop() {
+    var bar  = document.getElementById('bar-time')
+    var last = performance.now()
+
+    function tick(now) {
+        if (!gameActive) return
+        var dt = (now - last) / 1000   // seconds since last frame
+        last  = now
+
+        // Tốc độ tăng theo score: 0 score = 4s full bar, 6 score = 1s full bar
+        var speed
+
+        if (currentType === 'drink') {
+            // Drink giữ theo yêu cầu của bạn
+            speed = 0.04 + (score / REQUIRED) * 0.30
+        } else {
+            // Food nhanh hơn
+            speed = 0.06 + (score / REQUIRED) * 0.40
+        }
+
+        timerPct = Math.max(0, timerPct - speed * dt)
+
+        bar.style.width = (timerPct * 100).toFixed(1) + '%'
+        if      (timerPct > .50) bar.style.background = 'linear-gradient(90deg,#ff6a00,#ff9500)'
+        else if (timerPct > .25) bar.style.background = 'linear-gradient(90deg,#ff3d00,#ff6a00)'
+        else                     bar.style.background = 'linear-gradient(90deg,#ff0000,#ff3d00)'
+
+        if (timerPct <= 0) { endGame(score >= REQUIRED); return }
+        timerRafId = requestAnimationFrame(tick)
+    }
+    timerRafId = requestAnimationFrame(tick)
+}
+
+// ═══════════════════════════════════════════════════════
+// SCORE / LIVES
+// ═══════════════════════════════════════════════════════
+function addScore() {
+    if (!gameActive) return
+    playHit()
+    score++
+    updateScore()
+    if (score >= REQUIRED) endGame(true)
+}
+
+function loseLife() {
+    if (!gameActive) return
+    lives--
+    updateLives()
+    if (lives <= 0) endGame(false)
+}
+
+function updateScore() {
+    document.getElementById('bar-score').style.width = (score / REQUIRED * 100) + '%'
+    document.getElementById('score-txt').textContent  = score + '/' + REQUIRED
+}
+
+function updateLives() {
+    var el = document.getElementById('lives')
+    el.innerHTML = ''
+    for (var i = 0; i < MAX_LIVES; i++) {
+        var h = document.createElement('span')
+        h.className   = 'heart' + (i >= lives ? ' lost' : '')
+        h.textContent = '❤️'
+        el.appendChild(h)
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// END GAME
+// ═══════════════════════════════════════════════════════
+function endGame(success) {
+    if (!gameActive) return
+    gameActive = false
+    stopAll()
+
+    if (success) {
+            doHide()
+        sendResult(true)
+        return
+    }
+
+    var el = document.getElementById('result')
+    el.classList.add('visible')
+
+    if (false) { // placeholder
+    } else {
+        document.getElementById('res-emoji').textContent    = '❌'
+        document.getElementById('res-title').textContent    = 'Thất Bại!'
+        document.getElementById('res-title').className      = 'res-title lose'
+        document.getElementById('res-sub').textContent      = 'Không trừ nguyên liệu — thử lại?'
+        var btn = document.getElementById('retry-btn')
+        btn.style.display = 'block'
+        btn.onclick = function() {
+            document.getElementById('result').classList.remove('visible')
+            initGame(currentType)
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// DRINK MINIGAME
+// Giữ chuột trái + kéo để di chuyển ly
+// ═══════════════════════════════════════════════════════
+function startDrink(area) {
+    var W = 1000, H = 640
+
+    // Build cup
+    var cupWrap = document.createElement('div')
+    cupWrap.id = 'cup-wrap'
+    cupWrap.innerHTML =
+        '<div class="cup-straw"></div>' +
+        '<div class="cup-rim"></div>' +
+        '<div class="cup-body">' +
+            '<div class="cup-liquid" id="cup-liquid"></div>' +
+            '<div class="cup-shine"></div>' +
+        '</div>'
+    area.appendChild(cupWrap)
+
+    // Hint label
+    var hint = document.createElement('div')
+    hint.id = 'grab-hint'
+    hint.textContent = '← Giữ chuột trái để cầm ly →'
+    area.appendChild(hint)
+
+    var cupX      = W / 2
+    var isHeld    = false
+    window._iceList = []
+    var iceList   = window._iceList
+    var caught    = 0
+    var spawnGap  = 1100
+    var lastSpawn = 0
+
+    // Position cup initially
+    cupWrap.style.left = cupX + 'px'
+
+    // ── Mouse events on area ──
+    area.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return
+        var r    = area.getBoundingClientRect()
+        var mx   = e.clientX - r.left
+        var my   = e.clientY - r.top
+        // Accept grab anywhere in bottom half or near cup
+        if (my > H * 0.35) {
+            isHeld = true
+            hint.style.opacity = '0'
+            e.preventDefault()
+        }
+    })
+
+    document.addEventListener('mouseup', function(e) {
+        if (e.button !== 0) return
+        isHeld = false
+        hint.style.opacity = '1'
+    })
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isHeld || !gameActive) return
+        var r = area.getBoundingClientRect()
+        var mx = e.clientX - r.left
+        cupX = Math.min(Math.max(mx, 36), W - 36)
+        cupWrap.style.left = cupX + 'px'
+    })
+
+    // ── Spawn ice ──
+    function spawnIce() {
+        var el = document.createElement('div')
+        el.className = 'ice'
+        el.innerHTML = '<div class="ice-inner"></div>'
+        var startX = Math.random() * (W - 48) + 14
+        el.style.left = startX + 'px'
+        el.style.top  = '-32px'
+        el.style.transform = 'rotate(' + (Math.random() * 30 - 15) + 'deg)'
+        area.appendChild(el)
+        iceList.push({
+            el:  el,
+            x:   startX + 14,      // center x
+            y:   -32,
+            vy:  1.8 + Math.random() * 2.2,
+            vx:  (Math.random() - .5) * 1.2
+        })
+    }
+
+    // ── Splash effect ──
+    function makeSplash(x, y) {
+        for (var i = 0; i < 7; i++) {
+            var s = document.createElement('div')
+            s.className = 'splash'
+            var angle = (Math.PI * 2 / 7) * i - Math.PI / 2
+            s.style.setProperty('--tx', (Math.cos(angle) * (14 + Math.random()*14)).toFixed(1) + 'px')
+            s.style.setProperty('--ty', (Math.sin(angle) * (10 + Math.random()*10)).toFixed(1) + 'px')
+            s.style.left = (x - 3) + 'px'
+            s.style.top  = (y - 3) + 'px'
+            area.appendChild(s)
+            ;(function(el){ setTimeout(function(){ el.remove() }, 580) })(s)
+        }
+    }
+
+    // ── Physics loop ──
+    function loop(now) {
+        if (!gameActive) {
+            iceList.forEach(function(ic){ ic.el.remove() })
+            iceList = []
+            return
+        }
+
+        // Spawn
+        if (now - lastSpawn > spawnGap) {
+            spawnIce()
+            lastSpawn = now
+            spawnGap  = Math.max(650, spawnGap - 18)
+        }
+
+        var cupTop  = H - 76          // top edge of cup opening
+        var cupLeft = cupX - 32
+        var cupRight= cupX + 32
+
+        var stillAlive = []
+        for (var i = 0; i < iceList.length; i++) {
+            var ic = iceList[i]
+            ic.vy += 0.10             // gentle gravity
+            ic.y  += ic.vy
+            ic.x  += ic.vx
+            ic.el.style.top  = ic.y + 'px'
+            ic.el.style.left = (ic.x - 14) + 'px'
+
+            // catch zone: ice bottom enters cup top, ice center within cup width
+            if (ic.y + 28 >= cupTop && ic.y + 28 <= cupTop + 20) {
+                if (ic.x >= cupLeft && ic.x <= cupRight) {
+                    ic.el.remove()
+                    caught++
+                    var liq = document.getElementById('cup-liquid')
+                    if (liq) liq.style.height = Math.min(caught * 7, 48) + 'px'
+                    makeSplash(ic.x, cupTop)
+                    addScore()
+                    continue
+                }
+            }
+
+            // missed: fell off screen
+            if (ic.y > H + 10) {
+                ic.el.remove()
+                loseLife()
+                continue
+            }
+
+            stillAlive.push(ic)
+        }
+        iceList = stillAlive
+
+        if (gameActive) physRafId = requestAnimationFrame(loop)
+    }
+
+    physRafId = requestAnimationFrame(loop)
+}
+
+// ═══════════════════════════════════════════════════════
+// FOOD MINIGAME — Fruit Ninja slash
+// ═══════════════════════════════════════════════════════
+var VEGGIES = ['🥕','🥦','🧅','🥬','🍅','🌽','🫑','🥒','🍆','🥑']
+
+function startFood(area) {
+    var W = 1000, H = 640
+
+    var cv  = document.getElementById('slash-canvas')
+    cv.width  = W
+    cv.height = H
+    var ctx = cv.getContext('2d')
+
+    window._veggieList = []
+    var veggies    = window._veggieList
+    var slashPts   = []
+    var isSlashing = false
+    var spawnGap   = 900
+    var lastSpawn  = 0
+
+    function spawnVeggie() {
+        var el = document.createElement('div')
+        el.className = 'veggie'
+        el.textContent = VEGGIES[Math.floor(Math.random() * VEGGIES.length)]
+        var x0  = Math.random() * (W - 80) + 40
+        var vy0 = -(11 + Math.random() * 5)
+        var vx0 = (Math.random() - .5) * 3.2
+        var rotV = (Math.random() - .5) * 5
+        el.style.left = x0 + 'px'
+        el.style.top  = (H + 10) + 'px'
+        area.appendChild(el)
+        veggies.push({ el: el, x: x0, y: H + 10, vy: vy0, vx: vx0, rot: 0, rotV: rotV, sliced: false })
+    }
+
+    function physLoop(now) {
+        if (!gameActive) {
+            veggies.forEach(function(v){ v.el.remove() })
+            veggies = []
+            return
+        }
+
+        if (now - lastSpawn > spawnGap) {
+            spawnVeggie()
+            lastSpawn = now
+            spawnGap  = Math.max(600, spawnGap - 10)
+        }
+
+        var alive = []
+        for (var i = 0; i < veggies.length; i++) {
+            var v = veggies[i]
+            if (v.sliced) continue
+            v.vy  += 0.22
+            v.y   += v.vy
+            v.x   += v.vx
+            v.rot += v.rotV
+            v.el.style.top       = v.y + 'px'
+            v.el.style.left      = v.x + 'px'
+            v.el.style.transform = 'rotate(' + v.rot + 'deg)'
+            if (v.y > H + 60) {
+                v.el.remove()
+                loseLife()
+                continue
+            }
+            alive.push(v)
+        }
+        veggies = alive
+
+        if (gameActive) physRafId = requestAnimationFrame(physLoop)
+    }
+    physRafId = requestAnimationFrame(physLoop)
+
+    // Slash trail
+    function drawTrail() {
+        ctx.clearRect(0, 0, W, H)
+        if (slashPts.length >= 2) {
+            ctx.beginPath()
+            ctx.moveTo(slashPts[0].x, slashPts[0].y)
+            for (var i = 1; i < slashPts.length; i++) {
+                ctx.lineTo(slashPts[i].x, slashPts[i].y)
+            }
+            var g = ctx.createLinearGradient(
+                slashPts[0].x, slashPts[0].y,
+                slashPts[slashPts.length-1].x, slashPts[slashPts.length-1].y
+            )
+            g.addColorStop(0,   'rgba(74,222,128,0)')
+            g.addColorStop(.5,  'rgba(134,239,172,.75)')
+            g.addColorStop(1,   'rgba(255,255,255,.95)')
+            ctx.strokeStyle = g
+            ctx.lineWidth   = 3.5
+            ctx.lineCap     = 'round'
+            ctx.lineJoin    = 'round'
+            ctx.stroke()
+            slashPts = slashPts.slice(-20)
+        }
+        trailRafId = requestAnimationFrame(drawTrail)
+    }
+    trailRafId = requestAnimationFrame(drawTrail)
+
+    // Slice veggie
+    function sliceAt(x, y) {
+        for (var i = 0; i < veggies.length; i++) {
+            var v = veggies[i]
+            if (v.sliced) continue
+            var cx = v.x + 20, cy = v.y + 20
+            if (Math.hypot(x - cx, y - cy) < 32) {
+                v.sliced = true
+                v.el.remove()
+
+                // Burst ring
+                var burst = document.createElement('div')
+                burst.className = 'slice-burst'
+                burst.style.left = x + 'px'
+                burst.style.top  = y + 'px'
+                burst.innerHTML  = '<div class="slice-ring"></div>'
+                area.appendChild(burst)
+                ;(function(el){ setTimeout(function(){ el.remove() }, 450) })(burst)
+
+                // Two halves
+                for (var s = -1; s <= 1; s += 2) {
+                    var h = document.createElement('div')
+                    h.className   = 'half'
+                    h.textContent = v.el.textContent
+                    h.style.left  = v.x + 'px'
+                    h.style.top   = v.y + 'px'
+                    var dur = (.45 + Math.random() * .3).toFixed(2) + 's'
+                    h.style.setProperty('--dur', dur)
+                    h.style.setProperty('--tx',  (s * (28 + Math.random()*18)) + 'px')
+                    h.style.setProperty('--ty',  (-35 - Math.random()*25) + 'px')
+                    h.style.setProperty('--rot', (s * (70 + Math.random()*50)) + 'deg')
+                    area.appendChild(h)
+                    ;(function(el, d){ setTimeout(function(){ el.remove() }, parseFloat(d)*1000+60) })(h, dur)
+                }
+
+                addScore()
+            }
+        }
+    }
+
+    area.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return
+        isSlashing = true
+        slashPts   = []
+        var r = area.getBoundingClientRect()
+        slashPts.push({ x: e.clientX - r.left, y: e.clientY - r.top })
+    })
+
+    area.addEventListener('mousemove', function(e) {
+        if (!isSlashing || !gameActive) return
+        var r = area.getBoundingClientRect()
+        var px = e.clientX - r.left
+        var py = e.clientY - r.top
+        slashPts.push({ x: px, y: py })
+        sliceAt(px, py)
+    })
+
+    document.addEventListener('mouseup', function() {
+        isSlashing = false
+        slashPts   = []
+    })
+}
+</script>
+</body>
+</html>

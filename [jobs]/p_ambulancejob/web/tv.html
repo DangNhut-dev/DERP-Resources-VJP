@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet">
+    <title>TV</title>
+</head>
+<style>
+    :root {
+        font-size: min(.83333333vw, 1.8009478673vh) !important;
+    }
+
+    * {
+        box-sizing: border-box !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow: hidden;
+        color: #fff;
+    }
+
+    .pagerWrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(22, 27, 37);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 6dvh;
+    }
+
+    .pagerHeader {
+        width: 100%;
+        background-color: #00000068;
+        padding: 1rem;
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; top: 0; left: 0;
+    }
+
+    .pagerInfo span {
+        text-shadow: 0 0 .1rem #000;
+    }
+
+    .alert span {
+        animation: marquee 5s linear infinite;
+    }
+
+    .pagerInfo {
+        display: flex; flex-direction: column; gap: 4rem; align-items: center;
+        margin-top: 1rem; font-size: 6rem;
+    }
+
+    .pagerFooter {
+        width: 100%;
+        background-color: red;
+        padding: 1rem;
+        display: flex; align-items: center; justify-content: center;
+        position: absolute; bottom: 0; left: 0;
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(400%);
+        }
+
+        100% {
+            transform: translateX(-400%);
+        }
+    }
+</style>
+<body>
+    <div class="pagerWrapper">
+        <div class="pagerHeader">
+            <span>TERMINAL</span>
+        </div>
+        <div class="pagerInfo">
+            <span>NAME: <b>N/A</b></span>
+            <span>AGE: <b>N/A</b></span>
+            <span>GENDER: <b>N/A</b></span>
+            <span>CONDITION: <b>N/A</b></span>
+        </div>
+        <div class="pagerFooter">
+            <span>ETA: <b>N/A</b></span>
+        </div>
+    </div>
+</body>
+<script>
+    let pagerData = null;
+    const pageInfo = document.querySelector('.pagerInfo');
+    const pagerFooter = document.querySelector('.pagerFooter');
+    const pagerHeader = document.querySelector('.pagerHeader');
+
+    window.addEventListener("message", (event) => {
+        const data = event.data;
+        switch (data.action) {
+            case "setTerminal":
+                pagerData = data.value.data;
+                const locales = data.value.locales;
+                if (pagerData) {
+                    pageInfo.innerHTML = `
+                    <span>${locales?.name || 'NAME'}: <b>${pagerData.name || locales?.ui_na || 'N/A'}</b></span>
+                    <span>${locales?.age || 'AGE'}: <b>${pagerData.age || locales?.ui_na || 'N/A'}</b></span>
+                    <span>${locales?.gender || 'GENDER'}: <b>${pagerData.gender || locales?.ui_na || 'N/A'}</b></span>
+                    <span>${locales?.condition || 'CONDITION'}: <b>${pagerData.condition || locales?.ui_na || 'N/A'}</b></span>
+                    `;
+                    pagerFooter.innerHTML = `
+                    <span>${locales?.eta || 'ETA'}: <b>${pagerData.eta + ` ${locales?.minutes || 'minutes'}` || locales?.ui_na || 'N/A'}</b></span>
+                    `;
+                    pagerHeader.innerHTML = `
+                    <span>${locales?.incoming_patient || 'INCOMING PATIENT!'}</span>
+                    `;
+                    pagerHeader.classList.add('alert');
+                } else {
+                    pageInfo.innerHTML = `
+                    <span>${locales?.name || 'NAME'}: <b>${locales?.ui_na || 'N/A'}</b></span>
+                    <span>${locales?.age || 'AGE'}: <b>${locales?.ui_na || 'N/A'}</b></span>
+                    <span>${locales?.gender || 'GENDER'}: <b>${locales?.ui_na || 'N/A'}</b></span>
+                    <span>${locales?.condition || 'CONDITION'}: <b>${locales?.ui_na || 'N/A'}</b></span>
+                    `;
+                    pagerFooter.innerHTML = `
+                    <span>${locales?.eta || 'ETA'}: <b>${locales?.ui_na || 'N/A'}</b></span>
+                    `;
+                    pagerHeader.innerHTML = `
+                    <span>${locales?.terminal || 'TERMINAL'}</span>
+                    `;
+                    pagerHeader.classList.remove('alert');
+                }
+                break;
+        }
+    })
+</script>
+</html>

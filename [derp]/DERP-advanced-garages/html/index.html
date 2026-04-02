@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DERP Garages</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="preview-overlay" style="display: none;">
+        <div class="preview-info">
+            <div class="preview-header-row">
+                <div class="preview-name-section">
+                    <div class="vehicle-name-container">
+                        <div>
+                            <h2 id="previewVehicleName">VEHICLE NAME</h2>
+                            <button class="edit-name-btn" id="editNameBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="edit-name-input-container" id="editNameContainer" style="display: none;">
+                            <input type="text" id="editNameInput" maxlength="50" placeholder="Nhập tên xe...">
+                            <button class="edit-save-btn" id="saveNameBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </button>
+                            <button class="edit-cancel-btn" id="cancelNameBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="previewVehiclePlate">PLATE</p>
+                    <p class="vehicle-counter" id="vehicleCounter">1 / 1</p>
+                    
+                    <div class="impound-info" id="impoundInfo" style="display: none;">
+                        <div class="impound-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            XE BỊ GIAM
+                        </div>
+                        <div class="impound-details">
+                            <div class="impound-row">
+                                <span class="impound-label">Giá:</span>
+                                <span class="impound-value price" id="impoundPrice">$0</span>
+                            </div>
+                            <div class="impound-row">
+                                <span class="impound-label">Thời gian:</span>
+                                <span class="impound-value time" id="impoundTime">0 phút</span>
+                            </div>
+                            <div class="impound-row full-width">
+                                <span class="impound-label">Lý do:</span>
+                                <span class="impound-value" id="impoundReason">-</span>
+                            </div>
+                            <div class="impound-row full-width">
+                                <span class="impound-label">Người giam:</span>
+                                <span class="impound-value" id="impoundBy">-</span>
+                            </div>
+                        </div>
+                        <div class="impound-progress">
+                            <div class="impound-progress-bar" id="impoundProgressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preview-stats-section">
+                    <div class="preview-stat">
+                        <div class="preview-stat-header">
+                            <svg class="preview-stat-icon fuel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="3" y1="22" x2="15" y2="22"></line>
+                                <line x1="4" y1="9" x2="14" y2="9"></line>
+                                <path d="M14 22V4a2 2 0 00-2-2H6a2 2 0 00-2 2v18"></path>
+                                <path d="M14 13h2a2 2 0 012 2v2a2 2 0 002 2 2 2 0 002-2V9.83a2 2 0 00-.59-1.42L18 5"></path>
+                            </svg>
+                            <span class="preview-stat-label">Xăng</span>
+                            <span class="preview-stat-value" id="previewFuel">0%</span>
+                        </div>
+                        <div class="preview-progress-bar">
+                            <div class="preview-progress-fill fuel" id="previewFuelBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-stat">
+                        <div class="preview-stat-header">
+                            <svg class="preview-stat-icon engine" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                                <circle cx="12" cy="12" r="2"></circle>
+                                <path d="M6 12h.01M18 12h.01"></path>
+                            </svg>
+                            <span class="preview-stat-label">Động cơ</span>
+                            <span class="preview-stat-value" id="previewEngine">0%</span>
+                        </div>
+                        <div class="preview-progress-bar">
+                            <div class="preview-progress-fill engine" id="previewEngineBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-stat">
+                        <div class="preview-stat-header">
+                            <svg class="preview-stat-icon body" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                                <circle cx="7" cy="17" r="2"></circle>
+                                <circle cx="17" cy="17" r="2"></circle>
+                            </svg>
+                            <span class="preview-stat-label">Thân vỏ</span>
+                            <span class="preview-stat-value" id="previewBody">0%</span>
+                        </div>
+                        <div class="preview-progress-bar">
+                            <div class="preview-progress-fill body" id="previewBodyBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="preview-nav-btn prev-btn" id="prevVehicleBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+
+        <button class="preview-nav-btn next-btn" id="nextVehicleBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+
+        <div class="preview-bottom-controls">
+            <button class="preview-action-btn spawn-action-btn" id="spawnActionBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+                <span id="spawnBtnText">Lấy xe</span>
+            </button>
+        </div>
+        
+        <div class="preview-hints">
+            <div class="hint-item">
+                <kbd>◀</kbd><kbd>▶</kbd> Chuyển xe
+            </div>
+            <div class="hint-item">
+                <kbd>ESC</kbd> Đóng
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-panel" style="display: none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                        <circle cx="7" cy="17" r="2"></circle>
+                        <circle cx="17" cy="17" r="2"></circle>
+                    </svg>
+                    Quản Lý Xe - Admin
+                </h1>
+                <button class="close-btn" id="closeAdminBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="admin-filters">
+                <div class="search-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo biển số, tên xe, chủ xe...">
+                </div>
+
+                <div class="filter-group">
+                    <select id="garageFilter">
+                        <option value="">Tất cả garage</option>
+                    </select>
+
+                    <select id="stateFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="0">Đang spawn</option>
+                        <option value="1">Trong garage</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="vehicle-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                            <circle cx="7" cy="17" r="2"></circle>
+                            <circle cx="17" cy="17" r="2"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Tổng xe</span>
+                        <span class="stat-value" id="totalVehicles">0</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon spawned">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Đang spawn</span>
+                        <span class="stat-value" id="spawnedVehicles">0</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon stored">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Trong garage</span>
+                        <span class="stat-value" id="storedVehicles">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vehicle-list" id="vehicleList"></div>
+        </div>
+    </div>
+
+    <div id="moveModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Chuyển xe về garage</h3>
+            <p class="modal-vehicle-info" id="modalVehicleInfo"></p>
+            
+            <select id="targetGarageSelect">
+                <option value="">Chọn garage...</option>
+            </select>
+
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="cancelMoveBtn">Hủy</button>
+                <button class="modal-btn confirm-btn" id="confirmMoveBtn">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

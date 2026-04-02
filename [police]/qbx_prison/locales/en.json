@@ -1,0 +1,50 @@
+{
+  "error": {
+    "cancelled": "Đã hủy..",
+    "didnt_work": "Không thành công..",
+    "do_some_work": "Hãy lao động để giảm án, công việc hiện tại: %s",
+    "door_open": "Cửa đã mở rồi..",
+    "emty_box": "Hộp trống rỗng..",
+    "escaped": "Mày đã trốn thoát... Cút đi cho nhanh!",
+    "injail": "Mày bị giam %s tháng..",
+    "item_missing": "Mày thiếu vật phẩm..",
+    "missing_something": "Có vẻ mày đang thiếu gì đó...",
+    "not_enough_police": "Không đủ cảnh sát..",
+    "security_activated": "An ninh cấp cao nhất đang kích hoạt, ở yên trong khu giam!"
+  },
+  "info": {
+    "canteen_blip": "Căng tin",
+    "cells_blip": "Phòng giam",
+    "connecting_device": "Đang kết nối thiết bị",
+    "freedom_blip": "Quầy tiếp nhận",
+    "job_interaction": "[E] Công việc điện",
+    "job_interaction_target": "Làm việc %s",
+    "lost_job": "Mày đã thất nghiệp",
+    "police_alert_description": "Vượt ngục",
+    "police_alert_title": "Cuộc gọi mới",
+    "received_property": "Mày đã nhận lại đồ đạc..",
+    "seized_property": "Đồ đạc của mày đã bị tịch thu, mày sẽ nhận lại khi hết hạn giam..",
+    "target_canteen_option": "Lấy đồ ăn",
+    "target_freedom_option": "Kiểm tra thời gian",
+    "check_time": "[E] Kiểm tra thời gian",
+    "open_canteen": "[E] Mở căng tin",
+    "system_lockdown": "PHONG TỎA HỆ THỐNG",
+    "system_breach": "HỆ THỐNG BỊ XÂM NHẬP",
+    "timeleft": "Mày còn phải ở... %s tháng",
+    "work_blip": "Lao động cải tạo",
+    "working_electricity": "Đang nối dây điện"
+  },
+  "success": {
+    "found_item": "Mày tìm thấy %s..",
+    "free_": "Mày được tự do! Tận hưởng đi! :)",
+    "time_cut": "Mày đã lao động giảm được một ít thời gian giam.",
+    "timesup": "Đã hết hạn giam! Đến quầy tiếp nhận để làm thủ tục ra tù",
+    "and_here_we_go_again": "Lại vào đây nữa rồi...",
+    "back_to_square_one": "Quay lại vạch xuất phát rồi :(",
+    "ready_to_have_some_fun": "Chào mày, sẵn sàng vui vẻ với quản giáo chưa?",
+    "find_a_cozy_bed": "Tìm cái giường ấm áp đi, sẽ ở đây lâu lắm đấy",
+    "friendly_neighborhood_troublemaker": "Lại là tay gây rối quen thuộc",
+    "back_to_the_ol_ball_and_chain": "Lại quay về với xiềng xích cũ",
+    "insert_sad_face": "Buồn ghê ta"
+  }
+}
