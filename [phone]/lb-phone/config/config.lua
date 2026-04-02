@@ -202,24 +202,9 @@ Config.Companies.Services = {
         }
     }, 
     {
-        job = "redlinecustom",
-        name = "Red Line Custom",
-        icon = "https://cdn-icons-png.flaticon.com/128/10281/10281554.png",
-        canCall = true,                 -- if true, players can call the company
-        canMessage = true,              -- if true, players can message the company
-        bossRanks = { "boss"}, -- ranks that can manage the company
-        location = {
-            name = "LS Customs",
-            coords = {
-                x = -575.56,
-                y = -933.78
-            }
-        }
-    }, 
-    {
         job = "cardealer",
         name = "Baby Blue Cars",
-        icon = "https://cdn.discordapp.com/attachments/1416095232168038541/1423533726679171162/babybluecarslogo.png?ex=68e0a898&is=68df5718&hm=00b137de97bc4c6421ef08e0a7d4f7311e2f68d738ef66f9d3ee1c8ef4d57007&",
+        icon = "https://cdn.discordapp.com/attachments/1416095232168038541/1423533726679171162/babybluecarslogo.png?ex=69cff0d8&is=69ce9f58&hm=11387a9f5fb909a77c9db7dee1642298564901e854c13694b1ab107697db55c3&",
         canCall = true,                 -- if true, players can call the company
         canMessage = true,              -- if true, players can message the company
         bossRanks = { "boss" }, -- ranks that can manage the company
@@ -312,15 +297,15 @@ Config.CellTowers.Range = {
 
 Config.Locations = { -- Locations that'll appear in the maps app.
     {
-        position = vector2(428.9, -984.5),
+        position = vector2(103.28, -400.63),
         name = "LSPD",
         description = "Los Santos Police Department",
         icon = "https://cdn-icons-png.flaticon.com/512/7211/7211100.png",
     },
     {
-        position = vector2(304.2, -587.0),
-        name = "Pillbox",
-        description = "Pillbox Medical Hospital",
+        position = vector2(-502.94, -955.29),
+        name = "Ambulance",
+        description = "Medical Hospital",
         icon = "https://cdn-icons-png.flaticon.com/128/1032/1032989.png",
     },
 }
