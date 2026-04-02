@@ -291,15 +291,15 @@ Config.UploadWhitelistedDomains = { -- domains that are allowed to upload images
 Config.ShowLocationsInDispatch = true -- show locations in the police & ambulance dispatches?
 Config.Locations = { -- Locations that'll appear in the maps app
     {
-        position = vector2(428.9, -984.5),
+        position = vector2(103.28, -400.63),
         name = "LSPD",
         description = "Los Santos Police Department",
         icon = "https://cdn-icons-png.flaticon.com/512/7211/7211100.png",
     },
     {
-        position = vector2(304.2, -587.0),
-        name = "Pillbox",
-        description = "Pillbox Medical Hospital",
+        position = vector2(-502.94, -955.29),
+        name = "Ambulance",
+        description = "Medical Hospital",
         icon = "https://cdn-icons-png.flaticon.com/128/1032/1032989.png",
     },
 }
