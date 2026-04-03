@@ -168,23 +168,39 @@ end
 --     print('Signed: ' .. (wep > 2147483647 and wep - 4294967296 or wep))
 -- end, false)
 
-Citizen.CreateThread(function()
-    for i = 1, 12 do
-        EnableDispatchService(i, false)
-    end
-    SetMaxWantedLevel(0)
+-- Citizen.CreateThread(function()
+--     for i = 1, 12 do
+--         EnableDispatchService(i, false)
+--     end
+--     SetMaxWantedLevel(0)
 
-    SetGarbageTrucks(false)                       -- Xe rác ngẫu nhiên [true/false]
-    SetRandomBoats(false)                         -- Thuyền ngẫu nhiên [true/false]
-    SetCreateRandomCops(false)                    -- Cops ngẫu nhiên (xe / ped) [true/false]
-    SetCreateRandomCopsNotOnScenarios(false)      -- Cops không theo kịch bản [true/false]
-    SetCreateRandomCopsOnScenarios(false)         -- Cops theo kịch bản [true/false]
+--     SetGarbageTrucks(false)                       -- Xe rác ngẫu nhiên [true/false]
+--     SetRandomBoats(false)                         -- Thuyền ngẫu nhiên [true/false]
+--     SetCreateRandomCops(false)                    -- Cops ngẫu nhiên (xe / ped) [true/false]
+--     SetCreateRandomCopsNotOnScenarios(false)      -- Cops không theo kịch bản [true/false]
+--     SetCreateRandomCopsOnScenarios(false)         -- Cops theo kịch bản [true/false]
 
-    while true do
-        Citizen.Wait(1500)
-        local pid = PlayerId()
-        if GetPlayerWantedLevel(pid) ~= 0 then
-            ClearPlayerWantedLevel(pid)
-        end
-    end
-end)
+--     while true do
+--         Citizen.Wait(1500)
+--         local pid = PlayerId()
+--         if GetPlayerWantedLevel(pid) ~= 0 then
+--             ClearPlayerWantedLevel(pid)
+--         end
+--     end
+-- end)
+
+lib.addKeybind({
+    name        = 'open_map',
+    description = 'Mở bản đồ',
+    defaultKey  = 'P',
+    onPressed   = function()
+        CreateThread(function()
+            ActivateFrontendMenu(-1171018317, 0, -1)
+            while not IsFrontendReadyForControl() do
+                Wait(10)
+            end
+            Wait(20)
+            SetControlNormal(2, 201, 1.0)
+        end)
+    end,
+})
