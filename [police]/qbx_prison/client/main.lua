@@ -74,21 +74,21 @@ end
 
 -- Add clothes to prisioner
 
--- local function applyClothes()
--- 	if not DoesEntityExist(cache.ped) then return end
--- 	CreateThread(function()
--- 		SetPedArmour(cache.ped, 0)
--- 		ClearPedBloodDamage(cache.ped)
--- 		ResetPedVisibleDamage(cache.ped)
--- 		ClearPedLastWeaponDamage(cache.ped)
--- 		ResetPedMovementClipset(cache.ped, 0)
--- 		if QBX.PlayerData.charinfo.gender == 0 then
--- 			TriggerEvent('qb-clothing:client:loadOutfit', config.uniforms.male)
--- 		else
--- 			TriggerEvent('qb-clothing:client:loadOutfit', config.uniforms.female)
--- 		end
--- 	end)
--- end
+local function applyClothes()
+	if not DoesEntityExist(cache.ped) then return end
+	CreateThread(function()
+		SetPedArmour(cache.ped, 0)
+		ClearPedBloodDamage(cache.ped)
+		ResetPedVisibleDamage(cache.ped)
+		ClearPedLastWeaponDamage(cache.ped)
+		ResetPedMovementClipset(cache.ped, 0)
+		if QBX.PlayerData.charinfo.gender == 0 then
+			TriggerEvent('qb-clothing:client:loadOutfit', config.uniforms.male)
+		else
+			TriggerEvent('qb-clothing:client:loadOutfit', config.uniforms.female)
+		end
+	end)
+end
 
 local function turnOnAlarmIfActive()
 	lib.callback('prison:server:IsAlarmActive', false, function(active)
@@ -217,7 +217,7 @@ local function initPrison(time)
 	CreateJobBlip()
 	-- applyClothes()
 	createCellsBlip()
-	exports.qbx_core:Notify(config.introMessages[math.random(1, #config.introMessages)], "inform", 10000)
+	-- exports.qbx_core:Notify(config.introMessages[math.random(1, #config.introMessages)], "inform", 10000)
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
 
 	CreateThread(function()

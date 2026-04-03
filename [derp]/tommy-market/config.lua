@@ -493,6 +493,18 @@ Config.MarketNPCs = {
         }
     },
     {
+        id = "market_prison",
+        enabled = true,
+        label = "Đồ Ăn & Thức Uống",
+        ped = `mp_m_securoguard_01`,
+        coords = vector4(1752.80, 2566.85, 45.57, 222.87),
+        type = "buy",
+        items = {
+            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+        }
+    },
+    {
         id = "ammunation_shop1",
         enabled = true,
         label = "Mua Vũ Khí",
