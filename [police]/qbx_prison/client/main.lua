@@ -215,7 +215,7 @@ local function initPrison(time)
 	JailTime = time
 	CurrentJob = "Electrician"
 	CreateJobBlip()
-	applyClothes()
+	-- applyClothes()
 	createCellsBlip()
 	exports.qbx_core:Notify(config.introMessages[math.random(1, #config.introMessages)], "inform", 10000)
 	TriggerServerEvent("InteractSound_SV:PlayOnSource", "jail", 0.5)
