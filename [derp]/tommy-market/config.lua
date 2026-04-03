@@ -34,11 +34,11 @@ Config.MarketNPCs = {
         coords = vector4(-487.84, -1005.00, 24.29, 0.00),
         type = "buy",
         items = {
-            {name = "gauze", label = "Gạc Y Tế", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "adrenaline", label = "Adrenaline", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "bandage", label = "Băng Gạc", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "cyclonamine", label = "Cyclonamine", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "tourniquet", label = "Dây Caro", buyPrice = 200, sellMin = nil, sellMax = nil},
+            -- {name = "gauze", label = "Gạc Y Tế", buyPrice = 200, sellMin = nil, sellMax = nil},
+            -- {name = "adrenaline", label = "Adrenaline", buyPrice = 200, sellMin = nil, sellMax = nil},
+            -- {name = "cyclonamine", label = "Cyclonamine", buyPrice = 200, sellMin = nil, sellMax = nil},
+            -- {name = "tourniquet", label = "Dây Caro", buyPrice = 200, sellMin = nil, sellMax = nil},
         }
     }, 
     {
