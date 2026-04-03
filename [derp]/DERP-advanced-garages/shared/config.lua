@@ -315,7 +315,7 @@ Config.Garages = {
         },
         
         npc = {
-            coords = vec3(-2133.74, -388.20, 13.14),
+            coords = vec3(-2133.74, -388.20, 12.14),
             heading = 113.45,
             model = 's_m_y_dealer_01'
         },
