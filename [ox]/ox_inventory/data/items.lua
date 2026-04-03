@@ -562,7 +562,7 @@ return {
 	['radio'] = {
 		label = 'Bộ Đàm',
 		weight = 1000,
-		degrade = 100,
+		degrade = 4320,
 		stack = false,
 		allowArmed = true,
 		consume = 0,

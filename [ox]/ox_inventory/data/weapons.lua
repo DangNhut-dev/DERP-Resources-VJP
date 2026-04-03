@@ -734,97 +734,97 @@ return {
 		['WEAPON_DRACOCUSTOM'] = {
 		label = 'DRACO',	    
 		weight = 2000,
-		durability = 0.0,
+		durability = 0.05,
 		ammoname = 'ammo-rifle2',
 		},
 		
 		['WEAPON_AR15FULL'] = {
 		label = 'AR-15',
 		weight = 1000,
-		durability = 0.0,
+		durability = 0.05,
 		ammoname = 'ammo-rifle',
 		},
 		
 		['WEAPON_AR15FULLPURPLE'] = {
 		label = 'AR-15 Purple',
 		weight = 1000,
-		durability = 0.0,
+		durability = 0.05,
 		ammoname = 'ammo-rifle',
 		},
 		
 		['WEAPON_AR15FULLWHITE'] = {
 		label = 'AR-15 White',
 		weight = 1000,
-		durability = 0.0,
+		durability = 0.05,
 		ammoname = 'ammo-rifle',
 		},
 
 		['WEAPON_GLOCK29AUTO'] = {
 		label = 'Glock 29 - 9mm',
 		weight = 1000,
-		durability = 0.0,
+		durability = 0.03,
 		ammoname = 'ammo-9',
 		},
 
 		['WEAPON_GLOCK17CUSTOM'] = { 				
 		label = 'Glock 17 Custom', 		    
 		weight = 1000,	
-		durability = 0.0,	
+		durability = 0.2,	
 		ammoname = 'ammo-9',
 		},    
 
 		['WEAPON_G2CTX'] = { 				
 		label = 'Taurus G2C', 		    
 		weight = 1000,	
-		durability = 0.0,	
+		durability = 0.2,	
 		ammoname = 'ammo-9',
 		},    
 
 		['WEAPON_SIGM17'] = { 
 		label = 'SIG Sauer M17', 		    
 		weight = 1000,	
-		durability = 0.0,	
+		durability = 0.2,	
 		ammoname = 'ammo-9',
 		},   
 
 		['WEAPON_GLOCK26S'] = { 
 		label = 'Glock 26 Switch', 		    
 		weight = 1000,	
-		durability = 0.0,	
+		durability = 0.2,	
 		ammoname = 'ammo-9',
 		},
 
 		['WEAPON_AK74'] = { 
 		label = 'AK 74', 		    
 		weight = 500,	
-		durability = 0.0,	
+		durability = 0.05,	
 		ammoname = 'ammo-rifle2',
 		},   
 
 		['WEAPON_G26'] = { 
 		label = 'Glock 26', 		    
 		weight = 500,	
-		durability = 0.0,	
+		durability = 0.3,	
 		ammoname = 'ammo-9',
 		},   
 
 		['WEAPON_GLOCK17'] = { 
 		label = 'Glock 17', 		    
 		weight = 500,	
-		durability = 0.0,	
+		durability = 0.2,	
 		ammoname = 'ammo-9',
 		},   
 
-		['WEAPON_M9'] 			= { label = 'Beretta M9A3',     weight = 1000,	durability = 0.0,	ammoname = 'ammo-45',},     
-		['WEAPON_REMINGTON'] 			= { label = 'Remington 870',    weight = 1000,	durability = 0.0,	ammoname = 'ammo-shotgun',},
-		['WEAPON_AR15'] 			= { label = 'AR-15', 	    weight = 1000,	durability = 0.0,	ammoname = 'ammo-rifle',},  
-		['WEAPON_KATANA'] 			= { label = 'Katana', 		    weight = 1000,	durability = 0.0,	},      		
-		['WEAPON_SLEDGEHAMMER'] 	   = { label = 'Búa Tạ',    weight = 1000,	durability = 0.0,	},      		
-		['WEAPON_MP9'] 			          	= { label = 'MP9', 				weight = 1000,	durability = 0.0,	ammoname = 'ammo-9',},     
-		['WEAPON_M110'] 		           	 = { label = 'M110', 			weight = 1000,	durability = 0.0,	ammoname = 'ammo-sniper',},
-		['WEAPON_HK416'] 		           	 = { label = 'HK-416', 			weight = 1000,	durability = 0.0,	ammoname = 'ammo-rifle',}, 
-		['WEAPON_GLOCK22'] 			  = { label = 'Glock 22',         weight = 1000,	durability = 0.0,	ammoname = 'ammo-45',},    
-		['WEAPON_COLBATON'] 			= { label = 'Baton',         weight = 1000,	durability = 0.0},
+		['WEAPON_M9'] 			= { label = 'Beretta M9A3',     weight = 1000,	durability = 0.2,	ammoname = 'ammo-45',},     
+		['WEAPON_REMINGTON'] 			= { label = 'Remington 870',    weight = 1000,	durability = 0.05,	ammoname = 'ammo-shotgun',},
+		['WEAPON_AR15'] 			= { label = 'AR-15', 	    weight = 1000,	durability = 0.05,	ammoname = 'ammo-rifle',},  
+		['WEAPON_KATANA'] 			= { label = 'Katana', 		    weight = 1000,	durability = 0.1,	},      		
+		['WEAPON_SLEDGEHAMMER'] 	   = { label = 'Búa Tạ',    weight = 1000,	durability = 0.1,	},      		
+		['WEAPON_MP9'] 			          	= { label = 'MP9', 				weight = 1000,	durability = 0.05,	ammoname = 'ammo-9',},     
+		['WEAPON_M110'] 		           	 = { label = 'M110', 			weight = 1000,	durability = 0.05,	ammoname = 'ammo-sniper',},
+		['WEAPON_HK416'] 		           	 = { label = 'HK-416', 			weight = 1000,	durability = 0.05,	ammoname = 'ammo-rifle',}, 
+		['WEAPON_GLOCK22'] 			  = { label = 'Glock 22',         weight = 1000,	durability = 0.2,	ammoname = 'ammo-45',},    
+		['WEAPON_COLBATON'] 			= { label = 'Baton',         weight = 1000,	durability = 0.1},
 
 		--CUSTOM knifes
 		['WEAPON_PERFORATOR']            = {label = 'Cu Giả',    weight = 500,   durability = 0.1,},
