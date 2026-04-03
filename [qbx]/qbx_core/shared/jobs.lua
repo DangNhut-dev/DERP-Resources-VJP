@@ -2,13 +2,13 @@
 ---@type table<string, Job>
 return {
     ['unemployed'] = {
-        label = 'Civilian',
+        label = 'Thất Nghiệp',
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Freelancer',
-                payment = 10
+                name = 'Tự Do',
+                payment = 20
             },
         },
     },
@@ -187,23 +187,23 @@ return {
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recruit',
+                name = 'Thực Tập',
                 payment = 50
             },
             [1] = {
-                name = 'Paramedic',
+                name = 'Bác Sĩ',
                 payment = 75
             },
             [2] = {
-                name = 'Doctor',
+                name = 'Quản Lý Khoa',
                 payment = 100
             },
             [3] = {
-                name = 'Surgeon',
+                name = 'Phó Viện Trưởng',
                 payment = 125
             },
             [4] = {
-                name = 'Chief',
+                name = 'Viện Trưởng',
                 isboss = true,
                 bankAuth = true,
                 payment = 150
@@ -216,23 +216,23 @@ return {
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recruit',
+                name = 'Thử Việc',
                 payment = 50
             },
             [1] = {
-                name = 'Showroom Sales',
+                name = 'Nhân Viên Chính Thức',
                 payment = 75
             },
             [2] = {
-                name = 'Business Sales',
+                name = 'Quản Lý',
                 payment = 100
             },
             [3] = {
-                name = 'Finance',
+                name = 'Phó Giám Đốc',
                 payment = 125
             },
             [4] = {
-                name = 'Manager',
+                name = 'Giám Đốc',
                 isboss = true,
                 bankAuth = true,
                 payment = 150
@@ -246,23 +246,23 @@ return {
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recruit',
+                name = 'Thử Việc',
                 payment = 50
             },
             [1] = {
-                name = 'Novice',
+                name = 'Thợ Sửa',
                 payment = 75
             },
             [2] = {
-                name = 'Experienced',
+                name = 'Quản Lý',
                 payment = 100
             },
             [3] = {
-                name = 'Advanced',
+                name = 'Phó Giám Đốc',
                 payment = 125
             },
             [4] = {
-                name = 'Manager',
+                name = 'Giám Đốc',
                 isboss = true,
                 bankAuth = true,
                 payment = 150
