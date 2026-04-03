@@ -37,7 +37,7 @@ const AdditionalStaffChatRoleIds = [
 ];
 
 // WHITELISTING / ALLOWLISTING
-const EnableWhitelistChecking = true;
+const EnableWhitelistChecking = false;
 const DiscordWhitelistRoleIds = "1485572756740374620, 000000000000000000";
 
 // SLASH COMMANDS / DISCORD PERMISSIONS
