@@ -2226,7 +2226,7 @@ bcso = {
     },
 
     ambulance = {
-        label = 'Bác Sĩ',
+        label = 'Nhận Đồng Phục',
         npc = {
             model    = 's_m_m_paramedic_01',
             coords   = vec4(-480.95, -1019.33, 33.69, 90.70),
@@ -2236,7 +2236,7 @@ bcso = {
             [0] = {
                 outfits = {
                     {
-                        label = 'Đồng phục cấp 0',
+                        label = 'Đồng Phục Thử Việc',
                         items = {
                             {
                                 name   = 'daychuyen',
@@ -2265,7 +2265,7 @@ bcso = {
             [1] = {
                 outfits = {
                     {
-                        label = 'Đồng phục cấp 1',
+                        label = 'Đồng Phục Bác Sĩ',
                         items = {
                             {
                                 name   = 'daychuyen',
@@ -2299,7 +2299,7 @@ bcso = {
             [2] = {
                 outfits = {
                     {
-                        label = 'Đồng phục cấp 2',
+                        label = 'Đồng Phục Quản Lý Khoa',
                         items = {
                             {
                                 name   = 'daychuyen',
@@ -2333,7 +2333,7 @@ bcso = {
             [3] = {
                 outfits = {
                     {
-                        label = 'Đồng phục cấp 3',
+                        label = 'Đồng Phục Phó Viện Trưởng',
                         items = {
                             {
                                 name   = 'daychuyen',
@@ -2367,7 +2367,7 @@ bcso = {
             [4] = {
                 outfits = {
                     {
-                        label = 'Đồng phục cấp 4',
+                        label = 'Đồng Phục Viện Trưởng',
                         items = {
                             {
                                 name   = 'daychuyen',
