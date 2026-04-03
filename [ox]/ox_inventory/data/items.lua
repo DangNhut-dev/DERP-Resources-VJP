@@ -2221,4 +2221,24 @@ return {
 		stack = true,
 		close = true,
 	},
+
+	  ["bodycam"] = {
+        label = "bodycam", 
+		weight = 0, 
+		stack = false, 
+		close = true, 
+		description = "Bodycam",
+        client = { image = "bodycam.png",
+		event = "spy-bodycam:bodycamstatus" }
+    },
+
+	 ["dashcam"] = {
+        label = "dashcam", 
+		weight = 0, 
+		stack = false, 
+		close = true, 
+		description = "dashcam",
+        client = { image = "dashcam.png", 
+		event = "spy-bodycam:toggleCarCam" }
+    },
 }
