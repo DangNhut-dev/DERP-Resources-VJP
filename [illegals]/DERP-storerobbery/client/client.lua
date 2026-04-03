@@ -169,6 +169,6 @@ RegisterNetEvent('derp_storerobbery:client:syncRobbed', function(data)
     end
 end)
 
-RegisterCommand('testcatch', function()
-    startMoneyGame()
-end, false)
+-- RegisterCommand('testcatch', function()
+--     startMoneyGame()
+-- end, false)

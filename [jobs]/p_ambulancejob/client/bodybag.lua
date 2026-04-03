@@ -260,8 +260,9 @@ Citizen.CreateThread(function()
         local targetServerId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(targetPed))
         local hasItem = Bridge.Inventory.getItemCount("bodybag") > 0
         local playerState = Player(targetServerId).state
-        return hasItem and playerState
-      end
+        local isDead = IsEntityDead(targetPed) or playerState.isUnconscious or playerState.isDead or playerState.inLastStand
+        return hasItem and playerState and isDead
+    end
     }
   })
   
