@@ -207,7 +207,7 @@ Config.Lootboxes = {
 
     ['lootbox_nam_thuong_matna'] = {
         label = 'Hòm Mặt Nạ Thường 1',
-        clothing = 'clothing',
+        type = 'clothing',
         items = {
             { name = 'matna_10_0_0' },
             { name = 'matna_11_0_0' },
@@ -246,6 +246,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_thuong_aokhoac'] = {
         label = 'Hòm Áo Thường',
+        type = 'clothing',
         items = {
             { name = 'aokhoac_0_0_1' },
             { name = 'aokhoac_0_10_1' },
@@ -383,6 +384,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_thuong_quan'] = {
         label = 'Hòm Quần Thường',
+        type = 'clothing',
         items = {
             { name = 'quan_0_0_1' },
             { name = 'quan_0_10_1' },
@@ -479,6 +481,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_thuong_giay'] = {
         label = 'Hòm Giày Thường',
+        type = 'clothing',
         items = {
             { name = 'giay_0_0_1' },
             { name = 'giay_0_1_1' },
@@ -603,6 +606,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_thuong_matna'] = {
         label = 'Hòm Mặt Nạ Thường',
+        type = 'clothing',
         items = {
             { name = 'matna_10_0_1' },
             { name = 'matna_11_0_1' },
@@ -1249,6 +1253,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_aokhoac_s1'] = {
         label = 'Hòm Áo Đợt 1 - Nữ',
+        type = 'clothing',
         items = {
             { name = 'aokhoac_597_0_1' },
             { name = 'aokhoac_597_10_1' },
@@ -1478,6 +1483,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_aotrong_s1'] = {
         label = 'Hòm Áo Trong Đợt 1 - Nữ',
+        type = 'clothing',
         items = {
             { name = 'aotrong_261_0_1' },
             { name = 'aotrong_261_10_1' },
@@ -1941,6 +1947,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_quan_s1'] = {
         label = 'Hòm Quần Đợt 1 - Nữ',
+        type = 'clothing',
         items = {
             { name = 'quan_216_0_1' },
             { name = 'quan_219_0_1' },
@@ -2048,7 +2055,8 @@ Config.Lootboxes = {
         }
     },
     ['lootbox_nu_giay_s1'] = {
-        label = '   ',
+        label = 'Hòm Giày Đợt 1 - Nữ',
+        type = 'clothing',
         items = {
             { name = 'giay_159_0_1' },
             { name = 'giay_159_1_1' },
@@ -2352,6 +2360,7 @@ Config.Lootboxes = {
     },
     ['lootbox_nu_matna_s1'] = {
         label = 'Hòm Mặt Nạ Đợt 1 - Nữ',
+        type = 'clothing',
         items = {
             { name = 'matna_245_0_1' },
             { name = 'matna_246_0_1' },
