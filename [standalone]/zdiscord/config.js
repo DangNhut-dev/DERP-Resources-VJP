@@ -11,9 +11,9 @@
 const LanguageLocaleCode = "en";
 
 // PUBLIC VALUES
-const FiveMServerName = "";
-const DiscordInviteLink = "";
-const FiveMServerIP = "";
+const FiveMServerName = "DE:RP";
+const DiscordInviteLink = "https://discord.gg/EfmJNte8e9";
+const FiveMServerIP = "connect cfx.re/join/p3lzm8";
 
 // This spams the console, only enable for testing if needed
 const DebugLogs = false;
@@ -26,8 +26,8 @@ const DebugLogs = false;
 const EnableDiscordBot = true;
 
 // DISCORD BOT
-const DiscordBotToken = "MTQ3MDM4MjU1NTE3Njg5ODU3MA.GR1DyG.ZG6oSZHaaptbyhbCEOhbgAqlQ2UNgV8gxapCf4";
-const DiscordGuildId = "1469042903383806056";
+const DiscordBotToken = "MTQxNTkzODMxNDU2NDc5NjQzOA.GUqbNI.C9htfVMZbS8-goLnq3DH269zHI93zhIHbmiIiI";
+const DiscordGuildId = "1354694235558907974";
 
 // STAFF CHAT
 const EnableStaffChatForwarding = false;
@@ -42,12 +42,12 @@ const DiscordWhitelistRoleIds = "1485572756740374620, 000000000000000000";
 
 // SLASH COMMANDS / DISCORD PERMISSIONS
 const EnableDiscordSlashCommands = true;
-const DiscordModRoleId = "1469395588658495649";
-const DiscordAdminRoleId = "1469395588658495649";
-const DiscordGodRoleId = "1469395588658495649";
+const DiscordModRoleId = "1415926462770450492";
+const DiscordAdminRoleId = "1414439821363122247";
+const DiscordGodRoleId = "1416299334542164039";
 
 // DISCORD BOT STATUS
-const EnableBotStatusMessages = true;
+const EnableBotStatusMessages = false;
 const BotStatusMessages = [
     "{servername}",
     "128 online", //"{playercount} online",
@@ -61,7 +61,7 @@ const AutoAcePermissions = {
 };
 
 // Other
-const SaveScreenshotsToServer = false;
+const SaveScreenshotsToServer = true;
 
 
 /** ************************
