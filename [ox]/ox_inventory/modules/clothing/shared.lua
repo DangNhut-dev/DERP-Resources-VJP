@@ -34,9 +34,11 @@ local ClothingConfig = {
             police = {
                 male = {
                     { drawable = 33, texture = 0 },
+                    { drawable = 37, texture = 0 },
                 },
                 female = {
                     { drawable = 36, texture = 0 },
+                    { drawable = 41, texture = 0 },
                 }
             },
             ambulance = {
