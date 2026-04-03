@@ -1360,37 +1360,37 @@ CreateThread(function()
 end)
 
 -- Debug: DrawText3D trên mỗi xe đang đếm ngược
-CreateThread(function()
-    while true do
-        local sleep = 500
+-- CreateThread(function()
+--     while true do
+--         local sleep = 500
 
-        if Config.WaterImpound and Config.WaterImpound.Enabled and Config.WaterImpound.Debug and next(waterImpoundDebug) then
-            sleep = 0
-            for plate, data in pairs(waterImpoundDebug) do
-                local remaining = math.max(0, math.floor(data.remaining))
-                local text = string.format(
-                    '~r~IMPOUND: %ds~n~~w~Engine: %.0f | Water: %.1f~n~%s',
-                    remaining, data.engine, data.submerged, plate
-                )
-                SetTextScale(0.35, 0.35)
-                SetTextFont(4)
-                SetTextColour(255, 255, 255, 255)
-                SetTextDropshadow(0, 0, 0, 0, 255)
-                SetTextEdge(2, 0, 0, 0, 150)
-                SetTextDropShadow()
-                SetTextOutline()
-                SetTextCentre(true)
-                BeginTextCommandDisplayText('STRING')
-                AddTextComponentSubstringPlayerName(text)
-                SetDrawOrigin(data.coords.x, data.coords.y, data.coords.z, 0)
-                EndTextCommandDisplayText(0.0, 0.0)
-                ClearDrawOrigin()
-            end
-        end
+--         if Config.WaterImpound and Config.WaterImpound.Enabled and Config.WaterImpound.Debug and next(waterImpoundDebug) then
+--             sleep = 0
+--             for plate, data in pairs(waterImpoundDebug) do
+--                 local remaining = math.max(0, math.floor(data.remaining))
+--                 local text = string.format(
+--                     '~r~IMPOUND: %ds~n~~w~Engine: %.0f | Water: %.1f~n~%s',
+--                     remaining, data.engine, data.submerged, plate
+--                 )
+--                 SetTextScale(0.35, 0.35)
+--                 SetTextFont(4)
+--                 SetTextColour(255, 255, 255, 255)
+--                 SetTextDropshadow(0, 0, 0, 0, 255)
+--                 SetTextEdge(2, 0, 0, 0, 150)
+--                 SetTextDropShadow()
+--                 SetTextOutline()
+--                 SetTextCentre(true)
+--                 BeginTextCommandDisplayText('STRING')
+--                 AddTextComponentSubstringPlayerName(text)
+--                 SetDrawOrigin(data.coords.x, data.coords.y, data.coords.z, 0)
+--                 EndTextCommandDisplayText(0.0, 0.0)
+--                 ClearDrawOrigin()
+--             end
+--         end
 
-        Wait(sleep)
-    end
-end)
+--         Wait(sleep)
+--     end
+-- end)
 
 -- Command debug: check xe gần nhất realtime
 -- RegisterCommand('watercheck', function()
