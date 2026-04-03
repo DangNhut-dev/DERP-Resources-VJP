@@ -18,12 +18,12 @@ const CONFIG = {
 
     // ── Server Branding (top left) ───────────────────
     serverName: 'Dominion Entropy : Roleplay', // <── Edit your server name in the top left
-    serverDiscordText: 'discord.gg/yourdiscordlink', // <── Edit your discord link in the top left
+    serverDiscordText: 'https://discord.gg/TWv9AWfDwY', // <── Edit your discord link in the top left
 
     // ── Changelogs (left panel) ──────────────────────
     changelogTitle: 'Cập Nhật Mới',
     changelogs: [
-        // { version: 'v1.2.0', date: '2026-03-26', desc: 'Major update with the WSPDoogie Loading Screen' },
+        // { version: 'v1.0.0', date: '03-04-2026', desc: '' },
         // { version: 'v1.1.5', date: '2026-03-26', desc: 'Script Performance improvements' },
         // { version: 'v1.1.0', date: '2026-03-25', desc: 'Bug fix and optimizations for WSPDoogie Loading Screen' },
         // { version: 'v1.0.2', date: '2026-03-24', desc: 'GPS Tracker UI Added' },
@@ -35,14 +35,14 @@ const CONFIG = {
     staffList: [
         // { role: 'C.E.O', name: '<span style="color: #ff0000ff;">@WSPDoogie</span>' },
         { role: 'Admin', name: '<span style="color: #ff0000;">TommyNguyenx, Phuc, P4ttrick</span>' },
-        { role: '3D Model', name: 'P4trick' },
         { role: 'Dev', name: 'TommyNguyenx, P4trick, LeO' },
-        { role: 'Mods', name: 'Chanhye, Kuro' },
-        { role: 'Supports', name: 'QuangTrung, Tuấn Ace' },
+        { role: '3D Model', name: 'P4trick' },
+        { role: 'Mods', name: 'LeO, Kuro' },
+        { role: 'Supports', name: 'Jayy, Tuấn Ace' },
     ],
 
     // ── Social Links (leave '' to hide the icon) ─────
-    discordUrl: 'https://discord.gg/VheBApaAHB',
+    discordUrl: 'https://discord.gg/TWv9AWfDwY',
     youtubeUrl: '',
     tiktokUrl: '',
 

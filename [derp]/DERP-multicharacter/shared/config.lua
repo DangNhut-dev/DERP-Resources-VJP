@@ -47,10 +47,10 @@ Config.Prefix = 'char' -- [DEF. 'char'] [STRING] What prefix should we use to ga
 Config.UI = {
     ['settings'] = true,
     ['spawn_selector'] = true,
-    ['discord'] = 'https://discord.gg/', -- [STRING] Set your Discord URL to show that content or set it to false to disable discord icon.
-    ['youtube'] = 'https://youtu.be/', -- [STRING] Set your Youtube URL to show that content or set it to false to disable youtube icon.
-    ['website'] = 'https://mywebsite.rp/', -- [STRING] Set your Website URL to show that content or set it to false to disable website icon.
-    ['delete_character'] = true,
+    ['discord'] = 'https://discord.gg/TWv9AWfDwY', -- [STRING] Set your Discord URL to show that content or set it to false to disable discord icon.
+    ['youtube'] = false, -- [STRING] Set your Youtube URL to show that content or set it to false to disable youtube icon.
+    ['website'] = false, -- [STRING] Set your Website URL to show that content or set it to false to disable website icon.
+    ['delete_character'] = false,
 }
 
 Config.ServerLogo = 'https://cdn.discordapp.com/attachments/1415895456692699156/1487744681986101349/MyLogo.png?ex=69ca41b5&is=69c8f035&hm=e0465eab14f474875b2917f9cb423a63ac67ed4f65a54509a7c49242e93b3291&'
@@ -143,7 +143,10 @@ Config.IdentityDuplicateCheck = false -- [DEF. false] [BOOL] Duplicate Name Chec
 --- A easy way to allow specified player's a different slot limit than the rest, without using a command.
 --- Please use a player identifier, with the character slot amount you want a user to have.
 Config.CustomSlots = {
-	["license:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"] = 5,
+	["license:296c11f3ca1778f99df144d88623a1a2b1fccbcd"] = 5, --Tommy
+	["license:207f6ec7de981e8e32c1f4c6019f1ec8019a7788"] = 5, --Phuc
+	["license:c20de33e1aecdb8bf097996fb4f3fcc242d18de7"] = 5, --Patrick
+	-- ["license:37fba5f80e9e52700a7294eda704d3e4e99a2766"] = 3, --Luis
 }
 
 --Algorithm Handlers

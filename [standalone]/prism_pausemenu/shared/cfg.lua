@@ -26,7 +26,7 @@ CFG = {
     },
     Links = {
         discord = "https://discord.gg/TWv9AWfDwY",
-        tebex = "https://prismscripts.net/"
+        tebex = "https://discord.gg/TWv9AWfDwY"
     },
 
     FixAnimationCommands = "fixanim"
