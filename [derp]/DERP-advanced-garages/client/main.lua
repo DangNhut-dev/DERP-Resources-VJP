@@ -366,13 +366,7 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
 
     spawnedVehicles[netId] = true
 
-    Wait(300)
-
-    if vehicleData.fuel then
-        Entity(vehicle).state:set('fuel', vehicleData.fuel, true)
-    end
-
-    Wait(500)
+    Wait(800)
 
     if vehicleData.mods then
         local mods = type(vehicleData.mods) == 'string' and json.decode(vehicleData.mods) or vehicleData.mods
@@ -384,6 +378,10 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
                 SafeSetVehicleProperties(vehicle, mods, vehicleData.plate)
             end
         end
+    end
+
+    if vehicleData.fuel then
+        Entity(vehicle).state:set('fuel', vehicleData.fuel, true)
     end
 
     Wait(300)
@@ -410,10 +408,24 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
 
     TriggerEvent('qb-vehiclekeys:client:AddKeys', vehicleData.plate)
 
+    if vehicleData.fuel then
+        local fuelLevel = vehicleData.fuel + 0.0
+        exports['cdn-fuel']:SetFuel(vehicle, fuelLevel)
+
+        SetTimeout(1500, function()
+            if DoesEntityExist(vehicle) then
+                exports['cdn-fuel']:SetFuel(vehicle, fuelLevel)
+            end
+        end)
+    end
+
+    if vehicleData.lockState then
+        SetVehicleDoorsLocked(vehicle, vehicleData.lockState)
+    end
+
     exports.qbx_core:Notify(Config.Lang['vehicle_spawned'], 'success')
     TriggerServerEvent('qbx_core:server:vehicleSpawned', vehicleData.plate, netId)
 
-    -- FIX: Gửi netId thay vì entity handle local
     if Config.Streaming and Config.Streaming.Enabled then
         local spawnNetId = NetworkGetNetworkIdFromEntity(vehicle)
         TriggerServerEvent('DERP-advanced-garages:server:registerSpawn', vehicleData.plate, spawnNetId, spawnPoint)
@@ -656,7 +668,7 @@ RegisterNetEvent('derp:applyVehicleState', function(netId, data)
     end
 
     if data.fuel then
-        Entity(vehicle).state:set('fuel', data.fuel + 0.0, true)
+        exports['cdn-fuel']:SetFuel(vehicle, data.fuel + 0.0)
     end
 end)
 
@@ -1022,17 +1034,25 @@ local function StoreVehicle(garageName)
     local plate = string.gsub(GetVehicleNumberPlateText(vehicle), '^%s*(.-)%s*$', '%1')
     local netId = NetworkGetNetworkIdFromEntity(vehicle)
 
-    -- Lấy mods trước khi gửi server (đảm bảo mods được lưu khi store)
     local currentMods = lib.getVehicleProperties(vehicle)
 
+    local nativeFuel = GetVehicleFuelLevel(vehicle)
+    local stateBagFuel = Entity(vehicle).state.fuel
+
+    -- print('[FUEL DEBUG STORE] Plate: ' .. plate)
+    -- print('[FUEL DEBUG STORE] Native fuel: ' .. tostring(nativeFuel))
+    -- print('[FUEL DEBUG STORE] StateBag fuel: ' .. tostring(stateBagFuel))
+
     local vehicleData = {
-        fuel      = Entity(vehicle).state.fuel or 100,
+        fuel      = GetVehicleFuelLevel(vehicle),
         engine    = GetVehicleEngineHealth(vehicle),
         body      = GetVehicleBodyHealth(vehicle),
         status    = GetVehicleStatus(vehicle),
         mods      = currentMods,
         lockState = GetVehicleDoorLockStatus(vehicle)
     }
+
+    -- print('[FUEL DEBUG STORE] Sending fuel: ' .. tostring(vehicleData.fuel))
 
     TriggerServerEvent('DERP-advanced-garages:server:storeVehicle', plate, garageName, vehicleData, netId)
 

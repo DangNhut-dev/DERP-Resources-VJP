@@ -266,16 +266,16 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
     local serverEngine = vehicleData.engine or 1000
     local serverBody   = vehicleData.body   or 1000
     local serverMods   = nil
+    -- print('[FUEL DEBUG SERVER] Plate: ' .. plate .. ' | clientFuel: ' .. tostring(vehicleData.fuel))
 
     if netId then
         local vehicle = NetworkGetEntityFromNetworkId(netId)
         if vehicle and vehicle ~= 0 and DoesEntityExist(vehicle) then
-            serverFuel   = Entity(vehicle).state.fuel or serverFuel
             serverEngine = GetVehicleEngineHealth(vehicle)
             serverBody   = GetVehicleBodyHealth(vehicle)
         end
     end
-
+    -- print('[FUEL DEBUG SERVER] After server check | serverFuel: ' .. tostring(serverFuel) .. ' | stateBagFuel: ' .. tostring(netId and NetworkGetEntityFromNetworkId(netId) and Entity(NetworkGetEntityFromNetworkId(netId)).state.fuel or 'N/A'))
     -- Lấy mods từ DB hiện tại nếu client không gửi (đảm bảo không mất mods khi store)
     if not vehicleData.mods then
         local currentMods = MySQL.scalar.await(
@@ -295,6 +295,7 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
 
     local serverLockState = vehicleData.lockState or 2
 
+    -- print('[FUEL DEBUG SERVER] Final saving fuel: ' .. tostring(serverFuel) .. ' for plate: ' .. plate)
     MySQL.update.await([[
         UPDATE player_vehicles
         SET state = 1, garage = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = COALESCE(?, mods), lock_state = ?, coords = NULL
