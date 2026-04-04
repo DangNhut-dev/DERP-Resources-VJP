@@ -12,6 +12,7 @@ files {
     'client/html/js/functions/*.js',
     'client/html/metadata/*.wav',
     'client/html/metadata/*.mp3',
+    'images/logo.png',
 }
 
 ui_page 'client/html/index.html'

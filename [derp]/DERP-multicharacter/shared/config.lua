@@ -53,7 +53,7 @@ Config.UI = {
     ['delete_character'] = false,
 }
 
-Config.ServerLogo = 'https://cdn.discordapp.com/attachments/1415895456692699156/1487744681986101349/MyLogo.png?ex=69ca41b5&is=69c8f035&hm=e0465eab14f474875b2917f9cb423a63ac67ed4f65a54509a7c49242e93b3291&'
+Config.ServerLogo = ('nui://%s/images/logo.png'):format(GetCurrentResourceName())
 
 Config.CanSwapLocationOnLogout = true -- [DEF. true] [BOOLEAN] Will user have access to swapping locations when using logout command.
 
