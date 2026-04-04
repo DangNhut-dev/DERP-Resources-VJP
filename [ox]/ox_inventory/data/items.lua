@@ -2241,4 +2241,21 @@ return {
         client = { image = "dashcam.png", 
 		event = "spy-bodycam:toggleCarCam" }
     },
+
+	-- ['syphoningkit'] = {
+	-- 	label = 'Bộ Hút Xăng',
+	-- 	weight = 5000,
+	-- 	stack = false,
+	-- 	close = false,
+	-- 	description = 'Bộ dụng cụ dùng để hút xăng từ xe.',
+	-- },
+
+	['jerrycan'] = {
+		label = 'Bình Xăng Dự Phòng',
+		weight = 15000,
+		stack = false,
+		close = false,
+		description = 'Bình chứa xăng dự phòng.',
+	},
 }
+
