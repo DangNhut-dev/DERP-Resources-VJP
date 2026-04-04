@@ -110,37 +110,62 @@ Config = {
                 [0] = {
                     cardType = "one",
                     textColor = "#FFFFFF",
-                    text = "Police Officer Card",
+                    text = "Police Cadet Card",
                 },
                 [1] = {
                     cardType = "one",
                     textColor = "#FFFFFF",
-                    text = "Police Officer Card",
+                    text = "Police Solo Cadet Card",
                 },
                 [2] = {
-                    cardType = "two",
+                    cardType = "one",
                     textColor = "#FFFFFF",
                     text = "Police Officer Card",
                 },
                 [3] = {
-                    cardType = "two",
+                    cardType = "one",
                     textColor = "#FFFFFF",
-                    text = "Police Officer Card",
+                    text = "Police Senior Officer Card",
                 },
                 [4] = {
-                    cardType = "three",
+                    cardType = "two",
                     textColor = "#FFFFFF",
-                    text = "Police Officer Card",
+                    text = "Police Corporal Card",
                 },
                 [5] = {
-                    cardType = "three",
+                    cardType = "two",
                     textColor = "#FFFFFF",
-                    text = "Police Cheff Card",
+                    text = "Police Sergeant Card",
                 },
                 [6] = {
+                    cardType = "two",
+                    textColor = "#FFFFFF",
+                    text = "Police Lieutenant Card",
+                },
+                [7] = {
                     cardType = "three",
                     textColor = "#FFFFFF",
-                    text = "Police Cheff Card",
+                    text = "Police Captain Card",
+                },
+                [8] = {
+                    cardType = "three",
+                    textColor = "#FFFFFF",
+                    text = "Police Commander Card",
+                },
+                [9] = {
+                    cardType = "three",
+                    textColor = "#FFFFFF",
+                    text = "Police Deputy Chief Card",
+                },
+                [10] = {
+                    cardType = "three",
+                    textColor = "#FFFFFF",
+                    text = "Police Assistant Chief Card",
+                },
+                [11] = {
+                    cardType = "three",
+                    textColor = "#FFFFFF",
+                    text = "Police Chief Card",
                 },
             }
         },
