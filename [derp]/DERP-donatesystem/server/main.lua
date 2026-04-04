@@ -383,6 +383,28 @@ lib.callback.register('DERP-donatesystem:adminRejectTicket', function(source, ti
     return { success = true, message = 'Đã từ chối ticket' }
 end)
 
+lib.callback.register('DERP-donatesystem:cancelTicket', function(source, ticketId)
+    ticketId = SanitizeString(tostring(ticketId or ''), 20)
+    if ticketId == '' then return { success = false, message = 'Ticket ID không hợp lệ' } end
+
+    local identifier = GetIdentifier(source)
+    if not identifier then return { success = false, message = 'Không xác minh được người chơi' } end
+
+    local ticket = MySQL.single.await('SELECT * FROM donate_tickets WHERE ticket_id = ? AND identifier = ? AND status = "pending"', { ticketId, identifier })
+    if not ticket then
+        return { success = false, message = 'Ticket không tồn tại hoặc đã được xử lý' }
+    end
+
+    MySQL.update.await('UPDATE donate_tickets SET status = "rejected" WHERE ticket_id = ?', { ticketId })
+
+    CreateThread(function()
+        BroadcastPendingState()
+    end)
+
+    TriggerClientEvent('DERP-donatesystem:notify', source, 'info', ('Đã hủy ticket %s'):format(ticketId))
+    return { success = true, message = 'Đã hủy ticket' }
+end)
+
 lib.callback.register('DERP-donatesystem:getRevenue', function(source)
     if not IsAdmin(source) then return { success = false } end
 

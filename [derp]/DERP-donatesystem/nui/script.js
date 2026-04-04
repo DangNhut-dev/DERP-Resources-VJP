@@ -122,7 +122,7 @@ function renderQRPage(ticket) {
         const qrUrl = `${cfg.qr.baseUrl}${bank.bankId}-${bank.accountNumber}-compact.png?amount=${amount}&addInfo=${encodeURIComponent(transferContent)}&accountName=${encodeURIComponent(bank.accountName)}`;
         qrHtml = `
         <div class="qr-image-wrap">
-            <img src="${qrUrl}" alt="QR Code" onerror="this.parentElement.innerHTML='<div style=\'color:#aaa;font-size:12px;text-align:center;padding:10px\'>QR không khả dụng</div>'">
+            <img src="${qrUrl}" alt="QR Code" onerror="this.parentElement.innerHTML='<div style=\\'color:#aaa;font-size:12px;text-align:center;padding:10px\\'>QR không khả dụng</div>'">
         </div>`;
         infoHtml = `
         <div class="qr-info">
@@ -139,6 +139,12 @@ function renderQRPage(ticket) {
     }
 
     document.getElementById('qrSection').innerHTML = qrHtml + infoHtml;
+
+    const cancelBtn = document.getElementById('btnCancelTicket');
+    cancelBtn.style.display = 'inline-block';
+    cancelBtn.disabled = false;
+    cancelBtn.textContent = 'Hủy Giao Dịch';
+
     showPage('qr');
 }
 
@@ -156,7 +162,7 @@ async function loadHistory() {
         return;
     }
     container.innerHTML = tickets.map(t => `
-        <div class="ticket-item">
+        <div class="ticket-item ${t.status === 'pending' ? 'ticket-clickable' : ''}" data-ticket-id="${t.ticket_id}" data-status="${t.status}" data-amount="${t.amount}">
             <span class="ticket-id">${t.ticket_id}</span>
             <span class="ticket-amount">${formatMoney(t.amount)} <small style="font-size:11px;color:var(--text-muted)">VND</small></span>
             <span class="ticket-note">${t.note || '—'}</span>
@@ -164,6 +170,14 @@ async function loadHistory() {
             ${statusBadge(t.status)}
         </div>
     `).join('');
+
+    container.querySelectorAll('.ticket-clickable').forEach(el => {
+        el.addEventListener('click', () => {
+            const ticketId = el.dataset.ticketId;
+            const amount = Number(el.dataset.amount);
+            renderQRPage({ ticketId, amount });
+        });
+    });
 }
 
 // ──────────────────────────────────────────
@@ -314,6 +328,21 @@ document.getElementById('btnCreateTicket').addEventListener('click', async () =>
 });
 
 document.getElementById('btnBackFromQR').addEventListener('click', () => showPage('donate'));
+document.getElementById('btnCancelTicket').addEventListener('click', async () => {
+    if (!currentTicket || !currentTicket.ticketId) return;
+    const btn = document.getElementById('btnCancelTicket');
+    btn.disabled = true;
+    btn.textContent = 'Đang hủy...';
+    const res = await nuiFetch('cancelTicket', { ticketId: currentTicket.ticketId });
+    if (res.success) {
+        btn.textContent = 'Đã hủy';
+        currentTicket = null;
+    } else {
+        btn.disabled = false;
+        btn.textContent = 'Hủy Giao Dịch';
+    }
+});
+
 document.getElementById('btnViewHistory').addEventListener('click', () => showPage('history'));
 
 document.getElementById('btnAdminSearch').addEventListener('click', () => {

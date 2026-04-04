@@ -143,6 +143,12 @@ RegisterNUICallback('getRevenue', function(_, cb)
     end)
 end)
 
+RegisterNUICallback('cancelTicket', function(data, cb)
+    lib.callback('DERP-donatesystem:cancelTicket', false, function(result)
+        cb(result or { success = false })
+    end, data.ticketId)
+end)
+
 RegisterNetEvent('DERP-donatesystem:notify', function(ntype, message)
     lib.notify({
         title = 'Ủng Hộ Thành Phố',

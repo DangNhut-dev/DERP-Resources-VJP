@@ -520,3 +520,6 @@ body {
     border-radius: 20px;
     padding: 2px 10px;
 }
+
+.ticket-clickable { cursor: pointer; }
+.ticket-clickable:hover { border-color: var(--cyan); background: rgba(5, 242, 242, 0.04); }
