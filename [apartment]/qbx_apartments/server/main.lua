@@ -65,6 +65,23 @@ RegisterNetEvent('apartments:server:CreateApartment', function(type, label)
     TriggerClientEvent("apartments:client:SetHomeBlip", src, type)
 end)
 
+RegisterNetEvent('apartments:server:CreateApartmentOnly', function(type, label)
+    local src = source
+    local player = exports.qbx_core:GetPlayer(src)
+    if not player then return end
+    local num = createApartmentId(type)
+    local apartmentId = type .. num
+    label = label .. " " .. num
+    MySQL.insert('INSERT INTO apartments (name, type, label, citizenid) VALUES (?, ?, ?, ?)', {
+        apartmentId,
+        type,
+        label,
+        player.PlayerData.citizenid
+    })
+    TriggerClientEvent("apartments:client:SetHomeBlip", src, type)
+    TriggerClientEvent("apartments:client:ApartmentCreated", src, apartmentId, type)
+end)
+
 RegisterNetEvent('apartments:server:UpdateApartment', function(type, label)
     local src = source
     local player = exports.qbx_core:GetPlayer(src)

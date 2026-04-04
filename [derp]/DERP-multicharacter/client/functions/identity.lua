@@ -55,9 +55,9 @@ function Identity.Anim(characterName, gender, callbacks, useClothingTimer)
     -- Set default skin based on gender
     Framework.SetSkin(nil, gender == "male")
 
-    TriggerServerEvent('apartments:server:CreateApartment', 'apartment', 'Apartment')
+    TriggerServerEvent('apartments:server:CreateApartmentOnly', 'apartment', 'Apartment')
 
-    Wait(2000) -- Đợi server tạo apartment và trigger spawn
+    Wait(2000)
     
     if FrameworkSelected == "ESX" then
         TriggerEvent("playerSpawned")
@@ -259,3 +259,8 @@ function Cinematics.SetText(state, text)
         text = text
     })
 end
+
+RegisterNetEvent('apartments:client:ApartmentCreated', function(apartmentId, apartmentType)
+    _G.PendingApartmentId = apartmentId
+    _G.PendingApartmentType = apartmentType
+end)

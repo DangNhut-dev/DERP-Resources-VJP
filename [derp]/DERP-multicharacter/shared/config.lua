@@ -50,7 +50,7 @@ Config.UI = {
     ['discord'] = 'https://discord.gg/TWv9AWfDwY', -- [STRING] Set your Discord URL to show that content or set it to false to disable discord icon.
     ['youtube'] = false, -- [STRING] Set your Youtube URL to show that content or set it to false to disable youtube icon.
     ['website'] = false, -- [STRING] Set your Website URL to show that content or set it to false to disable website icon.
-    ['delete_character'] = false,
+    ['delete_character'] = true,
 }
 
 Config.ServerLogo = ('nui://%s/images/logo.png'):format(GetCurrentResourceName())

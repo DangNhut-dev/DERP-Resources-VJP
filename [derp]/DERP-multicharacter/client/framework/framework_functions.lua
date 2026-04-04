@@ -137,11 +137,21 @@ Framework.OpenSkinMenu = function(gender)
                 local data = exports['illenium-appearance']:getPedAppearance(PlayerPedId())
                 TriggerServerEvent('DERP-multicharacter:Save:Appereance', data)
             end
+
             if Config.Identity.SetInBucketOnAppearance then TriggerServerEvent('DERP-multicharacter:Event:SetPlayerState', 'LOG_IN_USER') end
             if UserInterfaceActive then
                 exports[ZSX_UI]:HideUI(false)
             end
             HandleHud(false)
+
+            if _G.PendingApartmentId and _G.PendingApartmentType then
+                local aptId = _G.PendingApartmentId
+                local aptType = _G.PendingApartmentType
+                _G.PendingApartmentId = nil
+                _G.PendingApartmentType = nil
+                Wait(500)
+                TriggerEvent('apartments:client:SpawnInApartment', aptId, aptType)
+            end
         end, {
             ped = false,
             headBlend = true,
