@@ -142,9 +142,9 @@ local function toggleEngine(vehicle)
 end
 
 EngineBind = lib.addKeybind({
-    name = 'toggleengine',
+    name = 'toggleengines',
     description = locale('info.engine'),
-    defaultKey = config.keySearchBind,
+    defaultKey = 'G',
     onPressed = function()
         if cache.seat == -1 then
             EngineBind:disable(true)
