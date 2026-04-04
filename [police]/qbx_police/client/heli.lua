@@ -102,12 +102,14 @@ local function rotAnglesToVec(rot) -- input vector3
 end
 
 local function getVehicleInView(cam)
+    if not cache.vehicle or not DoesEntityExist(cache.vehicle) then return nil end
     local coords = GetCamCoord(cam)
     local forwardVector = coords + (rotAnglesToVec(GetCamRot(cam, 2)) * 400.0)
-    --DrawLine(coords, coords + (forward_vector * 100.0), 255, 0, 0, 255) -- debug line to show LOS of cam
     local rayHandle = CastRayPointToPoint(coords.x, coords.y, coords.z, forwardVector.x, forwardVector.y, forwardVector.z, 10, cache.vehicle, 0)
-    local _, _, _, _, entityHit = GetRaycastResult(rayHandle)
-    return entityHit <= 0 and nil or IsEntityAVehicle(entityHit) and entityHit
+    if not rayHandle or rayHandle == 0 then return nil end
+    local _, hit, _, _, entityHit = GetRaycastResult(rayHandle)
+    if not hit or not entityHit or entityHit == 0 then return nil end
+    return IsEntityAVehicle(entityHit) and entityHit or nil
 end
 
 local function renderVehicleInfo(vehicle)
