@@ -103,95 +103,91 @@ end)
 RegisterNetEvent('DERP-vehicleshop:server:buyVehicle', function(dealerIndex, vehicleModel)
     local src = source
     local player = QBX:GetPlayer(src)
-
     if not player then return end
-    
+
     if IsOnCooldown(src) then
-        TriggerClientEvent('ox_lib:notify', src, {
-            type = 'error',
-            description = 'Vui lòng đợi trước khi thực hiện lại!'
-        })
+        lib.notify(src, { type = 'error', description = 'Vui lòng đợi trước khi thực hiện lại!' })
         return
     end
 
     local dealer = Config.Dealers[dealerIndex]
     if not dealer then
-        TriggerClientEvent('ox_lib:notify', src, {
-            type = 'error',
-            description = Config.Notifications.noVehicle
-        })
+        lib.notify(src, { type = 'error', description = Config.Notifications.noVehicle })
         return
     end
 
     local vehicleInfo = nil
     for _, v in ipairs(dealer.vehicles) do
-        if v.model == vehicleModel then
-            vehicleInfo = v
-            break
-        end
+        if v.model == vehicleModel then vehicleInfo = v break end
     end
-
     if not vehicleInfo then
-        TriggerClientEvent('ox_lib:notify', src, {
-            type = 'error',
-            description = Config.Notifications.noVehicle
-        })
+        lib.notify(src, { type = 'error', description = Config.Notifications.noVehicle })
         return
     end
 
     if dealer.job then
         if not player.PlayerData.job or player.PlayerData.job.name ~= dealer.job then
-            TriggerClientEvent('ox_lib:notify', src, {
-                type = 'error',
-                description = Config.Notifications.notPolice
-            })
+            lib.notify(src, { type = 'error', description = Config.Notifications.notPolice })
             return
         end
-
-        if player.PlayerData.job.grade.level < vehicleInfo.minGrade then
-            TriggerClientEvent('ox_lib:notify', src, {
-                type = 'error',
-                description = Config.Notifications.notEligible
-            })
+        if player.PlayerData.job.grade.level < (vehicleInfo.minGrade or 0) then
+            lib.notify(src, { type = 'error', description = Config.Notifications.notEligible })
             return
         end
     end
 
     if HasPurchasedVehicle(player.PlayerData.citizenid, vehicleModel) then
-        TriggerClientEvent('ox_lib:notify', src, {
-            type = 'error',
-            description = Config.Notifications.alreadyPurchased
-        })
+        lib.notify(src, { type = 'error', description = Config.Notifications.alreadyPurchased })
         return
     end
 
     local bankBalance = player.PlayerData.money.bank or 0
     if bankBalance < vehicleInfo.price then
-        TriggerClientEvent('ox_lib:notify', src, {
-            type = 'error',
-            description = Config.Notifications.noMoney
-        })
+        lib.notify(src, { type = 'error', description = Config.Notifications.noMoney })
+        return
+    end
+
+    SetCooldown(src)
+
+    local plate = GeneratePlate()
+    if not plate then
+        lib.notify(src, { type = 'error', description = 'Lỗi hệ thống, vui lòng thử lại!' })
+        return
+    end
+
+    -- Gửi xuống client để spawn, chưa trừ tiền
+    TriggerClientEvent('DERP-vehicleshop:client:spawnVehicle', src, vehicleModel, plate, dealer.spawnPoint, dealerIndex)
+end)
+
+RegisterNetEvent('DERP-vehicleshop:server:confirmPurchase', function(dealerIndex, vehicleModel, plate)
+    local src = source
+    local player = QBX:GetPlayer(src)
+    if not player then return end
+
+    local dealer = Config.Dealers[dealerIndex]
+    if not dealer then return end
+
+    local vehicleInfo = nil
+    for _, v in ipairs(dealer.vehicles) do
+        if v.model == vehicleModel then vehicleInfo = v break end
+    end
+    if not vehicleInfo then return end
+
+    -- Validate lại lần cuối trước khi trừ tiền
+    if HasPurchasedVehicle(player.PlayerData.citizenid, vehicleModel) then return end
+
+    local bankBalance = player.PlayerData.money.bank or 0
+    if bankBalance < vehicleInfo.price then
+        lib.notify(src, { type = 'error', description = Config.Notifications.noMoney })
         return
     end
 
     player.Functions.RemoveMoney('bank', vehicleInfo.price, 'bought-vehicle')
 
-    local plate = GeneratePlate()
-    
-    if not plate then
-        player.Functions.AddMoney('bank', vehicleInfo.price, 'plate-generation-failed')
-        TriggerClientEvent('ox_lib:notify', src, {
-            type = 'error',
-            description = 'Lỗi hệ thống, vui lòng thử lại!'
-        })
-        return
-    end
-
     local defaultGarage = dealer.defaultGarage or 'legion'
-
     MySQL.insert.await([[
-        INSERT INTO player_vehicles 
-        (license, citizenid, vehicle, hash, mods, plate, garage, fuel, engine, body, state, coords) 
+        INSERT INTO player_vehicles
+        (license, citizenid, vehicle, hash, mods, plate, garage, fuel, engine, body, state, coords)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)
     ]], {
         player.PlayerData.license,
@@ -201,31 +197,17 @@ RegisterNetEvent('DERP-vehicleshop:server:buyVehicle', function(dealerIndex, veh
         '{}',
         plate,
         defaultGarage,
-        100,
-        1000,
-        1000,
-        1
+        100, 1000, 1000, 1
     })
 
     RecordPurchase(player.PlayerData.citizenid, vehicleModel)
 
-    SetCooldown(src)
-
-    TriggerClientEvent('ox_lib:notify', src, {
+    lib.notify(src, {
         type = 'success',
-        description = ("Bạn đã mua thành công xe %s!"):format(vehicleInfo.label)
+        description = ('Bạn đã mua thành công xe %s!'):format(vehicleInfo.label)
     })
-
-    TriggerClientEvent('DERP-vehicleshop:client:spawnVehicle', src, vehicleModel, plate, dealer.spawnPoint)
-
-    -- print(("[DERP-VehicleShop] %s (%s) đã mua xe %s với giá $%d (plate: %s)"):format(
-    --     player.PlayerData.name,
-    --     player.PlayerData.citizenid,
-    --     vehicleModel,
-    --     vehicleInfo.price,
-    --     plate
-    -- ))
 end)
+
 
 AddEventHandler('playerDropped', function()
     local src = source

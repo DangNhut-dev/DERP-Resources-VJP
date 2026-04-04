@@ -151,38 +151,21 @@ RegisterNetEvent('DERP-vehicleshop:client:openMenu', function(vehicles, dealerNa
     lib.showContext('vehicle_shop_menu')
 end)
 
-RegisterNetEvent('DERP-vehicleshop:client:spawnVehicle', function(vehicleModel, plate, spawnPoint)
+RegisterNetEvent('DERP-vehicleshop:client:spawnVehicle', function(vehicleModel, plate, spawnPoint, dealerIndex)
     local model = GetHashKey(vehicleModel)
 
-    if not LoadModel(model) then
-        lib.notify({
-            type = 'error',
-            description = 'Không thể tải model xe!',
-            duration = 5000
-        })
-        return
+    RequestModel(model)
+    while not HasModelLoaded(model) do
+        Wait(50)
     end
 
     local vehicle = CreateVehicle(model, spawnPoint.x, spawnPoint.y, spawnPoint.z, spawnPoint.w, true, true)
-    
-    local timeout = 0
-    while not DoesEntityExist(vehicle) and timeout < 100 do
+
+    while not DoesEntityExist(vehicle) do
         Wait(10)
-        timeout = timeout + 1
-    end
-    
-    if not DoesEntityExist(vehicle) then
-        SetModelAsNoLongerNeeded(model)
-        lib.notify({
-            type = 'error',
-            description = 'Không thể spawn xe!',
-            duration = 5000
-        })
-        return
     end
 
     local netId = NetworkGetNetworkIdFromEntity(vehicle)
-    
     SetNetworkIdCanMigrate(netId, true)
     SetNetworkIdExistsOnAllMachines(netId, true)
     SetEntityAsMissionEntity(vehicle, true, true)
@@ -191,18 +174,12 @@ RegisterNetEvent('DERP-vehicleshop:client:spawnVehicle', function(vehicleModel, 
     SetVehicleNumberPlateText(vehicle, plate)
     SetVehicleFuelLevel(vehicle, 100.0)
     SetVehicleDirtLevel(vehicle, 0.0)
-    
     Entity(vehicle).state:set('fuel', 100.0, true)
-
     SetModelAsNoLongerNeeded(model)
-
     TriggerEvent('qb-vehiclekeys:client:AddKeys', plate)
 
-    -- lib.notify({
-    --     type = 'success',
-    --     description = ('Xe %s đã được spawn! Biển số: %s'):format(vehicleModel, plate),
-    --     duration = 5000
-    -- })
+    -- Spawn xong mới báo server trừ tiền
+    TriggerServerEvent('DERP-vehicleshop:server:confirmPurchase', dealerIndex, vehicleModel, plate)
 end)
 
 CreateThread(function()
