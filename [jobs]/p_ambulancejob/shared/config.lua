@@ -530,7 +530,7 @@ Config.Death = {
             time = 160,
             anim = {dict = 'dead', clip = 'dead_a', flag = 1},
             dropItems = {
-                enabled = true, -- drop items when player dies?
+                enabled = false, -- drop items when player dies?
                 type = 'medics', -- chance / medics [chance = drop items is based on chance, medics = drop items only when medics are on duty]
                 chance = 50, -- chance in % to drop items [only for chance type]
                 minMedics = 2, -- minimum medics on duty to drop items [only for medics type]
