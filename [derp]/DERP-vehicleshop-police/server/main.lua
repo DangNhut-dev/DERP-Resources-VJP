@@ -1,5 +1,6 @@
 local QBX = exports.qbx_core
 local cooldowns = {}
+local pendingPurchases = {}
 
 local function IsPlateExist(plate)
     local result = MySQL.scalar.await('SELECT plate FROM player_vehicles WHERE plate = ?', {plate})
@@ -155,14 +156,31 @@ RegisterNetEvent('DERP-vehicleshop:server:buyVehicle', function(dealerIndex, veh
         return
     end
 
-    -- Gửi xuống client để spawn, chưa trừ tiền
-    TriggerClientEvent('DERP-vehicleshop:client:spawnVehicle', src, vehicleModel, plate, dealer.spawnPoint, dealerIndex)
+    pendingPurchases[src] = {
+        plate        = plate,
+        vehicleModel = vehicleModel,
+        dealerIndex  = dealerIndex,
+        expireAt     = GetGameTimer() + 120000, 
+    }
+TriggerClientEvent('DERP-vehicleshop:client:spawnVehicle', src, vehicleModel, plate, dealer.spawnPoint, dealerIndex)
 end)
 
 RegisterNetEvent('DERP-vehicleshop:server:confirmPurchase', function(dealerIndex, vehicleModel, plate)
     local src = source
     local player = QBX:GetPlayer(src)
     if not player then return end
+
+    local pending = pendingPurchases[src]
+    if not pending
+    or pending.plate        ~= plate
+    or pending.vehicleModel ~= vehicleModel
+    or pending.dealerIndex  ~= dealerIndex
+    or GetGameTimer()       >  pending.expireAt then
+        lib.notify(src, { type = 'error', description = 'Giao dịch không hợp lệ!' })
+        return
+    end
+
+    pendingPurchases[src] = nil
 
     local dealer = Config.Dealers[dealerIndex]
     if not dealer then return end
@@ -211,7 +229,6 @@ end)
 
 AddEventHandler('playerDropped', function()
     local src = source
-    if cooldowns[src] then
-        cooldowns[src] = nil
-    end
+    cooldowns[src]        = nil
+    pendingPurchases[src] = nil
 end)
