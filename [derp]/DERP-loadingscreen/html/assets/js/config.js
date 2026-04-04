@@ -34,11 +34,12 @@ const CONFIG = {
     staffTitle: 'Đội Ngũ Quản Lý',
     staffList: [
         // { role: 'C.E.O', name: '<span style="color: #ff0000ff;">@WSPDoogie</span>' },
-        { role: 'Admin', name: '<span style="color: #ff0000;">TommyNguyenx, Phuc, P4ttrick</span>' },
+        { role: 'Owner', name: '<span style="color: #ff0000;">TommyNguyenx</span>' },
+        { role: 'Admin', name: '<span style="color: #00eeff;">Phuc, P4ttrick</span>' },
         { role: 'Dev', name: 'TommyNguyenx, P4trick, LeO' },
         { role: '3D Model', name: 'P4trick' },
-        { role: 'Mods', name: 'LeO, Kuro' },
-        { role: 'Supports', name: 'Jayy, Tuấn Ace' },
+        { role: 'Mods', name: 'LeO' },
+        { role: 'Supports', name: 'Jayy, Tuấn Ace, Marlo, Trung' },
     ],
 
     // ── Social Links (leave '' to hide the icon) ─────
