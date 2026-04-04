@@ -33,7 +33,7 @@ local function shuffleSeat(self)
 end
 
 lib.addKeybind({
-    name = 'shuffleSeat',
+    name = 'shuffleSeats',
     description = locale('info.shuffleSeat'),
     defaultKey = config.shuffleSeatKey,
     onPressed = shuffleSeat
