@@ -108,6 +108,10 @@ RegisterNetEvent('derp-lootbox:shop:updateCoin', function(balance)
     SendNUIMessage({ action = 'updateCoin', coinBalance = balance })
 end)
 
+RegisterNetEvent('derp-lootbox:shop:updateCash', function(balance)
+    SendNUIMessage({ action = 'updateCash', cashBalance = balance })
+end)
+
 -- Spawn all configured NPCs on resource start
 CreateThread(function()
     for npcId, cfg in pairs(Config.Shop.NPCs) do

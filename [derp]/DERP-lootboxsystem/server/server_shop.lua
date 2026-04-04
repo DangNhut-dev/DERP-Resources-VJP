@@ -174,10 +174,11 @@ RegisterNetEvent('derp-lootbox:shop:buyCart', function(npcId, cartItems, payment
         local itemConfig = npcConfig.items[entry.name]
         if not itemConfig then return end
 
-        local unitPrice = itemConfig.price.coin
+        local unitPrice = paymentType == 'coin' and itemConfig.price.coin or itemConfig.price.cash
+
         if not unitPrice or unitPrice <= 0 then
             TriggerClientEvent('derp-lootbox:shop:buyResult', source, false,
-                ('"%s" không hợp lệ!'):format(itemConfig.label))
+                ('"%s" không hỗ trợ thanh toán này!'):format(itemConfig.label))
             return
         end
 
@@ -195,24 +196,14 @@ RegisterNetEvent('derp-lootbox:shop:buyCart', function(npcId, cartItems, payment
         end
         TriggerClientEvent('derp-lootbox:shop:updateCoin', source, GetPlayerCoin(citizenid))
     elseif paymentType == 'cash' then
-        -- Tính lại totalPrice theo cash
-        totalPrice = 0
-        for _, entry in ipairs(cartItems) do
-            local itemConfig = npcConfig.items[entry.name]
-            local unitCash = itemConfig.price.cash
-            if not unitCash or unitCash <= 0 then
-                TriggerClientEvent('derp-lootbox:shop:buyResult', source, false,
-                    ('"%s" không hỗ trợ tiền mặt!'):format(itemConfig.label))
-                return
-            end
-            totalPrice = totalPrice + unitCash * entry.amount
-        end
         local cashBalance = player.Functions.GetMoney('cash') or player.PlayerData.money.cash or 0
         if cashBalance < totalPrice then
             TriggerClientEvent('derp-lootbox:shop:buyResult', source, false, 'Không đủ tiền mặt!')
             return
         end
         player.Functions.RemoveMoney('cash', totalPrice, 'derp-shop-purchase')
+        local newCash = player.Functions.GetMoney('cash') or 0
+        TriggerClientEvent('derp-lootbox:shop:updateCash', source, newCash)
     end
 
     for _, item in ipairs(validItems) do
@@ -221,8 +212,9 @@ RegisterNetEvent('derp-lootbox:shop:buyCart', function(npcId, cartItems, payment
 
     shopCooldowns[source] = now
 
+    local currency = paymentType == 'cash' and ('$%d'):format(totalPrice) or ('%d Coin'):format(totalPrice)
     TriggerClientEvent('derp-lootbox:shop:buyResult', source, true,
-        ('Thanh toán giỏ hàng thành công! (%d Coin)'):format(totalPrice))
+        ('Thanh toán giỏ hàng thành công! (%s)'):format(currency))
 end)
 
 AddEventHandler('playerDropped', function()
