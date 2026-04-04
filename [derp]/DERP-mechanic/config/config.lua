@@ -372,7 +372,7 @@ Config.MechanicLocations = {
       {
         -- coords = vector3(-82.23, 87.88, 71.72),
         coords = vector3(17.83, -424.78, 39.13),
-        size = 8.0,
+        size = 25.0,
         showBlip = false,
         employeeOnly = true,
       }
