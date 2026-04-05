@@ -644,10 +644,10 @@ Config.Police.Permissions = {
             view = 0,
         },
         weapon = {
-            create = 6,
-            delete = 6,
-            edit = 6,
-            view = 0,
+            create = 10,
+            delete = 10,
+            edit = 10,
+            view = 10,
         },
         report = {
             create = 2,
