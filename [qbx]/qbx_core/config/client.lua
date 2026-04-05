@@ -71,10 +71,10 @@ return {
             link = 'https://discord.gg/EfmJNte8e9',
         },
 
-        -- secondButton = {
-        --     text = 'Main Website',
-        --     link = 'https://www.qbox.re/',
-        -- }
+        secondButton = {
+            text = 'Tham Gia',
+            link = 'https://discord.gg/EfmJNte8e9',
+        }
     },
 
     --- Only used by QB bridge

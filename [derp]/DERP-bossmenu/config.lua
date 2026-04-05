@@ -122,7 +122,7 @@ Config.ApplicationPoints = {
 Config.ApplicationQuestions = {
     ["police"] = {
         {
-            question = "Why do you want to join the Police Department?",
+            question = "Tại sao bạn muốn tham gia lực lượng UPD?",
             type = "text",
             required = true,
             min = 1,
@@ -173,6 +173,48 @@ Config.ApplicationQuestions = {
             question = "Lực lượng bạn chọn",
             type = "select",
             options = {"LSPD", "BCSO"},
+            required = true
+        },
+    },
+    ["ambulance"] = {
+        {
+            question = "Bạn tên là gì?",
+            type = "text",
+            required = true,
+            min = 1,
+            max = 1024
+        },
+        {
+            question = "Số điện thoại hiện tại?",
+            type = "text",
+            required = true,
+            min = 1,
+            max = 1024
+        },
+        {
+            question = "Bạn có từng làm bác sĩ chưa?",
+            type = "select",
+            options = {"Có", "Chưa"},
+            required = true
+        },
+        {
+            question = "Tình huống: Khi bạn đang trong tình trạng chết lâm sàng, người khác hỏi bạn có khỏe không thì bạn sẽ làm gì?",
+            type = "text",
+            required = true,
+            min = 1,
+            max = 1024
+        },
+        {
+            question = "Tình huống: Khi cứu người nhưng họ bảo là không có tiền để trả tiền viện thì bạn xử lý như thế nào?",
+            type = "text",
+            required = true,
+            min = 1,
+            max = 1024
+        },
+        {
+            question = "Bạn có sẵn sàng các tuân thủ và quy định hay không?",
+            type = "select",
+            options = {"Có", "Không"},
             required = true
         },
     }

@@ -725,6 +725,7 @@ Config.MarketBlips = {
     {coords = vector3(2570.01, 292.57, 108.73), sprite = 110, color = 1, scale = 0.6, display = 4, name = "Cửa Hàng Vũ Khí"},
     {coords = vector3(-1120.44, 2698.51, 18.55), sprite = 110, color = 1, scale = 0.6, display = 4, name = "Cửa Hàng Vũ Khí"},
     {coords = vector3(844.29, -1035.28, 28.19), sprite = 110, color = 1, scale = 0.6, display = 4, name = "Cửa Hàng Vũ Khí"},
+    {coords = vector3(714.00, -964.77, 30.40), sprite = 850, color = 1, scale = 0.6, display = 4, name = "Xưởng May Balo"},
     {coords = vector3(-356.25, -133.68, 38.97), sprite = 446, color = 47, scale = 0.7, display = 4, name = "Sửa Xe"},
     {coords = vector3(2526.69, 4358.91, 40.06), sprite = 570, color = 0, scale = 0.7, display = 4, name = "Cánh Đồng Bông Cotton"},
     {coords = vector3(-580.10, 5369.02, 70.34), sprite = 85, color = 21, scale = 0.7, display = 4, name = "Trung Tâm Xử Lý Gỗ"},
