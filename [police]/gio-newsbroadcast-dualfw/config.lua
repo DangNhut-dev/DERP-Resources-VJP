@@ -28,14 +28,14 @@ Config = {}
 --]]
 
 Config.AnnouncementTypes = {
-    -- ['ambulance'] = {
-    --     job       = 'ambulance',
-    --     grade     = 2,          -- Change: 0 = any EMS, 2 = supervisor+, 4 = chief only
-    --     header    = 'EMS NEWS',
-    --     subheader = 'EMERGENCY MEDICAL SERVICES',
-    --     color     = '#cc0000',
-    --     cooldown  = 30          -- seconds between broadcasts per player (0 = disabled)
-    -- },
+    ['ambulance'] = {
+        job       = 'ambulance',
+        grade     = 2,          -- Change: 0 = any EMS, 2 = supervisor+, 4 = chief only
+        header    = 'EMS NEWS',
+        subheader = 'EMERGENCY MEDICAL SERVICES',
+        color     = '#cc0000',
+        cooldown  = 30          -- seconds between broadcasts per player (0 = disabled)
+    },
     ['police'] = {
         job       = 'police',   -- Change to match your server's job name
         grade     = 7,          -- Change: 0 = any officer, 3 = sergeant+, 5 = command only
