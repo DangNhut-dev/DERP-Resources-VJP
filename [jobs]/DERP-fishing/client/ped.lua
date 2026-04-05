@@ -153,7 +153,8 @@ local function buyBaits()
 end
 
 local function open()
-    local level, progress = GetCurrentLevel(), GetCurrentLevelProgress() * 100
+    local level = GetCurrentLevel()
+    local progress = GetCurrentLevelProgress() * 100
 
     lib.registerContext({
         id = 'fisherman',
@@ -161,7 +162,7 @@ local function open()
         options = {
             {
                 title = locale('level', level),
-                description = locale('level_desc', math.floor(10000 - progress)),
+                description = locale('level_desc', math.floor(Config.xpPerLevel * (1 - progress / 100))),
                 icon = 'chart-simple',
                 progress = math.max(progress, 0.01),
                 colorScheme = 'lime'

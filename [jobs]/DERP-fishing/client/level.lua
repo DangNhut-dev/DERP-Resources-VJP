@@ -1,29 +1,31 @@
-local level = 1
+local xp = 0
 
 ---@param l number
 local function updated(l)
     if not l then return end
-    
-    level = l
-    Update(level)
+
+    xp = l
+    Update(GetCurrentLevel())
 end
 
-lib.callback('derp-fishing:getLevel', false, updated)
+local function fetchLevel()
+    TriggerServerEvent('derp-fishing:requestLevel')
+end
 
-RegisterNetEvent('esx:playerLoaded', function()
-    lib.callback('derp-fishing:getLevel', 100, updated)
-end)
+RegisterNetEvent('esx:playerLoaded', fetchLevel)
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', fetchLevel)
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    lib.callback('derp-fishing:getLevel', 100, updated)
+AddEventHandler('onClientResourceStart', function(resourceName)
+    if resourceName ~= cache.resource then return end
+    SetTimeout(2000, fetchLevel)
 end)
 
 RegisterNetEvent('derp-fishing:updateLevel', updated)
 
 function GetCurrentLevel()
-    return math.floor(level)
+    return math.floor(xp / Config.xpPerLevel) + 1
 end
 
 function GetCurrentLevelProgress()
-    return level - math.floor(level)
+    return (xp % Config.xpPerLevel) / Config.xpPerLevel
 end

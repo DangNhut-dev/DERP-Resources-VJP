@@ -43,13 +43,13 @@ AddEventHandler('onResourceStop', function(resource)
 	end
 end)
 
-
 local function createPlayer(identifier)
-    levels[identifier] = 1.0
-    MySQL.insert.await('INSERT INTO `derp-fishing` (user_identifier, xp) VALUES(?, ?)', { identifier, levels[identifier] })
+    levels[identifier] = 0
+    MySQL.insert.await('INSERT INTO `derp-fishing` (user_identifier, xp) VALUES(?, ?)', { identifier, 0 })
 end
 
-lib.callback.register('derp-fishing:getLevel', function(source)
+RegisterNetEvent('derp-fishing:requestLevel', function()
+    local source = source
     local player = Framework.getPlayerFromId(source)
 
     if not player then return end
@@ -60,32 +60,24 @@ lib.callback.register('derp-fishing:getLevel', function(source)
         createPlayer(identifier)
     end
 
-    return levels[identifier]
+    TriggerClientEvent('derp-fishing:updateLevel', source, levels[identifier])
 end)
 
----@param player Player
----@param amount number
 function AddPlayerLevel(player, amount)
     local identifier = player:getIdentifier()
-    local level = math.floor(levels[identifier])
+    local oldLevel = math.floor(levels[identifier] / Config.xpPerLevel) + 1
 
-    levels[identifier] += amount
+    levels[identifier] = levels[identifier] + amount
 
-    if math.floor(levels[identifier]) - level > 0 then
+    local newLevel = math.floor(levels[identifier] / Config.xpPerLevel) + 1
+
+    if newLevel > oldLevel then
         TriggerClientEvent('derp-fishing:showNotification', player.source, locale('unlocked_level'), 'success')
     end
 
     TriggerClientEvent('derp-fishing:updateLevel', player.source, levels[identifier])
 end
 
----@param player Player
 function GetPlayerLevel(player)
-    return levels[player:getIdentifier()]
+    return math.floor(levels[player:getIdentifier()] / Config.xpPerLevel) + 1
 end
-
--- RegisterNetEvent('derp-fishing:caughtFish', function()
---     local player = Framework.getPlayerFromId(source)
---     if not player then return end
-    
---     AddPlayerLevel(player, 1.0)
--- end)

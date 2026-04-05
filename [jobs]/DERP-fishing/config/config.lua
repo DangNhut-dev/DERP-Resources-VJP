@@ -1,6 +1,7 @@
 Config = {}
 
-Config.progressPerCatch = 0.0001 -- The progress per one fish caught
+Config.progressPerCatch = 1
+Config.xpPerLevel = 10000
 
 ---@class Fish
 ---@field minLevel integer
@@ -101,7 +102,8 @@ Config.ped = {
 
     ---@type vector4[]
     locations = {
-        vector4(-1810.04, -1207.75, 14.30, 122.41)
+        -- vector4(-1810.04, -1207.75, 14.30, 122.41)
+        vector4(-1857.90, -1244.02, 8.62, 133.78)
     }
 }
 
