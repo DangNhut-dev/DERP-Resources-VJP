@@ -86,8 +86,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -124,8 +124,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -162,8 +162,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -200,8 +200,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -238,8 +238,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -276,8 +276,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -314,8 +314,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -352,8 +352,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -390,8 +390,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -428,8 +428,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -466,8 +466,8 @@ Config.MarketNPCs = {
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
             {name = "scissors", label = "Cây Kéo", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
             {name = "anchovy", label = "Cá cơm", buyPrice = nil, sellMin = 20, sellMax = 30},
             {name = "trout", label = "Cá hồi suối", buyPrice = nil, sellMin = 26, sellMax = 38},
             {name = "haddock", label = "Cá tuyết vân đen", buyPrice = nil, sellMin = 36, sellMax = 50},
@@ -502,8 +502,8 @@ Config.MarketNPCs = {
         coords = vector4(1752.80, 2566.85, 45.57, 222.87),
         type = "buy",
         items = {
-            {name = "burger", label = "Hamburger", buyPrice = 200, sellMin = nil, sellMax = nil},
-            {name = "water", label = "Nước Suối", buyPrice = 200, sellMin = nil, sellMax = nil},
+            {name = "burger", label = "Hamburger", buyPrice = 60, sellMin = nil, sellMax = nil},
+            {name = "water", label = "Nước Suối", buyPrice = 50, sellMin = nil, sellMax = nil},
         }
     },
     {
