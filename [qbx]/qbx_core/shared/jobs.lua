@@ -200,6 +200,7 @@ return {
             },
             [3] = {
                 name = 'Phó Viện Trưởng',
+                isboss = true,
                 payment = 3800
             },
             [4] = {
