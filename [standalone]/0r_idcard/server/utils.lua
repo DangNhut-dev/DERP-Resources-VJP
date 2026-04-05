@@ -206,3 +206,15 @@ function setPlayerLicense(type, source, value)
 end
 
 exports("setPlayerLicense", setPlayerLicense)
+
+RegisterServerEvent('0r_idcard:server:checkGiveIdCard')
+AddEventHandler('0r_idcard:server:checkGiveIdCard', function()
+    local src = source
+    local Player = exports.qbx_core:GetPlayer(src)
+    if not Player then return end
+
+    local hasCard = exports.ox_inventory:Search(src, 'count', 'id_card')
+    if not hasCard or hasCard < 1 then
+        exports.ox_inventory:AddItem(src, 'id_card', 1)
+    end
+end)

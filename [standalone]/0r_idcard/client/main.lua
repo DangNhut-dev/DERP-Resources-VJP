@@ -53,6 +53,7 @@ CreateThread(function()
                 Config.Notify(_t("headshot_taken"), "success")
 
                 TriggerServerEvent("0r_idcard:server:saveHeadshot", shot)
+                TriggerServerEvent("0r_idcard:server:checkGiveIdCard")
             end
         elseif dist2 < 2 then
             sleep = 0
