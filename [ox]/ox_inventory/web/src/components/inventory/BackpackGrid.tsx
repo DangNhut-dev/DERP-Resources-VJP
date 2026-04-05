@@ -244,7 +244,7 @@ const BackpackGrid: React.FC<BackpackGridProps> = ({ backpack }) => {
       <div
         className="inventory-grid-container backpack-grid-scroll"
         style={{
-          maxHeight: needsScroll ? `calc(${MAX_VISIBLE_ROWS} * 10.2vh + ${MAX_VISIBLE_ROWS - 1} * 3px)` : undefined,
+          maxHeight: needsScroll ? `calc(${MAX_VISIBLE_ROWS} * 8.5vh + ${MAX_VISIBLE_ROWS - 1} * 3px)` : undefined,
           overflowY: needsScroll ? 'auto' : 'hidden',
         }}
       >

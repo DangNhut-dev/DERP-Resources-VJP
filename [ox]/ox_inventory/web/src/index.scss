@@ -29,7 +29,7 @@ $font:            'Oswald', sans-serif;
 // ── Grid ───────────────────────────────────────────────────────
 $gridCols:        5;
 $gridGap:         3px;
-$gridSize:        10.2vh;
+$gridSize:        8.5vh;
 $containerSize:   calc(#{$gridCols} * #{$gridSize} + (#{$gridCols} - 1) * #{$gridGap});
 
 // ── Reset ──────────────────────────────────────────────────────
