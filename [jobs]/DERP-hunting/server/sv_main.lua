@@ -158,19 +158,56 @@ end
 
 -- Loot thịt + da sau khi lột
 function choiceRewardsForPlayer(animalCfg, src, Player)
-    local lootText = {}
+    -- Tính trước loot để check slot
+    local meatAmount, meatItem
+    local hideAmount, hideGrade
 
     if animalCfg.meatItem and animalCfg.meatAmount then
-        local amount = math.random(animalCfg.meatAmount.min, animalCfg.meatAmount.max)
-        exports['ox_inventory']:AddItem(src, animalCfg.meatItem, amount)
-        table.insert(lootText, '+' .. amount .. 'x ' .. animalCfg.meatItem)
+        meatAmount = math.random(animalCfg.meatAmount.min, animalCfg.meatAmount.max)
+        meatItem   = animalCfg.meatItem
     end
 
     if Config.HideSystem.enabled then
-        local grade  = rollHideGrade()
-        local amount = math.random(Config.HideSystem.amountMin, Config.HideSystem.amountMax)
-        exports['ox_inventory']:AddItem(src, grade.item, amount)
-        table.insert(lootText, '+' .. amount .. 'x ' .. grade.label)
+        hideGrade  = rollHideGrade()
+        hideAmount = math.random(Config.HideSystem.amountMin, Config.HideSystem.amountMax)
+    end
+
+    -- Check slot/weight trước khi add
+    if meatItem then
+        local canCarry = exports['ox_inventory']:CanCarryItem(src, meatItem, meatAmount)
+        if not canCarry then
+            TriggerClientEvent('ox_lib:notify', src, {
+                type        = 'error',
+                description = 'Túi không đủ chỗ cho thịt! Hãy bỏ bớt đồ.',
+                duration    = 5000,
+            })
+            print(('[DERP-hunting] [DEBUG] choiceRewards | src=%s cant carry meat %sx %s'):format(src, meatAmount, meatItem))
+            return
+        end
+    end
+
+    if hideGrade then
+        local canCarry = exports['ox_inventory']:CanCarryItem(src, hideGrade.item, hideAmount)
+        if not canCarry then
+            TriggerClientEvent('ox_lib:notify', src, {
+                type        = 'error',
+                description = 'Túi không đủ chỗ cho da! Hãy bỏ bớt đồ.',
+                duration    = 5000,
+            })
+            print(('[DERP-hunting] [DEBUG] choiceRewards | src=%s cant carry hide %sx %s'):format(src, hideAmount, hideGrade.item))
+            return
+        end
+    end
+
+    -- Add item
+    if meatItem then
+        exports['ox_inventory']:AddItem(src, meatItem, meatAmount)
+        print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (meat)'):format(src, meatAmount, meatItem))
+    end
+
+    if hideGrade then
+        exports['ox_inventory']:AddItem(src, hideGrade.item, hideAmount)
+        print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (hide grade=%s)'):format(src, hideAmount, hideGrade.item, hideGrade.label))
     end
 end
 
