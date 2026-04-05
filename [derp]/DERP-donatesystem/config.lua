@@ -14,33 +14,33 @@ Config.Donate = {
 
 Config.Payment = {
     banks = {
+        -- {
+        --     id          = 'tcb',
+        --     label       = 'Luis - Giờ Sáng',
+        --     bankId      = 'TCB',
+        --     bankName    = 'Techcombank',
+        --     accountNumber = '19034801880013',
+        --     accountName = 'DIEP THIEN TUAN',
+        --     enabled     = true
+        -- },
         {
-            id          = 'tcb',
-            label       = 'Luis - Giờ Sáng',
-            bankId      = 'TCB',
-            bankName    = 'Techcombank',
-            accountNumber = '19034801880013',
-            accountName = 'DIEP THIEN TUAN',
+            id          = 'momo',
+            label       = 'MOMO',
+            bankId      = 'momo',
+            bankName    = 'MOMO',
+            accountNumber = 'PSG2609510400000007',
+            accountName = 'Nguyen Dang Dang Nhut',
             enabled     = true
         },
-        {
-            id          = 'mb',
-            label       = 'P4trick - Giờ Chiều',
-            bankId      = 'MB',
-            bankName    = 'MB Bank',
-            accountNumber = '09949999999',
-            accountName = 'LE DO GIA BAO',
-            enabled     = true
-        },
-        {
-            id          = 'tcb2',
-            label       = 'TommyNguyenx - Giờ Khuya',
-            bankId      = 'TCB',
-            bankName    = 'Techcombank',
-            accountNumber = '234567290804',
-            accountName = 'NGUYEN DANG DANG NHUT',
-            enabled     = true
-        },
+        -- {
+        --     id          = 'tcb2',
+        --     label       = 'TommyNguyenx - Giờ Khuya',
+        --     bankId      = 'TCB',
+        --     bankName    = 'Techcombank',
+        --     accountNumber = '234567290804',
+        --     accountName = 'NGUYEN DANG DANG NHUT',
+        --     enabled     = true
+        -- },
     }
 }
 
