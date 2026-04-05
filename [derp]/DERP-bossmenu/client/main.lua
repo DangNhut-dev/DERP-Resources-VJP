@@ -516,39 +516,6 @@ RegisterNUICallback('showFireConfirmMenu', function(data, cb)
     
     cb('ok')
 end)
-
-function ShowFireConfirmationMenu(citizenid, employeeName)
-    local headerText = "Fire Employee"
-    local message = "Are you sure you want to fire " .. employeeName .. "?"
-    
-    local menuOptions = {
-        {
-            header = "Confirm Firing",
-            txt = "Yes, fire this employee",
-            params = {
-                event = "DERP-bossmenu:client:FireEmployeeConfirmed",
-                args = {
-                    citizenid = citizenid,
-                    confirmed = true
-                }
-            }
-        },
-        {
-            header = "Cancel",
-            txt = "No, keep this employee",
-            params = {
-                event = "DERP-bossmenu:client:FireEmployeeConfirmed",
-                args = {
-                    citizenid = citizenid,
-                    confirmed = false
-                }
-            }
-        }
-    }
-    
-    exports['qb-menu']:openMenu(menuOptions)
-end
-
 function ShowCustomFireMenu(citizenid, employeeName)
     SetNuiFocus(true, true)
     
@@ -564,15 +531,20 @@ RegisterNUICallback("submitApplication", function(data, cb)
     TriggerServerEvent("DERP-bossmenu:server:SubmitApplication", data.jobName, data.answers)
 end)
 
+function ShowFireConfirmationMenu(citizenid, employeeName)
+    SendNUIMessage({
+        action = "showCustomFireMenu",
+        name = employeeName,
+        citizenid = citizenid
+    })
+end
+
 RegisterNUICallback('fireMenuResponse', function(data, cb)
-    SetNuiFocus(false, false)
-    
     SendNUIMessage({
         action = "fireEmployeeResponse",
         confirmed = data.confirmed,
         citizenid = data.citizenid
     })
-    
     cb('ok')
 end)
 

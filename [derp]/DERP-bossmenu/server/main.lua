@@ -407,20 +407,24 @@ end)
 RegisterNetEvent('DERP-bossmenu:server:UpdateEmployee', function(citizenid, jobName, grade)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    
+
     if not Player or Player.PlayerData.job.name ~= jobName then
         TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
         return
     end
-    
-    -- Check if player has boss permissions
+
     if not Player.PlayerData.job.isboss then
         TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
         return
     end
-    
-    -- Check if employee exists
-    local targetExists = false
+
+    grade = tonumber(grade)
+
+    if not QBCore.Shared.Jobs[jobName] or not QBCore.Shared.Jobs[jobName].grades[grade] then
+        TriggerClientEvent('QBCore:Notify', src, "Invalid job grade", "error")
+        return
+    end
+
     MySQL.Async.fetchSingle('SELECT 1 FROM players WHERE citizenid = @citizenid', {
         ['@citizenid'] = citizenid
     }, function(result)
@@ -428,81 +432,57 @@ RegisterNetEvent('DERP-bossmenu:server:UpdateEmployee', function(citizenid, jobN
             TriggerClientEvent('QBCore:Notify', src, "Player not found", "error")
             return
         end
-if type(grade) == 'number' then
-    grade = tostring(grade)
-end
 
+        -- KHÔNG có thêm check grade ở đây nữa
 
-if not QBCore.Shared.Jobs[jobName].grades[grade] then
-    TriggerClientEvent('QBCore:Notify', src, "Invalid job grade", "error")
-    return
-end
-        if not QBCore.Shared.Jobs[jobName].grades[grade] then
-            TriggerClientEvent('QBCore:Notify', src, "Invalid job grade", "error")
-            return
-        end
-        
         local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(citizenid)
         if targetPlayer then
-            -- Verify employee is already in this job or updating job itself
             local targetCurrentJob = targetPlayer.PlayerData.job.name
-            
+
             if targetCurrentJob == jobName then
-                -- Only update grade
                 targetPlayer.Functions.SetJobDuty(true)
                 targetPlayer.Functions.SetJob(jobName, grade)
                 TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your rank has been updated to " .. QBCore.Shared.Jobs[jobName].grades[grade].name, "success")
                 TriggerClientEvent('QBCore:Notify', src, "Employee rank updated successfully", "success")
-                
-                -- Log entry
-                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Rank Update', 'green', string.format('%s (%s) updated %s (%s) to rank %s in job %s', 
+                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Rank Update', 'green', string.format('%s (%s) updated %s (%s) to rank %s in job %s',
                     GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(targetPlayer.PlayerData.source), citizenid, grade, jobName))
             else
                 targetPlayer.Functions.SetJob(jobName, grade)
                 TriggerClientEvent('DERP-bossmenu:client:JobChanged', -1, jobName)
                 TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your job has been changed to " .. QBCore.Shared.Jobs[jobName].label, "success")
                 TriggerClientEvent('QBCore:Notify', src, "Employee successfully transferred to this job", "success")
-                
-                -- Log entry
-                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Job Change', 'green', string.format('%s (%s) changed %s (%s) job from %s to %s at rank %s', 
+                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Job Change', 'green', string.format('%s (%s) changed %s (%s) job from %s to %s at rank %s',
                     GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(targetPlayer.PlayerData.source), citizenid, targetCurrentJob, jobName, grade))
             end
         else
-            -- First check current job
             MySQL.Async.fetchSingle('SELECT job FROM players WHERE citizenid = @citizenid', {
                 ['@citizenid'] = citizenid
-            }, function(result)
-                if not result or not result.job then
+            }, function(jobResult)
+                if not jobResult or not jobResult.job then
                     TriggerClientEvent('QBCore:Notify', src, "Error updating employee", "error")
                     return
                 end
-                
-                local currentJob = json.decode(result.job)
+
+                local currentJob = json.decode(jobResult.job)
                 local jobInfo = {
-                    name = jobName,
-                    label = QBCore.Shared.Jobs[jobName].label,
+                    name    = jobName,
+                    label   = QBCore.Shared.Jobs[jobName].label,
                     payment = QBCore.Shared.Jobs[jobName].grades[grade].payment,
-                    onduty = true,
-                    grade = {
+                    onduty  = true,
+                    grade   = {
                         level = grade,
-                        name = QBCore.Shared.Jobs[jobName].grades[grade].name
+                        name  = QBCore.Shared.Jobs[jobName].grades[grade].name
                     },
-                    isboss = QBCore.Shared.Jobs[jobName].grades[grade].isboss or false
+                    isboss  = QBCore.Shared.Jobs[jobName].grades[grade].isboss or false
                 }
-                
+
                 MySQL.Async.execute('UPDATE players SET job = @job WHERE citizenid = @citizenid', {
                     ['@citizenid'] = citizenid,
                     ['@job'] = json.encode(jobInfo)
                 }, function(rowsChanged)
                     if rowsChanged > 0 then
-                        if currentJob.name == jobName then
-                            TriggerClientEvent('QBCore:Notify', src, "Employee rank updated successfully", "success")
-                        else
-                            TriggerClientEvent('QBCore:Notify', src, "Employee successfully transferred to this job", "success")
-                        end
-                        
-                        -- Log entry
-                        TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Offline Employee Update', 'green', string.format('%s (%s) updated %s job from %s to %s at rank %s', 
+                        TriggerClientEvent('QBCore:Notify', src, currentJob.name == jobName and "Employee rank updated successfully" or "Employee successfully transferred to this job", "success")
+                        TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Offline Employee Update', 'green', string.format('%s (%s) updated %s job from %s to %s at rank %s',
                             GetPlayerName(src), Player.PlayerData.citizenid, citizenid, currentJob.name, jobName, grade))
                     else
                         TriggerClientEvent('QBCore:Notify', src, "Update failed", "error")
@@ -513,41 +493,39 @@ end
     end)
 end)
 
--- Hire new employee
 RegisterNetEvent('DERP-bossmenu:server:HireEmployee', function(targetId, jobName, grade)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Target = QBCore.Functions.GetPlayer(tonumber(targetId))
-    
+
     if not Player or not Target then
         TriggerClientEvent('QBCore:Notify', src, "Player not found", "error")
         return
     end
-    
+
     if Player.PlayerData.job.name ~= jobName then
         TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
         return
     end
-    
-    -- Check if player has boss permissions
+
     if not Player.PlayerData.job.isboss then
         TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
         return
     end
-    
-    -- Check if grade exists for this job
-    if not QBCore.Shared.Jobs[jobName].grades[grade] then
+
+    grade = tonumber(grade)
+
+    if not QBCore.Shared.Jobs[jobName] or not QBCore.Shared.Jobs[jobName].grades[grade] then
         TriggerClientEvent('QBCore:Notify', src, "Invalid job grade", "error")
         return
     end
-    
-    --  target job
+
     Target.Functions.SetJob(jobName, grade)
-    
+
     TriggerClientEvent('QBCore:Notify', Target.PlayerData.source, "You've been hired: " .. QBCore.Shared.Jobs[jobName].label, "success")
     TriggerClientEvent('QBCore:Notify', src, "Player successfully hired", "success")
     TriggerClientEvent('DERP-bossmenu:client:JobChanged', -1, jobName)
-    TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Hire', 'green', string.format('%s (%s) hired %s (%s) for job %s at rank %s', 
+    TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Hire', 'green', string.format('%s (%s) hired %s (%s) for job %s at rank %s',
         GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(Target.PlayerData.source), Target.PlayerData.citizenid, jobName, grade))
 end)
 
@@ -1233,57 +1211,82 @@ end)
 RegisterNetEvent('DERP-bossmenu:server:UpdateApplicationStatus', function(applicationId, status, notes)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    
+
     if not Player or not Player.PlayerData.job.isboss then
         TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
         return
     end
-    
-    MySQL.Async.fetchSingle('SELECT * FROM job_applications WHERE id = ?', {
-        applicationId
-    }, function(application)
+
+    MySQL.Async.fetchSingle('SELECT * FROM job_applications WHERE id = ?', { applicationId }, function(application)
         if not application or application.job ~= Player.PlayerData.job.name then
             TriggerClientEvent('QBCore:Notify', src, "Invalid application", "error")
             return
         end
-        
+
         if status ~= 'accepted' and status ~= 'rejected' and status ~= 'finish' and status ~= 'pending' then
             TriggerClientEvent('QBCore:Notify', src, "Invalid status", "error")
             return
         end
-        
+
         MySQL.Async.execute('UPDATE job_applications SET status = ?, date_reviewed = NOW(), reviewer_id = ?, notes = ? WHERE id = ?', {
             status,
             Player.PlayerData.citizenid,
             notes or '',
             applicationId
         }, function(rowsChanged)
-            if rowsChanged > 0 then
-                local statusMessage = "Application status updated"
-                if status == 'accepted' then
-                    statusMessage = "Application accepted successfully"
-                elseif status == 'rejected' then
-                    statusMessage = "Application rejected successfully"
-                elseif status == 'finish' then
-                    statusMessage = "Application marked as finished successfully"
-                end
-                
-                TriggerClientEvent('QBCore:Notify', src, statusMessage, "success")
-                
-                local targetCitizenId = application.citizenid
-                local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(targetCitizenId)
-                
+            if rowsChanged <= 0 then
+                TriggerClientEvent('QBCore:Notify', src, "Update failed", "error")
+                return
+            end
+
+            local jobName = application.job
+            -- Grade mặc định khi accept = "0" (lowest), chỉnh trong config nếu muốn
+            local defaultGrade = tostring(Config.ApplicationAcceptGrade and Config.ApplicationAcceptGrade[jobName] or 0)
+
+            local targetCitizenId = application.citizenid
+            local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(targetCitizenId)
+
+            if status == 'accepted' then
+                TriggerClientEvent('QBCore:Notify', src, "Application accepted successfully", "success")
+
                 if targetPlayer then
-                    if status == 'accepted' then
-                        TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your job application has been accepted! Visit the workplace to start.", "success")
-                    elseif status == 'rejected' then
-                        TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your job application has been rejected.", "error")
-                    elseif status == 'finish' then
-                        TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your job application process has been completed. You can apply again if needed.", "info")
+                    -- Online: set job trực tiếp
+                    targetPlayer.Functions.SetJob(jobName, defaultGrade)
+                    TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source,
+                        "Your application has been accepted! You are now working as " .. (QBCore.Shared.Jobs[jobName] and QBCore.Shared.Jobs[jobName].label or jobName), "success")
+                else
+                    -- Offline: update DB
+                    if QBCore.Shared.Jobs[jobName] and QBCore.Shared.Jobs[jobName].grades[defaultGrade] then
+                        local jobInfo = {
+                            name    = jobName,
+                            label   = QBCore.Shared.Jobs[jobName].label,
+                            payment = QBCore.Shared.Jobs[jobName].grades[defaultGrade].payment,
+                            onduty  = true,
+                            grade   = {
+                                level = tonumber(defaultGrade),
+                                name  = QBCore.Shared.Jobs[jobName].grades[defaultGrade].name
+                            },
+                            isboss  = QBCore.Shared.Jobs[jobName].grades[defaultGrade].isboss or false
+                        }
+                        MySQL.Async.execute('UPDATE players SET job = ? WHERE citizenid = ?', { json.encode(jobInfo), targetCitizenId })
                     end
                 end
-            else
-                TriggerClientEvent('QBCore:Notify', src, "Update failed", "error")
+
+                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Application Accepted', 'green',
+                    string.format('%s accepted application %s for job %s (citizenid: %s)',
+                        Player.PlayerData.citizenid, applicationId, jobName, targetCitizenId))
+
+            elseif status == 'rejected' then
+                TriggerClientEvent('QBCore:Notify', src, "Application rejected successfully", "success")
+                if targetPlayer then
+                    TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your job application has been rejected.", "error")
+                end
+
+            elseif status == 'finish' then
+                TriggerClientEvent('QBCore:Notify', src, "Application marked as finished", "success")
+                if targetPlayer then
+                    TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your application process has been completed.", "info")
+                end
             end
         end)
     end)
@@ -1737,49 +1740,31 @@ QBCore.Functions.CreateCallback('DERP-bossmenu:server:HireNewEmployee', function
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Target = QBCore.Functions.GetPlayer(tonumber(targetId))
-    
-    if not Player then
-        cb({ success = false, message = "Error: Manager not found" })
+
+    if not Player or not Target then
+        cb({ success = false, message = "Player not found" })
         return
     end
-    
-    if not Target then
-        cb({ success = false, message = "Player with ID " .. targetId .. " not found" })
+
+    if Player.PlayerData.job.name ~= jobName or not Player.PlayerData.job.isboss then
+        cb({ success = false, message = "No permission" })
         return
     end
-    
-    if Player.PlayerData.job.name ~= jobName then
-        cb({ success = false, message = "You don't have permission for this job" })
-        return
-    end
-    
-    -- Check if player has boss permissions
-    if not Player.PlayerData.job.isboss then
-        cb({ success = false, message = "You don't have hiring permissions" })
-        return
-    end
-    
-    -- Check if grade exists for this job
-    if not QBCore.Shared.Jobs[jobName].grades[grade] then
+
+    grade = tonumber(grade)
+
+    if not QBCore.Shared.Jobs[jobName] or not QBCore.Shared.Jobs[jobName].grades[grade] then
         cb({ success = false, message = "Invalid job grade" })
         return
     end
-    
-    -- Set employee job
+
     Target.Functions.SetJob(jobName, grade)
-    
-    -- Notify the target
+
     TriggerClientEvent('QBCore:Notify', Target.PlayerData.source, "You've been hired: " .. QBCore.Shared.Jobs[jobName].label, "success")
-    
-    -- Update the job data for all clients
-    TriggerClientEvent('DERP-bossmenu:client:JobChanged', -1, jobName)
-    
-    -- Log the action
-    TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Hire', 'green', string.format('%s (%s) hired %s (%s) for job %s at rank %s', 
-        GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(Target.PlayerData.source), Target.PlayerData.citizenid, jobName, grade))
-    
-    -- Return success
-    cb({ success = true, message = "Employee hired successfully" })
+    TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Hire', 'green', string.format('%s hired %s for job %s rank %s',
+        Player.PlayerData.citizenid, Target.PlayerData.citizenid, jobName, grade))
+
+    cb({ success = true })
 end)
 
 

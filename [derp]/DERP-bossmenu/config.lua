@@ -9,6 +9,11 @@ Config.TargetSystem = "ox_target"  -- Options: "qb-target", "ox_target"
 -- Job Application System Settings
 Config.EnableApplicationSystem = true  -- Set to false to disable job application system
 
+Config.ApplicationAcceptGrade = {
+    ['police']    = 0,
+    ['ambulance'] = 0,
+    ['mechanic']  = 0,
+}
 
 -- Management access locations
 Config.Locations = {
