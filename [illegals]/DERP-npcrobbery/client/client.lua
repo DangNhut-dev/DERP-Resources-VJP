@@ -151,6 +151,11 @@ local function startRobNPC(npc)
 
         zoomCamToNPC(npc)
 
+        local coords = GetEntityCoords(npc)
+        local streetHash, crossingHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+        local streetLabel = GetStreetNameFromHashKey(streetHash)
+        TriggerServerEvent('derp_npcrobbery:server:dispatch', { x = coords.x, y = coords.y, z = coords.z }, streetLabel)
+
         local zonesData = {}
         for _, z in ipairs(Config.Zones) do
             table.insert(zonesData, { id = z.id, label = z.label, color = z.color })
