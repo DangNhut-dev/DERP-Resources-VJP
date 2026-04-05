@@ -83,9 +83,9 @@ function GetPlayerLevel(player)
     return levels[player:getIdentifier()]
 end
 
-RegisterNetEvent('derp-fishing:caughtFish', function()
-    local player = Framework.getPlayerFromId(source)
-    if not player then return end
+-- RegisterNetEvent('derp-fishing:caughtFish', function()
+--     local player = Framework.getPlayerFromId(source)
+--     if not player then return end
     
-    AddPlayerLevel(player, 1.0)
-end)
+--     AddPlayerLevel(player, 1.0)
+-- end)

@@ -1,6 +1,6 @@
 Config = {}
 
-Config.progressPerCatch = 0.01 -- The progress per one fish caught
+Config.progressPerCatch = 0.0001 -- The progress per one fish caught
 
 ---@class Fish
 ---@field minLevel integer
