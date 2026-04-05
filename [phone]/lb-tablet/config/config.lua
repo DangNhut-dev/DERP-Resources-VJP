@@ -132,7 +132,7 @@ Config.RequireDutyDispatch = true -- require being on duty to see dispatch notif
 
 Config.DispatchEnabled = true -- enable dispatch?
 Config.DispatchVisible = true -- should the dispatch be visible? If false, you will only see dispatch in the MDT apps
-Config.DispatchPosition = "right" -- position of the dispatch notifications (left / right)
+Config.DispatchPosition = "left" -- position of the dispatch notifications (left / right)
 Config.DispatchCompatibility = true -- add dispatch exports & events from other dispatch/mdt scripts? (note: this may not work with all scripts, we strongly recommend using the lb-tablet exports directly)
 Config.AllowClientDispatch = true -- add client-sided exports for dispatch? (note: this allows modders to trigger dispatches, but may be needed for some scripts)
 Config.ShowDispatchWithoutItem = true -- show dispatch even if the player doesn't have a tablet item?
@@ -221,7 +221,8 @@ Config.BaseDispatch.Actions = {
             "STUNGUN",
             "TRANQILIZER",
             "UNARMED",
-            "UNKNOWN"
+            "UNKNOWN",
+            "MUSKET"
         },
         dispatch = {
             priority = "high",
@@ -229,7 +230,7 @@ Config.BaseDispatch.Actions = {
         },
     },
     Armed = {
-        police = true,
+        police = false,
         ambulance = false,
         cooldown = 120,
         serverCooldown = 0,
@@ -622,55 +623,55 @@ Config.Police.Permissions = {
         },
         dispatch = {
             view = 0,
-            delete = 3,
+            delete = 6,
         },
         unit = {
             view = 0,
-            edit = 3,
-            create = 3,
-            delete = 3,
+            edit = 6,
+            create = 6,
+            delete = 6,
         },
         profile = {
-            edit = 3,
+            edit = 6,
             view = 0,
         },
         vehicle = {
-            edit = 3,
+            edit = 6,
             view = 0
         },
         property = {
-            edit = 3,
+            edit = 6,
             view = 0,
         },
         weapon = {
-            create = 3,
-            delete = 3,
-            edit = 3,
+            create = 6,
+            delete = 6,
+            edit = 6,
             view = 0,
         },
         report = {
-            create = 3,
-            edit = 3,
-            delete = 3,
+            create = 2,
+            edit = 6,
+            delete = 6,
             view = 0
         },
         case = {
-            create = 3,
-            edit = 3,
+            create = 6,
+            edit = 6,
             delete = 3,
             view = 0,
             fine = 1,
         },
         warrant = {
-            create = 3,
-            edit = 3,
-            delete = 3,
+            create = 7,
+            edit = 7,
+            delete = 7,
             view = 0
         },
         offence = {
-            create = 3,
-            edit = 3,
-            delete = 3,
+            create = 7,
+            edit = 7,
+            delete = 7,
             view = 0
         },
         employee = {
@@ -678,16 +679,16 @@ Config.Police.Permissions = {
         },
         chat = {
             -- The creator is always able to edit, kick and invite
-            create = 3,
-            edit = 3,
-            kick = 3,
-            invite = 3,
+            create = 2,
+            edit = 2,
+            kick = 2,
+            invite = 2,
             view = 0
         },
         jail = {
-            create = 3,
-            edit = 3,
-            unjail = 3,
+            create = 2,
+            edit = 2,
+            unjail = 2,
             view = 0
         },
         phone = {
