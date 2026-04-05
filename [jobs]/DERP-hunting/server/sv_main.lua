@@ -9,10 +9,50 @@ local Animals              = Config.Animals
 local animalsEnity = {}
 
 -- ============================
+--   SLAUGHTER TABLE
+--   slaughteredNetIds[netId] = src  → đang bị claim bởi src
+--   slaughteredNetIds[netId] = true → đã lột xong vĩnh viễn
+-- ============================
+
+local slaughteredNetIds = {}
+local CLAIM_TIMEOUT     = 30000
+
+local function claimNetId(netId, src)
+    if slaughteredNetIds[netId] ~= nil then
+        return false
+    end
+
+    slaughteredNetIds[netId] = src
+
+    SetTimeout(CLAIM_TIMEOUT, function()
+        if slaughteredNetIds[netId] == src then
+            slaughteredNetIds[netId] = nil
+        end
+    end)
+
+    return true
+end
+
+function isAleadySlaughtered(netId)
+    return slaughteredNetIds[netId] ~= nil
+end
+
+function setHash(netId)
+    slaughteredNetIds[netId] = true
+end
+
+function garbageCollection()
+    local count = 0
+    for _ in pairs(slaughteredNetIds) do count = count + 1 end
+    if count > TableSize then
+        slaughteredNetIds = {}
+    end
+end
+
+-- ============================
 --   SLAUGHTER + LOOT
 -- ============================
 
--- Config item name dao (ưu tiên knife, fallback weapon_knife)
 local KNIFE_ITEMS = { 'knife', 'weapon_knife' }
 
 local function hasKnifeInInventory(src)
@@ -25,14 +65,29 @@ local function hasKnifeInInventory(src)
     return false
 end
 
--- Server check dao → nếu có thì báo client bắt đầu skinning
 RegisterServerEvent('DERP-hunting:server:checkKnife')
 AddEventHandler('DERP-hunting:server:checkKnife', function(animal, entity, netId)
     local src = source
-    if not exports['qbx_core']:GetPlayer(src) then return end
+
+    if not exports['qbx_core']:GetPlayer(src) then
+        return
+    end
 
     if not hasKnifeInInventory(src) then
         TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Bạn không có dao!' })
+        return
+    end
+
+    netId = tonumber(netId)
+
+    if not netId then
+        TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Không thể xác định con thú!' })
+        return
+    end
+
+    local existing = slaughteredNetIds[netId]
+
+    if not claimNetId(netId, src) then
         return
     end
 
@@ -42,24 +97,29 @@ end)
 RegisterServerEvent('DERP-hunting:server:AddItem')
 AddEventHandler('DERP-hunting:server:AddItem', function(data, entity, _unused, netId)
     local src = source
+
     local Player = exports['qbx_core']:GetPlayer(src)
     if not Player then return end
 
     netId = tonumber(netId)
 
-    -- Validate netId hợp lệ
-    if not netId then
-        TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Không thể xác định con thú!' })
+    if not netId then return end
+
+    local claimedBy = slaughteredNetIds[netId]
+
+    if claimedBy ~= src then
+        TriggerClientEvent('DERP-hunting:client:ForceRemoveAnimalEntity', src, entity)
         return
     end
 
-    if isAleadySlaughtered(netId) then
-        TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Người khác đã lột da con này rồi!' })
-        TriggerClientEvent('DERP-hunting:client:ForceRemoveAnimalEntity', -1, entity)
-        return
-    end
+    slaughteredNetIds[netId] = true
 
-    setHash(netId)
+    -- NetId được game tái sử dụng sau khi entity xóa → clear sau 10s
+    SetTimeout(10000, function()
+        if slaughteredNetIds[netId] == true then
+            slaughteredNetIds[netId] = nil
+        end
+    end)
 
     local animalCfg = nil
     for _, v in pairs(Config.Animals) do
@@ -69,7 +129,9 @@ AddEventHandler('DERP-hunting:server:AddItem', function(data, entity, _unused, n
         end
     end
 
-    if not animalCfg then return end
+    if not animalCfg then
+        return
+    end
 
     choiceRewardsForPlayer(animalCfg, src, Player)
     TriggerClientEvent('DERP-hunting:client:ForceRemoveAnimalEntity', -1, entity)
@@ -82,8 +144,8 @@ end)
 
 -- Random da theo tỉ lệ trong Config.HideSystem.grades
 local function rollHideGrade()
-    local grades  = Config.HideSystem.grades
-    local roll    = math.random(1, 100)
+    local grades     = Config.HideSystem.grades
+    local roll       = math.random(1, 100)
     local cumulative = 0
     for _, grade in ipairs(grades) do
         cumulative = cumulative + grade.chance
@@ -98,32 +160,19 @@ end
 function choiceRewardsForPlayer(animalCfg, src, Player)
     local lootText = {}
 
-    -- Thịt
     if animalCfg.meatItem and animalCfg.meatAmount then
         local amount = math.random(animalCfg.meatAmount.min, animalCfg.meatAmount.max)
         exports['ox_inventory']:AddItem(src, animalCfg.meatItem, amount)
-        table.insert(lootText, '+' .. amount .. 'x ' .. animalCfg.meatItem .. ' (thit - khong ban duoc)')
+        table.insert(lootText, '+' .. amount .. 'x ' .. animalCfg.meatItem)
     end
 
-    -- Da (random sao theo tỉ lệ)
     if Config.HideSystem.enabled then
         local grade  = rollHideGrade()
         local amount = math.random(Config.HideSystem.amountMin, Config.HideSystem.amountMax)
         exports['ox_inventory']:AddItem(src, grade.item, amount)
-        table.insert(lootText, '+' .. amount .. 'x ' .. grade.label .. ' ($' .. grade.sellPrice .. '/unit)')
+        table.insert(lootText, '+' .. amount .. 'x ' .. grade.label)
     end
-
-    -- if #lootText > 0 then
-    --     TriggerClientEvent('ox_lib:notify', src, {
-    --         type        = 'success',
-    --         title       = 'Lot da thanh cong!',
-    --         description = table.concat(lootText, '\n'),
-    --         duration    = 10000,
-    --     })
-    -- end
 end
-
-
 
 -- ============================
 --   SELLING (bulk)
@@ -143,7 +192,6 @@ AddEventHandler('DERP-hunting:server:sellmeat', function()
         return
     end
 
-    -- Dùng HideSystem grades để bán da (không còn dùng Loots)
     for _, v in pairs(items) do
         if v and v.count and v.count > 0 then
             for _, grade in ipairs(Config.HideSystem.grades) do
@@ -205,7 +253,7 @@ AddEventHandler('DERP-hunting:server:sellItem', function(itemName, pricePerUnit)
 end)
 
 -- ============================
---   BAIT / SPAWN (giữ nguyên cho non-job hunting)
+--   BAIT / SPAWN
 -- ============================
 
 exports['ox_inventory']:registerHook('usingItem', function(payload)
@@ -290,21 +338,3 @@ Citizen.CreateThread(function()
         garbageCollection()
     end
 end)
-
-local slaughteredNetIds = {}
-
-function isAleadySlaughtered(netId)
-    return slaughteredNetIds[netId] == true
-end
-
-function setHash(netId)
-    slaughteredNetIds[netId] = true
-end
-
-function garbageCollection()
-    local count = 0
-    for _ in pairs(slaughteredNetIds) do count = count + 1 end
-    if count > TableSize then
-        slaughteredNetIds = {}
-    end
-end
