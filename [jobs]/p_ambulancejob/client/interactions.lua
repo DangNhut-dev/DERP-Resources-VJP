@@ -73,17 +73,16 @@ end
 
 -- Toggle carry state (start or stop carrying)
 function Interactions.carry(self, carryData)
-  -- If already carrying, stop
   if self.activeCarry then
     self.activeCarry = false
     ClearPedTasksImmediately(cache.ped)
     DetachEntity(cache.ped, true, false)
-    -- Resume bleeding anim loop nếu vẫn đang bleeding
-    if Death.deathType == "bleeding" then
-        Death.pauseLoop = false
+    -- Sửa: reset pauseLoop cho tất cả death type, không chỉ bleeding
+    if Death.deathType ~= "none" then
+      Death.pauseLoop = false
     end
     return
-end
+  end
   
   -- Check if target player is bleeding (needs longer wait)
   local targetPlayer = Player(carryData.id)

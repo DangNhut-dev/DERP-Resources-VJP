@@ -126,6 +126,7 @@ function Death:init()
     if self.initVersion ~= myVersion then return end
 
     -- Bleeding prevention thread
+    -- Bleeding prevention thread
     Citizen.CreateThread(function()
       while self.deathType == "bleeding" and self.initVersion == myVersion do
         local ok, err = pcall(function()
@@ -137,7 +138,9 @@ function Death:init()
       end
     end)
 
-    -- Anim loop thread
+    local wasBeingCarried = false
+    local forceReplay = false
+
     while self.deathType ~= "none" and self.initVersion == myVersion do
       local ped = PlayerPedId()
       
@@ -157,7 +160,15 @@ function Death:init()
         else
           SetEntityInvincible(ped, false)
         end
-        
+
+        local isBeingCarried = Interactions and Interactions.activeCarry and Interactions.carryRole == 'carried'
+
+        if not isBeingCarried and wasBeingCarried then
+          forceReplay = true
+          ClearPedTasks(ped)
+        end
+        wasBeingCarried = isBeingCarried
+
         if self.deathType == "death" then
           local deathAnim = self.animalAnim
           if not deathAnim then
@@ -165,10 +176,11 @@ function Death:init()
             local stage = Config.Death.stages[stageKey]
             deathAnim = stage and stage.anim or nil
           end
-          if deathAnim and not self.pauseLoop and not (Damages and Damages.activeCPR) and not (Interactions and Interactions.activeCarry and Interactions.carryRole == 'carried') then
-            if not IsEntityPlayingAnim(ped, deathAnim.dict, deathAnim.clip, 3) then
+          if deathAnim and not self.pauseLoop and not (Damages and Damages.activeCPR) and not isBeingCarried then
+            if forceReplay or not IsEntityPlayingAnim(ped, deathAnim.dict, deathAnim.clip, 3) then
               lib.requestAnimDict(deathAnim.dict)
               TaskPlayAnim(ped, deathAnim.dict, deathAnim.clip, -8.0, 8.0, -1, deathAnim.flag or 1, 1.0)
+              forceReplay = false
             end
           end
           if IsDisabledControlPressed(0, 47) and self.antiSpamAlert < GetGameTimer() then
@@ -178,7 +190,7 @@ function Death:init()
           end
 
         elseif self.deathType == "bleeding" then
-          local animChanged = false
+          local animChanged = forceReplay
           
           if Config.Death.stages.bleeding.enableAlert and IsDisabledControlPressed(0, 47) and self.antiSpamAlert < GetGameTimer() then
             self.antiSpamAlert = GetGameTimer() + 30000
@@ -215,14 +227,14 @@ function Death:init()
           
           if self.inVehicle then
             local vehicleAnim = Config.Death.stages.vehicle and Config.Death.stages.vehicle.anim
-            if not self.pauseLoop and vehicleAnim and not (Damages and Damages.activeCPR) and not (Interactions and Interactions.activeCarry and Interactions.carryRole == 'carried') then
-              if not IsEntityPlayingAnim(ped, vehicleAnim.dict, vehicleAnim.clip, 3) then
+            if not self.pauseLoop and vehicleAnim and not (Damages and Damages.activeCPR) and not isBeingCarried then
+              if animChanged or not IsEntityPlayingAnim(ped, vehicleAnim.dict, vehicleAnim.clip, 3) then
                 lib.requestAnimDict(vehicleAnim.dict)
                 TaskPlayAnim(ped, vehicleAnim.dict, vehicleAnim.clip, -8.0, 8.0, -1, vehicleAnim.flag or 1, 1.0)
+                forceReplay = false
               end
             end
           else
-            local isBeingCarried = Interactions and Interactions.activeCarry and Interactions.carryRole == 'carried'
             if isBeingCarried then
               -- skip
             elseif isCuffed then
@@ -231,6 +243,7 @@ function Death:init()
                 local coords = GetEntityCoords(ped)
                 local heading = GetEntityHeading(ped)
                 TaskPlayAnimAdvanced(ped, 'dead', 'dead_a', coords.x, coords.y, coords.z, 1.0, 0.0, heading, 8.0, 1.0, 1.0, 1, 1.0, 0, 0)
+                forceReplay = false
               end
             elseif self.preventedBleedingAnim then
               local preventAnim = Config.Death.stages.bleeding.animWhilePrevented
@@ -238,14 +251,17 @@ function Death:init()
                 if not IsEntityPlayingAnim(ped, preventAnim.dict, preventAnim.clip, 3) or animChanged then
                   lib.requestAnimDict(preventAnim.dict)
                   TaskPlayAnim(ped, preventAnim.dict, preventAnim.clip, -8.0, 8.0, -1, preventAnim.flag or 1, 1.0)
+                  forceReplay = false
                 end
               end
             elseif not (Damages and Damages.activeCPR) and bleedingAnim then
               if not IsEntityPlayingAnim(ped, bleedingAnim.dict, bleedingAnim.clip, 3) or animChanged then
-                if not self.preventedBleedingAnim and not IsEntityAttached(ped) then
+                -- forceReplay bypass IsEntityAttached check
+                if forceReplay or (not self.preventedBleedingAnim and not IsEntityAttached(ped)) then
                   local coords = GetEntityCoords(ped)
                   local heading = GetEntityHeading(ped)
                   TaskPlayAnimAdvanced(ped, bleedingAnim.dict, bleedingAnim.clip, coords.x, coords.y, coords.z, 1.0, 0.0, heading, 8.0, 1.0, 1.0, self.isCrawling and 47 or 46, 1.0, 0, 0)
+                  forceReplay = false
                 end
               end
             end
@@ -254,10 +270,11 @@ function Death:init()
         elseif self.deathType == "recovering" then
           local stageKey = self.inVehicle and "vehicle" or self.deathType
           local recoveryAnim = Config.Death.stages[stageKey] and Config.Death.stages[stageKey].anim
-          if recoveryAnim and not (Damages and Damages.activeCPR) then
-            if not IsEntityPlayingAnim(ped, recoveryAnim.dict, recoveryAnim.name, 3) then
+          if recoveryAnim and not (Damages and Damages.activeCPR) and not isBeingCarried then
+            if forceReplay or not IsEntityPlayingAnim(ped, recoveryAnim.dict, recoveryAnim.name, 3) then
               lib.requestAnimDict(recoveryAnim.dict)
               TaskPlayAnim(ped, recoveryAnim.dict, recoveryAnim.clip, -8.0, 8.0, -1, recoveryAnim.flag or 1, 1.0)
+              forceReplay = false
             end
           end
         end
