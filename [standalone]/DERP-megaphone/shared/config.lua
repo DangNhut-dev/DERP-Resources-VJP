@@ -13,11 +13,11 @@ Config = {
 
     -- Vị trí microphone cố định (để trống nếu dùng model)
     microphoneLocations = {
-        -- {
-        --     coords  = vector3(475.57, -973.83, 30.13),
-        --     heading = 159.72,
-        --     label   = 'Microphone Sân khấu'
-        -- },
+        {
+            coords  = vector3(64.26, -401.66, 47.50),
+            heading = 159.72,
+            label   = 'Microphone Sân khấu'
+        },
     },
 
     targetOptions = {
@@ -28,10 +28,10 @@ Config = {
 
     volume = -1.0,                  -- -1.0 = mặc định, 0.0 ~ 1.0 để override
 
-    specifyVehicles = false,        -- true = dùng danh sách vehicles bên dưới
+    specifyVehicles = true,        -- true = dùng danh sách vehicles bên dưới
     vehicleClass    = { 18, 15 },   -- class xe được dùng (nếu specifyVehicles = false)
     vehicles        = { 'washington' }, -- tên xe (nếu specifyVehicles = true)
 
-    keybind = 'F12',                -- Phím mặc định vehicle megaphone
-    debug   = false,
+    keybind = 'LSHIFT',                -- Phím mặc định vehicle megaphone
+    debug   = true,
 }

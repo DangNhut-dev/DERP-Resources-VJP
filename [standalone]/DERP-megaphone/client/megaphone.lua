@@ -57,4 +57,4 @@ RegisterCommand('vehmega', function()
     end
 end)
 
-RegisterKeyMapping('vehmega', '(Voice) Vehicle Megaphone', 'keyboard', Config.keybind)
+RegisterKeyMapping('vehmegas', '(Voice) Vehicle Megaphone', 'keyboard', Config.keybind)
