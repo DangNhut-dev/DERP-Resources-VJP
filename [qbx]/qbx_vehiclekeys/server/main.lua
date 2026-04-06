@@ -28,6 +28,31 @@ lib.callback.register('qbx_vehiclekeys:server:carjack', function(source, netId, 
     end
 end)
 
+RegisterNetEvent('qbx_vehiclekeys:server:policeConfiscateKeys')
+AddEventHandler('qbx_vehiclekeys:server:policeConfiscateKeys', function(netId)
+    local src    = source
+    local Player = exports.qbx_core:GetPlayer(src)
+    if not Player then return end
+
+    local job = Player.PlayerData.job
+    if not job or job.name ~= 'police' or not job.onduty then
+        TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Bạn không trong ca trực!' })
+        return
+    end
+
+    netId = tonumber(netId)
+    if not netId then return end
+
+    local vehicle = NetworkGetEntityFromNetworkId(netId)
+    if not DoesEntityExist(vehicle) then
+        TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Xe không tồn tại!' })
+        return
+    end
+
+    GiveKeys(src, vehicle)
+    TriggerClientEvent('ox_lib:notify', src, { type = 'success', description = 'Đã lấy chìa khóa xe!' })
+end)
+
 RegisterNetEvent('qbx_vehiclekeys:server:playerEnteredVehicleWithEngineOn', function(netId)
     local src = source
     local vehicle = NetworkGetEntityFromNetworkId(netId)

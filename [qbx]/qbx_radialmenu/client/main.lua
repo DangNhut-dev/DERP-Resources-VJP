@@ -161,11 +161,34 @@ local function setupRadialMenu()
         return
     end
 
+    local jobItems = config.jobItems[QBX.PlayerData.job.name]
+
+    if QBX.PlayerData.job.name == 'police' then
+        local policeItems = {}
+        for _, v in ipairs(jobItems) do
+            table.insert(policeItems, v)
+        end
+        table.insert(policeItems, {
+            id       = 'police_get_vehicle_keys',
+            label    = 'Lấy chìa khóa xe',
+            icon     = 'key',
+            onSelect = function()
+                local vehicle = lib.getClosestVehicle(GetEntityCoords(cache.ped), 5.0, false)
+                if not vehicle or not DoesEntityExist(vehicle) then
+                    exports.qbx_core:Notify('Không có xe gần đây!', 'error')
+                    return
+                end
+                TriggerServerEvent('qbx_vehiclekeys:server:policeConfiscateKeys', VehToNet(vehicle))
+            end
+        })
+        jobItems = policeItems
+    end
+
     lib.addRadialItem(convert({
-        id = 'jobInteractions',
+        id    = 'jobInteractions',
         label = locale('general.job_radial'),
-        icon = 'briefcase',
-        items = config.jobItems[QBX.PlayerData.job.name]
+        icon  = 'briefcase',
+        items = jobItems
     }))
 end
 

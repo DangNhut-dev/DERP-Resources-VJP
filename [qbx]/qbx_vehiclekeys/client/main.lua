@@ -322,6 +322,25 @@ local function lockNearbyNPCVehicles()
     end
 end
 
+local function isPoliceOnDuty()
+    local job = QBX.PlayerData.job
+    return job and job.name == 'police' and job.onduty
+end
+
+local function confiscateVehicleKeys()
+    if not isPoliceOnDuty() then
+        exports.qbx_core:Notify('Bạn không trong ca trực!', 'error')
+        return
+    end
+    local vehicle = lib.getClosestVehicle(GetEntityCoords(cache.ped), 5.0, false)
+    if not vehicle or not DoesEntityExist(vehicle) then
+        exports.qbx_core:Notify('Không có xe gần đây!', 'error')
+        return
+    end
+
+    TriggerServerEvent('qbx_vehiclekeys:server:policeConfiscateKeys', VehToNet(vehicle))
+end
+
 AddStateBagChangeHandler('isLoggedIn', ('player:%s'):format(cache.serverId), function(_, _, value)
     if not value then return end
     lockNearbyNPCVehicles()
@@ -335,3 +354,4 @@ AddEventHandler('onResourceStart', function(resourceName)
         onEnteringDriverSeat()
     end
 end)
+

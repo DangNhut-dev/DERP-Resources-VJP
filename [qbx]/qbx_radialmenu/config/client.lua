@@ -5,6 +5,13 @@ return {
     flipTime = 15000,
 
     menuItems = {
+        {
+            id      = 'handsup',
+            icon    = 'hand',
+            label   = 'Giơ Tay',
+            command = 'e handsup',
+            args    = '',
+        },
         -- {
         --     id = 'citizen',
         --     icon = 'user',
@@ -207,7 +214,7 @@ return {
         --                             args = {id = 'Gloves'},
         --                         },
         --                     },
-        --                 },
+        --                   },
         --             },
         --         },
         --     },
@@ -222,6 +229,7 @@ return {
                 label = 'Yêu Cầu Hỗ Trợ',
                 event = 'police:client:SendPoliceEmergencyAlert',
             },
+
             -- {
             --     id = 'resetHouse',
             --     icon = 'key',
