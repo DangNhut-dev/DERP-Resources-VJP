@@ -184,8 +184,8 @@ Config.ShopNPC = {
 Config.Job = {
     maxGroupSize = 4,
 
-    -- notifyDelay  = { min = 60000, max = 120000 },
-    notifyDelay  = { min = 600, max = 700 },
+    notifyDelay  = { min = 60000, max = 120000 },
+    -- notifyDelay  = { min = 600, max = 700 },
 
     zoneMaxAnimals   = 10,       -- Số thú tối đa trong zone cùng lúc
     zoneRespawnDelay = 5000,   -- Delay (ms) sau khi thú chết → spawn con mới
