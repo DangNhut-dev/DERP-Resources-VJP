@@ -656,7 +656,7 @@ Config.Police.Permissions = {
             view = 0
         },
         case = {
-            create = 6,
+            create = 2,
             edit = 6,
             delete = 3,
             view = 0,
