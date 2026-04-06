@@ -9,7 +9,7 @@ Config.WhitelistedWeapons = {
 
 Config.NpcResistChance    = 30  -- % NPC rút súng khi bắt đầu bị cướp
 Config.NpcResistOnFail    = 0  -- % NPC rút súng khi fail progressbar
-Config.ProgressDuration   = 10000
+Config.ProgressDuration   = 45000
 
 Config.Zones = {
     { id = 1, label = 'Túi áo',  color = '#e74c3c', bone = 11816, offset = vec3(-0.2, 0.2,  0.0) },  -- xuống, qua phải
@@ -18,13 +18,12 @@ Config.Zones = {
 }
 
 Config.ZoneReward = {
-    cashMin  = 50,
-    cashMax  = 300,
+    cashMin  = 30,
+    cashMax  = 200,
     itemChance = 25,
     items = {
-        { item = 'phone',      chance = 40 },
-        { item = 'watch',      chance = 30 },
-        { item = 'wallet',     chance = 20 },
+        { item = 'phone',      chance = 50 },
+        { item = 'watch',      chance = 40 },
         { item = 'lockpick', chance = 10 },
     },
 }
