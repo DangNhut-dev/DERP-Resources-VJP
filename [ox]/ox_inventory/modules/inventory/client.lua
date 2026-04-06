@@ -114,7 +114,7 @@ if shared.target then
     exports.ox_target:addGlobalVehicle({
         icon = 'fas fa-truck-ramp-box',
         label = locale('open_label', locale('storage')),
-        distance = 1.5,
+        distance = 5.0,
         canInteract = Inventory.CanAccessTrunk,
         onSelect = function(data)
             return Inventory.OpenTrunk(data.entity)
