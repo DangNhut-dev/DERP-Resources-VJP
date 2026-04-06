@@ -43,7 +43,7 @@ Config.Helis = {
 
 --- don't forget to paste `setr voice_useNativeAudio true` into your server.cfg file
 -- native audio distance seems to be larger then regular gta units
-Config.MegaphoneProximity = 60.0
+Config.MegaphoneProximity = 30.0
 Config.HeliMegaphoneProximity = 100.0
 
 Config.DefaultRadioFilter = {

@@ -8,16 +8,9 @@ SetAudioSubmixEffectParamFloat(radioEffectId, 0, GetHashKey("rm_mix"), 0.16)
 SetAudioSubmixEffectParamFloat(radioEffectId, 0, GetHashKey("o_freq_lo"), 548.0)
 SetAudioSubmixOutputVolumes(
     radioEffectId,
-    -- 0,
-    -- 1.0 --[[ frontLeftVolume ]],
-    -- 1.0 --[[ frontRightVolume ]],
-    -- 0.0 --[[ rearLeftVolume ]],
-    -- 0.0 --[[ rearRightVolume ]],
-    -- 1.0 --[[ channel5Volume ]],
-    -- 1.0 --[[ channel6Volume ]]
 	0,
-    0.5,
-    0.5,
+    1.0,
+    1.0,
     0.0,
     0.0,
     1.0,
@@ -45,7 +38,7 @@ end
 
 function toggleMegaphone(plySource, enabled)
 	if enabled then
-		--MumbleSetVolumeOverrideByServerId(plySource, 1.0) -- you can enable to increase the volume of voice, while using megaphone, but this will bypass 3d sound and distance calculation
+		MumbleSetVolumeOverrideByServerId(plySource, 2.0) -- you can enable to increase the volume of voice, while using megaphone, but this will bypass 3d sound and distance calculation
 		MumbleSetSubmixForServerId(plySource, radioEffectId)
 	elseif not enabled then
 		if GetConvarInt('voice_enableSubmix', 1) == 1 then
