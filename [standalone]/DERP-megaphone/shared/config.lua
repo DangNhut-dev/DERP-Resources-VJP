@@ -28,7 +28,7 @@ Config = {
 
     volume = -1.0,                  -- -1.0 = mặc định, 0.0 ~ 1.0 để override
 
-    specifyVehicles = true,        -- true = dùng danh sách vehicles bên dưới
+    specifyVehicles = false,        -- true = dùng danh sách vehicles bên dưới
     vehicleClass    = { 18, 15 },   -- class xe được dùng (nếu specifyVehicles = false)
     vehicles        = { 'washington' }, -- tên xe (nếu specifyVehicles = true)
 
