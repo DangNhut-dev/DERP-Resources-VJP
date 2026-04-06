@@ -43,7 +43,7 @@ return {
             -- vec3(78.99, -425.46, 41.62),
         },
         fingerprint = {
-            -- vec3(90.15, -420.24, 41.53),
+            vec3(90.15, -420.24, 41.53),
         },
         evidence = { -- Not currently used, use ox_inventory evidence system
         },
