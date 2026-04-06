@@ -10,6 +10,34 @@ local lastPunch = 0
 local helmetTick = 0
 
 CreateThread(function()
+    local lastDamage = 0.0
+    local vehicle = nil
+    local SLEEP_TIME_IN_VEHICLE = 100
+    local SLEEP_TIME_OUTSIDE_VEHICLE = 1000
+    local SHAKE_RATE_CONSTANT = 250.0
+
+    while true do
+        local playerPed = PlayerPedId()
+        if IsPedInAnyVehicle(playerPed) then
+            local curVehicle = GetVehiclePedIsIn(playerPed, false)
+            local shakeRate = GetEntitySpeed(curVehicle) / SHAKE_RATE_CONSTANT
+            local curVehicleHealth = GetVehicleBodyHealth(curVehicle)
+
+            if curVehicleHealth ~= lastDamage then
+                ShakeGameplayCam("MEDIUM_EXPLOSION_SHAKE", shakeRate)
+            end
+
+            lastDamage = curVehicleHealth
+            vehicle = curVehicle
+            Wait(SLEEP_TIME_IN_VEHICLE)
+        else
+            vehicle = nil
+            Wait(SLEEP_TIME_OUTSIDE_VEHICLE)
+        end
+    end
+end)
+
+CreateThread(function()
     while true do
         Wait(0)
         local ped = PlayerPedId()
@@ -204,3 +232,112 @@ lib.addKeybind({
         end)
     end,
 })
+
+CreateThread(function()
+    SetDisableAmbientMeleeMove(PlayerPedId(), true)
+      while true do
+          Wait(1)
+          local ped = PlayerPedId()
+          if IsPedUsingActionMode(ped) then
+        SetPedUsingActionMode(ped, -1, -1, 1)
+      end
+    end
+end)
+
+-- -- roll Prevention
+CreateThread(function()
+    while true do
+        if (not IsPedInAnyVehicle(PlayerPedId(),false)) then
+            Wait(4)
+            if IsPlayerFreeAiming(PlayerPedId()) then
+                DisableControlAction(0, 22, 1)
+            else
+                Wait(100)
+            end
+        else
+            Wait(500)
+        end
+    end
+end)
+
+-- helicopter audio
+function EnableSubmix(submixID)
+    SetAudioSubmixEffectRadioFx(submixID, 0)
+    SetAudioSubmixEffectParamInt(submixID, 0, `default`, 1)
+    SetAudioSubmixEffectParamFloat(submixID, 0, `freq_low`, 0.0)
+    SetAudioSubmixEffectParamFloat(submixID, 0, `freq_hi`, 10000.0)
+    SetAudioSubmixEffectParamFloat(submixID, 0, `fudge`, 0.0)
+    SetAudioSubmixEffectParamFloat(submixID, 0, `rm_mix`, 0.2)
+end
+
+function DisableSubmix(submixID)
+    SetAudioSubmixEffectRadioFx(submixID, 0)
+    SetAudioSubmixEffectParamInt(submixID, 0, `enabled`, 0)
+end
+
+local soundmix = false
+local submixID = 0
+
+CreateThread(function()
+    while true do
+        Wait(500)
+        local ped = PlayerPedId()
+        local currentVehicle = GetVehiclePedIsIn(ped, false)
+        local vehmodel = GetEntityModel(currentVehicle)
+
+        if IsThisModelAHeli(vehmodel) or IsThisModelAPlane(vehmodel) then
+            local engineRunning = GetIsVehicleEngineRunning(currentVehicle)
+            local inVehicle = IsPedInAnyVehicle(ped, false)
+
+            if inVehicle and engineRunning then
+                if not soundmix then
+                    EnableSubmix(submixID)
+                    soundmix = true
+                end
+            elseif soundmix then
+                DisableSubmix(submixID)
+                soundmix = false
+            end
+        elseif soundmix then
+            DisableSubmix(submixID)
+            soundmix = false
+        end
+    end
+end)
+
+-- -- Giới hạn tốc độ tối đa
+local speedLimit = 120.0 -- mph
+local maxSpeedMS = speedLimit / 2.236936 -- đổi mph sang m/s
+
+-- Hàm kiểm tra tốc độ phương tiện
+local function checkSpeed(vehicle)
+    if DoesEntityExist(vehicle) then
+        local speed = GetEntitySpeed(vehicle) * 2.236936 -- mph
+        local class = GetVehicleClass(vehicle)
+
+        -- Loại trừ các class đặc biệt (máy bay, trực thăng, emergency, tàu...)
+        if class ~= 15 and class ~= 16 and class ~= 17 and class ~= 18 and class ~= 19 then
+            -- Cài đặt tốc độ tối đa
+            SetVehicleMaxSpeed(vehicle, maxSpeedMS)
+
+            -- Nếu đã vượt quá tốc độ giới hạn thì giảm ngay
+            if speed > speedLimit then
+                SetEntityMaxSpeed(vehicle, maxSpeedMS)
+            end
+        else
+            -- Bỏ giới hạn cho các phương tiện đặc biệt
+            SetVehicleMaxSpeed(vehicle, 0.0)
+        end
+    end
+end
+
+-- -- Thread kiểm tra liên tục
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(500) -- check mỗi nửa giây cho nhẹ
+        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+        if vehicle ~= 0 then
+            checkSpeed(vehicle)
+        end
+    end
+end)
