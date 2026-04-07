@@ -15,3 +15,5 @@ CREATE TABLE IF NOT EXISTS `department_items` (
 );
 
 ALTER TABLE `department_items` ADD COLUMN `department_id` VARCHAR(20) NULL DEFAULT NULL;
+
+ALTER TABLE `department_items` ADD INDEX `idx_backpack` (`citizenid`, `job`, `item_name`, `returned_at`);

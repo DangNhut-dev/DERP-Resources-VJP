@@ -45,7 +45,28 @@ local function GetGradeOutfits(job, grade)
     return gradeCfg.outfits or {}
 end
 
+local function GetJobBackpack(job)
+    local jobCfg = Config.Jobs[job]
+    return jobCfg and jobCfg.backpack or nil
+end
+
+local function HasActiveBackpack(citizenid, job)
+    local bp = GetJobBackpack(job)
+    if not bp then return true end
+    return MySQL.scalar.await(
+        'SELECT 1 FROM department_items WHERE citizenid = ? AND job = ? AND item_name = ? AND returned_at IS NULL',
+        { citizenid, job, bp.name }
+    ) ~= nil
+end
+
 local function GetActiveRecords(citizenid, job)
+    local bp = GetJobBackpack(job)
+    if bp then
+        return MySQL.query.await(
+            'SELECT id, item_name, department_id, drawable, texture, gender FROM department_items WHERE citizenid = ? AND job = ? AND returned_at IS NULL AND item_name != ?',
+            { citizenid, job, bp.name }
+        ) or {}
+    end
     return MySQL.query.await(
         'SELECT id, item_name, department_id, drawable, texture, gender FROM department_items WHERE citizenid = ? AND job = ? AND returned_at IS NULL',
         { citizenid, job }
@@ -156,6 +177,8 @@ RegisterNetEvent('departmentitems:server:getMenuData', function()
         canReceive    = #activeRecords == 0,
         isboss        = info.isboss,
         bossData      = bossData,
+        hasBackpack   = HasActiveBackpack(info.citizenid, info.job),
+        backpackLabel = GetJobBackpack(info.job) and GetJobBackpack(info.job).label or nil,
     })
 end)
 
@@ -204,10 +227,19 @@ RegisterNetEvent('departmentitems:server:returnAll', function()
     local info   = GetPlayerInfo(source)
     if not info then return end
 
-    local records = MySQL.query.await(
-        'SELECT id, item_name, department_id, drawable, texture, gender FROM department_items WHERE citizenid = ? AND job = ? AND returned_at IS NULL',
-        { info.citizenid, info.job }
-    ) or {}
+    local bp = GetJobBackpack(info.job)
+    local records
+    if bp then
+        records = MySQL.query.await(
+            'SELECT id, item_name, department_id, drawable, texture, gender FROM department_items WHERE citizenid = ? AND job = ? AND returned_at IS NULL AND item_name != ?',
+            { info.citizenid, info.job, bp.name }
+        ) or {}
+    else
+        records = MySQL.query.await(
+            'SELECT id, item_name, department_id, drawable, texture, gender FROM department_items WHERE citizenid = ? AND job = ? AND returned_at IS NULL',
+            { info.citizenid, info.job }
+        ) or {}
+    end
 
     if #records == 0 then
         return TriggerClientEvent('ox_lib:notify', source, { type = 'warning', description = 'Không có đồ nào để trả' })
@@ -295,7 +327,82 @@ RegisterNetEvent('departmentitems:server:bossResetItems', function(targetCitizen
     if targetPlayer then
         TriggerClientEvent('ox_lib:notify', targetPlayer.PlayerData.source, {
             type        = 'info',
-            description = 'Cấp trên đã cho phép bạn nhận đồ ban ngành mới tại NPC',
+            description = 'Cấp trên đã cho phép bạn nhận đồ ban ngành mới',
+        })
+    end
+end)
+
+RegisterNetEvent('departmentitems:server:receiveBackpack', function()
+    local source = source
+    local info   = GetPlayerInfo(source)
+    if not info then return end
+
+    local bp = GetJobBackpack(info.job)
+    if not bp then
+        return TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Ban ngành này không có ba lô' })
+    end
+
+    if HasActiveBackpack(info.citizenid, info.job) then
+        return TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Bạn đã nhận ba lô ban ngành rồi' })
+    end
+
+    local genderCfg = info.gender == 1 and bp.female or bp.male
+    if not genderCfg then
+        return TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không có cấu hình ba lô cho giới tính này' })
+    end
+
+    local deptId = GenerateDepartmentId()
+    local metadata = {
+        drawableId   = genderCfg.drawable,
+        textureId    = genderCfg.texture,
+        gender       = info.gender,
+        level        = bp.metadata.level,
+        departmentId = deptId,
+    }
+
+    if not exports.ox_inventory:AddItem(source, bp.name, 1, metadata) then
+        return TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Túi đầy, không thể nhận ba lô' })
+    end
+
+    MySQL.insert.await(
+        'INSERT INTO department_items (citizenid, charname, job, grade, item_name, drawable, texture, gender, department_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        { info.citizenid, info.charname, info.job, info.grade, bp.name, genderCfg.drawable, genderCfg.texture, info.gender, deptId }
+    )
+
+    TriggerClientEvent('ox_lib:notify', source, { type = 'success', description = 'Đã nhận ba lô ban ngành' })
+end)
+
+RegisterNetEvent('departmentitems:server:bossResetBackpack', function(targetCitizenId)
+    local source = source
+    if type(targetCitizenId) ~= 'string' or #targetCitizenId > 50 then return end
+
+    local bossInfo = GetPlayerInfo(source)
+    if not bossInfo or not bossInfo.isboss then return end
+
+    local bp = GetJobBackpack(bossInfo.job)
+    if not bp then return end
+
+    local row = MySQL.single.await(
+        'SELECT charname FROM department_items WHERE citizenid = ? AND job = ? AND item_name = ? AND returned_at IS NULL LIMIT 1',
+        { targetCitizenId, bossInfo.job, bp.name }
+    )
+
+    if not row then
+        return TriggerClientEvent('ox_lib:notify', source, { type = 'warning', description = 'Nhân viên chưa nhận ba lô hoặc đã được reset' })
+    end
+
+    MySQL.update.await(
+        'UPDATE department_items SET returned_at = NOW() WHERE citizenid = ? AND job = ? AND item_name = ? AND returned_at IS NULL',
+        { targetCitizenId, bossInfo.job, bp.name }
+    )
+
+    TriggerClientEvent('ox_lib:notify', source, { type = 'success', description = ('Đã reset ba lô của %s'):format(row.charname) })
+
+    local targetPlayer = exports.qbx_core:GetPlayerByCitizenId(targetCitizenId)
+    if targetPlayer then
+        TriggerClientEvent('ox_lib:notify', targetPlayer.PlayerData.source, {
+            type        = 'info',
+            description = 'Cấp trên đã cho phép bạn nhận ba lô ban ngành mới',
         })
     end
 end)

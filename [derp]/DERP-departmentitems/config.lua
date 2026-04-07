@@ -1078,6 +1078,13 @@ bcso = {
             coords   = vec4(79.84, -379.22, 41.62, 249.10),
             scenario = 'WORLD_HUMAN_STAND_IMPATIENT',
         },
+        backpack = {
+            name     = 'balo',
+            label    = 'Ba Lô',
+            male     = { drawable = 126, texture = 0 },
+            female   = { drawable = 129, texture = 0 },
+            metadata = { level = 3 },
+        },
         grades = {
             [0] = {
                 outfits = {

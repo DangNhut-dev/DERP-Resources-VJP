@@ -90,6 +90,28 @@ RegisterNetEvent('departmentitems:client:openMenu', function(data)
         }
     end
 
+    if data.backpackLabel then
+        options[#options + 1] = { title = '── Ba lô ban ngành ──', disabled = true }
+
+        if data.hasBackpack then
+            options[#options + 1] = {
+                title     = data.backpackLabel,
+                disabled  = true,
+                icon      = 'fa-solid fa-circle-check',
+                iconColor = '#2ecc71',
+                description = 'Đã nhận, không thể trả lại',
+            }
+        else
+            options[#options + 1] = {
+                title    = 'Nhận ' .. data.backpackLabel,
+                icon     = 'fa-solid fa-bag-shopping',
+                onSelect = function()
+                    TriggerServerEvent('departmentitems:server:receiveBackpack')
+                end,
+            }
+        end
+    end
+
     -- Boss: quản lý
     if data.isboss then
         options[#options + 1] = { title = '── Quản lý ──', disabled = true }
@@ -102,11 +124,14 @@ RegisterNetEvent('departmentitems:client:openMenu', function(data)
         }
 
         if data.bossData then
+            local bossListOpts = {}
+        if data.bossData and #data.bossData > 0 then
             for i, person in ipairs(data.bossData) do
                 local personCtxId  = 'departmentitems_person_' .. i
                 local capturedCid  = person.citizenid
                 local capturedName = person.charname
-                local personOpts   = {
+
+                local personOpts = {
                     {
                         title    = 'CitizenID: ' .. capturedCid,
                         disabled = true,
@@ -125,11 +150,21 @@ RegisterNetEvent('departmentitems:client:openMenu', function(data)
 
                 personOpts[#personOpts + 1] = {
                     title       = 'Phát đồ mới',
-                    description = ('Xóa bản ghi cũ, %s có thể tự nhận đồ mới tại NPC'):format(capturedName),
+                    description = ('Xóa bản ghi cũ, %s có thể tự nhận đồ mới'):format(capturedName),
                     icon        = 'fa-solid fa-arrow-rotate-right',
                     iconColor   = '#f39c12',
                     onSelect    = function()
                         TriggerServerEvent('departmentitems:server:bossResetItems', capturedCid)
+                    end,
+                }
+
+                personOpts[#personOpts + 1] = {
+                    title       = 'Reset ba lô',
+                    description = ('Cho phép %s nhận ba lô mới'):format(capturedName),
+                    icon        = 'fa-solid fa-backpack',
+                    iconColor   = '#9b59b6',
+                    onSelect    = function()
+                        TriggerServerEvent('departmentitems:server:bossResetBackpack', capturedCid)
                     end,
                 }
 
@@ -139,17 +174,11 @@ RegisterNetEvent('departmentitems:client:openMenu', function(data)
                     menu    = 'departmentitems_boss_list',
                     options = personOpts,
                 })
-            end
-        end
 
-        local bossListOpts = {}
-        if data.bossData and #data.bossData > 0 then
-            for i, person in ipairs(data.bossData) do
                 bossListOpts[#bossListOpts + 1] = {
-                    title       = person.charname,
-                    description = ('%d món đang giữ'):format(#person.items),
-                    icon        = 'fa-solid fa-user',
-                    menu        = 'departmentitems_person_' .. i,
+                    title = capturedName,
+                    icon  = 'fa-solid fa-user',
+                    menu  = personCtxId,
                 }
             end
         else
@@ -165,6 +194,8 @@ RegisterNetEvent('departmentitems:client:openMenu', function(data)
             menu    = 'departmentitems_menu',
             options = bossListOpts,
         })
+
+    end 
     end
 
     lib.registerContext({
