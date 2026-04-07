@@ -632,7 +632,7 @@ Config.Police.Permissions = {
             delete = 6,
         },
         profile = {
-            edit = 6,
+            edit = 2,
             view = 0,
         },
         vehicle = {
