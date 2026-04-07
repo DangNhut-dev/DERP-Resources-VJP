@@ -183,6 +183,32 @@ local function GiveReward(source, identifier, amount)
     return result or 'none'
 end
 
+local function GiveRewardOffline(identifier, amount)
+    if not Config.Rewards.enabled then return 'none' end
+
+    if Config.Rewards.type == 'coin' then
+        local reward = math.floor(amount * Config.Rewards.ratio)
+        if reward <= 0 then return 'coin: 0 (skipped)' end
+        MySQL.query.await([[
+            INSERT INTO derp_coin (citizenid, coin)
+            VALUES (?, ?)
+            ON DUPLICATE KEY UPDATE coin = coin + VALUES(coin)
+        ]], { identifier, reward })
+        return 'Coin: ' .. reward
+
+    elseif Config.Rewards.type == 'money_cash' or Config.Rewards.type == 'money_bank' then
+        -- Không thể cộng money khi offline, log lại để xử lý thủ công
+        print(('[DERP-donate] Offline reward pending: %s | amount=%s | type=%s'):format(identifier, amount, Config.Rewards.type))
+        return 'pending_offline'
+
+    elseif Config.Rewards.type == 'item' then
+        print(('[DERP-donate] Offline item reward pending: %s | item=%s'):format(identifier, Config.Rewards.item))
+        return 'pending_offline'
+    end
+
+    return 'none'
+end
+
 RegisterNetEvent('DERP-donatesystem:requestPendingState', function()
     local source = source
     if not IsAdmin(source) then return end
@@ -344,6 +370,8 @@ lib.callback.register('DERP-donatesystem:adminConfirmTicket', function(source, t
     if targetSrc then
         rewardDesc = GiveReward(targetSrc, ticket.identifier, ticket.amount)
         TriggerClientEvent('DERP-donatesystem:notify', targetSrc, 'success', ('Donate #%s đã được xác nhận! Cảm ơn bạn.'):format(ticketId))
+    else
+        rewardDesc = GiveRewardOffline(ticket.identifier, ticket.amount)
     end
 
     MySQL.insert.await('INSERT INTO donate_logs (ticket_id, identifier, player_name, amount, reward, confirmed_by) VALUES (?, ?, ?, ?, ?, ?)', {
