@@ -211,8 +211,8 @@ Config.VehicleList = {
             returnprice = 100,
         },
         [1] = {
-            name = "Sanchez",
-            model = "sanchez",
+            name = "Injection",
+            model = "bfinjection",
             price = 350,
             returnprice = 200,
         },
