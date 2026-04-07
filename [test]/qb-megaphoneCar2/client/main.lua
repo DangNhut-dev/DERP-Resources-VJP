@@ -86,7 +86,7 @@ end, false)
 
 RegisterCommand('-useMegaphone', function()
 	megaphone = false
-	MumbleClearVoiceTargetPlayers(1.0)
+	MumbleClearVoiceTargetPlayers(1)
 	TriggerServerEvent('pma-voice:setTalkingMegaphone', false)
 	exports['pma-voice']:clearProximityOverride()
 end, false)
