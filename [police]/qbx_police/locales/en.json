@@ -117,7 +117,8 @@
         "target_location": "Vị trí của %s %s đã được đánh dấu trên bản đồ",
         "anklet_location": "Vị trí vòng cổ chân",
         "new_call": "Cuộc gọi mới",
-        "officer_down": "Cảnh sát %s | %s bị ngã",
+        "officer_down_10b": "Officer Down 14-10B | %s | Callsign: %s",
+        "officer_down_10a": "Officer Down 14-10A | %s | Callsign: %s",
         "plate_triggered": "Xe biển số %s bị gắn cờ lúc %s bởi radar #%s",
         "plate_triggered_blip": "Xe bị gắn cờ bởi radar #%s",
         "camera_id": " - ID Camera: "

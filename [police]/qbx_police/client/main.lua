@@ -164,10 +164,25 @@ if not isUsingXTPrison then
     end)
 end
 
-RegisterNetEvent('police:client:SendPoliceEmergencyAlert', function()
-    TriggerServerEvent('police:server:policeAlert', locale('info.officer_down', QBX.PlayerData.charinfo.lastname, QBX.PlayerData.metadata.callsign))
-    TriggerServerEvent('hospital:server:ambulanceAlert', locale('info.officer_down', QBX.PlayerData.charinfo.lastname, QBX.PlayerData.metadata.callsign))
-end)
+-- RegisterNetEvent('police:client:SendPoliceEmergencyAlert', function(alertType)
+--     local lastName = QBX.PlayerData.charinfo.lastname
+--     local callsign = QBX.PlayerData.metadata.callsign
+
+--     local message = alertType == '10a'
+--         and locale('info.officer_down_10a', lastName, callsign)
+--         or  locale('info.officer_down_10b', lastName, callsign)
+
+--     TriggerServerEvent('police:server:policeAlert', message)
+--     TriggerServerEvent('hospital:server:ambulanceAlert', message)
+-- end)
+
+-- RegisterCommand('10b', function()
+--     TriggerEvent('police:client:SendPoliceEmergencyAlert', '10b')
+-- end, false)
+
+-- RegisterCommand('10a', function()
+--     TriggerEvent('police:client:SendPoliceEmergencyAlert', '10a')
+-- end, false)
 
 CreateThread(function()
     for i = 1, #config.locations.stations do

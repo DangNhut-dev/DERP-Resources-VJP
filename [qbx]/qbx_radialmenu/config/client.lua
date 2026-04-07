@@ -224,10 +224,25 @@ return {
     jobItems = {
         police = {
             {
-                id = 'emergencyButton',
-                icon = 'bell',
+                id    = 'emergencyButton',
+                icon  = 'bell',
                 label = 'Yêu Cầu Hỗ Trợ',
-                event = 'police:client:SendPoliceEmergencyAlert',
+                items = {
+                    {
+                        id      = 'alert_10b',
+                        icon    = 'bell',
+                        label   = '10-13B',
+                        command = '13b',
+                        args    = '',
+                    },
+                    {
+                        id      = 'alert_10a',
+                        icon    = 'triangle-exclamation',
+                        label   = '10-13A',
+                        command = '13a',
+                        args    = '',
+                    },
+                }
             },
 
             -- {

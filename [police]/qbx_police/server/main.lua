@@ -644,3 +644,29 @@ RegisterNetEvent('police:server:RobOpenInventory', function(targetSrc)
  
     exports.ox_inventory:forceOpenInventory(src, 'player', targetSrc)
 end)
+
+RegisterNetEvent('police:server:officerDownAlert', function(message, alertType, street)
+    local src = source
+    local ped = GetPlayerPed(src)
+    local coords = GetEntityCoords(ped)
+    local players = exports.qbx_core:GetQBPlayers()
+
+    local description = message .. '\n' .. street
+
+    local alertData = {
+        title       = locale('info.new_call'),
+        coords      = coords,
+        description = description,
+    }
+
+    if alertType == '10a' then
+        alertData.priority = 'high'
+    end
+
+    for k, v in pairs(players) do
+        if IsLeoAndOnDuty(v) then
+            -- TriggerClientEvent('qb-phone:client:addPoliceAlert', k, alertData)
+            TriggerClientEvent('police:client:policeAlert', k, coords, message, nil, true)
+        end
+    end
+end)
