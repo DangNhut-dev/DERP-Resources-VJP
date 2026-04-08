@@ -383,17 +383,17 @@ Config.MechanicLocations = {
       scale = 0.7
     },
     mods = {
-      repair           = { enabled = false, price = 0, percentVehVal = 0.01 },
-      performance      = { enabled = false, price = 0, percentVehVal = 0.01, priceMult = 0.1 },
-      cosmetics        = { enabled = true, price = 0, percentVehVal = 0.01, priceMult = 0.1 },
-      stance           = { enabled = false, price = 0, percentVehVal = 0.01 },
-      respray          = { enabled = true, price = 0, percentVehVal = 0.01 },
-      wheels           = { enabled = false, price = 0, percentVehVal = 0.01, priceMult = 0.1 },
-      neonLights       = { enabled = false, price = 0, percentVehVal = 0.01 },
-      headlights       = { enabled = false, price = 0, percentVehVal = 0.01 },
-      tyreSmoke        = { enabled = false, price = 0, percentVehVal = 0.01 },
-      bulletproofTyres = { enabled = false, price = 0, percentVehVal = 0.01 },
-      extras           = { enabled = true, price = 0, percentVehVal = 0.01 }
+      repair           = { enabled = false, price = 0, percentVehVal = 0.0 },
+      performance      = { enabled = false, price = 0, percentVehVal = 0.0},
+      cosmetics        = { enabled = true, price = 0, percentVehVal = 0.0},
+      stance           = { enabled = false, price = 0, percentVehVal = 0.0 },
+      respray          = { enabled = true, price = 0, percentVehVal = 0.0 },
+      wheels           = { enabled = false, price = 0, percentVehVal = 0.0},
+      neonLights       = { enabled = false, price = 0, percentVehVal = 0.0 },
+      headlights       = { enabled = false, price = 0, percentVehVal = 0.0 },
+      tyreSmoke        = { enabled = false, price = 0, percentVehVal = 0.0 },
+      bulletproofTyres = { enabled = false, price = 0, percentVehVal = 0.0 },
+      extras           = { enabled = true, price = 0, percentVehVal = 0.0 }
     },
     tuning = {
       engineSwaps      = { enabled = false, requiresItem = false },
