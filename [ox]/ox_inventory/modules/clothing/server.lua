@@ -720,4 +720,47 @@ RegisterNetEvent('ox_inventory:clothSlotUnequipToBackpack', function(data)
     })
 end)
 
+exports('ForceUnequipClothSlot', function(source, clothSlot)
+    return ClothingServer.Unequip(source, clothSlot)
+end)
+
+-- Strip cloth slot: chỉ remove khỏi cloth slot, KHÔNG add item vào inventory
+-- Return: success, err, itemData({name, metadata})
+exports('ForceStripClothSlot', function(targetSrc, clothSlot)
+    local inv = Inventory(targetSrc)
+    if not inv then return { success = false, err = 'no_inventory' } end
+
+    local clothSlots = playerClothSlots[targetSrc] or {}
+    local equipped = clothSlots[clothSlot]
+    if not equipped then return { success = false, err = 'slot_empty' } end
+
+    local itemName = ClothingConfig.GetItemBySlot(clothSlot)
+    local def = itemName and ClothingConfig.GetDef(itemName)
+    local meta = equipped.metadata and table.clone(equipped.metadata) or {}
+    local gender = meta.gender or 0
+
+    clothSlots[clothSlot] = nil
+    playerClothSlots[targetSrc] = clothSlots
+
+    local identifier = inv.owner
+    if identifier then
+        ClothingServer.SaveClothSlots(identifier, clothSlots)
+        if def then
+            ClothingServer.SyncSkinDataDefault(identifier, def, gender)
+        end
+    end
+
+    if clothSlot == 11 then
+        BackpackServer.CloseBackpack(targetSrc)
+        TriggerClientEvent('ox_inventory:backpackData', targetSrc, nil)
+    end
+
+    TriggerClientEvent('ox_inventory:clothSlotUpdate', targetSrc, {
+        action = 'unequip',
+        clothSlot = clothSlot,
+    })
+
+    return { success = true, itemData = { name = equipped.name, metadata = meta } }
+end)
+
 return ClothingServer

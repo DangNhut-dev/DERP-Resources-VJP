@@ -2252,10 +2252,25 @@ return {
 
 	['jerrycan'] = {
 		label = 'Bình Xăng Dự Phòng',
-		weight = 15000,
+		weight = 5000,
 		stack = false,
 		close = false,
 		description = 'Bình chứa xăng dự phòng.',
+	},
+
+	['crimecamera'] = {
+		label = 'Máy Ảnh',
+		weight = 1000,
+		stack = false,
+		close = true,
+		description = 'Máy ảnh hiện trường.',
+	},
+
+	['crimeimage'] = {
+		label = 'Ảnh Hiện Trường',
+		weight = 0,
+		stack = false,
+		consume = 0,
 	},
 }
 

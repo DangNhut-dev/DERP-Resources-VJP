@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: transparent;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+}
+
+#container {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+#container.visible {
+    display: block;
+}
+
+#container.hiding {
+    animation: fadeOut 0.25s ease forwards;
+}
+
+.photo-image {
+    max-width: 80vw;
+    max-height: 80vh;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.95); }
+}
+</style>
+</head>
+<body>
+<div id="container">
+    <img class="photo-image" id="photoImage" src="" alt="">
+</div>
+
+<script>
+const container = document.getElementById('container');
+const photoImage = document.getElementById('photoImage');
+let autoCloseTimer = null;
+
+function show(data) {
+    photoImage.src = data.url || '';
+    container.classList.remove('hiding');
+    container.classList.add('visible');
+
+    clearTimeout(autoCloseTimer);
+    autoCloseTimer = setTimeout(() => { hide(); }, data.duration || 10000);
+}
+
+function hide() {
+    clearTimeout(autoCloseTimer);
+    container.classList.add('hiding');
+    setTimeout(() => {
+        container.classList.remove('visible', 'hiding');
+        fetch('https://DERP-crimecamera/closeViewer', {
+            method: 'POST',
+            body: JSON.stringify({})
+        });
+    }, 250);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && container.classList.contains('visible')) {
+        hide();
+    }
+});
+
+window.addEventListener('message', (e) => {
+    if (e.data.action === 'showPhoto') show(e.data);
+    if (e.data.action === 'hidePhoto') hide();
+});
+</script>
+</body>
+</html>

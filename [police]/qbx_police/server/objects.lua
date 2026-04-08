@@ -34,11 +34,22 @@ end
 ---@param heading number
 lib.callback.register('police:server:spawnSpikeStrip', function(_, coords, heading)
     if #GlobalState.spikeStrips > sharedConfig.maxSpikes then return nil, 'error.no_spikestripe' end
-    local objects, netid = spawnObject(GlobalState.spikeStrips, `P_ld_stinger_s`,
-                                       vector4(coords.x, coords.y, coords.z, heading), 1, true)
+
+    local rad = math.rad(heading)
+    local forwardX = -math.sin(rad)
+    local forwardY = math.cos(rad)
+    local offset = 2.0
+
+    local coords1 = vector4(coords.x, coords.y, coords.z, heading)
+    local coords2 = vector4(coords.x + forwardX * (offset * 2), coords.y + forwardY * (offset * 2), coords.z, heading)
+
+    local objects, netid1 = spawnObject(GlobalState.spikeStrips, `P_ld_stinger_s`, coords1, 1, true)
     GlobalState.spikeStrips = objects
 
-    return netid
+    local objects2, netid2 = spawnObject(GlobalState.spikeStrips, `P_ld_stinger_s`, coords2, 1, true)
+    GlobalState.spikeStrips = objects2
+
+    return netid1
 end)
 
 ---Spawns police object

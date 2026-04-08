@@ -493,4 +493,44 @@ lib.addCommand('givebalo', {
     end
 end)
 
+-- ── Exports cho resource bên ngoài (DERP-unequipmaskandbaloPD) ─
+
+-- Trả về dữ liệu của 1 cloth slot cụ thể của player
+exports('getPlayerClothSlot', function(targetSrc, slot)
+    local ClothingServer = require 'modules.clothing.server'
+    local clothSlots = ClothingServer.GetPlayerClothSlots(targetSrc)
+    if not clothSlots then return nil end
+    return clothSlots[slot]
+end)
+
+-- Force unequip 1 cloth slot của player: xóa DB, sync client ped
+exports('forceUnequipPlayerClothSlot', function(targetSrc, slot)
+    local ClothingServer = require 'modules.clothing.server'
+    local clothSlots = ClothingServer.GetPlayerClothSlots(targetSrc)
+    if not clothSlots then return false end
+
+    local slotData = clothSlots[slot]
+    if not slotData then return false end
+
+    clothSlots[slot] = nil
+
+    local inv = Inventory(targetSrc)
+    if inv and inv.owner then
+        ClothingServer.SaveClothSlots(inv.owner, clothSlots)
+    end
+
+    -- Nếu là balo: đóng stash đang mở (nếu có)
+    if slot == 11 then
+        BackpackServer.CloseBackpack(targetSrc)
+    end
+
+    -- Thông báo client của target cập nhật ped appearance
+    TriggerClientEvent('ox_inventory:clothSlotUpdate', targetSrc, {
+        action    = 'unequip',
+        clothSlot = slot,
+    })
+
+    return true
+end)
+
 return BackpackServer

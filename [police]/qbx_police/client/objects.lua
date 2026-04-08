@@ -135,9 +135,14 @@ RegisterNetEvent('police:client:SpawnSpikeStrip', function()
         end
 
         lib.requestAnimDict('p_ld_stinger_s')
-        local spike = NetworkGetEntityFromNetworkId(netid)
-        PlayEntityAnim(spike, 'p_stinger_s_deploy', 'p_ld_stinger_s', 1000.0, false, false, false, 0.0, 0)
-        PlaceObjectOnGroundProperly(spike)
+        local spikeStrips = GlobalState.spikeStrips
+        for i = math.max(1, #spikeStrips - 1), #spikeStrips do
+            local spike = NetworkGetEntityFromNetworkId(spikeStrips[i])
+            if DoesEntityExist(spike) then
+                PlayEntityAnim(spike, 'p_stinger_s_deploy', 'p_ld_stinger_s', 1000.0, false, false, false, 0.0, 0)
+                PlaceObjectOnGroundProperly(spike)
+            end
+        end
         RemoveAnimDict('p_ld_stinger_s')
     else
         exports.qbx_core:Notify(locale('error.canceled'), 'error')

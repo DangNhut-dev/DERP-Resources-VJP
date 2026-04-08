@@ -169,17 +169,29 @@ local function setupRadialMenu()
             table.insert(policeItems, v)
         end
         table.insert(policeItems, {
-            id       = 'police_get_vehicle_keys',
-            label    = 'Lấy chìa khóa xe',
-            icon     = 'key',
-            onSelect = function()
-                local vehicle = lib.getClosestVehicle(GetEntityCoords(cache.ped), 5.0, false)
-                if not vehicle or not DoesEntityExist(vehicle) then
-                    exports.qbx_core:Notify('Không có xe gần đây!', 'error')
-                    return
-                end
-                TriggerServerEvent('qbx_vehiclekeys:server:policeConfiscateKeys', VehToNet(vehicle))
-            end
+            id = 'police_autopilot',
+            label = 'Tự Động Lái',
+            icon = 'route',
+            items = {
+                {
+                    id = 'autopilot_start',
+                    label = 'Cao Tốc',
+                    icon = 'road',
+                    event = 'autopilot:start',
+                },
+                {
+                    id = 'autopilot_city',
+                    label = 'Thành Phố',
+                    icon = 'city',
+                    event = 'autopilot:city',
+                },
+                {
+                    id = 'autopilot_patrol',
+                    label = 'Tuần Tra',
+                    icon = 'shield-halved',
+                    event = 'autopilot:patrol',
+                },
+            },
         })
         jobItems = policeItems
     end
