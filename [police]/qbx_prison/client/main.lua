@@ -270,9 +270,12 @@ local function onEnter(minutes)
 		Wait(10)
 	end
 	local randomStartPosition = config.locations.spawns[math.random(1, #config.locations.spawns)]
-	SetEntityCoords(cache.ped, randomStartPosition.coords.x, randomStartPosition.coords.y, randomStartPosition.coords.z - 0.9, false, false, false, false)
-	SetEntityHeading(cache.ped, randomStartPosition.coords.w)
-	Wait(500)
+	local spawnCoords = randomStartPosition.coords
+	FreezeEntityPosition(cache.ped, true)
+	SetEntityCoords(cache.ped, spawnCoords.x, spawnCoords.y, spawnCoords.z + 0.1, false, false, false, false)
+	SetEntityHeading(cache.ped, spawnCoords.w)
+	Wait(5000)
+	FreezeEntityPosition(cache.ped, false)
 	TriggerEvent('animations:client:EmoteCommandStart', {randomStartPosition.animation})
 	initPrison(minutes)
 	Wait(2000)

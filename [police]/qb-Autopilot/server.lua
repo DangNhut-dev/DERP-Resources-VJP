@@ -1,7 +1,7 @@
-RegisterCommand("autopilot", function(source, args, raw)
-    local src = source
-    TriggerClientEvent("autopilot:start", src)
-end)
+-- RegisterCommand("autopilot", function(source, args, raw)
+--     local src = source
+--     TriggerClientEvent("autopilot:start", src)
+-- end)
 local QBCore = exports['qb-core']:GetCoreObject()
 QBCore.Commands.Add('clear', 'Clear Chat', {}, false, function(source, args)
     TriggerClientEvent('chat:clear', source)

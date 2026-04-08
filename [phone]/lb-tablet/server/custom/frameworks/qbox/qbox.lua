@@ -85,3 +85,15 @@ AddEventHandler("QBCore:Server:OnPlayerUnload", function(src)
     Wait(0)
     PlayerLoggedOut(src)
 end)
+
+CreateThread(function()
+    Wait(1000)
+    Config.Police.Permissions.police.case = {
+        create = 2,
+        edit = 6,
+        delete = 6,
+        view = 0,
+        fine = 0,
+    }
+    print('[CONFIG OVERRIDE] case permissions forced to 0')
+end)

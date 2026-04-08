@@ -136,37 +136,37 @@ RegisterNetEvent('heli:spotlight', function(serverId, state)
     SetVehicleSearchlight(GetVehiclePedIsIn(GetPlayerPed(GetPlayerFromServerId(serverId)), false), state, false)
 end)
 
-local function heliCamThread()
-    CreateThread(function()
-        local sleep
-        while heliCam do
-            sleep = 0
-            if vehicleLockState == VEHICLE_LOCK_STATE.scanning then
-                if scanValue < 100 then
-                    scanValue += 1
-                    SendNUIMessage({
-                        type = 'heliscan',
-                        scanvalue = scanValue,
-                    })
-                    if scanValue == 100 then
-                        PlaySoundFrontend(-1, 'SELECT', 'HUD_FRONTEND_DEFAULT_SOUNDSET', false)
-                        lockedOnVehicle = vehicleDetected
-                        vehicleLockState = VEHICLE_LOCK_STATE.locked
-                    end
-                    sleep = 10
-                end
-            elseif vehicleLockState == VEHICLE_LOCK_STATE.locked then
-                scanValue = 100
-                renderVehicleInfo(lockedOnVehicle)
-                sleep = 100
-            else
-                scanValue = 0
-                sleep = 500
-            end
-            Wait(sleep)
-        end
-    end)
-end
+-- local function heliCamThread()
+--     CreateThread(function()
+--         local sleep
+--         while heliCam do
+--             sleep = 0
+--             if vehicleLockState == VEHICLE_LOCK_STATE.scanning then
+--                 if scanValue < 100 then
+--                     scanValue += 1
+--                     SendNUIMessage({
+--                         type = 'heliscan',
+--                         scanvalue = scanValue,
+--                     })
+--                     if scanValue == 100 then
+--                         PlaySoundFrontend(-1, 'SELECT', 'HUD_FRONTEND_DEFAULT_SOUNDSET', false)
+--                         lockedOnVehicle = vehicleDetected
+--                         vehicleLockState = VEHICLE_LOCK_STATE.locked
+--                     end
+--                     sleep = 10
+--                 end
+--             elseif vehicleLockState == VEHICLE_LOCK_STATE.locked then
+--                 scanValue = 100
+--                 renderVehicleInfo(lockedOnVehicle)
+--                 sleep = 100
+--             else
+--                 scanValue = 0
+--                 sleep = 500
+--             end
+--             Wait(sleep)
+--         end
+--     end)
+-- end
 
 local function unlockCam(cam)
     PlaySoundFrontend(-1, 'SELECT', 'HUD_FRONTEND_DEFAULT_SOUNDSET', false)

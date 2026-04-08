@@ -118,7 +118,7 @@ Config.DisableFocusTalking = true -- disable the focus key (default ALT) when ta
 Config.SyncFlashlight = true -- should flashlight be synced between players?
 Config.AutoDeleteNotifications = true -- true = delete 1 week old notifications, false = keep all notifications. you can also set to a number (in hours) to delete after that time
 Config.FadeOutsideTablet = true -- should the tablet fade when the cursor is outside of the tablet?
-Config.EvidenceStash = true -- allow players to store evidence for cases in the tablet?
+Config.EvidenceStash = false -- allow players to store evidence for cases in the tablet?
 Config.DutyBlipInterval = 5000 -- how often should duty blips update? in milliseconds
 
 Config.RequireDutyMDT = true -- require being on duty to be able to use work apps?
@@ -656,11 +656,11 @@ Config.Police.Permissions = {
             view = 0
         },
         case = {
-            create = 2,
-            edit = 6,
-            delete = 3,
+            create = 0,
+            edit = 0,
+            delete = 0,
             view = 0,
-            fine = 1,
+            fine = 0,
         },
         warrant = {
             create = 7,

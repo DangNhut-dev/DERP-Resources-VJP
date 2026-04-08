@@ -4,6 +4,7 @@
 ---@param amount number
 ---@param reason? string
 ---@return boolean success
+
 function BillPlayer(billerIdentifier, billedIdentifier, job, amount, reason)
     local senderSource = GetSourceFromIdentifier(billerIdentifier)
 
@@ -50,24 +51,35 @@ function HasPermission(source, job, permission, permissionType)
     local playerJob = GetJob(source)
     local jobPermissions = Config[job].Permissions[playerJob.name]
 
+    -- print(('[LB-TABLET PERM DEBUG] src:%s job:%s grade:%s checking:%s.%s'):format(
+    --     source, playerJob.name, playerJob.grade, permission, permissionType
+    -- ))
+
     if not playerJob or not jobPermissions then
+        -- print('[LB-TABLET PERM DEBUG] no jobPermissions, return false')
         return false
     end
 
     if not jobPermissions[permission] or not jobPermissions[permission][permissionType] then
+        -- print(('[LB-TABLET PERM DEBUG] permission %s.%s does not exist'):format(permission, permissionType))
         infoprint("warning", ("Permission %s.%s does not exist"):format(permission, permissionType))
         return false
     end
 
-    if playerJob.grade >= jobPermissions[permission][permissionType] then
+    local required = jobPermissions[permission][permissionType]
+    local result = playerJob.grade >= required
+    -- print(('[LB-TABLET PERM DEBUG] grade:%s >= required:%s = %s'):format(playerJob.grade, required, tostring(result)))
+
+    if result then
         return true
     end
 
     if IsAdmin(source) and Config[job].adminPermissions?[permission]?[permissionType] then
-        debugprint("Player has permission due to being admin")
+        -- print('[LB-TABLET PERM DEBUG] granted via admin')
         return true
     end
 
+    -- print('[LB-TABLET PERM DEBUG] DENIED')
     return false
 end
 

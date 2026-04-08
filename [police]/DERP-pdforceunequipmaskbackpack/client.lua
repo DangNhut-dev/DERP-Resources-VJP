@@ -1,5 +1,11 @@
 local animPlaying = false
 
+local function IsPoliceOnDuty()
+    local playerData = exports.qbx_core:GetPlayerData()
+    if not playerData or not playerData.job then return false end
+    return playerData.job.name == Config.PoliceJob and playerData.job.onduty == true
+end
+
 local function PlayUnequipAnim()
     if animPlaying then return end
     animPlaying = true
@@ -24,10 +30,8 @@ end
 
 local function OnSelect(data, itemType)
     local pid = GetPidFromPed(data.entity)
-    -- print('[DEBUG CLIENT] OnSelect | itemType:', itemType, '| pid:', pid)
     if pid == -1 or pid == PlayerId() then return end
     local targetSrc = GetPlayerServerId(pid)
-    -- print('[DEBUG CLIENT] targetSrc:', targetSrc)
     if not targetSrc or targetSrc == 0 then return end
     PlayUnequipAnim()
     TriggerServerEvent('DERP-unequipmaskandbaloPD:requestUnequip', targetSrc, itemType)
@@ -39,13 +43,15 @@ exports.ox_target:addGlobalPlayer({
         label    = 'Tháo mặt nạ',
         icon     = 'fas fa-mask',
         distance = Config.TargetDistance,
+        canInteract = IsPoliceOnDuty,
         onSelect = function(data) OnSelect(data, 'mask') end,
     },
     {
         name     = 'derp_pd_unequip_backpack',
         label    = 'Tháo balo',
-        icon     = 'fas fa-backpack',
+        icon     = 'fas fa-briefcase',
         distance = Config.TargetDistance,
+        canInteract = IsPoliceOnDuty,
         onSelect = function(data) OnSelect(data, 'backpack') end,
     },
 })
