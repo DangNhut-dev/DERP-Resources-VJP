@@ -1310,6 +1310,84 @@ RegisterNetEvent('derp:applyVehicleLockState', function(netId, lockState)
     SetVehicleDoorsLocked(vehicle, lockState)
 end)
 
+RegisterNetEvent('DERP-advanced-garages:client:startImpoundWithAnim', function()
+    local ped = PlayerPedId()
+    local coords = GetEntityCoords(ped)
+
+    if IsPedInAnyVehicle(ped, false) then
+        exports.qbx_core:Notify('Bạn phải đứng ngoài xe để giam xe!', 'error')
+        return
+    end
+
+    local vehicle, distance = GetClosestVehicle(coords, 5.0)
+
+    if not vehicle then
+        exports.qbx_core:Notify('Không tìm thấy xe gần đây!', 'error')
+        return
+    end
+
+    if IsVehicleOccupied(vehicle) then
+        exports.qbx_core:Notify('Không thể giam xe khi có người trong xe!', 'error')
+        return
+    end
+
+    lib.requestAnimDict('missheistdockssetup1clipboard@base')
+    TaskPlayAnim(ped, 'missheistdockssetup1clipboard@base', 'base', 8.0, -8.0, -1, 49, 0, false, false, false)
+
+    local plate = GetVehicleNumberPlateText(vehicle)
+    plate = string.gsub(plate, '^%s*(.-)%s*$', '%1')
+
+    local netId = NetworkGetNetworkIdFromEntity(vehicle)
+
+    local vehicleState = {
+        fuel = GetVehicleFuelLevel(vehicle),
+        engine = GetVehicleEngineHealth(vehicle),
+        body = GetVehicleBodyHealth(vehicle),
+        status = GetVehicleStatus(vehicle)
+    }
+
+    local input = lib.inputDialog('Giam Xe Vi Phạm - ' .. plate, {
+        {
+            type = 'number',
+            label = 'Thời gian giam (phút)',
+            description = 'Để trống = ' .. Config.Impound.DefaultDuration .. ' phút',
+            icon = 'clock',
+            min = 1,
+            max = 999999
+        },
+        {
+            type = 'number',
+            label = 'Giá tiền ($)',
+            description = 'Để trống = $' .. Config.Impound.DefaultPrice,
+            icon = 'dollar-sign',
+            min = 1,
+            max = 999999999
+        },
+        {
+            type = 'input',
+            label = 'Lý do',
+            description = 'Lý do giam xe',
+            icon = 'file-text',
+            required = false,
+            default = 'Vi phạm luật giao thông'
+        }
+    })
+
+    ClearPedTasks(ped)
+
+    if not input then return end
+
+    local impoundData = {
+        duration = input[1] and tonumber(input[1]) or nil,
+        price = input[2] and tonumber(input[2]) or nil,
+        reason = input[3] or 'Vi phạm luật giao thông'
+    }
+
+    Wait(500)
+
+    TriggerServerEvent('DERP-advanced-garages:server:impoundVehicle', netId, plate, impoundData, vehicleState)
+end)
+
 -- ============================================================
 -- WATER IMPOUND SYSTEM
 -- ============================================================

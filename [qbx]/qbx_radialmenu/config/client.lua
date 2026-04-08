@@ -244,6 +244,12 @@ return {
                     },
                 }
             },
+            {
+                id = 'impoundVehicle',
+                icon = 'truck-pickup',
+                label = 'Giam Xe',
+                event = 'DERP-advanced-garages:client:startImpoundWithAnim',
+            },
 
             -- {
             --     id = 'resetHouse',

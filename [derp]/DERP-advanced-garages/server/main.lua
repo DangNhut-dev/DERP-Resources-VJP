@@ -346,14 +346,14 @@ RegisterNetEvent('DERP-advanced-garages:server:impoundVehicle', function(netId, 
     if not plate or type(plate) ~= 'string' then return end
     if not netId or type(netId) ~= 'number' then return end
 
-    local vehicleRecord = MySQL.query.await([[
-        SELECT plate FROM player_vehicles WHERE plate = ? AND state = 0 LIMIT 1
-    ]], { plate })
+    -- local vehicleRecord = MySQL.query.await([[
+    --     SELECT plate FROM player_vehicles WHERE plate = ? AND state = 0 LIMIT 1
+    -- ]], { plate })
 
-    if not vehicleRecord or #vehicleRecord == 0 then
-        TriggerClientEvent('QBCore:Notify', src, 'Xe không hợp lệ hoặc đang trong garage!', 'error')
-        return
-    end
+    -- if not vehicleRecord or #vehicleRecord == 0 then
+    --     TriggerClientEvent('QBCore:Notify', src, 'Xe không hợp lệ hoặc đang trong garage!', 'error')
+    --     return
+    -- end
 
     local price    = math.max(0, math.floor(tonumber(impoundData.price)    or Config.Impound.DefaultPrice))
     local duration = math.max(1, math.floor(tonumber(impoundData.duration) or Config.Impound.DefaultDuration))
@@ -389,7 +389,24 @@ RegisterNetEvent('DERP-advanced-garages:server:impoundVehicle', function(netId, 
         plate
     })
 
-    TriggerClientEvent('DERP-advanced-garages:client:deleteVehicle', src, netId)
+    if vehicle and vehicle ~= 0 and DoesEntityExist(vehicle) then
+        DeleteEntity(vehicle)
+    end
+
+    TriggerClientEvent('DERP-advanced-garages:client:deleteVehicle', -1, netId)
+
+    SetTimeout(2000, function()
+        local e = NetworkGetEntityFromNetworkId(netId)
+        if e and e ~= 0 and DoesEntityExist(e) then
+            DeleteEntity(e)
+        end
+    end)
+
+    if Config.Streaming and Config.Streaming.Enabled then
+        pcall(function()
+            exports['DERP-advanced-garages']:UnregisterVehicle(plate)
+        end)
+    end
 
     TriggerClientEvent('QBCore:Notify', src,
         string.format(Config.Lang['vehicle_impounded'], price, duration), 'success')
@@ -639,7 +656,9 @@ RegisterNetEvent('DERP-advanced-garages:server:waterImpound', function(plate, ne
 
     DeleteEntity(vehicle)
 
-    SetTimeout(1000, function()
+    TriggerClientEvent('DERP-advanced-garages:client:deleteVehicle', -1, netId)
+
+    SetTimeout(2000, function()
         local e = NetworkGetEntityFromNetworkId(netId)
         if e and e ~= 0 and DoesEntityExist(e) then
             DeleteEntity(e)

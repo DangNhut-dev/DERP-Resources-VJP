@@ -89,8 +89,8 @@ end)
 CreateThread(function()
     Wait(1000)
     Config.Police.Permissions.police.case = {
-        create = 2,
-        edit = 6,
+        create = 0,
+        edit = 2,
         delete = 6,
         view = 0,
         fine = 0,
