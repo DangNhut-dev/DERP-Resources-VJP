@@ -75,6 +75,7 @@ Config.MarketNPCs = {
             {name = "dashcam", label = "Dashcam", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 1},
             {name = "drone", label = "Drone", buyPrice = 200, sellMin = nil, sellMax = nil, grade = 4},
             {name = "empty_evidence_bag", label = "Túi Vật Chứng", buyPrice = 1, sellMin = nil, sellMax = nil, grade = 0},
+            {name = "crimecamera", label = "Máy Ảnh", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0},
         },
         requiredJob = {
             ["police"] = 0,
