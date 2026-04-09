@@ -2,7 +2,7 @@ Config = {}
 
 -- General Settings
 Config.UsingTarget = GetConvar('UseTarget', 'false') == 'true'
-Config.TestDriveTimeLimit = 0.5 -- Time in minutes (0.5 = 30 seconds)
+Config.TestDriveTimeLimit = 1.0 -- Time in minutes (0.5 = 30 seconds)
 Config.PaymentWarning = 10
 Config.PaymentInterval = 24
 Config.MinimumDown = 10
