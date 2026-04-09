@@ -220,7 +220,7 @@ AddEventHandler('onServerResourceStart', function(resourceName)
         for k, v in pairs(sharedConfig.locations) do
             exports.ox_inventory:RegisterStash(k, v.label, config.slot, config.weight * 1000, true)
             
-            exports.ox_inventory:RegisterStash(k .. '_clothes', v.label .. ' - Wardrobe', 25, 0, true)
+            exports.ox_inventory:RegisterStash(k .. '_clothes', v.label .. ' - Wardrobe', 100, 0, true)
         end
     end
 end)
