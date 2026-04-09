@@ -250,6 +250,27 @@ return {
                 label = 'Giam Xe',
                 event = 'DERP-advanced-garages:client:startImpoundWithAnim',
             },
+            {
+                id    = 'trucker',
+                icon  = 'fa-truck',
+                label = 'Xe Giao Hàng',
+                items = {
+                    {
+                        id      = 'checkcargo',
+                        icon    = 'fa-archive',
+                        label   = 'Kiểm Hàng',
+                        command = 'checkcargo',
+                        args    = '',
+                    },
+                    {
+                        id      = 'confiscatecargo',
+                        icon    = 'fa-archive',
+                        label   = 'Tịch Thu',
+                        command = 'confiscatecargo',
+                        args    = '',
+                    },
+                }
+            },
 
             -- {
             --     id = 'resetHouse',

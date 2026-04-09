@@ -129,9 +129,51 @@ function setupVehicleMenu(seat)
         end
     }
 
-    -- if config.vehicleSeats and seat then
-    --     vehicleItems[#vehicleItems + 1] = config.vehicleSeats
-    -- end
+    local autopilotItems = {
+        {
+            id = 'autopilot_start',
+            label = 'Cao Tốc',
+            icon = 'road',
+            onSelect = function()
+                TriggerEvent('autopilot:start')
+                lib.hideRadial()
+            end,
+        },
+        {
+            id = 'autopilot_city',
+            label = 'Thành Phố',
+            icon = 'city',
+            onSelect = function()
+                TriggerEvent('autopilot:city')
+                lib.hideRadial()
+            end,
+        },
+    }
+
+    local job = QBX.PlayerData.job
+    if job and job.name == 'police' and job.onduty then
+        autopilotItems[#autopilotItems + 1] = {
+            id = 'autopilot_patrol',
+            label = 'Tuần Tra',
+            icon = 'shield-halved',
+            onSelect = function()
+                TriggerEvent('autopilot:patrol')
+                lib.hideRadial()
+            end,
+        }
+    end
+
+    lib.registerRadial({
+        id = 'autopilotMenu',
+        items = autopilotItems
+    })
+
+    vehicleItems[#vehicleItems + 1] = {
+        id = 'vehicle_autopilot',
+        label = 'Tự Động Lái',
+        icon = 'route',
+        menu = 'autopilotMenu',
+    }
 
     lib.registerRadial({
         id = 'vehicleMenu',
@@ -169,29 +211,16 @@ local function setupRadialMenu()
             table.insert(policeItems, v)
         end
         table.insert(policeItems, {
-            id = 'police_autopilot',
-            label = 'Tự Động Lái',
-            icon = 'route',
-            items = {
-                {
-                    id = 'autopilot_start',
-                    label = 'Cao Tốc',
-                    icon = 'road',
-                    event = 'autopilot:start',
-                },
-                {
-                    id = 'autopilot_city',
-                    label = 'Thành Phố',
-                    icon = 'city',
-                    event = 'autopilot:city',
-                },
-                {
-                    id = 'autopilot_patrol',
-                    label = 'Tuần Tra',
-                    icon = 'shield-halved',
-                    event = 'autopilot:patrol',
-                },
-            },
+            id       = 'police_get_vehicle_keys',
+            label    = 'Lấy Chìa Khóa Xe',
+            icon     = 'key',
+            onSelect = function()
+                local vehicle = lib.getClosestVehicle(GetEntityCoords(cache.ped), 5.0, false)
+                if not vehicle or not DoesEntityExist(vehicle) then
+                    return exports.qbx_core:Notify('Không có xe gần đây!', 'error')
+                end
+                TriggerServerEvent('qbx_vehiclekeys:server:policeConfiscateKeys', VehToNet(vehicle))
+            end,
         })
         jobItems = policeItems
     end
