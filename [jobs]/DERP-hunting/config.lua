@@ -201,7 +201,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(-348.67, 4843.49, 210.78),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
         {
@@ -214,7 +214,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(-898.60, 4802.35, 302.68),
-                radius = 30.0,
+                radius = 100.0,
             },
         },
         {
@@ -227,7 +227,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(-701.92, 4956.27, 186.44),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
         {
@@ -240,7 +240,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(-967.93, 4996.46, 183.77),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
         {
@@ -253,7 +253,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(-1201.27, 4952.35, 180.54),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
         {
@@ -266,7 +266,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(-1264.86, 4684.23, 85.62),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
         {
@@ -279,7 +279,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(34.50, 6870.87, 14.54),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
         {
@@ -292,7 +292,7 @@ Config.Job = {
             zone = {
                 name   = 'Khu Vực Săn Bắn',
                 coord  = vector3(252.69, 6813.92, 15.76),
-                radius = 50.0,
+                radius = 100.0,
             },
         },
     },

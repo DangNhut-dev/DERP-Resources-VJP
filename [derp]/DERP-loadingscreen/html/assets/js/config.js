@@ -39,7 +39,7 @@ const CONFIG = {
         { role: 'Dev', name: 'TommyNguyenx, P4trick, LeO' },
         { role: '3D Model', name: 'P4trick' },
         { role: 'Mods', name: 'LeO' },
-        { role: 'Supports', name: 'Jayy, Tuấn Ace, Marlo, Trung' },
+        { role: 'Supports', name: 'Tuấn Ace' },
     ],
 
     // ── Social Links (leave '' to hide the icon) ─────

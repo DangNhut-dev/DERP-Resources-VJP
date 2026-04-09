@@ -1368,7 +1368,7 @@ return {
 
 	['cleanlog'] = {
 		label       = 'Khúc gỗ sạch',
-		weight      = 1500,
+		weight      = 500,
 		stack       = true,
 		close       = true,
 		description = 'Khúc gỗ đã được làm sạch.',
@@ -1376,7 +1376,7 @@ return {
 
 	['rawplank'] = {
 		label       = 'Ván gỗ thô',
-		weight      = 1000,
+		weight      = 500,
 		stack       = true,
 		close       = true,
 		description = 'Ván gỗ thô chưa qua xử lý.',
@@ -1384,7 +1384,7 @@ return {
 
 	['sandedplank'] = {
 		label       = 'Ván gỗ đã chà nhám',
-		weight      = 800,
+		weight      = 500,
 		stack       = true,
 		close       = true,
 		description = 'Ván gỗ đã được chà nhám mịn.',

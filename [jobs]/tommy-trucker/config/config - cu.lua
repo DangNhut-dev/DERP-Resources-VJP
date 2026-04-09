@@ -40,11 +40,11 @@ Config.LevelThresholds = {
 Config.MaxLevel = 10
 
 Config.RentalFleet = {
-    { model = 'youga', pricePerDay = 500, capacity = 80 },
-    { model = 'speedo4', pricePerDay = 750, capacity = 120 },
-    { model = 'rumpo', pricePerDay = 1260, capacity = 170 },
-    { model = 'mule5', pricePerDay = 2377, capacity = 250 },
-    { model = 'pounder2', pricePerDay = 4125, capacity = 500 },
+    { model = 'youga', pricePerDay = 1000, capacity = 80 },
+    { model = 'speedo4', pricePerDay = 1500, capacity = 120 },
+    { model = 'rumpo', pricePerDay = 2525, capacity = 170 },
+    { model = 'mule5', pricePerDay = 4755, capacity = 250 },
+    { model = 'pounder2', pricePerDay = 8250, capacity = 500 },
 }
 
 Config.RentalSpawnPoints = {
@@ -67,7 +67,7 @@ Config.Orders = {
         requiredLevel = 1,
         requiredKg = 40,
         isIllegal = false,
-        reward = 380,
+        reward = 270,
         exp = 3,
         cooldown = 180,
         items = { {item = 'lockpick', chance = 25} }
@@ -80,7 +80,7 @@ Config.Orders = {
         requiredLevel = 1,
         requiredKg = 50,
         isIllegal = false,
-        reward = 400,
+        reward = 290,
         exp = 4,
         cooldown = 200,
         items = { {item = 'lockpick', chance = 25} }
@@ -93,7 +93,7 @@ Config.Orders = {
         requiredLevel = 1,
         requiredKg = 60,
         isIllegal = false,
-        reward = 420,
+        reward = 310,
         exp = 4,
         cooldown = 220,
         items = { {item = 'lockpick', chance = 25} }
@@ -106,7 +106,7 @@ Config.Orders = {
         requiredLevel = 1,
         requiredKg = 70,
         isIllegal = false,
-        reward = 440,
+        reward = 330,
         exp = 5,
         cooldown = 240,
         items = { {item = 'lockpick', chance = 25} }
@@ -119,7 +119,7 @@ Config.Orders = {
         requiredLevel = 1,
         requiredKg = 80,
         isIllegal = false,
-        reward = 460,
+        reward = 350,
         exp = 5,
         cooldown = 260,
         items = { {item = 'lockpick', chance = 25} }
@@ -134,7 +134,7 @@ Config.Orders = {
         requiredLevel = 2,
         requiredKg = 90,
         isIllegal = false,
-        reward = 570,
+        reward = 440,
         exp = 5,
         cooldown = 280,
         items = { {item = 'lockpick', chance = 25} }
@@ -147,7 +147,7 @@ Config.Orders = {
         requiredLevel = 2,
         requiredKg = 100,
         isIllegal = false,
-        reward = 640,
+        reward = 490,
         exp = 6,
         cooldown = 300,
         items = { {item = 'lockpick', chance = 25} }
@@ -160,7 +160,7 @@ Config.Orders = {
         requiredLevel = 2,
         requiredKg = 110,
         isIllegal = false,
-        reward = 610,
+        reward = 470,
         exp = 5,
         cooldown = 290,
         items = { {item = 'lockpick', chance = 25} }
@@ -173,7 +173,7 @@ Config.Orders = {
         requiredLevel = 2,
         requiredKg = 120,
         isIllegal = false,
-        reward = 580,
+        reward = 420,
         exp = 4,
         cooldown = 260,
         items = { {item = 'lockpick', chance = 25} }
