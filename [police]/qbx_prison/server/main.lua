@@ -17,7 +17,14 @@ local function setJailStatus(src, jailTime)
 end
 
 RegisterNetEvent('prison:server:SetJailStatus', function(jailTime)
-    setJailStatus(source, jailTime)
+    local src = source
+    local player = exports.qbx_core:GetPlayer(src)
+    if not player then return end
+    local currentJail = player.PlayerData.metadata.injail
+    if currentJail <= 0 then return end
+    -- Chỉ cho phép giảm, không cho tăng, không cho nhảy xuống 0 tùy tiện
+    local sanitized = math.max(0, math.min(jailTime, currentJail))
+    setJailStatus(src, sanitized)
 end)
 
 local function jailPlayer(src, minutes)

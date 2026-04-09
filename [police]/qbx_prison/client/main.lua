@@ -148,11 +148,19 @@ local function release()
 end
 
 local function askToLeave()
-	if JailTime > 0 then
-		exports.qbx_core:Notify( locale("info.timeleft", JailTime))
-	else
-		TriggerServerEvent('qbx_prison:server:playerAsksToLeave')
-	end
+    if JailTime > 0 then
+        local hours = math.floor(JailTime / 60)
+        local minutes = JailTime % 60
+        local display = ''
+        if hours > 0 then
+            display = hours .. 'h ' .. minutes .. 'm'
+        else
+            display = minutes .. 'm'
+        end
+        exports.qbx_core:Notify(locale("info.timeleft", display))
+    else
+        TriggerServerEvent('qbx_prison:server:playerAsksToLeave')
+    end
 end
 
 local function openCanteen()
@@ -223,13 +231,12 @@ local function initPrison(time)
 	CreateThread(function()
 		while JailTime > 0 and InJail do
 			Wait(60000)
-			if JailTime > 0 and InJail then
-				JailTime -= 1
-				if JailTime <= 0 then
-					JailTime = 0
-					exports.qbx_core:Notify(locale("success.timesup"), "success", 10000)
-				end
-				TriggerServerEvent("prison:server:SetJailStatus", JailTime)
+			if JailTime <= 0 then
+				JailTime = 0
+				TriggerServerEvent("prison:server:SetJailStatus", 0)
+				exports.qbx_core:Notify(locale("success.timesup"), "success", 10000)
+				TriggerServerEvent('qbx_prison:server:playerAsksToLeave')
+				break
 			end
 		end
 	end)

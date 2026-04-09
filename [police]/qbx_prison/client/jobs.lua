@@ -35,12 +35,10 @@ function CreateJobBlip() -- Used globally
     EndTextCommandSetBlipName(CurrentBlip)
 end
 
---- This will set the job as done and give a new location at the same time for you to continue the job and give you some time cut as a reward
 local function onBoxDone()
-    -- if math.random(1, 100) <= 100 then
     exports.qbx_core:Notify(locale("success.time_cut"))
-    JailTime -= math.random(1, 5)
-    -- end
+    JailTime = math.max(0, JailTime - math.random(1, 5))
+    TriggerServerEvent("prison:server:SetJailStatus", JailTime) -- sync ngay
 
     if currentBox == #electricalBoxes then
         electricalBoxes = newRandomArray(#config.jobs.electrician.locations)
