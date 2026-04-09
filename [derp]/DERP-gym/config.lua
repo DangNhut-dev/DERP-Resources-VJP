@@ -61,7 +61,7 @@ Config = {
 
     JobModifiers = {
         ['police'] = {
-            MaxCap          = 200,
+            MaxCap          = 150,
             DecayMultiplier = 10,
         },
         -- Thêm job khác tại đây nếu cần
