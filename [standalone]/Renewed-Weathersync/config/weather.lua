@@ -11,19 +11,19 @@ return {
 
     useStaticWeather = true,
     staticWeather = {
-        ['BLIZZARD'] = 0.0, --0% chance
-        ['CLEAR'] = 0.1, -- 10% chance
-        ['CLEARING'] = 0.1, -- 10% chance
-        ['CLOUDS'] = 0.1, -- 10% chance
-        ['EXTRASUNNY'] = 0.4, -- 40% chance
-        ['FOGGY'] = 0.1,
+        ['BLIZZARD'] = 0.0,
+        ['CLEAR'] = 0.1,
+        ['CLEARING'] = 0.05,
+        ['CLOUDS'] = 0.05,
+        ['EXTRASUNNY'] = 0.4, -- tăng nắng
+        ['FOGGY'] = 0.05,
         ['NEUTRAL'] = 0.0,
-        ['OVERCAST'] = 0.1,
-        ['RAIN'] = 0.1,
-        ['SMOG'] = 0.1,
+        ['OVERCAST'] = 0.4, -- tăng u ám
+        ['RAIN'] = 0.02, -- giảm cực thấp
+        ['SMOG'] = 0.05,
         ['SNOW'] = 0.0,
         ['SNOWLIGHT'] = 0.0,
-        ['THUNDER'] = 0.1,
+        ['THUNDER'] = 0.01, -- gần như không có
         ['XMAS'] = 0.0
     },
 
