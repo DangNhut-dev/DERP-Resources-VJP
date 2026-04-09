@@ -531,8 +531,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -544,8 +544,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -557,8 +557,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -570,8 +570,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -583,8 +583,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -596,8 +596,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -609,8 +609,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -622,8 +622,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -635,8 +635,8 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 3000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 3000, sellMin = nil, sellMax = nil},
+            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
         }
     },
     -- {
@@ -693,31 +693,32 @@ Config.MarketNPCs = {
     --         {name = "tapeplayer", label = "Máy Phát Băng", buyPrice = nil, sellMin = 100, sellMax = 200},
     --     }
     -- },
-    -- {
-    --     id = "chopshop_shop",
-    --     enabled = true,
-    --     label = "Nói Chuyện Buôn Bán",
-    --     ped = `g_m_y_ballasout_01`,
-    --     coords = vector4(354.45, -2703.86, 1.71, 72.28),
-    --     type = "buy",
-    --     items = {
-    --         {name = "weapon_digiscanner", label = "Máy Quét Tín Hiệu", buyPrice = 100, sellMin = nil, sellMax = nil},
-    --     }
-    -- },
-    -- {
-    --     id = "chopshop_shop2",
-    --     enabled = true,
-    --     label = "Nói Chuyện Buôn Bán",
-    --     ped = `a_m_m_fatlatin_01`,
-    --     coords = vector4(1362.58, 4359.49, 44.50, 264.23),
-    --     type = "sell",
-    --     items = {
-    --         {name = "car_wheel", label = "Bánh Xe", buyPrice = nil, sellMin = 100, sellMax = 200},
-    --         {name = "car_door", label = "Cửa Xe", buyPrice = nil, sellMin = 100, sellMax = 200},
-    --         {name = "radiator", label = "Két Nước", buyPrice = nil, sellMin = 100, sellMax = 200},
-    --         {name = "trunk", label = "Cốp Xe", buyPrice = nil, sellMin = 100, sellMax = 200},
-    --     }
-    -- },
+    {
+        id = "chopshop_shop",
+        enabled = true,
+        label = "Nói Chuyện Buôn Bán",
+        ped = `g_m_y_ballasout_01`,
+        coords = vector4(354.45, -2703.86, 1.71, 72.28),
+        type = "buy",
+        items = {
+            {name = "weapon_digiscanner", label = "Máy Quét Tín Hiệu", buyPrice = 1000, sellMin = nil, sellMax = nil},
+        }
+    },
+    {
+        id = "chopshop_shop2",
+        enabled = true,
+        label = "Nói Chuyện Buôn Bán",
+        ped = `a_m_m_fatlatin_01`,
+        coords = vector4(340.72, -2732.40, 5.99, 333.60),
+        blackmarket = true,
+        type = "sell",
+        items = {
+            {name = "car_wheel", label = "Bánh Xe", buyPrice = nil, sellMin = 2, sellMax = 6},
+            {name = "car_door", label = "Cửa Xe", buyPrice = nil, sellMin = 4, sellMax = 8},
+            {name = "radiator", label = "Két Nước", buyPrice = nil, sellMin = 6, sellMax = 10},
+            {name = "trunk", label = "Cốp Xe", buyPrice = nil, sellMin = 5, sellMax = 9},
+        }
+    },
 }
 
 Config.MarketBlips = { 
