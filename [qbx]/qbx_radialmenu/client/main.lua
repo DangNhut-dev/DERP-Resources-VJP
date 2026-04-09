@@ -175,6 +175,16 @@ function setupVehicleMenu(seat)
         menu = 'autopilotMenu',
     }
 
+    vehicleItems[#vehicleItems + 1] = {
+        id = 'vehicle_carplay',
+        label = 'Carplay',
+        icon = 'music',
+        onSelect = function()
+            ExecuteCommand('carplay')
+            lib.hideRadial()
+        end,
+    }
+
     lib.registerRadial({
         id = 'vehicleMenu',
         items = vehicleItems
