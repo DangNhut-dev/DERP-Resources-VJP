@@ -14,7 +14,7 @@ Config = {
         SkillMenu = {Label = 'Brutal Skill Menu', Command = 'skillmenu', Control = 'DELETE'},  -- SETTINGS > KEYBINDINGS
         SkillNotifyTime = 5000, -- in milisec | 1000 = 1 sec
         SaveFrequency = 5, -- in minutes | Save in the SQL after that time
-        RemoveTime = 10,  -- in munites | Remove one skill from player after that time
+        RemoveTime = 30,  -- in munites | Remove one skill from player after that time
 
         SprintSpeedIncrease = 'MEDIUM', -- ('FAST', 'MEDIUM', 'SLOWLY') At what rate should you increase the run speed?
         SwimSpeedIncrease = 'MEDIUM', -- ('FAST', 'MEDIUM', 'SLOWLY') At what rate should you increase the swimming speed?
@@ -62,7 +62,7 @@ Config = {
     JobModifiers = {
         ['police'] = {
             MaxCap          = 200,
-            DecayMultiplier = 5,
+            DecayMultiplier = 10,
         },
         -- Thêm job khác tại đây nếu cần
     },
