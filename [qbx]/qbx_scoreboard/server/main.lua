@@ -30,3 +30,9 @@ end
 ---@deprecated use the setActivityBusy export instead
 RegisterNetEvent('qb-scoreboard:server:SetActivityBusy', setActivityBusy)
 exports('SetActivityBusy', setActivityBusy)
+
+lib.callback.register('qbx_scoreboard:server:getCitizenId', function(source)
+    local player = exports.qbx_core:GetPlayer(source)
+    if not player then return end
+    return player.PlayerData.citizenid
+end)
