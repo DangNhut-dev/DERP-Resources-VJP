@@ -185,6 +185,16 @@ function setupVehicleMenu(seat)
         end,
     }
 
+    vehicleItems[#vehicleItems + 1] = {
+        id = 'vehicle_givekeys',
+        label = 'Đưa Chìa Khóa',
+        icon = 'key',
+        onSelect = function()
+            ExecuteCommand('givekeys')
+            lib.hideRadial()
+        end,
+    }
+
     lib.registerRadial({
         id = 'vehicleMenu',
         items = vehicleItems
