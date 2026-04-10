@@ -8310,5 +8310,13 @@ return {
         type = 'mod',
         hash = 'dc5',
     },
-
+    lp700 = {
+        name = 'Lamboghini Aventador SVJ',
+        brand = 'Lamboghini',
+        model = 'lp700',
+        price = 999999,
+        category ='mod',
+        type = 'mod',
+        hash = 'lp700',
+    }
 }
