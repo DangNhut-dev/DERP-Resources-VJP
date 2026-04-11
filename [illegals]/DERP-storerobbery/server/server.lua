@@ -2,7 +2,22 @@ local QBX        = exports.qbx_core
 local robbedSafes = {}
 local safeInProgress = {}
 
+local function getOnDutyPoliceCount()
+    local count = 0
+    for _, v in pairs(exports.qbx_core:GetQBPlayers()) do
+        if v and v.PlayerData.job.type == 'leo' and v.PlayerData.job.onduty then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 lib.callback.register('derp_storerobbery:server:checkSafe', function(source, safeIndex)
+    if getOnDutyPoliceCount() < 3 then
+        TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
+        return false
+    end
+
     local now = os.time() * 1000
     for i = 1, #Config.Safes do
         if robbedSafes[i] and robbedSafes[i] > now then

@@ -1,8 +1,22 @@
 local QBX         = exports.qbx_core
 local playerCooldowns = {}
 
+local function getOnDutyPoliceCount()
+    local count = 0
+    for _, v in pairs(exports.qbx_core:GetQBPlayers()) do
+        if v and v.PlayerData.job.type == 'leo' and v.PlayerData.job.onduty then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 lib.callback.register('derp_npcrobbery:server:checkCooldown', function(source)
     local src = source
+    if getOnDutyPoliceCount() < 1 then
+        TriggerClientEvent('ox_lib:notify', src, { title = 'Cướp', description = 'Không thể thực hiện được ngay bây giờ', type = 'error' })
+        return false
+    end
     local now = GetGameTimer()
     if playerCooldowns[src] and playerCooldowns[src] > now then
         return false

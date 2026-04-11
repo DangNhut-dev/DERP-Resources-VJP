@@ -71,11 +71,13 @@ RegisterNetEvent('DERP-unequipmaskandbaloPD:requestUnequip', function(targetSrc,
 
     local canCarry = exports.ox_inventory:CanCarryItem(src, itemData.name, 1)
     if not canCarry then
+        exports.ox_inventory:AddItem(targetSrc, itemData.name, 1, itemData.metadata)
         return Notify(src, 'error', 'Túi đồ của bạn không đủ chỗ')
     end
 
     local added = exports.ox_inventory:AddItem(src, itemData.name, 1, itemData.metadata)
     if not added then
+        exports.ox_inventory:AddItem(targetSrc, itemData.name, 1, itemData.metadata)
         return Notify(src, 'error', 'Không thể thêm vật phẩm vào túi')
     end
 

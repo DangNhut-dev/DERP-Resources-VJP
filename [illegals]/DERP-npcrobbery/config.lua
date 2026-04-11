@@ -1,6 +1,6 @@
 Config = {}
 
-Config.PlayerCooldown = 15 * 60 * 1000
+Config.PlayerCooldown = 45 * 60 * 1000
 
 Config.WhitelistedWeapons = {
     [`weapon_knife`]  = true,
@@ -19,7 +19,7 @@ Config.Zones = {
 
 Config.ZoneReward = {
     cashMin  = 30,
-    cashMax  = 200,
+    cashMax  = 150,
     itemChance = 25,
     items = {
         { item = 'phone',      chance = 50 },

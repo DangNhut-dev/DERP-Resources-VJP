@@ -176,21 +176,21 @@ Config.BaseDispatch.Actions = {
     CarJacking = {
         police = true,
         ambulance = false,
-        cooldown = 0,
+        cooldown = 15,
         serverCooldown = 0,
         dispatch = {
-            priority = "medium",
-            time = 120,
+            priority = "low",
+            time = 30,
         },
     },
     VehicleTheft = {
         police = true,
         ambulance = false,
-        cooldown = 0,
+        cooldown = 15,
         serverCooldown = 0,
         dispatch = {
-            priority = "medium",
-            time = 120,
+            priority = "low",
+            time = 30,
         },
     },
     Explosion = {
@@ -202,7 +202,7 @@ Config.BaseDispatch.Actions = {
         },
         dispatch = {
             priority = "medium",
-            time = 180,
+            time = 30,
         },
     },
     Gunshot = {
@@ -226,7 +226,7 @@ Config.BaseDispatch.Actions = {
         },
         dispatch = {
             priority = "high",
-            time = 300,
+            time = 30,
         },
     },
     Armed = {
@@ -249,7 +249,7 @@ Config.BaseDispatch.Actions = {
         },
         dispatch = {
             priority = "medium",
-            time = 120,
+            time = 30,
         },
     },
 }
