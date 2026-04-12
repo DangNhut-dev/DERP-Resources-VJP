@@ -120,19 +120,26 @@ Config = {
             }
         },
 
-        ['GYM Nhà Tù'] = {
+        ['GYM Police'] = {
             ItemRequired = {Use = false, Item = 'gym_membership', Time = 15, RemoveItem = true},
             Distances = {Marker = 10, Text = 1.0},
-            GYMCoords = { x = 1747.8870, y = 2544.0845, z = 43.5854},
+            GYMCoords = { x = 38.56, y = -404.03, z = 44.62,},
             Marker = { Distance = 15, Sprite = 30, Rotation = true, UpAndDown = false, Brightness = 100, r = 260, g = 40, b = 40, sizes = {x = 0.25, y = 0.3, z = 0.3}},  -- More sprites: https://docs.fivem.net/docs/game-references/markers/
             Blip = { Use = false, colour = 1, size = 1.1, sprite = 311 },
             Exersices = {
-                [1]  = { type = 'weightlifting', x = 1746.9486, y = 2543.9863, z = 43.5855, heading = 100.8497},
-                [2]  = { type = 'weightlifting', x = 1748.1990, y = 2541.6675, z = 43.5855, heading = 111.0449},
-                [3]  = { type = 'pushups', x = 1739.7616, y = 2541.2312, z = 43.5855, heading = 206.0246},
-                [4]  = { type = 'pushups', x = 1742.0660, y = 2537.2927, z = 43.5855, heading = 32.1690},
-                [5]  = { type = 'situps', x = 1751.0808, y = 2536.8789, z = 43.5855, heading = 24.3098},
-                [6]  = { type = 'situps', x = 1752.6005, y = 2537.6794, z = 43.5855, heading = 24.3307},
+                -- [1]  = { type = 'weightlifting', x = 1746.9486, y = 2543.9863, z = 43.5855, heading = 100.8497},
+                [1] = { type = 'running', x = 37.07, y = -399.70, z = 44.62, heading = 70.77},   
+                [2] = { type = 'running', x = 35.88, y = -402.85, z = 44.62, heading = 70.77},   
+                [3] = { type = 'running', x = 34.66, y = -406.16, z = 44.62, heading = 70.77},  
+                [4]  = { type = 'pushups', x = 37.65, y = -407.13, z = 44.62, heading = 70.77},   
+                [5]  = { type = 'pushups', x = 38.51, y = -403.90, z = 44.62, heading = 70.77},   
+                [6]  = { type = 'pushups', x = 39.42, y = -400.50, z = 44.62, heading = 70.77},   
+                [7]  = { type = 'situps', x = 42.60, y = -401.62, z = 44.62, heading = 70.77}, 
+                [8]  = { type = 'situps', x = 41.50, y = -404.21, z = 44.62, heading = 70.77},
+                [9]  = { type = 'situps', x = 40.89, y = -406.09, z = 44.62, heading = 70.77},
+                -- [2]  = { type = 'weightlifting', x = 1748.1990, y = 2541.6675, z = 43.5855, heading = 111.0449},
+                -- [4]  = { type = 'pushups', x = 1742.0660, y = 2537.2927, z = 43.5855, heading = 32.1690},
+                -- [6]  = { type = 'situps', x = 1752.6005, y = 2537.6794, z = 43.5855, heading = 24.3307},
                 -- You can add more...
             }
         },
