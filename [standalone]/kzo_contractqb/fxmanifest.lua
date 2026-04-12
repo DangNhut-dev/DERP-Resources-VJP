@@ -1,19 +1,34 @@
 fx_version 'cerulean'
-
 game 'gta5'
-
 description ''
-
 author 'KzO Exclusives'
 
-client_scripts {'client.lua'}
+client_scripts {
+    '@ox_lib/init.lua',
+    'client.lua'
+}
+server_scripts {
+    '@oxmysql/lib/MySQL.lua',
+    '@ox_lib/init.lua',
+    'server.lua'
+}
 
-server_scripts {'server.lua', '@oxmysql/lib/MySQL.lua'}
+dependencies {
+    'oxmysql',
+    'ox_lib',
+    'ox_inventory',
+    'qbx_core',
+}
 
-ui_page {'html/index.html'}
+ui_page 'html/index.html'
 
-files {'html/index.html', 'html/style.css', 'html/app.js', 'html/imgs/*.png', 'html/button.wav', 'html/fonts/*.otf'}
-
-escrow_ignore {'client.lua', 'server.lua'}
+files {
+    'html/index.html',
+    'html/style.css',
+    'html/app.js',
+    'html/imgs/*.png',
+    'html/button.wav',
+    'html/fonts/*.otf'
+}
 
 lua54 'yes'
