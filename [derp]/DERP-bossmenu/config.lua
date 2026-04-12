@@ -127,6 +127,20 @@ Config.ApplicationPoints = {
 Config.ApplicationQuestions = {
     ["police"] = {
         {
+            question = "Bạn tên là gì?",
+            type = "text",
+            required = true,
+            min = 1,
+            max = 1024
+        },
+        {
+            question = "Số điện thoại hiện tại?",
+            type = "text",
+            required = true,
+            min = 1,
+            max = 1024
+        },
+        {
             question = "Tại sao bạn muốn tham gia lực lượng UPD?",
             type = "text",
             required = true,

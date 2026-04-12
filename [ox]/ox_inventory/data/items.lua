@@ -2272,5 +2272,12 @@ return {
 		stack = false,
 		consume = 0,
 	},
+
+	['contract'] = {
+		label = 'Giấy Mua Bán Xe',
+		weight = 0,
+		stack = false,
+		consume = 0,
+	},
 }
 

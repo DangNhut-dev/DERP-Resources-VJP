@@ -9,5 +9,5 @@ return {
     -- If set to 'admin_only', only admins can see player IDs.
     -- If set to 'admin_excluded', all players will see player IDs except for those of admins.
     -- If set to 'all', all players will see player IDs.
-    idVisibility = 'admin_only',
+    idVisibility = 'all',
 }

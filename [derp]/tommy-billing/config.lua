@@ -4,7 +4,7 @@ Config = {}
 
 Config.Distance = 10.0
 Config.EnableCommission = true
-Config.MaxNegativeBalance = -10000
+Config.MaxNegativeBalance = -100000
 
 -- ==================== BILL SETTINGS ====================
 
@@ -18,7 +18,7 @@ Config.DebugMode = false
 
 -- ==================== DISCORD WEBHOOK ====================
 
-Config.Webhook = 'https://discord.com/api/webhooks/1429345321044934709/ExbDEFyS31dQ-paPiG4b9Zg7q9iEKqENYdfP-ruCycJ5x3FaCyAwhGd3g1oBb5ihARff'
+Config.Webhook = ''
 
 -- ==================== BANKING SYSTEM ====================
 
@@ -34,7 +34,7 @@ Config.AllowedJobs = {
     },
     ['ambulance'] = {
         label = 'Bệnh Viện',
-        commission = 0.1,
+        commission = 0.15,
         allowNegativeBalance = true, 
     },
     ['mechanic'] = {

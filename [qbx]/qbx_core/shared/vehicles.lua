@@ -8176,8 +8176,8 @@ return {
         hash = 'npolchal',
     },
     clrgtaurus = {
-        name = 'Renault Clior',
-        brand = 'Renault',
+        name = 'Ford Taurus',
+        brand = 'Ford',
         model = 'clrgtaurus',
         price = 99999,
         category ='custom',
