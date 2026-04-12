@@ -2278,6 +2278,9 @@ return {
 		weight = 0,
 		stack = false,
 		consume = 0,
-	},
+		client = {
+			event = 'kzo_contract:useitem'
+		}
+	}
 }
 

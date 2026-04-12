@@ -1,40 +1,51 @@
-QBCore = exports['qb-core']:GetCoreObject()
-RegisterNUICallback('escape', function()
-    SetNuiFocus(false, false)
-end)
-RegisterNUICallback('writecontract', function(data)
-    TriggerServerEvent('kzo_contract:writecontact', data.player, data.vehicle)
-end)
-Citizen.CreateThread(function()
-    RequestAnimDict('anim@amb@nightclub@peds@')
-	while not HasAnimDictLoaded('anim@amb@nightclub@peds@') do
-		Citizen.Wait(0)
-	end
-end)
-RegisterNetEvent('kzo_contract:useitem', function()
-    local vehicle, distance = QBCore.Functions.GetClosestVehicle()
-    local player, distancep = QBCore.Functions.GetClosestPlayer()
-    if vehicle ~= -1 and distance < 3.5 and player ~= -1 and distancep < 3.5 then
-        QBCore.Functions.TriggerCallback('kzo_contract:getclosestplayername', function(name, playername)
+AddEventHandler('kzo_contract:useitem', function()
+    local coords = GetEntityCoords(cache.ped)
+    local vehicle = lib.getClosestVehicle(coords, 3.5, false)
+    local player = lib.getClosestPlayer(coords, 3.5)
 
-            SetNuiFocus(true, true)
-            SendNUIMessage({
-                action = 'opencontract',
-                plate = QBCore.Functions.GetPlate(vehicle),
-                name = name,
-                playername = playername,
-                closestid = GetPlayerServerId(player),
-            })
-
-        end, GetPlayerServerId(player))
-    else
-        QBCore.Functions.Notify('Không có xe hoặc người chơi nào ở gần bạn!', 'error')
+    if not vehicle or not DoesEntityExist(vehicle) then
+        exports.qbx_core:Notify('Không có xe gần bạn!', 'error')
+        return
     end
-end)
-RegisterNetEvent('kzo_contract:showAnim')
-AddEventHandler('kzo_contract:showAnim', function(player)
-	TaskStartScenarioInPlace(PlayerPedId(), 'WORLD_HUMAN_CLIPBOARD', 0, true)
-	Citizen.Wait(10000)
-	ClearPedTasks(PlayerPedId())
+
+    if not player then
+        exports.qbx_core:Notify('Không có người chơi gần bạn!', 'error')
+        return
+    end
+
+    local plate = GetVehicleNumberPlateText(vehicle)
+    local targetId = GetPlayerServerId(player)
+
+    lib.callback('kzo_contract:getclosestplayername', false, function(name, playername)
+        if not name or not playername then
+            exports.qbx_core:Notify('Lỗi lấy thông tin người chơi.', 'error')
+            return
+        end
+        SetNuiFocus(true, true)
+        SendNUIMessage({
+            action = 'opencontract',
+            plate = plate,
+            name = name,
+            playername = playername,
+            closestid = targetId,
+        })
+    end, targetId)
 end)
 
+RegisterNetEvent('kzo_contract:showAnim', function()
+    if GetInvokingResource() then return end
+    TaskStartScenarioInPlace(cache.ped, 'WORLD_HUMAN_CLIPBOARD', 0, true)
+    Wait(10000)
+    ClearPedTasks(cache.ped)
+end)
+
+RegisterNUICallback('escape', function(_, cb)
+    SetNuiFocus(false, false)
+    cb('ok')
+end)
+
+RegisterNUICallback('writecontract', function(data, cb)
+    if not data.player or not data.vehicle then cb('error') return end
+    TriggerServerEvent('kzo_contract:writecontact', data.player, data.vehicle)
+    cb('ok')
+end)
