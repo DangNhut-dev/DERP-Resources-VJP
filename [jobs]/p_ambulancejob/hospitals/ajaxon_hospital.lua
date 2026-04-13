@@ -145,8 +145,8 @@ return {
             platePrefix = 'EMS',
             parkDistance = 10.0,
             vehicles = {
-                ['emsnspeedo'] = {
-                    label = 'emsnspeedo',
+                ['25fpiu1'] = {
+                    label = '25fpiu1',
                     image = 'https://docs.fivem.net/vehicles/ambulance.webp',
                     mods = {
                         [0] = 1,
