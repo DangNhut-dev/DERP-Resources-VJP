@@ -1440,7 +1440,7 @@ Config.Damages = {
             }
         },
     }
-}}
+}
 
 ---@class Config.Pulse
 ---@field enabled boolean [enable pulse feature?]

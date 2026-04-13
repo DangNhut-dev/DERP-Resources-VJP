@@ -87,12 +87,12 @@ Config.MoneyHistory = { -- Cấu hình lưu lịch sử tiền (để vẽ biể
 } 
 
 Config.Suspicious = { -- Ngưỡng nghi vấn kiểu 1 (đếm biến động tiền lớn trong X ngày)
-    Threshold = 300000, -- Ngưỡng chênh lệch tiền để bị tính là 'nghi vấn' (đơn vị: tiền)
+    Threshold = 1000, -- Ngưỡng chênh lệch tiền để bị tính là 'nghi vấn' (đơn vị: tiền)
     Days = 3, -- Số ngày lookback để đếm/hiển thị cột nghi vấn
 } 
 
 Config.Suspicious2 = { -- Ngưỡng nghi vấn kiểu 2 (đếm chuỗi biến động nhỏ liên tiếp trong cửa sổ thời gian)
-    Threshold = 1000,      -- mỗi lần chênh lệch <= Threshold sẽ được tính vào chuỗi | đơn vị chênh lệch tiền
+    Threshold = 300000,      -- mỗi lần chênh lệch <= Threshold sẽ được tính vào chuỗi | đơn vị chênh lệch tiền
     WindowMinutes = 5,     -- cửa sổ thời gian để tính chuỗi (phút) | tính theo phút
     MinConsecutive = 11,   -- "trên 10 lần" => 11 lần liên tiếp | giá trị này càng cao càng ít bắt nhầm
     Days = 3,             -- số ngày dùng để đếm ở cột Nghi vấn 2 | lookback để hiển thị
