@@ -129,7 +129,7 @@ AddEventHandler('qb-rental:server:rentcar', function(data)
         return
     end
 
-    if not Player.Functions.RemoveMoney('cash', vehdata.price) then return end
+    if not Player.Functions.RemoveMoney('cash', vehdata.price, 'Thuê Xe') then return end
 
     RentSpawnCar(src, citizenid, vehdata.model, Config.Rentals[data.rentid].carspawns[1], vehdata.price, vehdata.returnprice)
 end)
@@ -162,7 +162,7 @@ AddEventHandler('qb-rental:server:startreturnvehicle', function(netId)
     end
 
     DeleteEntity(veh)
-    Player.Functions.AddMoney('cash', stored.returnprice)
+    Player.Functions.AddMoney('cash', stored.returnprice, 'Thuê Xe')
     StorageDeletePlate(citizenid, plate)
 
     if RentedCars[src] then

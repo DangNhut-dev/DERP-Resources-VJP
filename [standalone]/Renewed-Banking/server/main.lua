@@ -1,6 +1,159 @@
 local cachedAccounts = {}
 local cachedPlayers = {}
 
+local function cloneMoneySnapshot(money)
+    local snapshot = {}
+
+    if type(money) ~= 'table' then
+        return snapshot
+    end
+
+    for k, v in pairs(money) do
+        if type(v) == 'number' then
+            snapshot[k] = v
+        end
+    end
+
+    return snapshot
+end
+
+local function getPlayerMoneySnapshot(Player)
+    if not Player then
+        return {}
+    end
+
+    if Player.PlayerData and type(Player.PlayerData.money) == 'table' then
+        return cloneMoneySnapshot(Player.PlayerData.money)
+    end
+
+    local snapshot = cloneMoneySnapshot(GetFunds(Player))
+
+    if Framework == 'esx' then
+        local ok, blackMoney = pcall(function()
+            local account = Player.getAccount('black_money')
+            return account and account.money or nil
+        end)
+
+        if ok and type(blackMoney) == 'number' then
+            snapshot.black_money = blackMoney
+        end
+    end
+
+    return snapshot
+end
+
+local function getSourceMoneySnapshot(source)
+    if type(source) ~= 'number' or source <= 0 then
+        return nil
+    end
+
+    local Player = GetPlayerObject(source)
+
+    if not Player then
+        return nil
+    end
+
+    return getPlayerMoneySnapshot(Player)
+end
+
+local function getPlayerSource(Player)
+    if not Player then
+        return nil
+    end
+
+    if type(Player.source) == 'number' then
+        return Player.source
+    end
+
+    if Player.PlayerData and type(Player.PlayerData.source) == 'number' then
+        return Player.PlayerData.source
+    end
+
+    local src = tonumber(Player.source)
+    if src and src > 0 then
+        return src
+    end
+
+    return nil
+end
+
+local function formatAccountLabel(account, Player)
+    if not account or account == '' then
+        return 'không xác định'
+    end
+
+    if cachedAccounts[account] then
+        local label = cachedAccounts[account].name or tostring(account)
+        return ('%s (%s)'):format(label, tostring(account))
+    end
+
+    if Player then
+        local name = GetCharacterName(Player)
+        if name and name ~= '' then
+            return ('%s (%s)'):format(name, tostring(account))
+        end
+    end
+
+    return ('Cá nhân (%s)'):format(tostring(account))
+end
+
+local function tryAddActionLog(anyPlayer, actionText, opts)
+    if not anyPlayer or not actionText or actionText == '' then
+        return false
+    end
+
+    if GetResourceState('ox_inventory') == 'started' then
+        local ok = pcall(function()
+            exports['ox_inventory']:AddActionLog(anyPlayer, actionText, opts)
+        end)
+
+        if ok then
+            return true
+        end
+    end
+
+    if GetResourceState('js_ranking') == 'started' then
+        local ok = pcall(function()
+            exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+        end)
+
+        if ok then
+            return true
+        end
+    end
+
+    return false
+end
+exports('AddActionLog', tryAddActionLog)
+
+local function buildBankActionText(title, details)
+    local message = ('[banking] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function addBankActionLog(anyPlayer, title, details, opts)
+    return tryAddActionLog(anyPlayer, buildBankActionText(title, details), opts)
+end
+
 CreateThread(function()
     Wait(500)
     if not LoadResourceFile("Renewed-Banking", 'web/public/build/bundle.js') or GetCurrentResourceName() ~= "Renewed-Banking" then
@@ -235,6 +388,7 @@ lib.callback.register('Renewed-Banking:server:deposit', function(source, data)
         return false
     end
     local name = GetCharacterName(Player)
+    local beforeMoney = getSourceMoneySnapshot(source)
     if not data.comment or data.comment == "" then data.comment = locale("comp_transaction", name, "deposited", amount) else sanitizeMessage(data.comment) end
     if RemoveMoney(Player, amount, 'cash', data.comment) then
         if cachedAccounts[data.fromAccount] then
@@ -243,8 +397,13 @@ lib.callback.register('Renewed-Banking:server:deposit', function(source, data)
             AddMoney(Player, amount, 'bank', data.comment)
         end
         local Player2 = getPlayerData(source, data.fromAccount)
+        local targetLabel = formatAccountLabel(data.fromAccount, cachedAccounts[data.fromAccount] and nil or Player)
         Player2 = Player2 and GetCharacterName(Player2) or data.fromAccount
         handleTransaction(data.fromAccount, locale("personal_acc") .. data.fromAccount, amount, data.comment, name, Player2, "deposit")
+        addBankActionLog(source, 'Nạp Tiền', {
+            { 'đích', targetLabel },
+            { 'số tiền', tostring(amount) }
+        }, { beforeMoney = beforeMoney })
         local bankData = getBankData(source)
         return bankData
     else
@@ -278,6 +437,7 @@ lib.callback.register('Renewed-Banking:server:withdraw', function(source, data)
     end
     local name = GetCharacterName(Player)
     local funds = GetFunds(Player)
+    local beforeMoney = getSourceMoneySnapshot(source)
     if not data.comment or data.comment == "" then data.comment = locale("comp_transaction", name, "withdrawed", amount) else sanitizeMessage(data.comment) end
 
     local canWithdraw
@@ -288,9 +448,15 @@ lib.callback.register('Renewed-Banking:server:withdraw', function(source, data)
     end
     if canWithdraw then
         local Player2 = getPlayerData(source, data.fromAccount)
+        local sourceLabel = formatAccountLabel(data.fromAccount, cachedAccounts[data.fromAccount] and nil or Player)
         Player2 = Player2 and GetCharacterName(Player2) or data.fromAccount
         AddMoney(Player, amount, 'cash', data.comment)
         handleTransaction(data.fromAccount,locale("personal_acc") .. data.fromAccount, amount, data.comment, Player2, name, "withdraw")
+        addBankActionLog(source, 'Rút Tiền', {
+            { 'nguồn', sourceLabel },
+            { 'đích', 'Tiền mặt' },
+            { 'số tiền', tostring(amount) }
+        }, { beforeMoney = beforeMoney })
         local bankData = getBankData(source)
         return bankData
     else
@@ -307,6 +473,9 @@ lib.callback.register('Renewed-Banking:server:transfer', function(source, data)
         return false
     end
     local name = GetCharacterName(Player)
+    local senderBeforeMoney = getSourceMoneySnapshot(source)
+    local senderLabel = formatAccountLabel(data.fromAccount, cachedAccounts[data.fromAccount] and nil or Player)
+    local receiverLabel = formatAccountLabel(data.stateid)
     if not data.comment or data.comment == "" then data.comment = locale("comp_transaction", name, "transfered", amount) else sanitizeMessage(data.comment) end
     if cachedAccounts[data.fromAccount] then
         if cachedAccounts[data.stateid] then
@@ -316,6 +485,11 @@ lib.callback.register('Renewed-Banking:server:transfer', function(source, data)
                 local title = ("%s / %s"):format(cachedAccounts[data.fromAccount].name, data.fromAccount)
                 local transaction = handleTransaction(data.fromAccount, title, amount, data.comment, cachedAccounts[data.fromAccount].name, cachedAccounts[data.stateid].name, "withdraw")
                 handleTransaction(data.stateid, title, amount, data.comment, cachedAccounts[data.fromAccount].name, cachedAccounts[data.stateid].name, "deposit", transaction.trans_id)
+                addBankActionLog(source, 'Chuyển Khoản', {
+                    { 'từ', senderLabel },
+                    { 'đến', formatAccountLabel(data.stateid) },
+                    { 'số tiền', tostring(amount) }
+                }, { beforeMoney = senderBeforeMoney })
             else
                 TriggerClientEvent('Renewed-Banking:client:sendNotification', source, locale("not_enough_money"))
                 return false
@@ -326,12 +500,26 @@ lib.callback.register('Renewed-Banking:server:transfer', function(source, data)
                 TriggerClientEvent('Renewed-Banking:client:sendNotification', source, locale("fail_transfer"))
                 return false
             end
+            local targetBeforeMoney = getPlayerMoneySnapshot(Player2)
+            local targetSource = getPlayerSource(Player2)
             local canTransfer = RemoveAccountMoney(data.fromAccount, amount)
+            receiverLabel = formatAccountLabel(data.stateid, Player2)
             if canTransfer then
                 AddMoney(Player2, amount, 'bank', data.comment)
                 local plyName = GetCharacterName(Player2)
                 local transaction = handleTransaction(data.fromAccount, ("%s / %s"):format(cachedAccounts[data.fromAccount].name, data.fromAccount), amount, data.comment, cachedAccounts[data.fromAccount].name, plyName, "withdraw")
                 handleTransaction(data.stateid, ("%s / %s"):format(cachedAccounts[data.fromAccount].name, data.fromAccount), amount, data.comment, cachedAccounts[data.fromAccount].name, plyName, "deposit", transaction.trans_id)
+                addBankActionLog(source, 'Chuyển Khoản', {
+                    { 'từ', senderLabel },
+                    { 'đến', receiverLabel },
+                    { 'số tiền', tostring(amount) }
+                }, { beforeMoney = senderBeforeMoney })
+                if targetSource then
+                    addBankActionLog(targetSource, 'Nhận Chuyển Khoản', {
+                        { 'từ', senderLabel },
+                        { 'số tiền', tostring(amount) }
+                    }, { beforeMoney = targetBeforeMoney })
+                end
             else
                 TriggerClientEvent('Renewed-Banking:client:sendNotification', source, locale("not_enough_money"))
                 return false
@@ -344,6 +532,11 @@ lib.callback.register('Renewed-Banking:server:transfer', function(source, data)
                 AddAccountMoney(data.stateid, amount)
                 local transaction = handleTransaction(data.fromAccount, locale("personal_acc") .. data.fromAccount, amount, data.comment, name, cachedAccounts[data.stateid].name, "withdraw")
                 handleTransaction(data.stateid, locale("personal_acc") .. data.fromAccount, amount, data.comment, name, cachedAccounts[data.stateid].name, "deposit", transaction.trans_id)
+                addBankActionLog(source, 'Chuyển Khoản', {
+                    { 'từ', senderLabel },
+                    { 'đến', formatAccountLabel(data.stateid) },
+                    { 'số tiền', tostring(amount) }
+                }, { beforeMoney = senderBeforeMoney })
             else
                 TriggerClientEvent('Renewed-Banking:client:sendNotification', source, locale("not_enough_money"))
                 return false
@@ -355,11 +548,25 @@ lib.callback.register('Renewed-Banking:server:transfer', function(source, data)
                 return false
             end
 
+            local targetBeforeMoney = getPlayerMoneySnapshot(Player2)
+            local targetSource = getPlayerSource(Player2)
+            receiverLabel = formatAccountLabel(data.stateid, Player2)
             if funds.bank >= amount and RemoveMoney(Player, amount, 'bank', data.comment) then
                 AddMoney(Player2, amount, 'bank', data.comment)
                 local name2 = GetCharacterName(Player2)
                 local transaction = handleTransaction(data.fromAccount, locale("personal_acc") .. data.fromAccount, amount, data.comment, name, name2, "withdraw")
                 handleTransaction(data.stateid, locale("personal_acc") .. data.fromAccount, amount, data.comment, name, name2, "deposit", transaction.trans_id)
+                addBankActionLog(source, 'Chuyển Khoản', {
+                    { 'từ', senderLabel },
+                    { 'đến', receiverLabel },
+                    { 'số tiền', tostring(amount) }
+                }, { beforeMoney = senderBeforeMoney })
+                if targetSource then
+                    addBankActionLog(targetSource, 'Nhận Chuyển Khoản', {
+                        { 'từ', senderLabel },
+                        { 'số tiền', tostring(amount) }
+                    }, { beforeMoney = targetBeforeMoney })
+                end
             else
                 TriggerClientEvent('Renewed-Banking:client:sendNotification', source, locale("not_enough_money"))
                 return false
@@ -716,10 +923,21 @@ lib.addCommand('givecash', {
     if #(GetEntityCoords(GetPlayerPed(source)) - GetEntityCoords(GetPlayerPed(args.target))) > 10.0 then return Notify(source, {title = locale("bank_name"), description = locale('too_far_away'), type = "error"}) end
     if args.amount < 0 then return Notify(source, {title = locale("bank_name"), description = locale('invalid_amount', "give"), type = "error"}) end
 
+    local sourceBeforeMoney = getSourceMoneySnapshot(source)
+    local targetBeforeMoney = getSourceMoneySnapshot(args.target)
+
     if RemoveMoney(Player, args.amount, 'cash') then
         AddMoney(iPlayer, args.amount, 'cash')
         local nameA = GetCharacterName(Player)
         local nameB = GetCharacterName(iPlayer)
+        addBankActionLog(source, 'Đưa Tiền Mặt', {
+            { 'đến', ('%s (%s)'):format(nameB, tostring(args.target)) },
+            { 'số tiền', tostring(args.amount) }
+        }, { beforeMoney = sourceBeforeMoney })
+        addBankActionLog(args.target, 'Nhận Tiền Mặt', {
+            { 'từ', ('%s (%s)'):format(nameA, tostring(source)) },
+            { 'số tiền', tostring(args.amount) }
+        }, { beforeMoney = targetBeforeMoney })
         Notify(source, {title = locale("bank_name"), description = locale('give_cash', nameB, tostring(args.amount)), type = "error"})
         Notify(args.target, {title = locale("bank_name"), description = locale('received_cash', nameA, tostring(args.amount)), type = "success"})
     else

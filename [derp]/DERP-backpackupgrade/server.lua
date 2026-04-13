@@ -1,10 +1,157 @@
 local ClothingRarity   = {}
 local ClothingItemNames = {}
+local allEvents = {
+    ["DERP-backpackupgrade:confirmUpgrade"] = false
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
+local function AddActionLog(anyPlayer, actionText, opts)
+    if GetResourceState('js_ranking') ~= 'started' then return false end
+    if not actionText or actionText == '' then return false end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+    end)
+
+    return ok
+end
+
+exports('AddActionLog', AddActionLog)
+
+local function normalizeGender(gender)
+    if gender == nil then return nil end
+
+    if type(gender) == 'number' then
+        if gender == 0 then return 'nam' end
+        if gender == 1 then return 'nu' end
+        return tostring(gender)
+    end
+
+    local text = tostring(gender):lower()
+
+    if text == 'male' or text == 'm' or text == '0' then
+        return 'nam'
+    end
+
+    if text == 'female' or text == 'f' or text == '1' then
+        return 'nu'
+    end
+
+    return tostring(gender)
+end
+
+local function getItemLabel(name, metadata)
+    if type(metadata) == 'table' and metadata.label and metadata.label ~= '' then
+        return tostring(metadata.label)
+    end
+
+    local label = tostring(name or '')
+    local ok, itemData = pcall(function()
+        return exports.ox_inventory:Items(name)
+    end)
+
+    if ok and type(itemData) == 'table' and itemData.label and itemData.label ~= '' then
+        label = tostring(itemData.label)
+    end
+
+    local extras = {}
+
+    if type(metadata) == 'table' then
+        if metadata.level ~= nil then
+            extras[#extras + 1] = ('lv%s'):format(tostring(metadata.level))
+        end
+
+        if metadata.drawableId ~= nil then
+            extras[#extras + 1] = ('d%s'):format(tostring(metadata.drawableId))
+        end
+
+        if metadata.textureId ~= nil then
+            extras[#extras + 1] = ('t%s'):format(tostring(metadata.textureId))
+        end
+
+        local gender = normalizeGender(metadata.gender)
+        if gender then
+            extras[#extras + 1] = gender
+        end
+    end
+
+    if #extras > 0 then
+        label = ('%s [%s]'):format(label, table.concat(extras, ' '))
+    end
+
+    return label
+end
+
+local function formatItem(name, count, metadata, mode)
+    name = tostring(name or '')
+    count = tonumber(count) or 0
+
+    local label = getItemLabel(name, metadata)
+    local display = name
+
+    if label ~= '' and label ~= name then
+        display = ('%s(%s)'):format(name, label)
+    end
+
+    local prefix = ''
+    if mode == 'add' then
+        prefix = '+'
+    elseif mode == 'remove' then
+        prefix = '-'
+    end
+
+    if count > 0 then
+        return ('%s%s x%s'):format(prefix, display, math.floor(count))
+    end
+
+    return prefix .. display
+end
+
+local function buildActionText(title, details)
+    local message = ('[backpackupgrade] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function logBackpackUpgrade(src, title, details, opts)
+    return AddActionLog(src, buildActionText(title, details), opts)
+end
 
 local function LoadRarityConfig()
     local content = LoadResourceFile('ox_inventory', 'modules/rarity/shared.lua')
     if not content then
-        print('^1[DERP-backpackupgrade] Không tìm thấy modules/rarity/shared.lua trong ox_inventory^0')
+        print('^1[DERP-backpackupgrade] Khong tim thay modules/rarity/shared.lua trong ox_inventory^0')
         return
     end
 
@@ -19,13 +166,13 @@ local function LoadRarityConfig()
 
     local fn, loadErr = load(content, '@ox_rarity_shared', 't', env)
     if not fn then
-        print('^1[DERP-backpackupgrade] Parse lỗi rarity config: ' .. tostring(loadErr) .. '^0')
+        print('^1[DERP-backpackupgrade] Parse loi rarity config: ' .. tostring(loadErr) .. '^0')
         return
     end
 
     local ok, runResult = pcall(fn)
     if not ok then
-        print('^1[DERP-backpackupgrade] Lỗi khi chạy rarity config: ' .. tostring(runResult) .. '^0')
+        print('^1[DERP-backpackupgrade] Loi khi chay rarity config: ' .. tostring(runResult) .. '^0')
         return
     end
 
@@ -180,7 +327,13 @@ lib.callback.register('DERP-backpackupgrade:upgrade', function(source, baloSlot,
         if not pts then return { error = 'no_points' } end
 
         totalPoints = totalPoints + pts
-        validMaterials[#validMaterials + 1] = { slot = slot, name = item.name, rarity = rarity }
+        validMaterials[#validMaterials + 1] = {
+            slot = slot,
+            name = item.name,
+            rarity = rarity,
+            metadata = meta,
+            points = pts,
+        }
     end
 
     if type(arcStartDeg) ~= 'number' then arcStartDeg = 0 end
@@ -227,10 +380,45 @@ lib.callback.register('DERP-backpackupgrade:upgrade', function(source, baloSlot,
         expires  = os.time() + 30,
     }
 
+    local materialText = {}
     local matInfo = {}
     for _, m in ipairs(validMaterials) do
         matInfo[#matInfo + 1] = { name = m.name, rarity = m.rarity }
+        materialText[#materialText + 1] = formatItem(m.name, 1, m.metadata, 'remove')
     end
+
+    local oldBaloText = formatItem('balo', 1, baloItem.metadata, nil)
+    local resultBaloText
+    local resultTitle
+
+    if newLevel == -1 then
+        resultTitle = 'Nang cap ba lo that bai vo ba lo'
+        resultBaloText = oldBaloText .. ' -> vo'
+    else
+        local newMeta = {}
+        if type(baloItem.metadata) == 'table' then
+            for k, v in pairs(baloItem.metadata) do
+                newMeta[k] = v
+            end
+        end
+        newMeta.level = newLevel
+        resultBaloText = oldBaloText .. ' -> ' .. formatItem('balo', 1, newMeta, nil)
+
+        if isWin then
+            resultTitle = 'Nang cap ba lo thanh cong'
+        else
+            resultTitle = 'Nang cap ba lo that bai'
+        end
+    end
+
+    logBackpackUpgrade(source, resultTitle, {
+        { 'balo', resultBaloText },
+        { 'nguyen_lieu', table.concat(materialText, ', ') },
+        { 'tong_diem', ('%s/%s'):format(totalPoints, required) },
+        { 'ti_le', ('%.2f%%'):format(chance * 100) },
+        { 'roll', ('%.2f do'):format(rollDeg) },
+        { 'slot_balo', tostring(baloSlot) },
+    })
 
     return {
         isWin        = isWin,
@@ -247,7 +435,9 @@ end)
 RegisterNetEvent('DERP-backpackupgrade:confirmUpgrade', function(token)
     local source  = source
     local pending = token and pendingUpgrades[token]
-
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(source) then return end
+    end
     if not pending then return end
     if pending.source ~= source then return end
     if os.time() > pending.expires then

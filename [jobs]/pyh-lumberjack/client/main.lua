@@ -81,7 +81,11 @@ lib.registerContext({
             title    = 'Bán gỗ thành phẩm',
             icon     = 'fas fa-dollar-sign',
             onSelect = function()
-                TriggerServerEvent('pyh-lumberjack:sellWood')
+                if GetResourceState('svc_runtime') == 'started' then
+                    exports['svc_runtime']:ExecuteServerEvent('pyh-lumberjack:sellWood')
+                else
+                    TriggerServerEvent('pyh-lumberjack:sellWood')
+                end
             end,
         },
     }

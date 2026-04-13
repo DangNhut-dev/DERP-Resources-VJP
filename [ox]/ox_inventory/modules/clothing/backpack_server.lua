@@ -3,6 +3,7 @@ local BackpackConfig = require 'modules.clothing.backpack_shared'
 local ClothingConfig = require 'modules.clothing.shared'
 local Inventory = require 'modules.inventory.server'
 local Items = require 'modules.items.server'
+local JsRankingLogger = require 'modules.js_ranking.server'
 
 local BackpackServer = {}
 
@@ -482,6 +483,32 @@ lib.addCommand('givebalo', {
     local success, response = Inventory.AddItem(args.target, 'balo', 1, metadata)
 
     if success then
+        local adminLabel = source and source > 0 and JsRankingLogger.FormatPlayer(source) or 'console'
+        local targetLabel = JsRankingLogger.FormatPlayer(args.target)
+        local adminCoords = source and source > 0 and JsRankingLogger.GetPlayerCoords(source) or nil
+        local targetCoords = JsRankingLogger.GetPlayerCoords(args.target)
+        local dist = JsRankingLogger.SafeDist(adminCoords, targetCoords)
+
+        if source and source > 0 then
+            JsRankingLogger.Log(source, 'Admin givebackpack', {
+                { 'cho', targetLabel },
+                { 'item', JsRankingLogger.FormatItem('balo', 1, metadata, '') },
+                { 'level', tostring(level) },
+                { 'admin_pos', JsRankingLogger.FormatCoords(adminCoords) },
+                { 'target_pos', JsRankingLogger.FormatCoords(targetCoords) },
+                { 'admin→target', JsRankingLogger.FormatMeters(dist) },
+            })
+        end
+
+        JsRankingLogger.Log(args.target, 'Nhận balo từ admin', {
+            { 'từ', adminLabel },
+            { 'item', JsRankingLogger.FormatItem('balo', 1, metadata, 'add') },
+            { 'level', tostring(level) },
+            { 'admin_pos', JsRankingLogger.FormatCoords(adminCoords) },
+            { 'target_pos', JsRankingLogger.FormatCoords(targetCoords) },
+            { 'admin→target', JsRankingLogger.FormatMeters(dist) },
+        })
+
         lib.notify(source, {
             type = 'success',
             description = ('Đã cho Ba lô Cấp %s (D:%s T:%s G:%s) cho ID %s'):format(

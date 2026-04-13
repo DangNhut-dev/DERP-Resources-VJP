@@ -85,7 +85,11 @@ local function startZoneRob(zoneId)
 
     if success then
         zonesdone[zoneId] = true
-        TriggerServerEvent('derp_npcrobbery:server:robZone', zoneId)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('derp_npcrobbery:server:robZone', zoneId)
+        else
+            TriggerServerEvent('derp_npcrobbery:server:robZone', zoneId)
+        end
         SendNUIMessage({ action = 'zoneComplete', id = zoneId })
 
         local allDone = true

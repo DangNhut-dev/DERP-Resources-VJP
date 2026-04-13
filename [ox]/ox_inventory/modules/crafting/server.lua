@@ -187,6 +187,8 @@ lib.callback.register('ox_inventory:craftItem', function(source, id, index, reci
 				benchId = id,
 				benchIndex = index,
 				recipe = recipe,
+				benchName = bench.label or bench.name or id,
+				benchCoords = coords,
 				toInventory = left.id,
 				toSlot = toSlot,
 			}) then return false end

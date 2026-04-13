@@ -331,7 +331,7 @@ Bridge.Framework.removeMoney = function(playerId, account, amount)
         ['bank'] = 'bank',
         ['black_money'] = 'crypto'
     }
-    xPlayer.Functions.RemoveMoney(accounts[account], amount)
+    xPlayer.Functions.RemoveMoney(accounts[account], amount, 'Bệnh Viện')
     return true
 end
 

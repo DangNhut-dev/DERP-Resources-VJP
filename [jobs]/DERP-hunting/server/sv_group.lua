@@ -289,7 +289,24 @@ AddEventHandler('DERP-hunting:server:submitJob', function()
     for _, member in ipairs(g.members) do
         local Player = exports['qbx_core']:GetPlayer(member)
         if Player then
+            local beforeMoney = DERPHuntingGetMoneySnapshot(member)
+
             exports['qbx_core']:AddMoney(member, 'cash', reward, 'hunting-job-reward')
+
+            local afterMoney = DERPHuntingGetMoneySnapshot(member)
+
+            DERPHuntingActionLog(member,
+                ('DERP-hunting | Thưởng nhiệm vụ nhóm | Nhận: $%s cash | Nhóm: %s | Mục tiêu: %s con'):format(
+                    reward,
+                    gid,
+                    g.mission.targetKills or 0
+                ),
+                {
+                    beforeMoney = beforeMoney,
+                    afterMoney = afterMoney
+                }
+            )
+
             TriggerClientEvent('ox_lib:notify', member, {
                 type        = 'success',
                 title       = 'Nhận thưởng',

@@ -202,7 +202,11 @@ RegisterNUICallback('craftItem', function(data, cb)
     ClearPedTasks(playerPed)
 
     if not craftCancelled then
-        TriggerServerEvent('DERP-crafting:server:craftItem', currentBench, data.itemName, quantity)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('DERP-crafting:server:craftItem', currentBench, data.itemName, quantity)
+        else
+            TriggerServerEvent('DERP-crafting:server:craftItem', currentBench, data.itemName, quantity)
+        end
         Wait(200)
         TriggerEvent('DERP-crafting:client:updateInventory')
         Wait(200)

@@ -1,6 +1,7 @@
 assert(lib.checkDependency('qbx_core', '1.18.1'), 'qbx_core v1.18.1 or higher is required')
 assert(lib.checkDependency('qbx_vehicles', '1.2.0'), 'qbx_vehicles v1.2.0 or higher is required')
 local Inventory = require 'modules.inventory.server'
+local db = require 'modules.mysql.server'
 local QBX = exports.qbx_core
 
 AddEventHandler('qbx_core:server:playerLoggedOut', server.playerDropped)
@@ -11,17 +12,90 @@ AddEventHandler('qbx_core:server:onGroupUpdate', function(source, groupName, gro
     inventory.player.groups[groupName] = not groupGrade and nil or groupGrade
 end)
 
+local function getPlayerAccountName(account)
+    return account == 'money' and 'cash' or account
+end
+
+local function findFreePlayerSlot(usedSlots, maxSlots)
+    for i = 1, maxSlots do
+        if not usedSlots[i] then
+            return i
+        end
+    end
+end
+
+local function buildPlayerInventoryData(playerData)
+    local data = db.loadPlayer(playerData.identifier)
+
+    if type(data) ~= 'table' then
+        data = {}
+    end
+
+    local accounts = server.accounts
+    if type(accounts) ~= 'table' or not next(accounts) then
+        return data
+    end
+
+    local filtered = {}
+    local usedSlots = {}
+    local preferredSlots = {}
+
+    for _, item in pairs(data) do
+        if type(item) == 'table' and item.name and accounts[item.name] then
+            local slot = tonumber(item.slot)
+            if slot and not preferredSlots[item.name] then
+                preferredSlots[item.name] = slot
+            end
+        else
+            filtered[#filtered + 1] = item
+
+            if type(item) == 'table' then
+                local slot = tonumber(item.slot)
+                if slot then
+                    usedSlots[slot] = true
+                end
+            end
+        end
+    end
+
+    local maxSlots = tonumber(shared and shared.playerslots) or 50
+
+    for account in pairs(accounts) do
+        local playerAccount = getPlayerAccountName(account)
+        local amount = tonumber(playerData.money and playerData.money[playerAccount]) or 0
+
+        if amount > 0 then
+            local slot = preferredSlots[account]
+
+            if not slot or usedSlots[slot] then
+                slot = findFreePlayerSlot(usedSlots, maxSlots)
+            end
+
+            if slot then
+                usedSlots[slot] = true
+                filtered[#filtered + 1] = {
+                    slot = slot,
+                    name = account,
+                    count = amount,
+                    metadata = {}
+                }
+            end
+        end
+    end
+
+    table.sort(filtered, function(a, b)
+        local aSlot = type(a) == 'table' and tonumber(a.slot) or math.huge
+        local bSlot = type(b) == 'table' and tonumber(b.slot) or math.huge
+        return aSlot < bSlot
+    end)
+
+    return filtered
+end
+
 local function setupPlayer(playerData)
     playerData.identifier = playerData.citizenid
     playerData.name = ('%s %s'):format(playerData.charinfo.firstname, playerData.charinfo.lastname)
-    server.setPlayerInventory(playerData)
-
-    local accounts = Inventory.GetAccountItemCounts(playerData.source)
-    if not accounts then return end
-    for account in pairs(accounts) do
-        local playerAccount = account == 'money' and 'cash' or account
-        Inventory.SetItem(playerData.source, account, playerData.money[playerAccount])
-    end
+    server.setPlayerInventory(playerData, buildPlayerInventoryData(playerData))
 end
 
 AddStateBagChangeHandler('loadInventory', nil, function(bagName, _, value)
@@ -60,7 +134,7 @@ function server.syncInventory(inv)
     local player = QBX:GetPlayer(inv.id)
     player.Functions.SetPlayerData('items', inv.items)
     for account, amount in pairs(accounts) do
-        account = account == 'money' and 'cash' or account
+        account = getPlayerAccountName(account)
         if player.Functions.GetMoney(account) ~= amount then
             player.Functions.SetMoney(account, amount, ('Sync %s with inventory'):format(account))
         end

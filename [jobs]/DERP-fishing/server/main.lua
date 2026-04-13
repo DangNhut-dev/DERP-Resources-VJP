@@ -53,6 +53,24 @@ local function getBestBait(player)
     end
 end
 
+local function getZoneName(currentZone)
+    if not currentZone then
+        return 'Biển mở'
+    end
+
+    local zone = Config.fishingZones[currentZone.index]
+
+    if not zone then
+        return ('Zone %s'):format(tostring(currentZone.index))
+    end
+
+    if zone.blip and zone.blip.name and zone.blip.name ~= '' then
+        return zone.blip.name
+    end
+
+    return ('Zone %s'):format(tostring(currentZone.index))
+end
+
 ---@type table<integer, boolean>
 local busy = {}
 
@@ -72,7 +90,6 @@ for _, rod in ipairs(Config.fishingRods) do
             return
         end
 
-        -- Check if it's possible for the player to be in that zone
         if currentZone then
             local data = Config.fishingZones[currentZone.index]
             local coords = data.locations[currentZone.locationIndex]
@@ -113,7 +130,8 @@ for _, rod in ipairs(Config.fishingRods) do
             busy[source] = nil
             return
         end
-            
+
+        local zoneName = getZoneName(currentZone)
         player:removeItem(bait.name, 1)
         local success = lib.callback.await('derp-fishing:itemUsed', source, bait, Config.fish[fishName])
 
@@ -121,9 +139,39 @@ for _, rod in ipairs(Config.fishingRods) do
             player:addItem(fishName, 1)
             AddPlayerLevel(player, Config.progressPerCatch)
             Utils.logToDiscord(source, player, ('Caught a %s.'):format(Utils.getItemLabel(fishName)))
-        elseif math.random(100) <= rod.breakChance then
-            player:removeItem(rod.name, 1)
-            TriggerClientEvent('derp-fishing:showNotification', source, locale('rod_broke'), 'error')
+            Utils.logAction(source, 'Câu cá thành công', {
+                { 'khu', zoneName },
+                { 'danh sách', Utils.formatItemListLog({
+                    { name = bait.name, count = 1, mode = 'remove' },
+                    { name = fishName, count = 1, mode = 'add' }
+                }) },
+                { 'mồi', Utils.formatItemLog(bait.name, 1, 'remove') },
+                { 'cá', Utils.formatItemLog(fishName, 1, 'add') },
+            })
+        else
+            local brokeRod = math.random(100) <= rod.breakChance
+            local itemLogs = {
+                { name = bait.name, count = 1, mode = 'remove' }
+            }
+
+            if brokeRod then
+                player:removeItem(rod.name, 1)
+                itemLogs[#itemLogs + 1] = { name = rod.name, count = 1, mode = 'remove' }
+                TriggerClientEvent('derp-fishing:showNotification', source, locale('rod_broke'), 'error')
+
+                Utils.logAction(source, 'Câu hụt - gãy cần', {
+                    { 'khu', zoneName },
+                    { 'danh sách', Utils.formatItemListLog(itemLogs) },
+                    { 'mồi', Utils.formatItemLog(bait.name, 1, 'remove') },
+                    { 'cần', Utils.formatItemLog(rod.name, 1, 'remove') },
+                })
+            else
+                Utils.logAction(source, 'Câu hụt', {
+                    { 'khu', zoneName },
+                    { 'danh sách', Utils.formatItemListLog(itemLogs) },
+                    { 'mồi', Utils.formatItemLog(bait.name, 1, 'remove') },
+                })
+            end
         end
 
         busy[source] = nil

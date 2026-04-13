@@ -241,7 +241,11 @@ RegisterNUICallback('buy', function(data, cb)
         cb('error')
         return
     end
-    TriggerServerEvent('qb-npc-market:buyItem', data.npcId, data.item, data.amount)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('qb-npc-market:buyItem', data.npcId, data.item, data.amount)
+    else
+        TriggerServerEvent('qb-npc-market:buyItem', data.npcId, data.item, data.amount)
+    end
     cb('ok')
 end)
 
@@ -266,7 +270,11 @@ RegisterNUICallback('sell', function(data, cb)
         cb('error')
         return
     end
-    TriggerServerEvent('qb-npc-market:sellItem', data.npcId, data.item, data.amount)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('qb-npc-market:sellItem', data.npcId, data.item, data.amount)
+    else
+        TriggerServerEvent('qb-npc-market:sellItem', data.npcId, data.item, data.amount)
+    end
     cb('ok')
 end)
 
@@ -296,7 +304,11 @@ RegisterNUICallback('checkout', function(data, cb)
     if paymentType ~= 'cash' and paymentType ~= 'bank' and paymentType ~= 'dirty' then
         paymentType = 'cash'
     end
-    TriggerServerEvent('qb-npc-market:checkout', data.npcId, data.items, paymentType)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('qb-npc-market:checkout', data.npcId, data.items, paymentType)
+    else
+        TriggerServerEvent('qb-npc-market:checkout', data.npcId, data.items, paymentType)
+    end
     cb('ok')
 end)
 

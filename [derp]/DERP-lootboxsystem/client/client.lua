@@ -32,7 +32,11 @@ end)
 RegisterNUICallback('confirmOpen', function(_, cb)
     cb('ok')
     if not currentBox then return end
-    TriggerServerEvent('derp-lootbox:openBox', currentBox)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:openBox', currentBox)
+    else
+        TriggerServerEvent('derp-lootbox:openBox', currentBox)
+    end
 end)
 
 RegisterNetEvent('derp-lootbox:notify', function(data)
@@ -79,7 +83,11 @@ end)
 
 RegisterNUICallback('spinDone', function(_, cb)
     cb('ok')
-    TriggerServerEvent('derp-lootbox:claimReward')
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:claimReward')
+    else
+        TriggerServerEvent('derp-lootbox:claimReward')
+    end
 end)
 
 RegisterNUICallback('closeUI', function(_, cb)
@@ -92,7 +100,11 @@ end)
 RegisterNUICallback('confirmOpenMulti', function(_, cb)
     cb('ok')
     if not currentBox then return end
-    TriggerServerEvent('derp-lootbox:openBoxMulti', currentBox)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:openBoxMulti', currentBox)
+    else
+        TriggerServerEvent('derp-lootbox:openBoxMulti', currentBox)
+    end
 end)
 
 RegisterNetEvent('derp-lootbox:startUIMulti', function(data)
@@ -108,5 +120,9 @@ end)
 
 RegisterNUICallback('spinDoneMulti', function(_, cb)
     cb('ok')
-    TriggerServerEvent('derp-lootbox:claimRewardMulti')
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:claimRewardMulti')
+    else
+        TriggerServerEvent('derp-lootbox:claimRewardMulti')
+    end
 end)

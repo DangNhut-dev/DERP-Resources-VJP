@@ -1,3 +1,22 @@
+local allEvents = {
+    ["pyh-lumberjack:sellWood"] = false
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
+
 -- Chấm công: trigger lại client để toggle state
 RegisterNetEvent('pyh-lumberjack:Sign')
 AddEventHandler('pyh-lumberjack:Sign', function()
@@ -30,8 +49,21 @@ AddEventHandler('pyh-lumberjack:buyAxe', function()
         return
     end
 
+    local beforeMoney = GetMoneySnapshot(src)
+
     player.Functions.RemoveMoney('cash', price)
     AddItem(src, 'axe', 1)
+
+    local afterMoney = GetMoneySnapshot(src)
+    local itemList = BuildItemLogList({
+        { name = 'axe', count = 1 }
+    })
+
+    AddRankingLog(src, ('[pyh-lumberjack] | Mua item | Danh sách: %s | Giá: $%s | Loại tiền: cash'):format(itemList, price), {
+        beforeMoney = beforeMoney,
+        afterMoney = afterMoney
+    })
+
     Notify(src, 'Bạn đã mua rìu với giá $' .. price, 'success')
 end)
 
@@ -80,6 +112,11 @@ AddEventHandler('pyh-lumberjack:chopTree', function(treeIdx)
         local giveAmount = math.min(Config.logPerChop, canReceive)
 
         if AddItem(src, 'log', giveAmount) then
+            local itemList = BuildItemLogList({
+                { name = 'log', count = giveAmount }
+            })
+
+            AddRankingLog(src, ('[pyh-lumberjack] | Nhận item | Danh sách: %s | Nguồn: chặt cây | Cây: %s'):format(itemList, treeIdx))
             Notify(src, 'Nhận được ' .. giveAmount .. ' ' .. Config.itemLabels['log'] .. '!', 'success')
         else
             Notify(src, 'Túi đồ đầy!', 'error')
@@ -187,6 +224,15 @@ AddEventHandler('pyh-lumberjack:confirmProcess', function(processType, amount)
     end
 
     if AddItem(src, toItem, newAmount) then
+        local removedList = BuildItemLogList({
+            { name = fromItem, count = amount }
+        })
+        local receivedList = BuildItemLogList({
+            { name = toItem, count = newAmount }
+        })
+
+        AddRankingLog(src, ('[pyh-lumberjack] | Chế biến item | Trừ: %s | Nhận: %s | Công đoạn: %s'):format(removedList, receivedList, processType))
+
         local lFrom = Config.itemLabels[fromItem] or fromItem
         local lTo   = Config.itemLabels[toItem]   or toItem
         Notify(src, 'Đã xử lý ' .. amount .. ' ' .. lFrom .. ' → ' .. newAmount .. ' ' .. lTo, 'success')
@@ -199,6 +245,9 @@ end)
 RegisterNetEvent('pyh-lumberjack:sellWood')
 AddEventHandler('pyh-lumberjack:sellWood', function()
     local src   = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local total = GetItemCount(src, 'finishwood')
 
     if total <= 0 then
@@ -213,7 +262,19 @@ AddEventHandler('pyh-lumberjack:sellWood', function()
 
     local totalMoney = total * Config.woodPrice
     local player     = GetPlayer(src)
+    local beforeMoney = GetMoneySnapshot(src)
+
     player.Functions.AddMoney('cash', totalMoney)
+
+    local afterMoney = GetMoneySnapshot(src)
+    local itemList = BuildItemLogList({
+        { name = 'finishwood', count = total }
+    })
+
+    AddRankingLog(src, ('[pyh-lumberjack] | Bán item | Danh sách: %s | Nhận: $%s cash'):format(itemList, totalMoney), {
+        beforeMoney = beforeMoney,
+        afterMoney = afterMoney
+    })
 
     TriggerEvent("pyh-contacts:modifyRepS", src, "Lumberjack", (total / 100) * 0.5)
     Notify(src, 'Đã bán ' .. total .. ' ' .. Config.itemLabels['finishwood'] .. ' với giá $' .. totalMoney, 'success')

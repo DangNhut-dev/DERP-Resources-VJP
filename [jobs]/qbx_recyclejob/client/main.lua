@@ -511,7 +511,11 @@ RegisterNetEvent('qbx_recyclejob:client:target:dropPackage', function()
         },
     }) then
         StopAnimTask(cache.ped, 'mp_car_bomb', 'car_bomb_mechanic', 1.0)
-        TriggerServerEvent('qbx_recycle:server:getItem')
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('qbx_recycle:server:getItem')
+        else
+            TriggerServerEvent('qbx_recycle:server:getItem')
+        end
         getRandomPackage()
     else
         exports.qbx_core:Notify(locale('error.canceled'), 'error')

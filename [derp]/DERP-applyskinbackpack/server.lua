@@ -11,6 +11,144 @@ if not RarityConfig then
     RarityConfig = { tiers = {}, items = {}, clothing = {} }
 end
 
+local function IsJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function normalizeGender(gender)
+    if gender == nil then return nil end
+
+    if type(gender) == 'number' then
+        if gender == 0 then return 'nam' end
+        if gender == 1 then return 'nữ' end
+        return tostring(gender)
+    end
+
+    local text = tostring(gender):lower()
+
+    if text == 'male' or text == 'm' or text == '0' then
+        return 'nam'
+    end
+
+    if text == 'female' or text == 'f' or text == '1' then
+        return 'nữ'
+    end
+
+    return tostring(gender)
+end
+
+local function getItemLabel(name, metadata, fallbackLabel)
+    if type(metadata) == 'table' and metadata.label and metadata.label ~= '' then
+        return tostring(metadata.label)
+    end
+
+    local ok, itemData = pcall(function()
+        return ox_inventory:Items(name)
+    end)
+
+    if ok and itemData and itemData.label and itemData.label ~= '' then
+        return tostring(itemData.label)
+    end
+
+    if fallbackLabel and fallbackLabel ~= '' then
+        return tostring(fallbackLabel)
+    end
+
+    return tostring(name or '')
+end
+
+local function formatItem(name, count, metadata, mode, fallbackLabel)
+    name = tostring(name or '')
+    count = tonumber(count) or 0
+
+    local label = getItemLabel(name, metadata, fallbackLabel)
+    local extras = {}
+
+    if type(metadata) == 'table' then
+        if metadata.level ~= nil then
+            extras[#extras + 1] = ('lv%s'):format(tostring(metadata.level))
+        end
+
+        if metadata.drawableId ~= nil then
+            extras[#extras + 1] = ('d%s'):format(tostring(metadata.drawableId))
+        end
+
+        if metadata.textureId ~= nil then
+            extras[#extras + 1] = ('t%s'):format(tostring(metadata.textureId))
+        end
+
+        local gender = normalizeGender(metadata.gender)
+        if gender then
+            extras[#extras + 1] = gender
+        end
+    end
+
+    if #extras > 0 then
+        label = ('%s [%s]'):format(label, table.concat(extras, ' '))
+    end
+
+    local display = name
+    if label ~= '' and label ~= name then
+        display = ('%s(%s)'):format(name, label)
+    end
+
+    local prefix = ''
+    if mode == 'add' then
+        prefix = '+'
+    elseif mode == 'remove' then
+        prefix = '-'
+    end
+
+    if count > 0 then
+        return ('%s%s x%s'):format(prefix, display, math.floor(count))
+    end
+
+    return prefix .. display
+end
+
+local function buildActionText(title, details)
+    local message = ('[applyskinbackpack] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function TryAddActionLog(anyPlayer, actionText, opts)
+    if not IsJsRankingStarted() then return false end
+    if not actionText or actionText == '' then return false end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+    end)
+
+    return ok
+end
+
+local function AddActionLog(anyPlayer, title, details, opts)
+    return TryAddActionLog(anyPlayer, buildActionText(title, details), opts)
+end
+
+exports('AddActionLog', function(anyPlayer, actionText, opts)
+    return TryAddActionLog(anyPlayer, actionText, opts)
+end)
+
 -- Parse tên item mẫu: balo_4_0_0 → { drawable=4, texture=0, gender=0 }
 ---@param itemName string
 ---@return table|nil { drawable: number, texture: number, gender: number }
@@ -145,6 +283,11 @@ lib.callback.register('DERP-applyskinbackpack:apply', function(source, data)
         return { success = false, message = 'Mẫu không đúng giới tính với balo' }
     end
 
+    local oldMeta = {}
+    for k, v in pairs(baloItem.metadata) do
+        oldMeta[k] = v
+    end
+
     local removed = ox_inventory:RemoveItem(source, skinItem.name, 1, nil, skinSlot)
     if not removed then
         return { success = false, message = 'Không thể xóa mẫu' }
@@ -169,6 +312,16 @@ lib.callback.register('DERP-applyskinbackpack:apply', function(source, data)
         ox_inventory:AddItem(source, skinItem.name, 1, nil, skinSlot)
         return { success = false, message = 'Không thể thêm balo mới' }
     end
+
+    AddActionLog(source, 'Đổi skin balo', {
+        { 'tiêu hao', formatItem(skinItem.name, 1, skinItem.metadata, 'remove', skinItem.label) },
+        { 'balo cũ', formatItem('balo', 1, oldMeta, nil, baloItem.label) },
+        { 'balo mới', formatItem('balo', 1, newMeta, 'add', baloItem.label) },
+        { 'slot_balo', tostring(backpackSlot) },
+        { 'slot_mẫu', tostring(skinSlot) },
+    }, {
+        deferMs = 0,
+    })
 
     return { success = true }
 end)

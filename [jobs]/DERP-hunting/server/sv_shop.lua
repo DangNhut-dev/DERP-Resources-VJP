@@ -36,8 +36,25 @@ AddEventHandler('DERP-hunting:server:buyShopItem', function(itemName, price, qty
         return
     end
 
+    local beforeMoney = DERPHuntingGetMoneySnapshot(src)
+
     exports['qbx_core']:RemoveMoney(src, 'cash', total, 'hunting-shop-purchase')
     exports['ox_inventory']:AddItem(src, itemName, qty)
+
+    local afterMoney = DERPHuntingGetMoneySnapshot(src)
+
+    DERPHuntingActionLog(src,
+        ('DERP-hunting | Mua item shop | Danh sách: %s | Thanh toán: $%s cash'):format(
+            DERPHuntingFormatItemList({
+                DERPHuntingBuildItemEntry(itemName, qty)
+            }),
+            total
+        ),
+        {
+            beforeMoney = beforeMoney,
+            afterMoney = afterMoney
+        }
+    )
 
     -- TriggerClientEvent('ox_lib:notify', src, {
     --     type        = 'success',
@@ -76,8 +93,28 @@ AddEventHandler('DERP-hunting:server:sellHide', function(itemName, pricePerUnit)
     end
 
     local total = pricePerUnit * count
+    local soldEntries = {
+        DERPHuntingBuildItemEntry(itemName, count, validGrade.label)
+    }
+    local beforeMoney = DERPHuntingGetMoneySnapshot(src)
+
     exports['ox_inventory']:RemoveItem(src, itemName, count)
     exports['qbx_core']:AddMoney(src, 'cash', total, 'hunting-sell-hide')
+
+    local afterMoney = DERPHuntingGetMoneySnapshot(src)
+
+    DERPHuntingActionLog(src,
+        ('DERP-hunting | Bán da | Danh sách: %s | Đơn giá: $%s | Nhận: $%s cash'):format(
+            DERPHuntingFormatItemList(soldEntries),
+            pricePerUnit,
+            total
+        ),
+        {
+            beforeMoney = beforeMoney,
+            afterMoney = afterMoney
+        }
+    )
+
     TriggerClientEvent('ox_lib:notify', src, {
         type        = 'success',
         description = 'Da ban ' .. count .. 'x ' .. validGrade.label .. ' duoc $' .. total,

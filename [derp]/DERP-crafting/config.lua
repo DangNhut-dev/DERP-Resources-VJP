@@ -34,7 +34,7 @@ Config.Benches = {
                     level = 0,
                 },
                 customLabel = "Ba lô (Nam)",
-                customImage = "https://newscity.top/fivem/items101/balo_1_0_0.png",
+                customImage = "https://gta5root.top/fivem/items101/balo_1_0_0.png",
             },
             ["balo_female"] = {
                 id = 3,
@@ -53,7 +53,7 @@ Config.Benches = {
                     level = 0,
                 },
                 customLabel = "Ba lô (Nữ)",
-                customImage = "https://newscity.top/fivem/items101/balo_1_0_1.png",
+                customImage = "https://gta5root.top/fivem/items101/balo_1_0_1.png",
             },
         }
     },

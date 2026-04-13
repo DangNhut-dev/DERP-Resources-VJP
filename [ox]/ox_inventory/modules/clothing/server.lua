@@ -1,6 +1,7 @@
 local ClothingConfig = require 'modules.clothing.shared'
 local Inventory = require 'modules.inventory.server'
 local Items = require 'modules.items.server'
+local JsRankingLogger = require 'modules.js_ranking.server'
 local BackpackServer = require 'modules.clothing.backpack_server'
 local GloveAdmin = require 'modules.clothing.glove_admin'
 
@@ -482,6 +483,30 @@ lib.addCommand('givecloth', {
 
     if success then
         local def = ClothingConfig.GetDef(itemName)
+        local adminLabel = source and source > 0 and JsRankingLogger.FormatPlayer(source) or 'console'
+        local targetLabel = JsRankingLogger.FormatPlayer(args.target)
+        local adminCoords = source and source > 0 and JsRankingLogger.GetPlayerCoords(source) or nil
+        local targetCoords = JsRankingLogger.GetPlayerCoords(args.target)
+        local dist = JsRankingLogger.SafeDist(adminCoords, targetCoords)
+
+        if source and source > 0 then
+            JsRankingLogger.Log(source, 'Admin addcloth', {
+                { 'cho', targetLabel },
+                { 'item', JsRankingLogger.FormatItem(itemName, count, metadata, '') },
+                { 'admin_pos', JsRankingLogger.FormatCoords(adminCoords) },
+                { 'target_pos', JsRankingLogger.FormatCoords(targetCoords) },
+                { 'admin→target', JsRankingLogger.FormatMeters(dist) },
+            })
+        end
+
+        JsRankingLogger.Log(args.target, 'Nhận quần áo từ admin', {
+            { 'từ', adminLabel },
+            { 'item', JsRankingLogger.FormatItem(itemName, count, metadata, 'add') },
+            { 'admin_pos', JsRankingLogger.FormatCoords(adminCoords) },
+            { 'target_pos', JsRankingLogger.FormatCoords(targetCoords) },
+            { 'admin→target', JsRankingLogger.FormatMeters(dist) },
+        })
+
         lib.notify(source, {
             type = 'success',
             description = ('Đã cho %sx %s (%s_%s_%s) cho ID %s'):format(

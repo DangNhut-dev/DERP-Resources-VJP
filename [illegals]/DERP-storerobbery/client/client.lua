@@ -24,7 +24,11 @@ RegisterNUICallback('moneyGameEnd', function(data, cb)
     SetNuiFocus(false, false)
     local amount = tonumber(data.amount) or 0
     if amount > 0 then
+        if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('derp_storerobbery:server:giveReward', amount)
+    else
         TriggerServerEvent('derp_storerobbery:server:giveReward', amount)
+    end
     end
     cb('ok')
 end)

@@ -4,6 +4,171 @@ local buyCooldowns = {}
 local sellCooldowns = {}
 local COOLDOWN_MS = 500
 
+local allEvents = {
+    ["qb-npc-market:sellItem"] = false,
+    ["qb-npc-market:checkout"] = false,
+    ["qb-npc-market:buyItem"] = false
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
+
+local function IsJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function CopyMoneyTable(money)
+    local copy = {}
+
+    if type(money) ~= 'table' then
+        return copy
+    end
+
+    for key, value in pairs(money) do
+        local amount = tonumber(value)
+
+        if amount ~= nil then
+            copy[key] = amount
+        end
+    end
+
+    return copy
+end
+
+local function GetOxItemLabel(itemName, fallbackLabel)
+    if fallbackLabel and fallbackLabel ~= '' then
+        return tostring(fallbackLabel)
+    end
+
+    if not itemName or itemName == '' then
+        return 'unknown'
+    end
+
+    local itemData
+    local ok = pcall(function()
+        itemData = exports.ox_inventory:Items(itemName)
+    end)
+
+    if ok and type(itemData) == 'table' and itemData.label and itemData.label ~= '' then
+        return tostring(itemData.label)
+    end
+
+    ok = pcall(function()
+        local items = exports.ox_inventory:Items()
+        itemData = items and items[itemName] or nil
+    end)
+
+    if ok and type(itemData) == 'table' and itemData.label and itemData.label ~= '' then
+        return tostring(itemData.label)
+    end
+
+    return tostring(itemName)
+end
+
+local function FormatMarketItem(itemName, count, fallbackLabel, mode)
+    local amount = math.floor(tonumber(count) or 0)
+    local label = GetOxItemLabel(itemName, fallbackLabel)
+    local display = tostring(itemName or '')
+
+    if label ~= '' and label ~= display then
+        display = ('%s(%s)'):format(display, label)
+    end
+
+    local prefix = ''
+
+    if mode == 'add' then
+        prefix = '+'
+    elseif mode == 'remove' then
+        prefix = '-'
+    end
+
+    if amount > 0 then
+        return ('%s%s x%s'):format(prefix, display, amount)
+    end
+
+    return prefix .. display
+end
+
+local function FormatMoneyAction(moneyType, amount, mode)
+    local value = math.floor(tonumber(amount) or 0)
+    local prefix = mode == 'remove' and '-' or '+'
+    local moneyKey = tostring(moneyType or 'cash')
+
+    if moneyKey == 'cash' or moneyKey == 'bank' or moneyKey == 'crypto' or moneyKey == 'coins' or moneyKey == 'coins_lock' or moneyKey == 'point' then
+        return ('%s%s $%s'):format(prefix, moneyKey, value)
+    end
+
+    if moneyKey == 'dirty' then
+        moneyKey = 'black_money'
+    end
+
+    return FormatMarketItem(moneyKey, value, nil, mode)
+end
+
+local function BuildItemList(items)
+    if type(items) ~= 'table' or #items == 0 then
+        return nil
+    end
+
+    return table.concat(items, ', ')
+end
+
+local function BuildMarketActionText(title, details)
+    local message = ('[tommy-market] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function AddActionLog(anyPlayer, actionText, opts)
+    if not IsJsRankingStarted() then
+        return false
+    end
+
+    if not actionText or actionText == '' then
+        return false
+    end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+    end)
+
+    return ok
+end
+
+local function LogMarketAction(anyPlayer, title, details, opts)
+    return AddActionLog(anyPlayer, BuildMarketActionText(title, details), opts)
+end
+
 local function checkCooldown(cooldownTable, src)
     local now = GetGameTimer()
     if cooldownTable[src] and (now - cooldownTable[src]) < COOLDOWN_MS then
@@ -180,12 +345,16 @@ end
 RegisterNetEvent('qb-npc-market:buyItem', function(npcId, itemName, amount)
     local src = source
     if not checkCooldown(buyCooldowns, src) then return end
-
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     if type(npcId) ~= 'string' and type(npcId) ~= 'number' then return end
     if type(itemName) ~= 'string' then return end
 
     local Player = exports.qbx_core:GetPlayer(src)
     if not Player then return end
+
+    local beforeMoney = CopyMoneyTable(Player.PlayerData.money)
 
     amount = math.floor(tonumber(amount) or 0)
     if amount <= 0 or amount > 999 then
@@ -243,7 +412,7 @@ RegisterNetEvent('qb-npc-market:buyItem', function(npcId, itemName, amount)
             return
         end
     else
-        if not Player.Functions.RemoveMoney('cash', total) then
+        if not Player.Functions.RemoveMoney('cash', total, 'Chợ') then
             notify(src, 'Không đủ tiền mặt', 'error')
             return
         end
@@ -258,11 +427,21 @@ RegisterNetEvent('qb-npc-market:buyItem', function(npcId, itemName, amount)
         local updatedPlayer = exports.qbx_core:GetPlayer(src)
         local dirty = exports.ox_inventory:Search(src, 'count', 'black_money') or 0
         TriggerClientEvent('qb-npc-market:updateMoney', src, updatedPlayer.PlayerData.money['cash'], updatedPlayer.PlayerData.money['bank'], dirty)
+
+        local paymentText = npcCfg.blackmarket and FormatMoneyAction('black_money', total, 'remove') or FormatMoneyAction('cash', total, 'remove')
+        local itemText = FormatMarketItem(itemConf.name, amount, itemConf.label, 'add')
+        local logOpts = not npcCfg.blackmarket and { beforeMoney = beforeMoney } or nil
+
+        LogMarketAction(src, 'mua vật phẩm', {
+            { 'cửa hàng', npcCfg.label or npcCfg.id },
+            { 'thanh toán', paymentText },
+            { 'item', itemText }
+        }, logOpts)
     else
         if npcCfg.blackmarket then
             exports.ox_inventory:AddItem(src, 'black_money', total)
         else
-            Player.Functions.AddMoney('cash', total)
+            Player.Functions.AddMoney('cash', total, 'Chợ')
         end
         notify(src, 'Túi đã đầy, không thể mua', 'error')
     end
@@ -271,7 +450,9 @@ end)
 RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
     local src = source
     if not checkCooldown(buyCooldowns, src) then return end
-
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     if type(npcId) ~= 'string' and type(npcId) ~= 'number' then return end
     if type(items) ~= 'table' or #items == 0 or #items > 20 then return end
     if paymentType ~= 'cash' and paymentType ~= 'bank' and paymentType ~= 'dirty' then
@@ -280,6 +461,8 @@ RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
 
     local Player = exports.qbx_core:GetPlayer(src)
     if not Player then return end
+
+    local beforeMoney = CopyMoneyTable(Player.PlayerData.money)
 
     local npcCfg = nil
     for _, npc in ipairs(Config.MarketNPCs) do
@@ -351,7 +534,7 @@ RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
             notify(src, 'Không đủ tiền bẩn', 'error')
             return
         end
-    elseif not Player.Functions.RemoveMoney(paymentType, total) then
+    elseif not Player.Functions.RemoveMoney(paymentType, total, 'Chợ') then
         local label = paymentType == 'bank' and 'ngân hàng' or 'tiền mặt'
         notify(src, 'Không đủ ' .. label, 'error')
         return
@@ -370,7 +553,7 @@ RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
             if paymentType == 'dirty' then
                 exports.ox_inventory:AddItem(src, 'black_money', total)
             else
-                Player.Functions.AddMoney(paymentType, total)
+                Player.Functions.AddMoney(paymentType, total, 'Chợ')
             end
             notify(src, 'Lỗi thêm item, đã hoàn tiền', 'error')
             return
@@ -382,17 +565,37 @@ RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
     local updatedPlayer = exports.qbx_core:GetPlayer(src)
     local dirty = exports.ox_inventory:Search(src, 'count', 'black_money') or 0
     TriggerClientEvent('qb-npc-market:updateMoney', src, updatedPlayer.PlayerData.money['cash'], updatedPlayer.PlayerData.money['bank'], dirty)
+
+    local itemLogs = {}
+
+    for _, entry in ipairs(validatedItems) do
+        itemLogs[#itemLogs + 1] = FormatMarketItem(entry.conf.name, entry.amount, entry.conf.label, 'add')
+    end
+
+    local paidBy = npcCfg.blackmarket and 'black_money' or paymentType
+    local paymentText = FormatMoneyAction(paidBy, total, 'remove')
+    local logOpts = (not npcCfg.blackmarket and paymentType ~= 'dirty') and { beforeMoney = beforeMoney } or nil
+
+    LogMarketAction(src, 'mua nhiều vật phẩm', {
+        { 'cửa hàng', npcCfg.label or npcCfg.id },
+        { 'thanh toán', paymentText },
+        { 'items', BuildItemList(itemLogs) }
+    }, logOpts)
 end)
 
 RegisterNetEvent('qb-npc-market:sellItem', function(npcId, itemName, amount)
     local src = source
     if not checkCooldown(sellCooldowns, src) then return end
-
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     if type(npcId) ~= 'string' and type(npcId) ~= 'number' then return end
     if type(itemName) ~= 'string' then return end
 
     local Player = exports.qbx_core:GetPlayer(src)
     if not Player then return end
+
+    local beforeMoney = CopyMoneyTable(Player.PlayerData.money)
 
     amount = math.floor(tonumber(amount) or 0)
     if amount <= 0 or amount > 999999 then
@@ -441,16 +644,31 @@ RegisterNetEvent('qb-npc-market:sellItem', function(npcId, itemName, amount)
             exports.ox_inventory:AddItem(src, 'black_money', total)
             notify(src, ('Bạn đã bán %sx %s nhận %d tiền bẩn'):format(amount, itemConf.label, total), 'success')
         else
-            Player.Functions.AddMoney('cash', total)
+            Player.Functions.AddMoney('cash', total, 'Chợ')
             notify(src, ('Bạn đã bán %sx %s nhận $%d'):format(amount, itemConf.label, total), 'success')
         end
         TriggerClientEvent('qb-npc-market:updateItemAmount', src, itemConf.name, have - amount)
         local updatedPlayer = exports.qbx_core:GetPlayer(src)
         local dirty = exports.ox_inventory:Search(src, 'count', 'black_money') or 0
         TriggerClientEvent('qb-npc-market:updateMoney', src, updatedPlayer.PlayerData.money['cash'], updatedPlayer.PlayerData.money['bank'], dirty)
+
+        local receiveType = npcCfg.blackmarket and 'black_money' or 'cash'
+        local receiveText = FormatMoneyAction(receiveType, total, 'add')
+        local itemText = FormatMarketItem(itemConf.name, amount, itemConf.label, 'remove')
+        local logOpts = not npcCfg.blackmarket and { beforeMoney = beforeMoney } or nil
+
+        LogMarketAction(src, 'bán vật phẩm', {
+            { 'cửa hàng', npcCfg.label or npcCfg.id },
+            { 'nhận', receiveText },
+            { 'item', itemText }
+        }, logOpts)
     else
         notify(src, 'Lỗi khi bán', 'error')
     end
+end)
+
+exports('AddActionLog', function(anyPlayer, actionText, opts)
+    return AddActionLog(anyPlayer, actionText, opts)
 end)
 
 exports('OpenMarketUI', function(npcId)

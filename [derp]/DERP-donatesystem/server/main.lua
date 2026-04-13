@@ -139,13 +139,189 @@ local function GetPlayerDisplayName(source)
     return result or 'Unknown'
 end
 
-local function GiveReward(source, identifier, amount)
+
+local function IsJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function TryAddJsRankingLog(anyPlayer, actionText, opts)
+    if not IsJsRankingStarted() then return false end
+    if not actionText or actionText == '' then return false end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts or {})
+    end)
+
+    return ok
+end
+
+local function AddActionLog(anyPlayer, actionText, opts)
+    return TryAddJsRankingLog(anyPlayer, actionText, opts)
+end
+
+local function BuildActionText(title, details)
+    local message = ('[donate] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function CopyMoneyTable(data)
+    local snapshot = {}
+
+    if type(data) ~= 'table' then
+        return snapshot
+    end
+
+    for key, value in pairs(data) do
+        local num = tonumber(value)
+        if num ~= nil then
+            snapshot[key] = num
+        end
+    end
+
+    return snapshot
+end
+
+local function GetCoinBalance(identifier)
+    if not identifier or identifier == '' then
+        return 0
+    end
+
+    local row = MySQL.single.await('SELECT coin FROM derp_coin WHERE citizenid = ?', { identifier })
+    return tonumber(row and row.coin) or 0
+end
+
+local function AttachCoinSnapshot(snapshot, identifier)
+    if not identifier or identifier == '' then
+        return snapshot or {}
+    end
+
+    snapshot = snapshot or {}
+
+    local balance = GetCoinBalance(identifier)
+
+    if snapshot.coin == nil then
+        snapshot.coin = balance
+    end
+
+    if snapshot.coins == nil then
+        snapshot.coins = balance
+    end
+
+    return snapshot
+end
+
+local function GetPlayerMoneySnapshot(source, identifier)
+    local snapshot = {}
+
+    if Config.Framework == 'qbcore' then
+        local ok, player = pcall(function()
+            return exports['qbx_core']:GetPlayer(source)
+        end)
+
+        if ok and player and player.PlayerData and type(player.PlayerData.money) == 'table' then
+            snapshot = CopyMoneyTable(player.PlayerData.money)
+        end
+    end
+
+    if identifier and identifier ~= '' then
+        snapshot = AttachCoinSnapshot(snapshot, identifier)
+    end
+
+    return snapshot
+end
+
+local function FormatItemLog(name, count, mode)
+    local itemName = tostring(name or '')
+    local itemCount = tonumber(count) or 0
+    local prefix = ''
+
+    if mode == 'add' then
+        prefix = '+'
+    elseif mode == 'remove' then
+        prefix = '-'
+    end
+
+    if itemCount > 0 then
+        return ('%s%s x%s'):format(prefix, itemName, math.floor(itemCount))
+    end
+
+    return prefix .. itemName
+end
+
+local function FormatMoneyRewardLog(moneyType, amount)
+    return ('+%s'):format(tonumber(amount) or 0), tostring(moneyType or 'money')
+end
+
+local function BuildDonateRewardActionText(context, rewardType, rewardValue)
+    local details = {
+        { 'ticket', context and context.ticketId or nil },
+        { 'donate', context and context.amountText or nil },
+        { 'duyệt bởi', context and context.adminName or nil },
+    }
+
+    if rewardType == 'item' and type(rewardValue) == 'table' then
+        details[#details + 1] = { 'item', FormatItemLog(rewardValue.name, rewardValue.count, 'add') }
+    elseif rewardType == 'reward' then
+        details[#details + 1] = { 'reward', rewardValue }
+    else
+        local value, key = FormatMoneyRewardLog(rewardType, rewardValue)
+        details[#details + 1] = { key, value }
+    end
+
+    return BuildActionText('Nhận donate', details)
+end
+
+local function BuildDonatePendingActionText(context, rewardType, rewardValue)
+    local details = {
+        { 'ticket', context and context.ticketId or nil },
+        { 'donate', context and context.amountText or nil },
+        { 'duyệt bởi', context and context.adminName or nil },
+        { 'trạng thái', 'pending_offline' },
+    }
+
+    if rewardType == 'item' and type(rewardValue) == 'table' then
+        details[#details + 1] = { 'item', FormatItemLog(rewardValue.name, rewardValue.count, 'add') }
+    else
+        local value, key = FormatMoneyRewardLog(rewardType, rewardValue)
+        details[#details + 1] = { key, value }
+    end
+
+    return BuildActionText('Donate chờ xử lý offline', details)
+end
+
+exports('AddActionLog', AddActionLog)
+
+local function GiveReward(source, identifier, amount, context)
     if not Config.Rewards.enabled then return 'none' end
 
     local ok, result = pcall(function()
         if Config.Rewards.type == 'coin' then
             local reward = math.floor(amount * Config.Rewards.ratio)
-            if reward <= 0 then return 'coin: 0 (skipped)' end
+            local beforeMoney = GetPlayerMoneySnapshot(source, identifier)
+
+            if reward <= 0 then
+                AddActionLog(source, BuildDonateRewardActionText(context, 'coins', reward))
+                return 'coin: 0 (skipped)'
+            end
 
             MySQL.query.await([[
                 INSERT INTO derp_coin (citizenid, coin)
@@ -153,23 +329,60 @@ local function GiveReward(source, identifier, amount)
                 ON DUPLICATE KEY UPDATE coin = coin + VALUES(coin)
             ]], { identifier, reward })
 
+            local afterMoney = GetPlayerMoneySnapshot(source, identifier)
+
+            AddActionLog(source, BuildDonateRewardActionText(context, 'coins', reward), {
+                beforeMoney = beforeMoney,
+                afterMoney = afterMoney,
+            })
+
             return 'Coin: ' .. reward
 
         elseif Config.Rewards.type == 'money_cash' then
             local reward = math.floor(amount * Config.Rewards.ratio)
+            local beforeMoney = GetPlayerMoneySnapshot(source, identifier)
             local player = exports['qbx_core']:GetPlayer(source)
-            if player then player.Functions.AddMoney('cash', reward) end
+
+            if player then
+                player.Functions.AddMoney('cash', reward)
+            end
+
+            local afterMoney = GetPlayerMoneySnapshot(source, identifier)
+
+            AddActionLog(source, BuildDonateRewardActionText(context, 'cash', reward), {
+                beforeMoney = beforeMoney,
+                afterMoney = afterMoney,
+            })
+
             return 'Cash: ' .. reward
 
         elseif Config.Rewards.type == 'money_bank' then
             local reward = math.floor(amount * Config.Rewards.ratio)
+            local beforeMoney = GetPlayerMoneySnapshot(source, identifier)
             local player = exports['qbx_core']:GetPlayer(source)
-            if player then player.Functions.AddMoney('bank', reward) end
+
+            if player then
+                player.Functions.AddMoney('bank', reward)
+            end
+
+            local afterMoney = GetPlayerMoneySnapshot(source, identifier)
+
+            AddActionLog(source, BuildDonateRewardActionText(context, 'bank', reward), {
+                beforeMoney = beforeMoney,
+                afterMoney = afterMoney,
+            })
+
             return 'Bank: ' .. reward
 
         elseif Config.Rewards.type == 'item' then
             local itemAmount = Config.Rewards.itemAmountPerDonate or 1
             exports.ox_inventory:AddItem(source, Config.Rewards.item, itemAmount)
+
+            AddActionLog(source, BuildDonateRewardActionText(context, 'item', {
+                name = Config.Rewards.item,
+                count = itemAmount,
+            }))
+
             return 'Item: ' .. Config.Rewards.item .. ' x' .. itemAmount
         end
 
@@ -178,31 +391,48 @@ local function GiveReward(source, identifier, amount)
 
     if not ok then
         print('[DERP-donate] GiveReward error:', result)
+        if source and source > 0 then
+            AddActionLog(source, BuildActionText('Lỗi phát thưởng donate', {
+                { 'ticket', context and context.ticketId or nil },
+                { 'reward', tostring(result) },
+            }))
+        end
         return 'reward_error'
     end
     return result or 'none'
 end
 
-local function GiveRewardOffline(identifier, amount)
+local function GiveRewardOffline(identifier, amount, context)
     if not Config.Rewards.enabled then return 'none' end
 
     if Config.Rewards.type == 'coin' then
         local reward = math.floor(amount * Config.Rewards.ratio)
-        if reward <= 0 then return 'coin: 0 (skipped)' end
+        if reward <= 0 then
+            AddActionLog(identifier, BuildDonateRewardActionText(context, 'coins', reward))
+            return 'coin: 0 (skipped)'
+        end
         MySQL.query.await([[
             INSERT INTO derp_coin (citizenid, coin)
             VALUES (?, ?)
             ON DUPLICATE KEY UPDATE coin = coin + VALUES(coin)
         ]], { identifier, reward })
+        AddActionLog(identifier, BuildDonateRewardActionText(context, 'coins', reward))
         return 'Coin: ' .. reward
 
     elseif Config.Rewards.type == 'money_cash' or Config.Rewards.type == 'money_bank' then
-        -- Không thể cộng money khi offline, log lại để xử lý thủ công
+        local reward = math.floor(amount * Config.Rewards.ratio)
+        local rewardType = Config.Rewards.type == 'money_cash' and 'cash' or 'bank'
         print(('[DERP-donate] Offline reward pending: %s | amount=%s | type=%s'):format(identifier, amount, Config.Rewards.type))
+        AddActionLog(identifier, BuildDonatePendingActionText(context, rewardType, reward))
         return 'pending_offline'
 
     elseif Config.Rewards.type == 'item' then
+        local itemAmount = Config.Rewards.itemAmountPerDonate or 1
         print(('[DERP-donate] Offline item reward pending: %s | item=%s'):format(identifier, Config.Rewards.item))
+        AddActionLog(identifier, BuildDonatePendingActionText(context, 'item', {
+            name = Config.Rewards.item,
+            count = itemAmount,
+        }))
         return 'pending_offline'
     end
 
@@ -223,8 +453,7 @@ end)
 lib.callback.register('DERP-donatesystem:getCoinBalance', function(source)
     local identifier = GetIdentifier(source)
     if not identifier then return 0 end
-    local row = MySQL.single.await('SELECT coin FROM derp_coin WHERE citizenid = ?', { identifier })
-    return (row and row.coin) or 0
+    return GetCoinBalance(identifier)
 end)
 
 lib.callback.register('DERP-donatesystem:checkAdmin', function(source)
@@ -283,6 +512,12 @@ lib.callback.register('DERP-donatesystem:createTicket', function(source, amount,
         CreateThread(function()
             NotifyAllAdmins('DERP-donatesystem:showPendingOverlay')
         end)
+
+        AddActionLog(source, BuildActionText('Tạo ticket donate', {
+            { 'ticket', ticketId },
+            { 'donate', ('%s %s'):format(amount, Config.Donate.currency or 'VND') },
+            { 'note', note ~= '' and note or nil },
+        }))
 
         return {
             success = true,
@@ -357,6 +592,11 @@ lib.callback.register('DERP-donatesystem:adminConfirmTicket', function(source, t
     local adminName = GetPlayerDisplayName(source)
     local rewardDesc = 'none'
     local targetSrc = nil
+    local rewardContext = {
+        ticketId = ticketId,
+        amountText = ('%s %s'):format(ticket.amount, Config.Donate.currency or 'VND'),
+        adminName = adminName,
+    }
 
     for _, playerId in ipairs(GetPlayers()) do
         local pid = tonumber(playerId)
@@ -368,10 +608,10 @@ lib.callback.register('DERP-donatesystem:adminConfirmTicket', function(source, t
     end
 
     if targetSrc then
-        rewardDesc = GiveReward(targetSrc, ticket.identifier, ticket.amount)
+        rewardDesc = GiveReward(targetSrc, ticket.identifier, ticket.amount, rewardContext)
         TriggerClientEvent('DERP-donatesystem:notify', targetSrc, 'success', ('Donate #%s đã được xác nhận! Cảm ơn bạn.'):format(ticketId))
     else
-        rewardDesc = GiveRewardOffline(ticket.identifier, ticket.amount)
+        rewardDesc = GiveRewardOffline(ticket.identifier, ticket.amount, rewardContext)
     end
 
     MySQL.insert.await('INSERT INTO donate_logs (ticket_id, identifier, player_name, amount, reward, confirmed_by) VALUES (?, ?, ?, ?, ?, ?)', {

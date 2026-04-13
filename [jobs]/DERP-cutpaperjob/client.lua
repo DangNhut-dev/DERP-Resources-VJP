@@ -130,7 +130,11 @@ local function startWorkLoop()
                 },
             }) then
                 if isWorking and canWork() then
-                    TriggerServerEvent('DERP-cutpaper:server:giveItem', doubleReward)
+                    if GetResourceState('svc_runtime') == 'started' then
+                        exports['svc_runtime']:ExecuteServerEvent('DERP-cutpaper:server:giveItem', doubleReward)
+                    else
+                        TriggerServerEvent('DERP-cutpaper:server:giveItem', doubleReward)
+                    end
                     playWorkAnim()
                 end
             else

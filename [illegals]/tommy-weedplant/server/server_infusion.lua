@@ -1,6 +1,27 @@
 local infusionTables = {}
 local tableIdCounter = 0
 local activeInfusions = {}
+local WeedLogger = rawget(_G, '__TOMMY_WEEDPLANT_LOGGER')
+
+local allEvents = {
+    ["tommy-weedplant:server:pickupInfusionTable"] = false,
+    ["tommy-weedplant:server:finishInfusion"] = false
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
 
 local function GenerateTableId()
     tableIdCounter = tableIdCounter + 1
@@ -120,12 +141,19 @@ RegisterNetEvent('tommy-weedplant:server:placeInfusionTable', function(coords, h
         inUse = false, heading = heading or 0.0,
     }
     SaveTableToDatabase(infusionTables[tableId])
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Đặt Bàn Infusion | bàn: %s'):format(tableId), {
+        { name = Config.InfusionTableItem, amount = 1, sign = '-' }
+    }, src))
     TriggerClientEvent('tommy-weedplant:client:spawnInfusionTable', -1, tableId, coords, citizenid, heading)
     TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['table_placed'], type = 'success' })
 end)
 
 RegisterNetEvent('tommy-weedplant:server:pickupInfusionTable', function(tableId)
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local player = exports.qbx_core:GetPlayer(src)
     if not player or not infusionTables[tableId] then return end
 
@@ -140,6 +168,10 @@ RegisterNetEvent('tommy-weedplant:server:pickupInfusionTable', function(tableId)
     end
 
     exports.ox_inventory:AddItem(src, Config.InfusionTableItem, 1)
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Nhặt Bàn Infusion | bàn: %s'):format(tableId), {
+        { name = Config.InfusionTableItem, amount = 1, sign = '+' }
+    }, src))
     TriggerClientEvent('tommy-weedplant:client:removeInfusionTable', -1, tableId)
     DeleteTableFromDatabase(tableId)
     infusionTables[tableId] = nil
@@ -218,6 +250,16 @@ RegisterNetEvent('tommy-weedplant:server:startInfusion', function(tableId, budTy
         exports.ox_inventory:RemoveItem(src, ingredient, amount)
     end
 
+    local infusionLogItems = {
+        { name = budType, amount = budAmount, sign = '-' }
+    }
+
+    for ingredient, amount in pairs(ingredients) do
+        infusionLogItems[#infusionLogItems + 1] = { name = ingredient, amount = amount, sign = '-' }
+    end
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Bắt Đầu Infusion | bàn: %s'):format(tableId), infusionLogItems, src))
+
     tbl.inUse = true
     activeInfusions[src] = {
         tableId = tableId, budType = budType,
@@ -227,6 +269,9 @@ end)
 
 RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local player = exports.qbx_core:GetPlayer(src)
     if not player or not activeInfusions[src] then return end
 
@@ -244,6 +289,10 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
 
     if not bestMatch then
         exports.ox_inventory:AddItem(src, Config.InfusionRuinedItem, 1)
+
+        WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Hoàn Thành Infusion | bàn: %s'):format(session.tableId), {
+            { name = Config.InfusionRuinedItem, amount = 1, sign = '+' }
+        }, src))
         TriggerClientEvent('ox_lib:notify', src, {
             description = string.format(Config.InfusionNotifications['infusion_ruined'], Config.InfusionRuinedItem),
             type = 'error'
@@ -267,6 +316,10 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
         end
 
         exports.ox_inventory:AddItem(src, outputItem, 1)
+
+        WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Hoàn Thành Infusion | bàn: %s'):format(session.tableId), {
+            { name = outputItem, amount = 1, sign = '+' }
+        }, src))
         local notifKey = 'infusion_' .. quality
         TriggerClientEvent('ox_lib:notify', src, {
             description = string.format(Config.InfusionNotifications[notifKey], outputItem),

@@ -71,7 +71,7 @@ end
 
 ---@param data { type: string, index: integer }
 local function buy(data)
-    local type, index in data
+    local type, index = data.type, data.index
     local item = Config[type][index]
     local amount = lib.inputDialog(locale('buy_heading', Utils.getItemLabel(item.name), item.price), {
         {

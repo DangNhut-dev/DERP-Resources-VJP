@@ -1,5 +1,26 @@
 local dryingRacks = {}
 local rackIdCounter = 0
+local WeedLogger = rawget(_G, '__TOMMY_WEEDPLANT_LOGGER')
+
+local allEvents = {
+    ["tommy-weedplant:server:collectDried"] = false,
+    ["tommy-weedplant:server:pickupRack"] = false,
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
 
 local function GenerateRackId()
     rackIdCounter = rackIdCounter + 1
@@ -82,6 +103,10 @@ RegisterNetEvent('tommy-weedplant:server:placeDryingRack', function(coords, head
     }
 
     SaveRackToDatabase(dryingRacks[rackId])
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Đặt Giàn Sấy | giàn: %s'):format(rackId), {
+        { name = Config.DryingRack.item, amount = 1, sign = '-' }
+    }, src))
     TriggerClientEvent('tommy-weedplant:client:spawnDryingRack', -1, rackId, coords, citizenid, {}, nil, false, heading)
     TriggerClientEvent('tommy-weedplant:client:updateRackCount', src, GetPlayerRackCount(citizenid) + 1)
     TriggerClientEvent('ox_lib:notify', src, { description = Config.Notifications['rack_placed'], type = 'success' })
@@ -135,6 +160,13 @@ RegisterNetEvent('tommy-weedplant:server:startDrying', function(rackId, items)
         return
     end
 
+    local dryingLogItems = {}
+    for _, validItem in ipairs(validItems) do
+        dryingLogItems[#dryingLogItems + 1] = { name = validItem.name, amount = validItem.amount, sign = '-' }
+    end
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Bắt Đầu Sấy Cần | giàn: %s'):format(rackId), dryingLogItems, src))
+
     rack.items = validItems
     rack.startedAt = os.time() * 1000
     rack.isDrying = true
@@ -151,6 +183,9 @@ end)
 
 RegisterNetEvent('tommy-weedplant:server:collectDried', function(rackId)
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local player = exports.qbx_core:GetPlayer(src)
     if not player or not dryingRacks[rackId] then return end
 
@@ -183,6 +218,20 @@ RegisterNetEvent('tommy-weedplant:server:collectDried', function(rackId)
         end
     end
 
+    local collectedLogItems = {}
+    for _, itemData in ipairs(rack.items) do
+        if isRuined then
+            collectedLogItems[#collectedLogItems + 1] = { name = Config.DryingRack.ruinedItem, amount = itemData.amount, sign = '+' }
+        else
+            local outputItem = Config.DryingRack.inputItems[itemData.name]
+            if outputItem then
+                collectedLogItems[#collectedLogItems + 1] = { name = outputItem, amount = itemData.amount, sign = '+' }
+            end
+        end
+    end
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Nhận Thành Phẩm Sấy | giàn: %s'):format(rackId), collectedLogItems, src))
+
     rack.items = {}
     rack.startedAt = nil
     rack.isDrying = false
@@ -198,6 +247,9 @@ end)
 
 RegisterNetEvent('tommy-weedplant:server:pickupRack', function(rackId)
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local player = exports.qbx_core:GetPlayer(src)
     if not player or not dryingRacks[rackId] then return end
 
@@ -208,6 +260,10 @@ RegisterNetEvent('tommy-weedplant:server:pickupRack', function(rackId)
     end
 
     exports.ox_inventory:AddItem(src, Config.DryingRack.item, 1)
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Nhặt Giàn Sấy | giàn: %s'):format(rackId), {
+        { name = Config.DryingRack.item, amount = 1, sign = '+' }
+    }, src))
     local citizenid = player.PlayerData.citizenid
     TriggerClientEvent('tommy-weedplant:client:updateRackCount', src, GetPlayerRackCount(citizenid) - 1)
     TriggerClientEvent('tommy-weedplant:client:removeDryingRack', -1, rackId)

@@ -1572,6 +1572,7 @@ local function dropItem(source, playerInventory, fromData, data)
 		count = data.count,
         action = 'move',
         dropId = dropId,
+        coords = data.coords,
 	}) then return end
 
     fromData.count -= data.count

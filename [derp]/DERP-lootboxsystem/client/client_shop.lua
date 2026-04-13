@@ -75,8 +75,11 @@ RegisterNUICallback('shopBuy', function(data, cb)
     cb('ok')
     if not data or not data.npcId or not data.itemName
         or not data.amount or not data.paymentType then return end
-    TriggerServerEvent('derp-lootbox:shop:buyItem',
-        data.npcId, data.itemName, data.amount, data.paymentType)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:shop:buyItem', data.npcId, data.itemName, data.amount, data.paymentType)
+        else
+            TriggerServerEvent('derp-lootbox:shop:buyItem', data.npcId, data.itemName, data.amount, data.paymentType)
+        end
 end)
 
 -- NUI callback: cart checkout
@@ -84,8 +87,11 @@ RegisterNUICallback('shopBuyCart', function(data, cb)
     cb('ok')
     if not data or not data.npcId or not data.cartItems
         or not data.paymentType then return end
-    TriggerServerEvent('derp-lootbox:shop:buyCart',
-        data.npcId, data.cartItems, data.paymentType)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:shop:buyCart', data.npcId, data.cartItems, data.paymentType)
+    else
+        TriggerServerEvent('derp-lootbox:shop:buyCart', data.npcId, data.cartItems, data.paymentType)
+    end
 end)
 
 -- NUI callback: player closed the shop

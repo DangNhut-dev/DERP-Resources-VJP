@@ -90,7 +90,11 @@ local function CloseInfusionUI()
     if isInfusing then
         local currentTime = GetGameTimer()
         local elapsed = (currentTime - (infusionStartTime or currentTime)) / 1000
-        TriggerServerEvent('tommy-weedplant:server:finishInfusion', elapsed)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('tommy-weedplant:server:finishInfusion', elapsed)
+        else
+            TriggerServerEvent('tommy-weedplant:server:finishInfusion', elapsed)
+        end
         isInfusing = false
     end
     currentTableId = nil
@@ -115,7 +119,11 @@ function StopInfusion(isCancel)
     if not isInfusing then return end
     local elapsed = (GetGameTimer() - (infusionStartTime or GetGameTimer())) / 1000
     isInfusing = false
-    TriggerServerEvent('tommy-weedplant:server:finishInfusion', elapsed)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('tommy-weedplant:server:finishInfusion', elapsed)
+    else
+        TriggerServerEvent('tommy-weedplant:server:finishInfusion', elapsed)
+    end
     CloseInfusionUI()
 end
 
@@ -170,7 +178,11 @@ RegisterNetEvent('tommy-weedplant:client:pickupInfusionTable', function(data)
         disable = { move = true, car = true, combat = true },
     }) then
         ClearPedTasks(ped)
-        TriggerServerEvent('tommy-weedplant:server:pickupInfusionTable', tableId)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('tommy-weedplant:server:pickupInfusionTable', tableId)
+        else
+            TriggerServerEvent('tommy-weedplant:server:pickupInfusionTable', tableId)
+        end
     else
         ClearPedTasks(ped)
     end

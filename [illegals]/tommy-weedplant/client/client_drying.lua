@@ -202,7 +202,11 @@ RegisterNetEvent('tommy-weedplant:client:collectDried', function(data)
         disable = { move = true, car = true, combat = true },
     }) then
         ClearPedTasks(ped)
-        TriggerServerEvent('tommy-weedplant:server:collectDried', rackId)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('tommy-weedplant:server:collectDried', rackId)
+        else
+            TriggerServerEvent('tommy-weedplant:server:collectDried', rackId)
+        end
     else
         ClearPedTasks(ped)
     end
@@ -224,7 +228,11 @@ RegisterNetEvent('tommy-weedplant:client:pickupRack', function(data)
         disable = { move = true, car = true, combat = true },
     }) then
         ClearPedTasks(ped)
-        TriggerServerEvent('tommy-weedplant:server:pickupRack', rackId)
+        if GetResourceState('svc_runtime') == 'started' then
+            exports['svc_runtime']:ExecuteServerEvent('tommy-weedplant:server:pickupRack', rackId)
+        else
+            TriggerServerEvent('tommy-weedplant:server:pickupRack', rackId)
+        end
     else
         ClearPedTasks(ped)
     end

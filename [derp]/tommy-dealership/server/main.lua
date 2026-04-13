@@ -52,6 +52,127 @@ local function GetVehicleLabel(model)
     return SharedVehicles[model] and SharedVehicles[model].name or model
 end
 
+local function TommyIsJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function TommyTryAddActionLog(anyPlayer, actionText, opts)
+    if not TommyIsJsRankingStarted() then return false end
+    if not actionText or actionText == '' then return false end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+    end)
+
+    return ok
+end
+
+local function TommyGetPlayerMoneySnapshot(source, overrides)
+    local snapshot = {}
+
+    if source and source > 0 then
+        local player = exports.qbx_core:GetPlayer(source)
+        if player and player.PlayerData and type(player.PlayerData.money) == 'table' then
+            for key, value in pairs(player.PlayerData.money) do
+                if type(key) == 'string' and key ~= '' then
+                    snapshot[key] = tonumber(value) or 0
+                end
+            end
+        end
+    end
+
+    if type(overrides) == 'table' then
+        for key, value in pairs(overrides) do
+            if type(key) == 'string' and key ~= '' then
+                snapshot[key] = tonumber(value) or 0
+            end
+        end
+    end
+
+    return snapshot
+end
+
+local function TommyFormatNumber(amount)
+    local value = tonumber(amount) or 0
+    local negative = value < 0
+    local integer = tostring(math.floor(math.abs(value)))
+
+    while true do
+        local updated, count = integer:gsub('^(%-?%d+)(%d%d%d)', '%1,%2')
+        integer = updated
+        if count == 0 then break end
+    end
+
+    if negative then
+        integer = '-' .. integer
+    end
+
+    return integer
+end
+
+local function TommyFormatCurrency(amount, paymentType)
+    local value = math.floor(tonumber(amount) or 0)
+    if paymentType == 'gc' then
+        return ('%s DE-Coin'):format(TommyFormatNumber(value))
+    end
+
+    return ('$%s'):format(TommyFormatNumber(value))
+end
+
+local function TommyGetPaymentLabel(paymentType)
+    if paymentType == 'bank' then
+        return 'Ngân hàng'
+    elseif paymentType == 'gc' then
+        return 'DE-Coin'
+    end
+
+    return 'Tiền mặt'
+end
+
+local function TommyFormatVehicle(model, plate)
+    local vehicle = tostring(model or '')
+    local label = GetVehicleLabel(vehicle)
+    local display = vehicle
+
+    if label ~= '' and label ~= vehicle then
+        display = ('%s(%s)'):format(vehicle, label)
+    end
+
+    if plate and plate ~= '' then
+        display = ('%s [%s]'):format(display, plate)
+    end
+
+    return display
+end
+
+local function TommyBuildActionText(title, details)
+    local message = ('[tommy-dealership] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function TommyLogAction(anyPlayer, title, details, opts)
+    return TommyTryAddActionLog(anyPlayer, TommyBuildActionText(title, details), opts)
+end
+
 -- Discord webhook
 local function SendDiscordLog(webhookData)
     if not Config.DiscordWebhook or Config.DiscordWebhook == '' then return end
@@ -225,6 +346,9 @@ lib.callback.register('tommy-dealership:server:PurchaseVehicleSelf', function(so
     local dealerGC    = stockRow[1].gc_price or 0
     local selfGC      = math.floor(dealerGC * (1 + Config.SelfPurchaseMarkup))
     local finalPrice  = selfPrice
+    local beforeCoin  = nil
+    local beforeMoney = nil
+    local afterMoney  = nil
 
     local hasEnough = false
     if data.paymentType == 'gc' then
@@ -233,7 +357,8 @@ lib.callback.register('tommy-dealership:server:PurchaseVehicleSelf', function(so
             return false, Locale['gc_not_available'] or 'Xe này không hỗ trợ thanh toán DE-Coin!'
         end
         finalPrice = selfGC
-        hasEnough  = GetPlayerCoin(player.PlayerData.citizenid) >= selfGC
+        beforeCoin = GetPlayerCoin(player.PlayerData.citizenid)
+        hasEnough  = beforeCoin >= selfGC
     elseif data.paymentType == 'cash' then
         hasEnough = player.PlayerData.money.cash >= selfPrice
     else
@@ -243,6 +368,12 @@ lib.callback.register('tommy-dealership:server:PurchaseVehicleSelf', function(so
     if not hasEnough then
         MySQL.update('UPDATE vehicle_stock SET stock = stock + 1 WHERE shop = ? AND vehicle = ?', { shop, data.vehicle })
         return false, Locale['not_enough_money'] or 'Không đủ tiền!'
+    end
+
+    if data.paymentType == 'gc' then
+        beforeMoney = TommyGetPlayerMoneySnapshot(source, { coins = beforeCoin })
+    else
+        beforeMoney = TommyGetPlayerMoneySnapshot(source)
     end
 
     local removed = false
@@ -257,6 +388,12 @@ lib.callback.register('tommy-dealership:server:PurchaseVehicleSelf', function(so
     if not removed then
         MySQL.update('UPDATE vehicle_stock SET stock = stock + 1 WHERE shop = ? AND vehicle = ?', { shop, data.vehicle })
         return false, Locale['not_enough_money'] or 'Lỗi trừ tiền!'
+    end
+
+    if data.paymentType == 'gc' then
+        afterMoney = TommyGetPlayerMoneySnapshot(source, { coins = beforeCoin - selfGC })
+    else
+        afterMoney = TommyGetPlayerMoneySnapshot(source)
     end
 
     if data.paymentType ~= 'gc' then
@@ -290,6 +427,16 @@ lib.callback.register('tommy-dealership:server:PurchaseVehicleSelf', function(so
         'INSERT INTO dealership_self_purchases (shop, citizenid, vehicle, plate, price, payment_type) VALUES (?, ?, ?, ?, ?, ?)',
         { shop, player.PlayerData.citizenid, data.vehicle, plate, finalPrice, data.paymentType }
     )
+
+    TommyLogAction(source, 'Tự mua xe', {
+        { 'shop', shopData.ShopLabel or shop },
+        { 'vehicle', TommyFormatVehicle(data.vehicle, plate) },
+        { 'payment', TommyFormatCurrency(finalPrice, data.paymentType) },
+        { 'method', TommyGetPaymentLabel(data.paymentType) },
+    }, {
+        beforeMoney = beforeMoney,
+        afterMoney = afterMoney,
+    })
 
     SendDiscordLog({
         saleType      = 'self',
@@ -405,6 +552,10 @@ lib.callback.register('tommy-dealership:server:SellVehicle', function(source, sh
     local price      = stockRow[1].price
     local gcPrice    = stockRow[1].gc_price or 0
     local finalPrice = price
+    local buyerBeforeCoin = nil
+    local buyerBeforeMoney = nil
+    local buyerAfterMoney = nil
+    local sellerBeforeMoney = nil
 
     local hasEnough = false
     if data.paymentType == 'gc' then
@@ -413,7 +564,8 @@ lib.callback.register('tommy-dealership:server:SellVehicle', function(source, sh
             return false, Locale['gc_not_available'] or 'Xe này không hỗ trợ thanh toán DE-Coin!'
         end
         finalPrice = gcPrice
-        hasEnough  = GetPlayerCoin(target.PlayerData.citizenid) >= gcPrice
+        buyerBeforeCoin = GetPlayerCoin(target.PlayerData.citizenid)
+        hasEnough  = buyerBeforeCoin >= gcPrice
     elseif data.paymentType == 'cash' then
         hasEnough = target.PlayerData.money.cash >= price
     else
@@ -423,6 +575,12 @@ lib.callback.register('tommy-dealership:server:SellVehicle', function(source, sh
     if not hasEnough then
         MySQL.update('UPDATE vehicle_stock SET stock = stock + 1 WHERE shop = ? AND vehicle = ?', { shop, data.vehicle })
         return false, Locale['not_enough_money'] or 'Không đủ tiền!'
+    end
+
+    if data.paymentType == 'gc' then
+        buyerBeforeMoney = TommyGetPlayerMoneySnapshot(data.targetId, { coins = buyerBeforeCoin })
+    else
+        buyerBeforeMoney = TommyGetPlayerMoneySnapshot(data.targetId)
     end
 
     local removed = false
@@ -439,10 +597,17 @@ lib.callback.register('tommy-dealership:server:SellVehicle', function(source, sh
         return false, Locale['not_enough_money'] or 'Lỗi trừ tiền!'
     end
 
+    if data.paymentType == 'gc' then
+        buyerAfterMoney = TommyGetPlayerMoneySnapshot(data.targetId, { coins = buyerBeforeCoin - gcPrice })
+    else
+        buyerAfterMoney = TommyGetPlayerMoneySnapshot(data.targetId)
+    end
+
     local commission        = 0
     local commissionPercent = 0
 
     if data.paymentType ~= 'gc' then
+        sellerBeforeMoney = TommyGetPlayerMoneySnapshot(source)
         local rate          = Config.Commission[player.PlayerData.job.grade.level] or 0.02
         commission          = math.floor(price * rate)
         commissionPercent   = rate * 100
@@ -491,6 +656,30 @@ lib.callback.register('tommy-dealership:server:SellVehicle', function(source, sh
             data.vehicle, plate, finalPrice, commission, data.paymentType
         }
     )
+
+    TommyLogAction(data.targetId, 'Mua xe từ dealership', {
+        { 'shop', Config.Shops[shop].ShopLabel or shop },
+        { 'vehicle', TommyFormatVehicle(data.vehicle, plate) },
+        { 'payment', TommyFormatCurrency(finalPrice, data.paymentType) },
+        { 'method', TommyGetPaymentLabel(data.paymentType) },
+        { 'dealer', player.PlayerData.charinfo.firstname .. ' ' .. player.PlayerData.charinfo.lastname },
+    }, {
+        beforeMoney = buyerBeforeMoney,
+        afterMoney = buyerAfterMoney,
+    })
+
+    if commission > 0 then
+        TommyLogAction(source, 'Nhận hoa hồng bán xe', {
+            { 'shop', Config.Shops[shop].ShopLabel or shop },
+            { 'vehicle', TommyFormatVehicle(data.vehicle, plate) },
+            { 'buyer', target.PlayerData.charinfo.firstname .. ' ' .. target.PlayerData.charinfo.lastname },
+            { 'commission', TommyFormatCurrency(commission, 'bank') },
+            { 'sale', TommyFormatCurrency(finalPrice, data.paymentType) },
+        }, {
+            beforeMoney = sellerBeforeMoney,
+            afterMoney = TommyGetPlayerMoneySnapshot(source),
+        })
+    end
 
     SendDiscordLog({
         saleType        = 'dealer',

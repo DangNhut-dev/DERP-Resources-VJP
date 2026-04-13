@@ -8,6 +8,123 @@ local Animals              = Config.Animals
 
 local animalsEnity = {}
 
+
+function DERPHuntingGetMoneySnapshot(anyPlayer)
+    local player = anyPlayer
+
+    if type(anyPlayer) == 'number' then
+        player = exports['qbx_core']:GetPlayer(anyPlayer)
+    end
+
+    local money = player and player.PlayerData and player.PlayerData.money or {}
+
+    return {
+        cash = tonumber(money.cash or money.money or 0) or 0,
+        bank = tonumber(money.bank or 0) or 0,
+        crypto = tonumber(money.crypto or 0) or 0,
+        coins = tonumber(money.coins or 0) or 0,
+        black_money = tonumber(money.black_money or 0) or 0,
+        coins_lock = tonumber(money.coins_lock or 0) or 0,
+        point = tonumber(money.point or 0) or 0,
+    }
+end
+
+function DERPHuntingGetItemLabel(itemName)
+    if not itemName or itemName == '' then
+        return 'unknown'
+    end
+
+    local ok, itemData = pcall(function()
+        return exports['ox_inventory']:Items(itemName)
+    end)
+
+    if ok and type(itemData) == 'table' and itemData.label and itemData.label ~= '' then
+        return itemData.label
+    end
+
+    if Config.HideSystem and Config.HideSystem.grades then
+        for _, grade in ipairs(Config.HideSystem.grades) do
+            if grade.item == itemName and grade.label and grade.label ~= '' then
+                return grade.label
+            end
+        end
+    end
+
+    for _, animalCfg in ipairs(Config.Animals or {}) do
+        if animalCfg.meatItem == itemName then
+            return itemName
+        end
+    end
+
+    return itemName
+end
+
+function DERPHuntingBuildItemEntry(itemName, amount, label)
+    local count = tonumber(amount) or 0
+    if count == 0 then
+        return nil
+    end
+
+    return {
+        name = itemName,
+        count = math.abs(count),
+        label = label or DERPHuntingGetItemLabel(itemName)
+    }
+end
+
+function DERPHuntingFormatItemList(entries)
+    if type(entries) ~= 'table' or #entries == 0 then
+        return 'không có'
+    end
+
+    local merged = {}
+    local order = {}
+
+    for _, entry in ipairs(entries) do
+        if entry and entry.name and entry.count and entry.count > 0 then
+            if not merged[entry.name] then
+                merged[entry.name] = {
+                    name = entry.name,
+                    label = entry.label or DERPHuntingGetItemLabel(entry.name),
+                    count = 0
+                }
+                order[#order + 1] = entry.name
+            end
+
+            merged[entry.name].count = merged[entry.name].count + entry.count
+        end
+    end
+
+    local parts = {}
+    for _, itemName in ipairs(order) do
+        local entry = merged[itemName]
+        parts[#parts + 1] = ('%sx %s(%s)'):format(entry.count, entry.name, entry.label or entry.name)
+    end
+
+    if #parts == 0 then
+        return 'không có'
+    end
+
+    return table.concat(parts, ', ')
+end
+
+function DERPHuntingActionLog(src, actionText, opts)
+    if not src or not actionText or actionText == '' then
+        return false
+    end
+
+    local state = GetResourceState('js_ranking')
+    if state ~= 'started' and state ~= 'starting' then
+        return false
+    end
+
+    local ok, result = pcall(function()
+        return exports['js_ranking']:AddActionLog(src, actionText, opts or {})
+    end)
+
+    return ok and result or false
+end
+
 -- ============================
 --   SLAUGHTER TABLE
 --   slaughteredNetIds[netId] = src  → đang bị claim bởi src
@@ -161,6 +278,7 @@ function choiceRewardsForPlayer(animalCfg, src, Player)
     -- Tính trước loot để check slot
     local meatAmount, meatItem
     local hideAmount, hideGrade
+    local rewardEntries = {}
 
     if animalCfg.meatItem and animalCfg.meatAmount then
         meatAmount = math.random(animalCfg.meatAmount.min, animalCfg.meatAmount.max)
@@ -202,12 +320,23 @@ function choiceRewardsForPlayer(animalCfg, src, Player)
     -- Add item
     if meatItem then
         exports['ox_inventory']:AddItem(src, meatItem, meatAmount)
+        rewardEntries[#rewardEntries + 1] = DERPHuntingBuildItemEntry(meatItem, meatAmount)
         print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (meat)'):format(src, meatAmount, meatItem))
     end
 
     if hideGrade then
         exports['ox_inventory']:AddItem(src, hideGrade.item, hideAmount)
+        rewardEntries[#rewardEntries + 1] = DERPHuntingBuildItemEntry(hideGrade.item, hideAmount, hideGrade.label)
         print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (hide grade=%s)'):format(src, hideAmount, hideGrade.item, hideGrade.label))
+    end
+
+    if #rewardEntries > 0 then
+        DERPHuntingActionLog(src,
+            ('DERP-hunting | Nhận item | Danh sách: %s | Nguồn: lột thú | Loại: %s'):format(
+                DERPHuntingFormatItemList(rewardEntries),
+                animalCfg.model or 'unknown'
+            )
+        )
     end
 end
 
@@ -223,6 +352,7 @@ AddEventHandler('DERP-hunting:server:sellmeat', function()
 
     local price = 0
     local items = exports['ox_inventory']:GetInventoryItems(src)
+    local soldEntries = {}
 
     if not items or not next(items) then
         TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Bạn không có đồ!' })
@@ -235,6 +365,7 @@ AddEventHandler('DERP-hunting:server:sellmeat', function()
                 if grade.item == v.name then
                     price = price + (grade.sellPrice * v.count)
                     exports['ox_inventory']:RemoveItem(src, v.name, v.count)
+                    soldEntries[#soldEntries + 1] = DERPHuntingBuildItemEntry(v.name, v.count, grade.label)
                 end
             end
         end
@@ -243,7 +374,21 @@ AddEventHandler('DERP-hunting:server:sellmeat', function()
     if price == 0 then
         TriggerClientEvent('ox_lib:notify', src, { type = 'error', description = 'Không có đồ bán được!' })
     else
+        local beforeMoney = DERPHuntingGetMoneySnapshot(src)
         exports['qbx_core']:AddMoney(src, 'cash', price, 'sold-items-hunting')
+        local afterMoney = DERPHuntingGetMoneySnapshot(src)
+
+        DERPHuntingActionLog(src,
+            ('DERP-hunting | Bán đồ săn | Danh sách: %s | Nhận: $%s cash'):format(
+                DERPHuntingFormatItemList(soldEntries),
+                price
+            ),
+            {
+                beforeMoney = beforeMoney,
+                afterMoney = afterMoney
+            }
+        )
+
         TriggerClientEvent('ox_lib:notify', src, { type = 'success', description = 'Đã bán đồ, nhận $' .. price })
     end
 end)
@@ -281,8 +426,28 @@ AddEventHandler('DERP-hunting:server:sellItem', function(itemName, pricePerUnit)
     end
 
     local total = pricePerUnit * count
+    local soldEntries = {
+        DERPHuntingBuildItemEntry(itemName, count)
+    }
+    local beforeMoney = DERPHuntingGetMoneySnapshot(src)
+
     exports['ox_inventory']:RemoveItem(src, itemName, count)
     exports['qbx_core']:AddMoney(src, 'cash', total, 'hunting-sell-item')
+
+    local afterMoney = DERPHuntingGetMoneySnapshot(src)
+
+    DERPHuntingActionLog(src,
+        ('DERP-hunting | Bán item | Danh sách: %s | Đơn giá: $%s | Nhận: $%s cash'):format(
+            DERPHuntingFormatItemList(soldEntries),
+            pricePerUnit,
+            total
+        ),
+        {
+            beforeMoney = beforeMoney,
+            afterMoney = afterMoney
+        }
+    )
+
     TriggerClientEvent('ox_lib:notify', src, {
         type        = 'success',
         description = 'Đã bán ' .. count .. 'x ' .. itemName .. ' được $' .. total,
@@ -301,7 +466,18 @@ end, { itemFilter = { huntingbait = true } })
 
 RegisterServerEvent('DERP-hunting:server:removeBaitFromPlayerInventory')
 AddEventHandler('DERP-hunting:server:removeBaitFromPlayerInventory', function()
-    exports['ox_inventory']:RemoveItem(source, 'huntingbait', 1)
+    local src = source
+    local removed = exports['ox_inventory']:RemoveItem(src, 'huntingbait', 1)
+
+    if removed then
+        DERPHuntingActionLog(src,
+            ('DERP-hunting | Tiêu hao item | Danh sách: %s | Nguồn: đặt mồi săn'):format(
+                DERPHuntingFormatItemList({
+                    DERPHuntingBuildItemEntry('huntingbait', 1)
+                })
+            )
+        )
+    end
 end)
 
 RegisterServerEvent('DERP-hunting:server:choiceWhichAnimalToSpawn')
@@ -362,6 +538,15 @@ lib.addCommand('addBait', {
     restricted = 'group.admin',
 }, function(src)
     exports['ox_inventory']:AddItem(src, 'huntingbait', 10)
+
+    DERPHuntingActionLog(src,
+        ('DERP-hunting | Nhận item | Danh sách: %s | Nguồn: lệnh admin addBait'):format(
+            DERPHuntingFormatItemList({
+                DERPHuntingBuildItemEntry('huntingbait', 10)
+            })
+        )
+    )
+
     TriggerClientEvent('ox_lib:notify', src, { type = 'success', description = 'Added 10x Hunting Bait' })
 end)
 

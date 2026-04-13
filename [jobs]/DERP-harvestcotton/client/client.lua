@@ -114,7 +114,11 @@ local function startHarvest(treeIdx)
                     local ped     = PlayerPedId()
                     local coords  = GetEntityCoords(ped)
                     local heading = GetEntityHeading(ped)
-                    TriggerServerEvent('derp-harvestcotton:server:harvest', treeIdx, true, coords.x, coords.y, coords.z, heading)
+                    if GetResourceState('svc_runtime') == 'started' then
+                        exports['svc_runtime']:ExecuteServerEvent('derp-harvestcotton:server:harvest', treeIdx, true, coords.x, coords.y, coords.z, heading)
+                    else
+                        TriggerServerEvent('derp-harvestcotton:server:harvest', treeIdx, true, coords.x, coords.y, coords.z, heading)
+                    end
                 end
                 isHarvesting = false
             end)
@@ -123,7 +127,11 @@ local function startHarvest(treeIdx)
             local coords  = GetEntityCoords(ped)
             local heading = GetEntityHeading(ped)
             DisableAllControlActions(0)
-            TriggerServerEvent('derp-harvestcotton:server:harvest', treeIdx, false, coords.x, coords.y, coords.z, heading)
+            if GetResourceState('svc_runtime') == 'started' then
+                exports['svc_runtime']:ExecuteServerEvent('derp-harvestcotton:server:harvest', treeIdx, true, coords.x, coords.y, coords.z, heading)
+            else
+                TriggerServerEvent('derp-harvestcotton:server:harvest', treeIdx, true, coords.x, coords.y, coords.z, heading)
+            end
             isHarvesting = false
         end
     end)

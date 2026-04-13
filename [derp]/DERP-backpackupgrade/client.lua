@@ -100,6 +100,10 @@ end)
 
 RegisterNUICallback('confirmUpgrade', function(data, cb)
     if not data or not data.token then return cb('error') end
-    TriggerServerEvent('DERP-backpackupgrade:confirmUpgrade', data.token)
+    if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('DERP-backpackupgrade:confirmUpgrade', data.token)
+    else
+        TriggerServerEvent('DERP-backpackupgrade:confirmUpgrade', data.token)
+    end
     cb('ok')
 end)

@@ -1,6 +1,112 @@
 local plants = {}
 local plantIdCounter = 0
 
+local allEvents = {
+    ["tommy-weedplant:server:harvestPlant"] = false,
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
+
+if not rawget(_G, '__TOMMY_WEEDPLANT_LOGGER') then
+    local Logger = {}
+
+    function Logger.GetItemLabel(src, itemName)
+        if not itemName or itemName == '' then return 'unknown' end
+
+        local itemData
+        local ok = pcall(function()
+            itemData = exports.ox_inventory:GetItem(src or 0, itemName, nil, false)
+        end)
+
+        if ok and type(itemData) == 'table' and itemData.label and itemData.label ~= '' then
+            return tostring(itemData.label)
+        end
+
+        return tostring(itemName)
+    end
+
+    function Logger.FormatItemEntry(src, entry)
+        if type(entry) ~= 'table' or not entry.name or entry.name == '' then return nil end
+
+        local sign = tostring(entry.sign or '+')
+        local name = tostring(entry.name)
+        local label = Logger.GetItemLabel(src, name)
+        local amount = tonumber(entry.amount) or 1
+        local extra = entry.extra and (' %s'):format(tostring(entry.extra)) or ''
+
+        return ('%s%s(%s)%s x%s'):format(sign, name, label, extra, amount)
+    end
+
+    function Logger.AppendItems(actionText, items, src)
+        if not actionText or actionText == '' then return '' end
+        if type(items) ~= 'table' or #items == 0 then return actionText end
+
+        local formatted = {}
+
+        for i = 1, #items do
+            local part = Logger.FormatItemEntry(src, items[i])
+            if part then
+                formatted[#formatted + 1] = part
+            end
+        end
+
+        if #formatted == 0 then
+            return actionText
+        end
+
+        return ('%s | item: %s'):format(actionText, table.concat(formatted, ', '))
+    end
+
+    function Logger.AddActionLog(anyPlayer, actionText, opts)
+        if not actionText or actionText == '' then return false end
+
+        opts = opts or {}
+
+        if GetResourceState('ox_inventory') == 'started' then
+            local ok = pcall(function()
+                exports.ox_inventory:AddActionLog(anyPlayer, actionText, opts)
+            end)
+
+            if ok then
+                return true
+            end
+        end
+
+        if GetResourceState('js_ranking') == 'started' then
+            local ok = pcall(function()
+                exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+            end)
+
+            if ok then
+                return true
+            end
+        end
+
+        return false
+    end
+
+    rawset(_G, '__TOMMY_WEEDPLANT_LOGGER', Logger)
+
+    exports('AddActionLog', function(anyPlayer, actionText, opts)
+        return Logger.AddActionLog(anyPlayer, actionText, opts)
+    end)
+end
+
+local WeedLogger = rawget(_G, '__TOMMY_WEEDPLANT_LOGGER')
+
 local function CalculatePlantStage(plant)
     if not plant.growthStartedAt then return 1, false end
     local seedConfig = Config.SeedTypes[plant.seedType]
@@ -263,6 +369,10 @@ RegisterNetEvent('tommy-weedplant:server:plantSeed', function(coords, seedType)
     }
 
     SavePlantToDatabase(plants[plantId])
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Trồng Hạt Cần | cây: %s'):format(plantId), {
+        { name = seedType, amount = 1, sign = '-' }
+    }, src))
     TriggerClientEvent('tommy-weedplant:client:spawnPlant', -1, plantId, coords, 1, false, 0,
         currentTime, citizenid, nil, nil, false, seedType, false, false, nil, seedConfig.growthTime)
     TriggerClientEvent('tommy-weedplant:client:updatePlantCount', src, currentPlantCount + 1)
@@ -309,6 +419,10 @@ RegisterNetEvent('tommy-weedplant:server:waterPlant', function(plantId)
     end
 
     exports.ox_inventory:RemoveItem(src, Config.WaterItemName, 1)
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Tưới Cây Cần | cây: %s'):format(plantId), {
+        { name = Config.WaterItemName, amount = 1, sign = '-' }
+    }, src))
 
     local isFirstWater = plant.waterCount == 0
     plant.waterLevel = seedConfig.waterRequirement.maxWater
@@ -366,6 +480,10 @@ RegisterNetEvent('tommy-weedplant:server:fertilizePlant', function(plantId)
     end
 
     exports.ox_inventory:RemoveItem(src, Config.FertilizerItemName, 1)
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Bón Phân Cây Cần | cây: %s'):format(plantId), {
+        { name = Config.FertilizerItemName, amount = 1, sign = '-' }
+    }, src))
     plant.hasFertilizer = true
     UpdatePlantInDatabase(plant)
 
@@ -399,6 +517,10 @@ RegisterNetEvent('tommy-weedplant:server:placeUVLight', function(plantId)
     end
 
     exports.ox_inventory:RemoveItem(src, Config.UVLightItemName, 1)
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Lắp Đèn UV | cây: %s'):format(plantId), {
+        { name = Config.UVLightItemName, amount = 1, sign = '-' }
+    }, src))
     plant.hasUVLight = true
     plant.uvLightCoords = vector3(
         plant.coords.x + Config.UVLightOffset.x,
@@ -424,6 +546,10 @@ RegisterNetEvent('tommy-weedplant:server:removeUVLight', function(plantId)
     end
 
     exports.ox_inventory:AddItem(src, Config.UVLightItemName, 1)
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Tháo Đèn UV | cây: %s'):format(plantId), {
+        { name = Config.UVLightItemName, amount = 1, sign = '+' }
+    }, src))
     plant.hasUVLight = false
     plant.uvLightCoords = nil
     UpdatePlantInDatabase(plant)
@@ -434,6 +560,9 @@ end)
 
 RegisterNetEvent('tommy-weedplant:server:harvestPlant', function(plantId)
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local player = exports.qbx_core:GetPlayer(src)
     if not player or not plants[plantId] then return end
 
@@ -472,6 +601,16 @@ RegisterNetEvent('tommy-weedplant:server:harvestPlant', function(plantId)
             exports.ox_inventory:AddItem(src, plant.seedType, seedReward)
         end
     end
+
+    local harvestLogItems = {
+        { name = seedConfig.harvestItem, amount = rewardAmount, sign = '+' }
+    }
+
+    if seedReward > 0 then
+        harvestLogItems[#harvestLogItems + 1] = { name = plant.seedType, amount = seedReward, sign = '+' }
+    end
+
+    WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Thu Hoạch Cây Cần | cây: %s'):format(plantId), harvestLogItems, src))
 
     TriggerClientEvent('ox_lib:notify', src, {
         description = string.format(Config.Notifications['harvest_success'], seedConfig.harvestItem, rewardAmount),

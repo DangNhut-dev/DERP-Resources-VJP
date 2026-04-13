@@ -1,5 +1,96 @@
 local treeStates      = {}
 local playerCooldowns = {}
+local allEvents = {
+    ["derp-harvestcotton:server:harvest"] = false,
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
+local function isJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function addActionLog(src, actionText, opts)
+    if not isJsRankingStarted() then return false end
+    if type(src) ~= 'number' or src <= 0 then return false end
+    if not actionText or actionText == '' then return false end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(src, actionText, opts or {})
+    end)
+
+    return ok
+end
+
+local function getItemLabel(itemName)
+    local ok, item = pcall(function()
+        return exports.ox_inventory:Items(itemName)
+    end)
+
+    if ok and type(item) == 'table' and item.label and item.label ~= '' then
+        return tostring(item.label)
+    end
+
+    return tostring(itemName or '')
+end
+
+local function formatItem(itemName, amount)
+    local name = tostring(itemName or '')
+    local label = getItemLabel(name)
+    local display = name
+
+    if label ~= '' and label ~= name then
+        display = ('%s(%s)'):format(name, label)
+    end
+
+    amount = math.floor(tonumber(amount) or 0)
+
+    if amount > 0 then
+        return ('%s x%s'):format(display, amount)
+    end
+
+    return display
+end
+
+local function buildActionText(title, details)
+    local message = ('[DERP-harvestcotton] | %s'):format(tostring(title or ''))
+
+    if type(details) == 'table' and #details > 0 then
+        local parts = {}
+
+        for i = 1, #details do
+            local entry = details[i]
+            local key = entry and entry[1]
+            local value = entry and entry[2]
+
+            if key and value ~= nil and value ~= '' then
+                parts[#parts + 1] = ('%s: %s'):format(tostring(key), tostring(value))
+            end
+        end
+
+        if #parts > 0 then
+            message = message .. ' | ' .. table.concat(parts, ' | ')
+        end
+    end
+
+    return message
+end
+
+local function logAction(src, title, details, opts)
+    return addActionLog(src, buildActionText(title, details), opts)
+end
 
 -- Khởi tạo trạng thái các cây khi resource start
 AddEventHandler('onResourceStart', function(resourceName)
@@ -22,7 +113,9 @@ end)
 -- Xử lý thu hoạch
 RegisterNetEvent('derp-harvestcotton:server:harvest', function(treeIdx, success, px, py, pz, heading)
     local src = source
-
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     -- Validate input
     if type(treeIdx) ~= 'number' or treeIdx < 1 or treeIdx > #Config.Trees then return end
     if type(success) ~= 'boolean' then return end
@@ -77,7 +170,17 @@ RegisterNetEvent('derp-harvestcotton:server:harvest', function(treeIdx, success,
 
     if success then
         local amount = math.random(Config.ItemMin, Config.ItemMax)
-        exports.ox_inventory:AddItem(src, Config.ItemName, amount)
+        local itemName = Config.ItemName
+        local added = exports.ox_inventory:AddItem(src, itemName, amount)
+
+        if added then
+            logAction(src, 'Nhận item', {
+                { 'danh sách', formatItem(itemName, amount) },
+                { 'nguồn', 'thu hoạch bông' },
+                { 'cây', tostring(treeIdx) },
+            })
+        end
+
         TriggerClientEvent('ox_lib:notify', src, {
             title       = 'Thu hoạch bông',
             description = 'Nhận được ' .. amount .. ' bông cotton',

@@ -1,6 +1,87 @@
 local cooldowns = {}
-
+local allEvents = {
+    ["DERP-cutpaper:server:giveItem"] = false,
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
 local COOLDOWN_MS = Config.Work.interval - 2000
+
+local function isJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function getItemLabel(itemName)
+    if itemName == Config.Work.item and Config.Work.itemLabel and Config.Work.itemLabel ~= '' then
+        return Config.Work.itemLabel
+    end
+
+    local ok, item = pcall(function()
+        return exports.ox_inventory:Items(itemName)
+    end)
+
+    if ok and item and item.label and item.label ~= '' then
+        return item.label
+    end
+
+    return tostring(itemName or '')
+end
+
+local function formatItemList(items)
+    if type(items) ~= 'table' or #items == 0 then return nil end
+
+    local parts = {}
+
+    for i = 1, #items do
+        local entry = items[i]
+        local name = tostring(entry.name or '')
+        local count = tonumber(entry.count) or 0
+        local label = getItemLabel(name)
+
+        if label ~= '' and label ~= name then
+            parts[#parts + 1] = ('%sx %s(%s)'):format(count, name, label)
+        else
+            parts[#parts + 1] = ('%sx %s'):format(count, name)
+        end
+    end
+
+    if #parts == 0 then return nil end
+    return table.concat(parts, ', ')
+end
+
+local function tryAddActionLog(src, actionText, opts)
+    if type(src) ~= 'number' or src <= 0 then return false end
+    if not isJsRankingStarted() then return false end
+    if not actionText or actionText == '' then return false end
+
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(src, actionText, opts)
+    end)
+
+    return ok
+end
+
+local function logRewardItem(src, items, isDouble)
+    local itemText = formatItemList(items)
+    if not itemText then return end
+
+    local modeText = isDouble and 'x2' or 'thường'
+    local actionText = ('DERP-cutpaperjob | Nhận item | Danh sách: %s | Chế độ: %s'):format(itemText, modeText)
+
+    tryAddActionLog(src, actionText)
+end
 
 -- ============================
 --   GIVE ITEM
@@ -8,6 +89,9 @@ local COOLDOWN_MS = Config.Work.interval - 2000
 
 RegisterNetEvent('DERP-cutpaper:server:giveItem', function(isDouble)
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     if not src or src <= 0 then return end
 
     local now = GetGameTimer()
@@ -43,6 +127,13 @@ RegisterNetEvent('DERP-cutpaper:server:giveItem', function(isDouble)
 
     local success = exports.ox_inventory:AddItem(src, Config.Work.item, amount)
     if success then
+        logRewardItem(src, {
+            {
+                name = Config.Work.item,
+                count = amount,
+            }
+        }, isDouble == true)
+
         TriggerClientEvent('ox_lib:notify', src, {
             title       = 'Cắt Giấy',
             description = 'Nhận được ' .. amount .. 'x ' .. Config.Work.itemLabel,

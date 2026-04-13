@@ -281,7 +281,11 @@ local function HarvestPlant(plantId)
         disable = { move = true, car = true, combat = true },
     }) then
         ClearPedTasks(ped)
+        if GetResourceState('svc_runtime') == 'started' then
+        exports['svc_runtime']:ExecuteServerEvent('tommy-weedplant:server:harvestPlant', plantId)
+    else
         TriggerServerEvent('tommy-weedplant:server:harvestPlant', plantId)
+    end
     else
         ClearPedTasks(ped)
     end

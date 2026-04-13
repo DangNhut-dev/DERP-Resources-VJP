@@ -13,6 +13,7 @@ local TriggerEventHooks = require 'modules.hooks.server'
 local db = require 'modules.mysql.server'
 local Items = require 'modules.items.server'
 local Inventory = require 'modules.inventory.server'
+local JsRankingLogger = require 'modules.js_ranking.server'
 local ClothingServer = require 'modules.clothing.server'
 local WeaponSkinServer = require 'modules.weaponskin.server'
 local RarityConfig = require 'modules.rarity.shared'
@@ -566,11 +567,39 @@ lib.addCommand({'additem', 'giveitem'}, {
 	if item then
 		local inventory = Inventory(args.target) --[[@as OxInventory]]
 		local count = args.count or 1
-		local success, response = Inventory.AddItem(inventory, item.name, count, args.type and { type = tonumber(args.type) or args.type })
+		local metadata = args.type and { type = tonumber(args.type) or args.type }
+		local adminSource = source
+		local success, response = Inventory.AddItem(inventory, item.name, count, metadata)
 
 		if not success then
 			return Citizen.Trace(('Failed to give %sx %s to player %s (%s)'):format(count, item.name, args.target, response))
 		end
+
+		local adminLabel = adminSource and adminSource > 0 and JsRankingLogger.FormatPlayer(adminSource) or 'console'
+		local targetLabel = JsRankingLogger.FormatPlayer(args.target)
+		local adminCoords = adminSource and adminSource > 0 and JsRankingLogger.GetPlayerCoords(adminSource) or nil
+		local targetCoords = JsRankingLogger.GetPlayerCoords(args.target)
+		local dist = JsRankingLogger.SafeDist(adminCoords, targetCoords)
+
+		if adminSource and adminSource > 0 then
+			JsRankingLogger.Log(adminSource, 'Admin giveitem', {
+				{ 'cho', targetLabel },
+				{ 'item', JsRankingLogger.FormatItem(item.name, count, metadata, '') },
+				{ 'type', args.type and tostring(args.type) or '' },
+				{ 'admin_pos', JsRankingLogger.FormatCoords(adminCoords) },
+				{ 'target_pos', JsRankingLogger.FormatCoords(targetCoords) },
+				{ 'admin→target', JsRankingLogger.FormatMeters(dist) },
+			})
+		end
+
+		JsRankingLogger.Log(args.target, 'Nhận item từ admin', {
+			{ 'từ', adminLabel },
+			{ 'item', JsRankingLogger.FormatItem(item.name, count, metadata, 'add') },
+			{ 'type', args.type and tostring(args.type) or '' },
+			{ 'admin_pos', JsRankingLogger.FormatCoords(adminCoords) },
+			{ 'target_pos', JsRankingLogger.FormatCoords(targetCoords) },
+			{ 'admin→target', JsRankingLogger.FormatMeters(dist) },
+		})
 
 		source = Inventory(source) or { label = 'console', owner = 'console' }
 

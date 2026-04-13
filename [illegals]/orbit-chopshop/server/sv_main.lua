@@ -1,7 +1,152 @@
 local QBX = exports.qbx_core
-
+local allEvents = {
+    ["orbit-chopshop:server:choptrunk"] = false,
+    ["orbit-chopshop:server:chophood"] = false,
+    ["orbit-chopshop:server:chopwheel"] = false,
+    ["orbit-chopshop:server:chopdoor"] = false,
+}
+local fiveguard_resource = "svc_runtime"
+AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+    if res == "*" or res == GetCurrentResourceName() then
+        fiveguard_resource = fiveguard_res
+        for event,cross_scripts in pairs(allEvents) do
+            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+                ban = true,
+                log = true
+            }, cross_scripts)
+            if not retval then
+                print("[fiveguard safe-events] "..errorText)
+            end
+        end
+    end
+end)
 local Cooldowns = {}
 local ActiveJobs = {}
+
+local function isResourceStarted(resourceName)
+    return GetResourceState(resourceName) == 'started'
+end
+
+local function getItemLabel(itemName)
+    if not itemName or itemName == '' then
+        return ''
+    end
+
+    if not isResourceStarted('ox_inventory') then
+        return tostring(itemName)
+    end
+
+    local ok, itemData = pcall(function()
+        return exports.ox_inventory:Items(itemName)
+    end)
+
+    if ok and type(itemData) == 'table' and itemData.label and itemData.label ~= '' then
+        return tostring(itemData.label)
+    end
+
+    return tostring(itemName)
+end
+
+local function formatLogItem(itemName, count, metadata, prefix)
+    local item = tostring(itemName or '')
+    local amount = math.floor(tonumber(count) or 0)
+    local label = getItemLabel(item)
+    local display = item
+
+    if label ~= '' and label ~= item then
+        display = ('%s(%s)'):format(item, label)
+    end
+
+    if type(metadata) == 'table' and metadata.worth ~= nil then
+        display = ('%s [worth:%s]'):format(display, math.floor(tonumber(metadata.worth) or 0))
+    end
+
+    if amount > 0 then
+        return ('%s%s x%s'):format(prefix or '+', display, amount)
+    end
+
+    return ('%s%s'):format(prefix or '+', display)
+end
+
+local function forwardActionLog(anyPlayer, actionText, opts)
+    if not actionText or actionText == '' then
+        return false
+    end
+
+    opts = opts or {}
+
+    if isResourceStarted('ox_inventory') then
+        local ok = pcall(function()
+            exports.ox_inventory:AddActionLog(anyPlayer, actionText, opts)
+        end)
+
+        if ok then
+            return true
+        end
+    end
+
+    if isResourceStarted('js_ranking') then
+        local ok = pcall(function()
+            exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+        end)
+
+        if ok then
+            return true
+        end
+    end
+
+    return false
+end
+
+exports('AddActionLog', forwardActionLog)
+
+local function addChopshopActionLog(src, actionTitle, details, itemEntries)
+    local parts = {
+        ('[chopshop] | %s'):format(tostring(actionTitle or 'Chopshop'))
+    }
+
+    if details and details ~= '' then
+        parts[#parts + 1] = tostring(details)
+    end
+
+    if type(itemEntries) == 'table' and #itemEntries > 0 then
+        local formattedItems = {}
+
+        for i = 1, #itemEntries do
+            local entry = itemEntries[i]
+            if type(entry) == 'table' and entry.name then
+                formattedItems[#formattedItems + 1] = formatLogItem(entry.name, entry.count, entry.metadata, entry.prefix)
+            end
+        end
+
+        if #formattedItems > 0 then
+            parts[#parts + 1] = ('item: %s'):format(table.concat(formattedItems, ', '))
+        end
+    end
+
+    if #parts <= 1 then
+        return false
+    end
+
+    return forwardActionLog(src, table.concat(parts, ' | '), {
+        source = src,
+        deferMs = 0,
+    })
+end
+
+local function getRewardActionTitle(data)
+    if data == 'door' then
+        return 'Tháo Cửa Xe'
+    elseif data == 'hood' then
+        return 'Tháo Két Nước'
+    elseif data == 'trunk' then
+        return 'Tháo Cốp Xe'
+    elseif data == 'wheel1' or data == 'wheel2' or data == 'wheel3' or data == 'wheel4' then
+        return 'Tháo Bánh Xe'
+    end
+
+    return 'Tháo Bộ Phận Xe'
+end
 
 -- Kiểm tra cooldown theo citizenid
 local function IsOnCooldown(citizenid)
@@ -96,32 +241,59 @@ local function GiveReward(data)
     local Player = QBX:GetPlayer(src)
     if not Player then return end
 
+    local rewardedItems = {}
+
     if data == "wheel1" or data == "wheel2" or data == "wheel3" or data == "wheel4" then
         if not CanCarryItem(src, "car_wheel", 1) then return NotifyFull(src) end
-        Player.Functions.AddItem("car_wheel", 1)
+        local added = Player.Functions.AddItem("car_wheel", 1)
+
+        if added ~= false then
+            rewardedItems[#rewardedItems + 1] = { name = 'car_wheel', count = 1, prefix = '+' }
+        end
     elseif data == "door" then
         if not CanCarryItem(src, "car_door", 1) then return NotifyFull(src) end
-        Player.Functions.AddItem("car_door", 1)
+        local added = Player.Functions.AddItem("car_door", 1)
+
+        if added ~= false then
+            rewardedItems[#rewardedItems + 1] = { name = 'car_door', count = 1, prefix = '+' }
+        end
     elseif data == "hood" then
         if not CanCarryItem(src, "radiator", 1) then return NotifyFull(src) end
-        Player.Functions.AddItem("radiator", 1)
+        local added = Player.Functions.AddItem("radiator", 1)
+
+        if added ~= false then
+            rewardedItems[#rewardedItems + 1] = { name = 'radiator', count = 1, prefix = '+' }
+        end
     elseif data == "trunk" then
         if math.random(1, 100) <= 50 then
             local randomitem = math.random(1, #Config.TrunkItems)
             local item = Config.TrunkItems[randomitem]["item"]
             local amount = Config.TrunkItems[randomitem]["amount"]
+
             if CanCarryItem(src, item, amount) then
-                Player.Functions.AddItem(item, amount)
+                local addedRandom = Player.Functions.AddItem(item, amount)
+
+                if addedRandom ~= false then
+                    rewardedItems[#rewardedItems + 1] = { name = item, count = amount, prefix = '+' }
+                end
             else
                 NotifyFull(src)
             end
         end
         Wait(8500)
         if CanCarryItem(src, "trunk", 1) then
-            Player.Functions.AddItem("trunk", 1)
+            local added = Player.Functions.AddItem("trunk", 1)
+
+            if added ~= false then
+                rewardedItems[#rewardedItems + 1] = { name = 'trunk', count = 1, prefix = '+' }
+            end
         else
             NotifyFull(src)
         end
+    end
+
+    if #rewardedItems > 0 then
+        addChopshopActionLog(src, getRewardActionTitle(data), nil, rewardedItems)
     end
 end
 
@@ -160,6 +332,9 @@ end)
 
 RegisterNetEvent("orbit-chopshop:server:chopdoor", function()
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local Player = QBX:GetPlayer(src)
     if not Player then return end
 
@@ -174,14 +349,26 @@ RegisterNetEvent("orbit-chopshop:server:chopdoor", function()
 
     if not CanCarryItem(src, item, amount) then return NotifyFull(src) end
 
-    Player.Functions.RemoveItem("car_door", 1)
+    local removed = Player.Functions.RemoveItem("car_door", 1)
+    if removed == false then return end
+
     TriggerClientEvent('orbit-chopshop:doorchopanim', src)
     Wait(12500)
-    Player.Functions.AddItem(item, amount)
+
+    local added = Player.Functions.AddItem(item, amount)
+    if added ~= false then
+        addChopshopActionLog(src, 'Rã Cửa Xe', nil, {
+            { name = 'car_door', count = 1, prefix = '-' },
+            { name = item, count = amount, prefix = '+' },
+        })
+    end
 end)
 
 RegisterNetEvent("orbit-chopshop:server:chopwheel", function()
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local Player = QBX:GetPlayer(src)
     if not Player then return end
 
@@ -196,14 +383,26 @@ RegisterNetEvent("orbit-chopshop:server:chopwheel", function()
 
     if not CanCarryItem(src, item, amount) then return NotifyFull(src) end
 
-    Player.Functions.RemoveItem("car_wheel", 1)
+    local removed = Player.Functions.RemoveItem("car_wheel", 1)
+    if removed == false then return end
+
     TriggerClientEvent('orbit-chopshop:wheelchopanim', src)
     Wait(14000)
-    Player.Functions.AddItem(item, amount)
+
+    local added = Player.Functions.AddItem(item, amount)
+    if added ~= false then
+        addChopshopActionLog(src, 'Rã Bánh Xe', nil, {
+            { name = 'car_wheel', count = 1, prefix = '-' },
+            { name = item, count = amount, prefix = '+' },
+        })
+    end
 end)
 
 RegisterNetEvent("orbit-chopshop:server:chophood", function()
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local Player = QBX:GetPlayer(src)
     if not Player then return end
 
@@ -218,14 +417,26 @@ RegisterNetEvent("orbit-chopshop:server:chophood", function()
 
     if not CanCarryItem(src, item, amount) then return NotifyFull(src) end
 
-    Player.Functions.RemoveItem("radiator", 1)
+    local removed = Player.Functions.RemoveItem("radiator", 1)
+    if removed == false then return end
+
     TriggerClientEvent('orbit-chopshop:hoodchopanim', src)
     Wait(12500)
-    Player.Functions.AddItem(item, amount)
+
+    local added = Player.Functions.AddItem(item, amount)
+    if added ~= false then
+        addChopshopActionLog(src, 'Rã Két Nước', nil, {
+            { name = 'radiator', count = 1, prefix = '-' },
+            { name = item, count = amount, prefix = '+' },
+        })
+    end
 end)
 
 RegisterNetEvent("orbit-chopshop:server:choptrunk", function()
     local src = source
+    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+        if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    end
     local Player = QBX:GetPlayer(src)
     if not Player then return end
 
@@ -240,8 +451,17 @@ RegisterNetEvent("orbit-chopshop:server:choptrunk", function()
 
     if not CanCarryItem(src, item, amount) then return NotifyFull(src) end
 
-    Player.Functions.RemoveItem("trunk", 1)
+    local removed = Player.Functions.RemoveItem("trunk", 1)
+    if removed == false then return end
+
     TriggerClientEvent('orbit-chopshop:trunkchopanim', src)
     Wait(12500)
-    Player.Functions.AddItem(item, amount)
+
+    local added = Player.Functions.AddItem(item, amount)
+    if added ~= false then
+        addChopshopActionLog(src, 'Rã Cốp Xe', nil, {
+            { name = 'trunk', count = 1, prefix = '-' },
+            { name = item, count = amount, prefix = '+' },
+        })
+    end
 end)
