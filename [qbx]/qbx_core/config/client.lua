@@ -54,7 +54,7 @@ return {
     discord = {
         enabled = true, -- This will enable or disable the built in discord rich presence.
 
-        appId = '1354694235558907974', -- This is the Application ID (Replace this with you own)
+        appId = '1493378130985877625', -- This is the Application ID (Replace this with you own)
 
         largeIcon = { -- To set this up, visit https://forum.cfx.re/t/how-to-updated-discord-rich-presence-custom-image/157686
             icon = 'duck', -- Here you will have to put the image name for the 'large' icon.
