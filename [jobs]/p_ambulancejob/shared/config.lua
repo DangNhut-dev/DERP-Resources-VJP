@@ -136,7 +136,7 @@ Config.CheckIn = {
     AiMedic = {
         enabled = true, -- enable AI medic? [will use ai medic instead of respawn menu]
         model = 's_m_m_paramedic_01', -- ped model of AI medic
-        vehModel = 'emsnspeedo', -- vehicle model of AI medic
+        vehModel = '25fpiu1', -- vehicle model of AI medic
     },
     onStart = function(hospitalName, spawnType) -- spawnType can be 'respawn' or 'check-in' [respawn means player used E on death]
         -- this code inside will execute when player start check-in
@@ -725,7 +725,7 @@ Config.Bleeding = {
     },
     disabledControlsWhileUsing = {move = false, combat = true, mouse = false, car = true},
     weapons = {
-        [`WEAPON_KNIFE`] = 1, -- when u got hit by WEAPON_KNIFE, it will add 1 to overall bleeding value [higher value = faster bleeding and more effects] max value is 100
+        [`WEAPON_KNIFE`] = 1,
         [`WEAPON_DAGGER`] = 1,
         [`WEAPON_STONE_HATCHET`] = 1,
         [`WEAPON_BATTLEAXE`] = 1,
@@ -733,7 +733,8 @@ Config.Bleeding = {
         [`WEAPON_MACHETE`] = 1,
         [`WEAPON_SWITCHBLADE`] = 1,
         [`WEAPON_HATCHET`] = 1,
-        [`WEAPON_PISTOL`] = 2, -- when u got hit by WEAPON_PISTOL, it will add 2 to overall bleeding value
+        [`WEAPON_KATANA`] = 1,
+        [`WEAPON_PISTOL`] = 2,
         [`WEAPON_VINTAGEPISTOL`] = 2,
         [`WEAPON_PISTOLXM3`] = 2,
         [`WEAPON_CERAMICPISTOL`] = 2,
@@ -743,15 +744,41 @@ Config.Bleeding = {
         [`WEAPON_SNSPISTOL`] = 2,
         [`WEAPON_PISTOL_MK2`] = 2,
         [`WEAPON_HEAVYPISTOL`] = 2,
-        [`WEAPON_SMG`] = 3, -- when u got hit by WEAPON_SMG, it will add 3 to overall bleeding value
+        [`WEAPON_APPISTOL`] = 2,
+        [`WEAPON_GLOCK17`] = 2,
+        [`WEAPON_GLOCK17CUSTOM`] = 2,
+        [`WEAPON_GLOCK22`] = 2,
+        [`WEAPON_G26`] = 2,
+        [`WEAPON_GLOCK26S`] = 2,
+        [`WEAPON_GLOCK29AUTO`] = 2,
+        [`WEAPON_SIGM17`] = 2,
+        [`WEAPON_M9A3`] = 2,
+        [`WEAPON_G2CTX`] = 2,
+        [`WEAPON_SMG`] = 3,
         [`WEAPON_COMBATPDW`] = 3,
         [`WEAPON_MICROSMG`] = 3,
         [`WEAPON_MINISMG`] = 3,
-        [`WEAPON_RIFLE`] = 4, -- when u got hit by WEAPON_RIFLE, it will add 4 to overall bleeding value
-        [`WEAPON_SNIPERRIFLE`] = 5, -- when u got hit by WEAPON_SNIPER, it will add 5 to overall bleeding value
+        [`WEAPON_MACHINEPISTOL`] = 3,
+        [`WEAPON_TECPISTOL`] = 3,
+        [`WEAPON_MP9`] = 3,
+        [`WEAPON_DRACOCUSTOM`] = 3,
+        [`WEAPON_RIFLE`] = 4,
+        [`WEAPON_CARBINERIFLE`] = 4,
+        [`WEAPON_CARBINERIFLE_MK2`] = 4,
+        [`WEAPON_ASSAULTRIFLE`] = 4,
+        [`WEAPON_ASSAULTRIFLE_MK2`] = 4,
+        [`WEAPON_ADVANCEDRIFLE`] = 4,
+        [`WEAPON_TACTICALRIFLE`] = 4,
+        [`WEAPON_AK74`] = 4,
+        [`WEAPON_AR15`] = 4,
+        [`WEAPON_AR15FULL`] = 4,
+        [`WEAPON_HK416`] = 4,
+        [`WEAPON_SNIPERRIFLE`] = 5,
+        [`WEAPON_M110`] = 5,
         [`WEAPON_PUMPSHOTGUN`] = 5,
         [`WEAPON_HEAVYSHOTGUN`] = 5,
         [`WEAPON_PUMPSHOTGUN_MK2`] = 5,
+        [`WEAPON_REMINGTON870`] = 5,
         [`WEAPON_SAWNOFFSHOTGUN`] = 4,
         [`WEAPON_BULLPUPSHOTGUN`] = 4,
         [`WEAPON_ASSAULTSHOTGUN`] = 4,
@@ -815,15 +842,14 @@ Config.DeathScreen = {
 -- Bones Reference: https://wiki.rage.mp/wiki/Bones
 Config.Damages = {
     enabled = true,
-    refreshRate = 500, -- time in ms for refreshing healing menu [lower = more smooth but more performance impact]
+    refreshRate = 500,
     reviveAnimation = true,
-    advancedHealing = true, -- [true = progress bar and animation per used item to heal, false = no progress / animation]
+    advancedHealing = true,
     moneyIntoSociety = true,
     damagesUI = false,
     damagesUIKey = 'TAB',
-    informAndFreeze = false, -- [true = script will show notify and freeze player when medic is healing injuries]
+    informAndFreeze = false,
     preventRegister = function(weaponHash)
-        -- return true to prevent registering damage for this weapon [you can use deathmatch/paintball etc exports]
         if GetResourceState('nass_paintball') == 'started' then
             if exports['nass_paintball']:inGame() then return true end
         end
@@ -831,7 +857,7 @@ Config.Damages = {
         if GetResourceState('pug-paintball') == 'started' then
             if exports["pug-paintball"]:IsInPaintball() then return true end
         end
-        
+
         if GetResourceState('brutal_paintball') == 'started' then
             if exports.brutal_paintball:isInPaintball() then return true end
         end
@@ -845,28 +871,27 @@ Config.Damages = {
     moneyforHealing = {
         perInjury = true,
         amount = 100,
-        medicPercent = 20, -- how much % from base amount will get medic
+        medicPercent = 20,
     },
     effects = {
         enabled = true,
-        generalEffect = true, -- enable general damage effect? (will show up blood on screen when player is damaged)
-        chance = 10, -- 10% chance to get effect when get hit in some body part below
+        generalEffect = true,
+        chance = 10,
         bones = {
-            ['head'] = {effect = 'blackOut', value = 30}, -- add 30 value to blackOut effect
+            ['head'] = {effect = 'blackOut', value = 30},
             ['leftArm'] = {effect = 'shakeAim', value = 30},
             ['rightArm'] = {effect = 'shakeAim', value = 30},
         }
     },
     modifiers = {
-        [`WEAPON_UNARMED`] = 0.25, -- fist
+        [`WEAPON_UNARMED`] = 0.25,
     },
     bones = {
-        -- These means when player got hit in one of these bones, it will register damage for that body part :)
         ['head'] = {
             ['12844'] = true, ['31086'] = true, ['25260'] = true, ['27474'] = true, ['39317'] = true,
         },
         ['torso'] = {
-            ['0'] = true, ['11816'] = true,  ['24816'] = true, ['24817'] = true, ['24818'] = true
+            ['0'] = true, ['11816'] = true, ['24816'] = true, ['24817'] = true, ['24818'] = true
         },
         ['leftArm'] = {
             ['45509'] = true, ['61163'] = true, ['18905'] = true, ['36029'] = true, ['60309'] = true,
@@ -886,341 +911,536 @@ Config.Damages = {
         }
     },
     weapons = {
+        -- ========== TAY KHÔNG ==========
         [`WEAPON_UNARMED`] = {
             injuries = {
-                -- there must be some damage at [1] index !!!
-                [1] = {label = 'Bruise', color = 'grape.6', items = {['ointment'] = 1}},
-                [5] = {label = 'Minor Cut', color = 'red.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
-                [7] = {label = 'Deep Cut', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['bandage'] = 1}},
-                [10] = {label = 'Fracture', color = 'red.8', items = {['splint'] = 1, ['medical_kit'] = 1}},
-                [20] = {label = 'Broken Bone', color = 'red.9', items = {['splint'] = 1, ['advanced_medical_kit'] = 2}},
+                [1]  = {label = 'Bầm tím', color = 'grape.6', items = {['ointment'] = 1}},
+                [5]  = {label = 'Vết cắt nhỏ', color = 'red.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
+                [7]  = {label = 'Vết cắt sâu', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['bandage'] = 1}},
+                [10] = {label = 'Nứt xương', color = 'red.8', items = {['splint'] = 1, ['medical_kit'] = 1}},
+                [20] = {label = 'Gãy xương', color = 'red.9', items = {['splint'] = 1, ['advanced_medical_kit'] = 2}},
             }
         },
+
+        -- ========== DAO ==========
         [`WEAPON_KNIFE`] = {
             injuries = {
-                [1] = {label = 'Knife Small Cut', color = 'grape.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
-                [2] = {label = 'Knife Minor Cut', color = 'red.6', items = { ['disinfectant'] = 1, ['gauze'] = 2, ['bandage'] = 1}},
-                [3] = {label = 'Knife Deep Cut', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['medical_kit'] = 1, ['bandage'] = 1}},
-                [4] = {label = 'Stab Wound', color = 'red.8', items = {['suture_kit'] = 2, ['advanced_medical_kit'] = 1, ['bandage'] = 2}},
-                [5] = {label = 'Severed Artery', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_250'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
-                [6] = {label = 'Critical Laceration', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
+                [1] = {label = 'Vết cắt nhỏ do dao', color = 'grape.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
+                [2] = {label = 'Vết cắt vừa do dao', color = 'red.6', items = {['disinfectant'] = 1, ['gauze'] = 2, ['bandage'] = 1}},
+                [3] = {label = 'Vết cắt sâu do dao', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['medical_kit'] = 1, ['bandage'] = 1}},
+                [4] = {label = 'Vết đâm xuyên', color = 'red.8', items = {['suture_kit'] = 2, ['advanced_medical_kit'] = 1, ['bandage'] = 2}},
+                [5] = {label = 'Đứt động mạch', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_250'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
+                [6] = {label = 'Rách nghiêm trọng', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
             }
         },
-        [`WEAPON_PISTOL`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            },
 
-            -- you can use advancedInjuries for every weapon and bones [head, torso, leftArm, rightArm, leftLeg, rightLeg]
-            -- advancedInjuries = {
-            --     ['head'] = {
-            --         [1] = {label = 'Headshot Wound', color = 'red.8', items = {['suture_kit'] = 2, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            --     },
-            -- }
-        },
-        [`WEAPON_COMBATPISTOL`] = {
+        -- ========== DAO GĂNG / KATANA ==========
+        [`WEAPON_DAGGER`] = {
             injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_VINTAGEPISTOL`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_SNSPISTOL_MK2`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_PISTOL50`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_SNSPISTOL`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_PISTOL_MK2`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_HEAVYPISTOL`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_APPISTOL`] = {
-            injuries = {
-                [1] = {label = 'Small Caliber Wound', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Caliber Wound', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
-                [5] = {label = 'Large Caliber Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
-                [7] = {label = 'Heavy Bleeding Wound', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
-            }
-        },
-        [`WEAPON_SMG`] = {
-            injuries = {
-                [1] = {label = 'Light SMG Wound', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [5] = {label = 'SMG Wound', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [7] = {label = 'Multiple SMG Wounds', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
-                [10] = {label = 'Critical SMG Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-                [15] = {label = 'SMG Arterial Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_COMBATPDW`] = {
-            injuries = {
-                [1] = {label = 'Light SMG Wound', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [5] = {label = 'SMG Wound', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [7] = {label = 'Multiple SMG Wounds', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
-                [10] = {label = 'Critical SMG Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-                [15] = {label = 'SMG Arterial Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_MICROSMG`] = {
-            injuries = {
-                [1] = {label = 'Light SMG Wound', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [5] = {label = 'SMG Wound', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [7] = {label = 'Multiple SMG Wounds', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
-                [10] = {label = 'Critical SMG Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-                [15] = {label = 'SMG Arterial Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_TECPISTOL`] = {
-            injuries = {
-                [1] = {label = 'Light SMG Wound', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [5] = {label = 'SMG Wound', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [7] = {label = 'Multiple SMG Wounds', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
-                [10] = {label = 'Critical SMG Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-                [15] = {label = 'SMG Arterial Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_MINISMG`] = {
-            injuries = {
-                [1] = {label = 'Light SMG Wound', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [5] = {label = 'SMG Wound', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [7] = {label = 'Multiple SMG Wounds', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
-                [10] = {label = 'Critical SMG Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-                [15] = {label = 'SMG Arterial Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_MACHINEPISTOL`] = {
-            injuries = {
-                [1] = {label = 'Light SMG Wound', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [5] = {label = 'SMG Wound', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [7] = {label = 'Multiple SMG Wounds', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
-                [10] = {label = 'Critical SMG Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-                [15] = {label = 'SMG Arterial Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_CARBINERIFLE`] = {
-            injuries = {
-                [1] = {label = 'Rifle Graze', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [4] = {label = 'Rifle Entry Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [7] = {label = 'Rifle Exit Wound', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [9] = {label = 'High Velocity Impact', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [12] = {label = 'Rifle Organ Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_ASSAULTRIFLE_MK2`] = {
-            injuries = {
-                [1] = {label = 'Rifle Graze', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [4] = {label = 'Rifle Entry Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [7] = {label = 'Rifle Exit Wound', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [9] = {label = 'High Velocity Impact', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [12] = {label = 'Rifle Organ Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_ADVANCEDRIFLE`] = {
-            injuries = {
-                [1] = {label = 'Rifle Graze', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [4] = {label = 'Rifle Entry Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [7] = {label = 'Rifle Exit Wound', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [9] = {label = 'High Velocity Impact', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [12] = {label = 'Rifle Organ Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_ASSAULTRIFLE`] = {
-            injuries = {
-                [1] = {label = 'Rifle Graze', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [4] = {label = 'Rifle Entry Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [7] = {label = 'Rifle Exit Wound', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [9] = {label = 'High Velocity Impact', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [12] = {label = 'Rifle Organ Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_TACTICALRIFLE`] = {
-            injuries = {
-                [1] = {label = 'Rifle Graze', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [4] = {label = 'Rifle Entry Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [7] = {label = 'Rifle Exit Wound', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [9] = {label = 'High Velocity Impact', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [12] = {label = 'Rifle Organ Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_CARBINERIFLE_MK2`] = {
-            injuries = {
-                [1] = {label = 'Rifle Graze', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [4] = {label = 'Rifle Entry Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [7] = {label = 'Rifle Exit Wound', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [9] = {label = 'High Velocity Impact', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [12] = {label = 'Rifle Organ Damage', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_SHOTGUN`] = {
-            injuries = {
-                [1] = {label = 'Shotgun Pellet Wound', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
-                [2] = {label = 'Shotgun Spread Wound', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [4] = {label = 'Shotgun Blast Trauma', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
-                [6] = {label = 'Close Range Devastation', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
-                [8] = {label = 'Shotgun Critical Trauma', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
-            }
-        },
-        [`WEAPON_SNIPER`] = {
-            injuries = {
-                [1] = {label = 'Sniper Graze', color = 'red.7', items = {['bandage'] = 2, ['advanced_medical_kit'] = 1}},
-                [2] = {label = 'High Caliber Impact', color = 'red.8', items = {['bandage'] = 3, ['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1}},
-                [3] = {label = 'Armor Piercing Wound', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 1, ['cyclonamine'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1}},
-                [4] = {label = 'Devastating Impact', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 2, ['cyclonamine'] = 1, ['adrenaline'] = 1, ['blood_bag_500'] = 1}},
-                [5] = {label = 'Critical Sniper Trauma', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 1, ['cyclonamine'] = 1, ['morphine'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1}},
+                [1] = {label = 'Vết cắt nhỏ do dao găm', color = 'grape.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
+                [2] = {label = 'Vết cắt vừa do dao găm', color = 'red.6', items = {['disinfectant'] = 1, ['gauze'] = 2, ['bandage'] = 1}},
+                [3] = {label = 'Vết cắt sâu do dao găm', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['medical_kit'] = 1, ['bandage'] = 1}},
+                [4] = {label = 'Vết đâm xuyên', color = 'red.8', items = {['suture_kit'] = 2, ['advanced_medical_kit'] = 1, ['bandage'] = 2}},
+                [5] = {label = 'Đứt động mạch', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_250'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
+                [6] = {label = 'Rách nghiêm trọng', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
             }
         },
         [`WEAPON_MACHETE`] = {
             injuries = {
-                [1] = {label = 'Machete Slash', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
-                [3] = {label = 'Deep Machete Cut', color = 'red.7', items = {['bandage'] = 2, ['disinfectant'] = 1, ['suture_kit'] = 1}},
-                [5] = {label = 'Severed Muscle', color = 'red.8', items = {['bandage'] = 2, ['suture_kit'] = 1, ['tourniquet'] = 1}},
+                [1] = {label = 'Vết chém rựa', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
+                [3] = {label = 'Vết chém sâu do rựa', color = 'red.7', items = {['bandage'] = 2, ['disinfectant'] = 1, ['suture_kit'] = 1}},
+                [5] = {label = 'Đứt cơ', color = 'red.8', items = {['bandage'] = 2, ['suture_kit'] = 1, ['tourniquet'] = 1}},
             }
         },
+        [`WEAPON_KATANA`] = {
+            injuries = {
+                [1] = {label = 'Vết chém kiếm nhẹ', color = 'red.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
+                [2] = {label = 'Vết chém kiếm sâu', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['bandage'] = 2}},
+                [3] = {label = 'Rách cơ do kiếm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [4] = {label = 'Đứt gân do kiếm', color = 'red.9', items = {['suture_kit'] = 2, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [5] = {label = 'Vết chém chí mạng', color = 'red.9', items = {['suture_kit'] = 2, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1, ['morphine'] = 1}},
+            }
+        },
+
+        -- ========== VŨ KHÍ CẬN CHIẾN ==========
         [`WEAPON_CROWBAR`] = {
             injuries = {
-                [1] = {label = 'Blunt Force Bruise', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
-                [2] = {label = 'Crowbar Laceration', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
-                [4] = {label = 'Bone Fracture', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
-                [6] = {label = 'Compound Fracture', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
-                [8] = {label = 'Severe Head Trauma', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
+                [1] = {label = 'Bầm tím do xà beng', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
+                [2] = {label = 'Rách da do xà beng', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
+                [4] = {label = 'Nứt xương', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
+                [6] = {label = 'Gãy xương hở', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
+                [8] = {label = 'Chấn thương sọ não nặng', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
             }
         },
         [`WEAPON_WRENCH`] = {
             injuries = {
-                [1] = {label = 'Blunt Force Bruise', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
-                [2] = {label = 'Wrench Laceration', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
-                [4] = {label = 'Bone Fracture', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
-                [6] = {label = 'Compound Fracture', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
-                [8] = {label = 'Severe Head Trauma', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
+                [1] = {label = 'Bầm tím do cờ lê', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
+                [2] = {label = 'Rách da do cờ lê', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
+                [4] = {label = 'Nứt xương', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
+                [6] = {label = 'Gãy xương hở', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
+                [8] = {label = 'Chấn thương sọ não nặng', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
             }
         },
         [`WEAPON_HAMMER`] = {
             injuries = {
-                [1] = {label = 'Blunt Force Bruise', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
-                [2] = {label = 'Hammer Laceration', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
-                [4] = {label = 'Bone Fracture', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
-                [6] = {label = 'Compound Fracture', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
-                [8] = {label = 'Severe Head Trauma', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
-            }
-        },
-        [`WEAPON_DAGGER`] = {
-            injuries = {
-                [1] = {label = 'Knife Small Cut', color = 'grape.6', items = {['disinfectant'] = 1, ['gauze'] = 1, ['bandage'] = 1}},
-                [2] = {label = 'Knife Minor Cut', color = 'red.6', items = { ['disinfectant'] = 1, ['gauze'] = 2, ['bandage'] = 1}},
-                [3] = {label = 'Knife Deep Cut', color = 'red.7', items = {['disinfectant'] = 1, ['suture_kit'] = 1, ['medical_kit'] = 1, ['bandage'] = 1}},
-                [4] = {label = 'Stab Wound', color = 'red.8', items = {['suture_kit'] = 2, ['advanced_medical_kit'] = 1, ['bandage'] = 2}},
-                [5] = {label = 'Severed Artery', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_250'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
-                [6] = {label = 'Critical Laceration', color = 'red.9', items = {['gauze'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1, ['advanced_medical_kit'] = 1}},
+                [1] = {label = 'Bầm tím do búa', color = 'grape.6', items = {['bandage'] = 1, ['icepack'] = 1}},
+                [2] = {label = 'Rách da do búa', color = 'red.6', items = {['bandage'] = 2}},
+                [3] = {label = 'Dập xương', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['splint'] = 1}},
+                [4] = {label = 'Vỡ xương', color = 'red.9', items = {['bandage'] = 4, ['advanced_medical_kit'] = 1, ['suture_kit'] = 1}},
+                [5] = {label = 'Chấn thương nghiền nát', color = 'red.9', items = {['bandage'] = 4, ['advanced_medical_kit'] = 1, ['blood_bag_250'] = 1, ['suture_kit'] = 2}},
             }
         },
         [`WEAPON_BATTLEAXE`] = {
             injuries = {
-                [1] = {label = 'Blunt Force Bruise', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
-                [2] = {label = 'Axe Laceration', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
-                [4] = {label = 'Bone Fracture', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
-                [6] = {label = 'Compound Fracture', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
-                [8] = {label = 'Severe Head Trauma', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
+                [1] = {label = 'Bầm tím do rìu', color = 'grape.6', items = {['bandage'] = 1, ['ointment'] = 1, ['icepack'] = 1}},
+                [2] = {label = 'Rách da do rìu', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
+                [4] = {label = 'Nứt xương do rìu', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2}},
+                [6] = {label = 'Gãy xương hở do rìu', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['adrenaline'] = 1}},
+                [8] = {label = 'Chấn thương sọ não nặng', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['morphine'] = 2, ['suture_kit'] = 1}},
             }
         },
         [`WEAPON_BAT`] = {
             injuries = {
-                [1] = {label = 'Bat Bruise', color = 'grape.6', items = {['bandage'] = 1, ['icepack'] = 1}},
-                [2] = {label = 'Bat Welt', color = 'red.6', items = {['bandage'] = 2, ['icepack'] = 1}},
-                [3] = {label = 'Rib Fracture', color = 'red.7', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1}},
-                [4] = {label = 'Multiple Fractures', color = 'red.8', items = {['bandage'] = 4, ['advanced_medical_kit'] = 2, ['splint'] = 1}},
-                [5] = {label = 'Severe Blunt Trauma', color = 'red.9', items = {['bandage'] = 5, ['advanced_medical_kit'] = 3, ['blood_bag_250'] = 1}},
+                [1] = {label = 'Bầm tím do gậy', color = 'grape.6', items = {['bandage'] = 1, ['icepack'] = 1}},
+                [2] = {label = 'Sưng tấy do gậy', color = 'red.6', items = {['bandage'] = 2, ['icepack'] = 1}},
+                [3] = {label = 'Gãy xương sườn', color = 'red.7', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1}},
+                [4] = {label = 'Gãy nhiều xương', color = 'red.8', items = {['bandage'] = 4, ['advanced_medical_kit'] = 2, ['splint'] = 1}},
+                [5] = {label = 'Chấn thương nặng do vật tày', color = 'red.9', items = {['bandage'] = 5, ['advanced_medical_kit'] = 3, ['blood_bag_250'] = 1}},
             }
         },
-        [`WEAPON_HAMMER`] = {
+        [`WEAPON_SLEDGEHAMMER`] = {
             injuries = {
-                [1] = {label = 'Hammer Bruise', color = 'grape.6', items = {['bandage'] = 1, ['icepack'] = 1}},
-                [2] = {label = 'Hammer Laceration', color = 'red.6', items = {['bandage'] = 2}},
-                [3] = {label = 'Crushed Bone', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['splint'] = 1}},
-                [4] = {label = 'Shattered Bone', color = 'red.9', items = {['bandage'] = 4, ['advanced_medical_kit'] = 1, ['suture_kit'] = 1}},
-                [5] = {label = 'Pulverized Trauma', color = 'red.9', items = {['bandage'] = 4, ['advanced_medical_kit'] = 1, ['blood_bag_250'] = 1, ['suture_kit'] = 2}},
+                [1] = {label = 'Bầm tím do búa tạ', color = 'grape.6', items = {['bandage'] = 1, ['icepack'] = 1}},
+                [2] = {label = 'Dập mô mềm', color = 'red.6', items = {['bandage'] = 2, ['icepack'] = 1, ['ointment'] = 1}},
+                [3] = {label = 'Vỡ xương do búa tạ', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['splint'] = 1}},
+                [4] = {label = 'Nghiền nát xương', color = 'red.9', items = {['bandage'] = 4, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['blood_bag_250'] = 1}},
+                [5] = {label = 'Chấn thương nghiền nát chí mạng', color = 'red.9', items = {['bandage'] = 4, ['advanced_medical_kit'] = 2, ['morphine'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1}},
             }
         },
+        [`WEAPON_COLBATON`] = {
+            injuries = {
+                [1] = {label = 'Bầm tím do dùi cui', color = 'grape.6', items = {['bandage'] = 1, ['icepack'] = 1}},
+                [3] = {label = 'Sưng tấy do dùi cui', color = 'red.6', items = {['bandage'] = 2, ['icepack'] = 1}},
+                [5] = {label = 'Nứt xương do dùi cui', color = 'red.7', items = {['bandage'] = 2, ['advanced_medical_kit'] = 1, ['splint'] = 1}},
+                [7] = {label = 'Gãy xương do dùi cui', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['splint'] = 1}},
+                [10] = {label = 'Chấn thương nặng do dùi cui', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['morphine'] = 1, ['blood_bag_250'] = 1}},
+            }
+        },
+
+        -- ========== SÚNG LỤC ==========
+        [`WEAPON_PISTOL`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_COMBATPISTOL`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_VINTAGEPISTOL`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_SNSPISTOL_MK2`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_PISTOL50`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_SNSPISTOL`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_PISTOL_MK2`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_HEAVYPISTOL`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        [`WEAPON_APPISTOL`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do đạn', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- Glock 17
+        [`WEAPON_GLOCK17`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- Glock 17 Custom
+        [`WEAPON_GLOCK17CUSTOM`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- Glock 22
+        [`WEAPON_GLOCK22`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn .45 nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn .45 vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn .45 lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do .45', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- Glock 26
+        [`WEAPON_G26`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- Glock 26S
+        [`WEAPON_GLOCK26S`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- Glock 29 Auto
+        [`WEAPON_GLOCK29AUTO`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- SIG M17
+        [`WEAPON_SIGM17`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- M9A3
+        [`WEAPON_M9A3`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn .45 nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn .45 vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn .45 lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm.45', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+        -- G2C TX
+        [`WEAPON_G2CTX`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn 9mm nhỏ', color = 'red.5', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Vết thương đạn 9mm vừa', color = 'red.6', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [5] = {label = 'Vết thương đạn 9mm lớn', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['morphine'] = 2}},
+                [7] = {label = 'Chảy máu nặng do 9mm', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1, ['morphine'] = 2}},
+            }
+        },
+
+        -- ========== TIỂU LIÊN (SMG) ==========
+        [`WEAPON_SMG`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương SMG nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương SMG', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương SMG', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_COMBATPDW`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương SMG nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương SMG', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương SMG', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_MICROSMG`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương SMG nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương SMG', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương SMG', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_TECPISTOL`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương SMG nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương SMG', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương SMG', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_MINISMG`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương SMG nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương SMG', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương SMG', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_MACHINEPISTOL`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương SMG nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương SMG', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương SMG', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do SMG', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        -- MP9
+        [`WEAPON_MP9`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương MP9 nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [5]  = {label = 'Vết thương MP9', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [7]  = {label = 'Nhiều vết thương MP9', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1}},
+                [10] = {label = 'Chấn thương nặng do MP9', color = 'red.9', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [15] = {label = 'Tổn thương động mạch do MP9', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+            }
+        },
+        -- Draco Custom
+        [`WEAPON_DRACOCUSTOM`] = {
+            injuries = {
+                [1]  = {label = 'Vết thương Draco nhẹ', color = 'red.6', items = {['tourniquet'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Vết thương Draco', color = 'red.7', items = {['bandage'] = 1, ['suture_kit'] = 1, ['blood_bag_250'] = 1, ['morphine'] = 1}},
+                [7]  = {label = 'Nhiều vết thương Draco', color = 'red.8', items = {['suture_kit'] = 1, ['blood_bag_500'] = 1, ['medical_kit'] = 1}},
+                [10] = {label = 'Chấn thương nặng do Draco', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [13] = {label = 'Tổn thương nội tạng do Draco', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 2, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+            }
+        },
+
+        -- ========== SÚNG TRƯỜNG ==========
+        [`WEAPON_CARBINERIFLE`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn súng trường', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do súng trường', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_ASSAULTRIFLE_MK2`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn súng trường', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do súng trường', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_ADVANCEDRIFLE`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn súng trường', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do súng trường', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_ASSAULTRIFLE`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn súng trường', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do súng trường', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_TACTICALRIFLE`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn súng trường', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do súng trường', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        [`WEAPON_CARBINERIFLE_MK2`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn súng trường', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do súng trường', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        -- AK-74
+        [`WEAPON_AK74`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn AK', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn AK xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn AK xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao do AK', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do AK', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        -- AR-15
+        [`WEAPON_AR15`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn AR-15', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn AR-15 xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn AR-15 xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao do AR-15', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do AR-15', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        -- AR-15 Full Auto
+        [`WEAPON_AR15FULL`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn AR-15', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn AR-15 xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn AR-15 xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao do AR-15', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do AR-15', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        -- HK416
+        [`WEAPON_HK416`] = {
+            injuries = {
+                [1]  = {label = 'Sượt đạn HK416', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [4]  = {label = 'Đạn HK416 xuyên vào', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [7]  = {label = 'Đạn HK416 xuyên ra', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [9]  = {label = 'Va chạm tốc độ cao do HK416', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [12] = {label = 'Tổn thương nội tạng do HK416', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+
+        -- ========== SÚNG BẮN TỈA ==========
+        [`WEAPON_SNIPER`] = {
+            injuries = {
+                [1] = {label = 'Sượt đạn bắn tỉa', color = 'red.7', items = {['bandage'] = 2, ['advanced_medical_kit'] = 1}},
+                [2] = {label = 'Va chạm đạn cỡ lớn', color = 'red.8', items = {['bandage'] = 3, ['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Đạn xuyên giáp', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 1, ['cyclonamine'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1}},
+                [4] = {label = 'Tổn thương hủy diệt', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 2, ['cyclonamine'] = 1, ['adrenaline'] = 1, ['blood_bag_500'] = 1}},
+                [5] = {label = 'Chấn thương chí mạng do bắn tỉa', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 1, ['cyclonamine'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1}},
+            }
+        },
+        -- M110
+        [`WEAPON_M110`] = {
+            injuries = {
+                [1] = {label = 'Sượt đạn M110', color = 'red.7', items = {['bandage'] = 2, ['advanced_medical_kit'] = 1}},
+                [2] = {label = 'Va chạm đạn M110 cỡ lớn', color = 'red.8', items = {['bandage'] = 3, ['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1}},
+                [3] = {label = 'Đạn M110 xuyên giáp', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 1, ['cyclonamine'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1}},
+                [4] = {label = 'Tổn thương hủy diệt do M110', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 2, ['cyclonamine'] = 1, ['adrenaline'] = 1, ['blood_bag_500'] = 1}},
+                [5] = {label = 'Chấn thương chí mạng do M110', color = 'red.9', items = {['bandage'] = 4, ['suture_kit'] = 1, ['cyclonamine'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1}},
+            }
+        },
+
+        -- ========== SÚNG HƠI / SHOTGUN ==========
+        [`WEAPON_SHOTGUN`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn ghém', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [2] = {label = 'Vết thương đạn ghém lan rộng', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [4] = {label = 'Chấn thương nổ do shotgun', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [6] = {label = 'Hủy diệt cự ly gần', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [8] = {label = 'Chấn thương chí mạng do shotgun', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+        -- Remington 870
+        [`WEAPON_REMINGTON870`] = {
+            injuries = {
+                [1] = {label = 'Vết thương đạn ghém Remington', color = 'red.6', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1}},
+                [2] = {label = 'Vết thương đạn ghém lan rộng', color = 'red.7', items = {['suture_kit'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [4] = {label = 'Chấn thương nổ do Remington', color = 'red.8', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_250'] = 1, ['medical_kit'] = 1}},
+                [6] = {label = 'Hủy diệt cự ly gần do Remington', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 1, ['advanced_medical_kit'] = 1}},
+                [8] = {label = 'Chấn thương chí mạng do Remington', color = 'red.9', items = {['suture_kit'] = 1, ['morphine'] = 1, ['blood_bag_500'] = 2, ['advanced_medical_kit'] = 1}},
+            }
+        },
+
+        -- ========== NỔ ==========
         [`WEAPON_EXPLOSION`] = {
             injuries = {
-                [1] = {label = 'Blast Bruise', color = 'red.6', items = {['bandage'] = 2, ['ointment'] = 1}},
-                [2] = {label = 'Shrapnel Wound', color = 'red.7', items = {['bandage'] = 3, ['suture_kit'] = 1, ['ointment'] = 1}},
-                [3] = {label = 'Blast Burns', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['ointment'] = 2}},
-                [4] = {label = 'Multiple Shrapnel', color = 'red.9', items = {['bandage'] = 3, ['suture_kit'] = 2, ['blood_bag_250'] = 1}},
-                [5] = {label = 'Catastrophic Blast Injury', color = 'red.9', items = {['ointment'] = 3, ['suture_kit'] = 1, ['bandage'] = 1, ['gauze'] = 1}},
+                [1] = {label = 'Bầm tím do nổ', color = 'red.6', items = {['bandage'] = 2, ['ointment'] = 1}},
+                [2] = {label = 'Vết thương mảnh đạn', color = 'red.7', items = {['bandage'] = 3, ['suture_kit'] = 1, ['ointment'] = 1}},
+                [3] = {label = 'Bỏng do nổ', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['ointment'] = 2}},
+                [4] = {label = 'Nhiều mảnh đạn', color = 'red.9', items = {['bandage'] = 3, ['suture_kit'] = 2, ['blood_bag_250'] = 1}},
+                [5] = {label = 'Chấn thương thảm khốc do nổ', color = 'red.9', items = {['ointment'] = 3, ['suture_kit'] = 1, ['bandage'] = 1, ['gauze'] = 1}},
             }
         },
+
+        -- ========== LỬA ==========
         [`WEAPON_FIRE`] = {
             injuries = {
-                [1] = {label = 'Minor Burn', color = 'orange.6', items = {['ointment'] = 1}},
-                [2] = {label = 'First Degree Burn', color = 'orange.7', items = {['bandage'] = 1, ['ointment'] = 2}},
-                [3] = {label = 'Second Degree Burn', color = 'red.7', items = {['bandage'] = 2, ['advanced_medical_kit'] = 1, ['ointment'] = 3}},
-                [4] = {label = 'Third Degree Burn', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['ointment'] = 4, ['morphine'] = 1}},
-                [5] = {label = 'Severe Burns', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 3, ['ointment'] = 5, ['suture_kit'] = 1, ['morphine'] = 2}},
+                [1] = {label = 'Bỏng nhẹ', color = 'orange.6', items = {['ointment'] = 1}},
+                [2] = {label = 'Bỏng độ 1', color = 'orange.7', items = {['bandage'] = 1, ['ointment'] = 2}},
+                [3] = {label = 'Bỏng độ 2', color = 'red.7', items = {['bandage'] = 2, ['advanced_medical_kit'] = 1, ['ointment'] = 3}},
+                [4] = {label = 'Bỏng độ 3', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['ointment'] = 4, ['morphine'] = 1}},
+                [5] = {label = 'Bỏng nặng', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 3, ['ointment'] = 5, ['suture_kit'] = 1, ['morphine'] = 2}},
             }
         },
+
+        -- ========== NGÃ ==========
         [`WEAPON_FALL`] = {
             injuries = {
-                [1] = {label = 'Scraped Knee', color = 'grape.6', items = {['bandage'] = 1, ['disinfectant'] = 1}},
-                [2] = {label = 'Sprained Ankle', color = 'red.6', items = {['bandage'] = 2, ['icepack'] = 1}},
-                [3] = {label = 'Broken Arm', color = 'red.7', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['splint'] = 1}},
-                [4] = {label = 'Multiple Fractures', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['splint'] = 2}},
-                [5] = {label = 'Spinal Injury', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['blood_bag_500'] = 1, ['suture_kit'] = 2, ['morphine'] = 2}},
+                [1] = {label = 'Trầy đầu gối', color = 'grape.6', items = {['bandage'] = 1, ['disinfectant'] = 1}},
+                [2] = {label = 'Bong gân mắt cá', color = 'red.6', items = {['bandage'] = 2, ['icepack'] = 1}},
+                [3] = {label = 'Gãy tay', color = 'red.7', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['splint'] = 1}},
+                [4] = {label = 'Gãy nhiều xương', color = 'red.8', items = {['bandage'] = 3, ['advanced_medical_kit'] = 2, ['splint'] = 2}},
+                [5] = {label = 'Chấn thương cột sống', color = 'red.9', items = {['bandage'] = 3, ['advanced_medical_kit'] = 1, ['blood_bag_500'] = 1, ['suture_kit'] = 2, ['morphine'] = 2}},
             }
         },
-        -- damages from vehicle
+
+        -- ========== XE CÁN ==========
         [-1553120962] = {
             injuries = {
-                [1] = {label = 'Road Rash', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
-                [2] = {label = 'Impact Bruising', color = 'red.7', items = {['bandage'] = 3, ['icepack'] = 2}},
-                [3] = {label = 'Broken Ribs', color = 'red.8', items = {['bandage'] = 1, ['advanced_medical_kit'] = 2, ['splint'] = 1}},
-                [4] = {label = 'Internal Bleeding', color = 'red.9', items = {['morphine'] = 2, ['blood_bag_250'] = 1, ['suture_kit'] = 1}},
-                [5] = {label = 'Massive Trauma', color = 'red.9', items = {['morphine'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1}},
+                [1] = {label = 'Trầy xước do xe', color = 'red.6', items = {['bandage'] = 2, ['disinfectant'] = 1}},
+                [2] = {label = 'Bầm tím do va chạm', color = 'red.7', items = {['bandage'] = 3, ['icepack'] = 2}},
+                [3] = {label = 'Gãy xương sườn', color = 'red.8', items = {['bandage'] = 1, ['advanced_medical_kit'] = 2, ['splint'] = 1}},
+                [4] = {label = 'Xuất huyết nội', color = 'red.9', items = {['morphine'] = 2, ['blood_bag_250'] = 1, ['suture_kit'] = 1}},
+                [5] = {label = 'Chấn thương nghiêm trọng', color = 'red.9', items = {['morphine'] = 2, ['blood_bag_500'] = 1, ['suture_kit'] = 1}},
             }
         },
     }
-}
+}}
 
 ---@class Config.Pulse
 ---@field enabled boolean [enable pulse feature?]
