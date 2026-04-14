@@ -87,7 +87,7 @@ Config.MoneyHistory = { -- Cấu hình lưu lịch sử tiền (để vẽ biể
 } 
 
 Config.Suspicious = { -- Ngưỡng nghi vấn kiểu 1 (đếm biến động tiền lớn trong X ngày)
-    Threshold = 300000, -- Ngưỡng chênh lệch tiền để bị tính là 'nghi vấn' (đơn vị: tiền)
+    Threshold = 100000, -- Ngưỡng chênh lệch tiền để bị tính là 'nghi vấn' (đơn vị: tiền)
     Days = 3, -- Số ngày lookback để đếm/hiển thị cột nghi vấn
 } 
 
@@ -134,7 +134,7 @@ Config.UI = { -- Cấu hình giao diện NUI (theme, bảng, modal, chart...)
             { key = 'bank',       width = '140px' }, -- Cột tiền bank
             { key = 'suspicious', width = '160px' }, -- Cột nghi vấn (tổng hợp Suspicious/Suspicious2)
             { key = 'online',     width = '170px' }, -- Cột thời gian online/playtime
-            { key = 'actions',    width = '210px' }, -- Cột thao tác (xem túi đồ, xem chart, xem log...)
+            { key = 'actions',    width = '320px' }, -- Cột thao tác (xem túi đồ, xem chart, xem log...)
         } 
     }, 
 
@@ -177,12 +177,58 @@ Config.Lang = {
     Buttons = {
         Refresh = 'Refresh',
         Close = 'Đóng',
+        ShowNames = 'Hiện tên',
+        HideNames = 'Ẩn tên',
+        BanList = 'List ban',
+        Admin = 'ADMIN',
         Chart = 'Biểu đồ',
         Log = 'Log',
         ViewImage = 'Xem ảnh',
         ViewImageIndex = 'Ảnh #{index}',
         ViewOnChart = 'Xem trên biểu đồ',
         OpenLog = 'Mở log',
+    },
+
+    Admin = {
+        Loading = 'Đang tải dữ liệu admin...',
+        ErrorFetch = 'Không lấy được dữ liệu admin: {message}',
+        ActionError = 'Không thể thực hiện thao tác: {message}',
+        ActionsTitle = 'Hành động',
+        AccountsTitle = 'Tài khoản',
+        InformationTitle = 'Thông tin',
+        NoTargetId = 'Người chơi này không online để dùng thao tác nhanh.',
+        Fields = {
+            CharacterName = 'Tên nhân vật',
+            Gender = 'Giới tính',
+        },
+        Actions = {
+            Kick = 'Kick người đó',
+            Ban = 'Ban người đó',
+            Goto = 'Dịch chuyển đến người đó',
+            Bring = 'Kéo người đó về phía mình',
+            Revive = 'Hồi sinh người đó',
+            Spectate = 'Theo dõi người đó',
+        },
+        Tooltips = {
+            Kick = 'Kick',
+            Ban = 'Ban',
+            Goto = 'Goto',
+            Bring = 'Bring',
+            Revive = 'Revive',
+            Spectate = 'Spectate',
+        },
+    },
+
+    Bans = {
+        Title = 'DANH SÁCH BAN',
+        Loading = 'Đang tải danh sách ban...',
+        Empty = 'Không có người chơi nào đang bị ban.',
+        ErrorFetch = 'Không lấy được danh sách ban: {message}',
+        ErrorUnban = 'Không thể unban: {message}',
+        Unban = 'Unban',
+        Reason = 'Lý do',
+        Expires = 'Hết hạn',
+        BannedBy = 'Ban bởi',
     },
 
     Toggles = {

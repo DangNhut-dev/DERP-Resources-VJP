@@ -1,53 +1,33 @@
-local disableCrouch = Config.DisableCrouch
-local antiJumpSpam = Config.AntiJumpSpam
-local jumpCooldown = Config.JumpCooldown
-local antiPunchSpam = Config.AntiPunchSpam
-local punchCooldown = Config.PunchCooldown
-local disableHelmet = Config.DisableHelmet
+local disableCrouch   = Config.DisableCrouch
+local antiJumpSpam    = Config.AntiJumpSpam
+local jumpCooldown    = Config.JumpCooldown
+local antiPunchSpam   = Config.AntiPunchSpam
+local punchCooldown   = Config.PunchCooldown
+local disableHelmet   = Config.DisableHelmet
 
-local lastJump = 0
-local lastPunch = 0
-local helmetTick = 0
+local lastJump        = 0
+local lastPunch       = 0
+local helmetTick      = 0
+local meleeControls   = { 24, 25, 140, 141, 142 }
 
-CreateThread(function()
-    local lastDamage = 0.0
-    local vehicle = nil
-    local SLEEP_TIME_IN_VEHICLE = 100
-    local SLEEP_TIME_OUTSIDE_VEHICLE = 1000
-    local SHAKE_RATE_CONSTANT = 250.0
-
-    while true do
-        local playerPed = PlayerPedId()
-        if IsPedInAnyVehicle(playerPed) then
-            local curVehicle = GetVehiclePedIsIn(playerPed, false)
-            local shakeRate = GetEntitySpeed(curVehicle) / SHAKE_RATE_CONSTANT
-            local curVehicleHealth = GetVehicleBodyHealth(curVehicle)
-
-            if curVehicleHealth ~= lastDamage then
-                ShakeGameplayCam("MEDIUM_EXPLOSION_SHAKE", shakeRate)
-            end
-
-            lastDamage = curVehicleHealth
-            vehicle = curVehicle
-            Wait(SLEEP_TIME_IN_VEHICLE)
-        else
-            vehicle = nil
-            Wait(SLEEP_TIME_OUTSIDE_VEHICLE)
-        end
-    end
-end)
-
+-- Main per-frame loop: crouch / jump / punch / helmet / action mode / roll prevention / aim-crouch
 CreateThread(function()
     while true do
         Wait(0)
-        local ped = PlayerPedId()
+        local ped = cache.ped
         local now = GetGameTimer()
+        local aiming = IsControlPressed(0, 25)
 
         if disableCrouch then
             DisableControlAction(0, 36, true)
             if GetPedStealthMovement(ped) then
                 SetPedStealthMovement(ped, false, 0)
             end
+        end
+
+        -- Tắt crouch khi đang aim
+        if aiming and LocalPlayer.state.crouch then
+            LocalPlayer.state:set('crouch', false, false)
         end
 
         if antiJumpSpam then
@@ -59,9 +39,7 @@ CreateThread(function()
         end
 
         if antiPunchSpam then
-            local meleeControls = {24,25,140,141,142}
             local inCooldown = (now - lastPunch) < punchCooldown
-
             if inCooldown then
                 for i = 1, #meleeControls do
                     DisableControlAction(0, meleeControls[i], true)
@@ -80,9 +58,109 @@ CreateThread(function()
             SetPedConfigFlag(ped, 35, false)
             helmetTick = now
         end
+
+        -- Action mode
+        if IsPedUsingActionMode(ped) then
+            SetPedUsingActionMode(ped, -1, -1, 1)
+        end
+
+        -- Roll prevention: chặn nhảy khi đang aim ngoài xe
+        if not cache.vehicle and aiming then
+            DisableControlAction(0, 22, true)
+        end
     end
 end)
 
+-- Ambient melee move: set một lần khi ped thay đổi
+lib.onCache('ped', function(ped)
+    SetDisableAmbientMeleeMove(ped, true)
+end)
+
+-- Vehicle damage shake
+lib.onCache('vehicle', function(vehicle)
+    if not vehicle then return end
+    CreateThread(function()
+        local lastDamage = GetVehicleBodyHealth(vehicle)
+        local SHAKE_RATE = 250.0
+        while cache.vehicle == vehicle do
+            local health = GetVehicleBodyHealth(vehicle)
+            if health ~= lastDamage then
+                ShakeGameplayCam('MEDIUM_EXPLOSION_SHAKE', GetEntitySpeed(vehicle) / SHAKE_RATE)
+                lastDamage = health
+            end
+            Wait(100)
+        end
+    end)
+end)
+
+-- Speed limit
+local speedLimit = 120.0
+local maxSpeedMS = speedLimit / 2.236936
+local excludedClass = { [15] = true, [16] = true, [17] = true, [18] = true, [19] = true }
+
+lib.onCache('vehicle', function(vehicle)
+    if not vehicle then return end
+    CreateThread(function()
+        while cache.vehicle == vehicle do
+            Wait(500)
+            if not DoesEntityExist(vehicle) then break end
+            local class = GetVehicleClass(vehicle)
+            if excludedClass[class] then
+                SetVehicleMaxSpeed(vehicle, 0.0)
+            else
+                SetVehicleMaxSpeed(vehicle, maxSpeedMS)
+                if GetEntitySpeed(vehicle) * 2.236936 > speedLimit then
+                    SetEntityMaxSpeed(vehicle, maxSpeedMS)
+                end
+            end
+        end
+    end)
+end)
+
+-- Helicopter audio
+local function EnableSubmix(id)
+    SetAudioSubmixEffectRadioFx(id, 0)
+    SetAudioSubmixEffectParamInt(id, 0, `default`, 1)
+    SetAudioSubmixEffectParamFloat(id, 0, `freq_low`, 0.0)
+    SetAudioSubmixEffectParamFloat(id, 0, `freq_hi`, 10000.0)
+    SetAudioSubmixEffectParamFloat(id, 0, `fudge`, 0.0)
+    SetAudioSubmixEffectParamFloat(id, 0, `rm_mix`, 0.2)
+end
+
+local function DisableSubmix(id)
+    SetAudioSubmixEffectRadioFx(id, 0)
+    SetAudioSubmixEffectParamInt(id, 0, `enabled`, 0)
+end
+
+local submixID  = 0
+local soundmix  = false
+
+lib.onCache('vehicle', function(vehicle)
+    if not vehicle then
+        if soundmix then
+            DisableSubmix(submixID)
+            soundmix = false
+        end
+        return
+    end
+    CreateThread(function()
+        while cache.vehicle == vehicle do
+            Wait(500)
+            local model = GetEntityModel(vehicle)
+            if (IsThisModelAHeli(model) or IsThisModelAPlane(model)) and GetIsVehicleEngineRunning(vehicle) then
+                if not soundmix then
+                    EnableSubmix(submixID)
+                    soundmix = true
+                end
+            elseif soundmix then
+                DisableSubmix(submixID)
+                soundmix = false
+            end
+        end
+    end)
+end)
+
+-- In-vehicle FPS aim
 if Config.InVehicleFPSAim then
     local blacklistFPS = {}
     for name in pairs(Config.FPSAimBlacklist) do
@@ -115,39 +193,28 @@ if Config.InVehicleFPSAim then
             local wasAiming  = false
             local resetUntil = 0
             local ped        = cache.ped
-            local vehicle      = GetVehiclePedIsIn(ped, false)
-            local vehicleClass = GetVehicleClass(vehicle)
-            local isBike       = vehicleClass == 8 or vehicleClass == 13
+            local vehicle    = GetVehiclePedIsIn(ped, false)
+            local vClass     = GetVehicleClass(vehicle)
+            local isBike     = vClass == 8 or vClass == 13
 
             local function setFPS()
-                if isBike then
-                    SetCamViewModeForContext(2, 4)
-                else
-                    SetCamViewModeForContext(1, 4)
-                end
+                SetCamViewModeForContext(isBike and 2 or 1, 4)
             end
 
             local function restoreCam()
-                if isBike then
-                    SetCamViewModeForContext(2, lastCamMode)
-                else
-                    SetCamViewModeForContext(1, lastCamMode)
-                end
+                SetCamViewModeForContext(isBike and 2 or 1, lastCamMode)
             end
 
             while cache.seat do
                 if IsPedDeadOrDying(ped, false) or IsPedRagdoll(ped) then
-                    if wasAiming then
-                        wasAiming = false
-                    end
+                    wasAiming = false
                     restoreCam()
                     Wait(500)
                 else
                     local aiming = IsControlPressed(0, 25) and isWeaponAllowed()
-
                     if aiming then
                         if not wasAiming then
-                            lastCamMode = isBike and GetCamViewModeForContext(2) or GetCamViewModeForContext(1)
+                            lastCamMode = GetCamViewModeForContext(isBike and 2 or 1)
                             wasAiming   = true
                             resetUntil  = 0
                         end
@@ -157,13 +224,14 @@ if Config.InVehicleFPSAim then
                             wasAiming  = false
                             resetUntil = GetGameTimer() + 300
                         end
-                        if resetUntil > 0 and GetGameTimer() < resetUntil then
-                            restoreCam()
-                        elseif resetUntil > 0 then
-                            resetUntil = 0
+                        if resetUntil > 0 then
+                            if GetGameTimer() < resetUntil then
+                                restoreCam()
+                            else
+                                resetUntil = 0
+                            end
                         end
                     end
-
                     Wait(1)
                 end
             end
@@ -179,44 +247,22 @@ if Config.InVehicleFPSAim then
             resetCam()
             return
         end
-
         lastCamMode = GetFollowVehicleCamViewMode()
-
         if IsControlPressed(0, 25) and isWeaponAllowed() then
             blockAimingOnEnter()
         end
-
         vehicleAimLoop()
     end)
 end
 
--- RegisterCommand('gethash', function()
---     local _, wep = GetCurrentPedWeapon(PlayerPedId(), true)
---     print('Unsigned: ' .. wep)
---     print('Signed: ' .. (wep > 2147483647 and wep - 4294967296 or wep))
--- end, false)
+-- Chặn crouch bật lên khi đang aim
+AddStateBagChangeHandler('crouch', ('player:%s'):format(cache.serverId), function(_, _, value)
+    if value and IsControlPressed(0, 25) then
+        LocalPlayer.state:set('crouch', false, false)
+    end
+end)
 
--- Citizen.CreateThread(function()
---     for i = 1, 12 do
---         EnableDispatchService(i, false)
---     end
---     SetMaxWantedLevel(0)
-
---     SetGarbageTrucks(false)                       -- Xe rác ngẫu nhiên [true/false]
---     SetRandomBoats(false)                         -- Thuyền ngẫu nhiên [true/false]
---     SetCreateRandomCops(false)                    -- Cops ngẫu nhiên (xe / ped) [true/false]
---     SetCreateRandomCopsNotOnScenarios(false)      -- Cops không theo kịch bản [true/false]
---     SetCreateRandomCopsOnScenarios(false)         -- Cops theo kịch bản [true/false]
-
---     while true do
---         Citizen.Wait(1500)
---         local pid = PlayerId()
---         if GetPlayerWantedLevel(pid) ~= 0 then
---             ClearPlayerWantedLevel(pid)
---         end
---     end
--- end)
-
+-- Open map keybind
 lib.addKeybind({
     name        = 'open_map',
     description = 'Mở bản đồ',
@@ -232,123 +278,3 @@ lib.addKeybind({
         end)
     end,
 })
-
-CreateThread(function()
-    SetDisableAmbientMeleeMove(PlayerPedId(), true)
-      while true do
-          Wait(1)
-          local ped = PlayerPedId()
-          if IsPedUsingActionMode(ped) then
-        SetPedUsingActionMode(ped, -1, -1, 1)
-      end
-    end
-end)
-
--- -- roll Prevention
-CreateThread(function()
-    while true do
-        if (not IsPedInAnyVehicle(PlayerPedId(),false)) then
-            Wait(4)
-            if IsPlayerFreeAiming(PlayerPedId()) then
-                DisableControlAction(0, 22, 1)
-            else
-                Wait(100)
-            end
-        else
-            Wait(500)
-        end
-    end
-end)
-
--- helicopter audio
-function EnableSubmix(submixID)
-    SetAudioSubmixEffectRadioFx(submixID, 0)
-    SetAudioSubmixEffectParamInt(submixID, 0, `default`, 1)
-    SetAudioSubmixEffectParamFloat(submixID, 0, `freq_low`, 0.0)
-    SetAudioSubmixEffectParamFloat(submixID, 0, `freq_hi`, 10000.0)
-    SetAudioSubmixEffectParamFloat(submixID, 0, `fudge`, 0.0)
-    SetAudioSubmixEffectParamFloat(submixID, 0, `rm_mix`, 0.2)
-end
-
-function DisableSubmix(submixID)
-    SetAudioSubmixEffectRadioFx(submixID, 0)
-    SetAudioSubmixEffectParamInt(submixID, 0, `enabled`, 0)
-end
-
-local soundmix = false
-local submixID = 0
-
-CreateThread(function()
-    while true do
-        Wait(500)
-        local ped = PlayerPedId()
-        local currentVehicle = GetVehiclePedIsIn(ped, false)
-        local vehmodel = GetEntityModel(currentVehicle)
-
-        if IsThisModelAHeli(vehmodel) or IsThisModelAPlane(vehmodel) then
-            local engineRunning = GetIsVehicleEngineRunning(currentVehicle)
-            local inVehicle = IsPedInAnyVehicle(ped, false)
-
-            if inVehicle and engineRunning then
-                if not soundmix then
-                    EnableSubmix(submixID)
-                    soundmix = true
-                end
-            elseif soundmix then
-                DisableSubmix(submixID)
-                soundmix = false
-            end
-        elseif soundmix then
-            DisableSubmix(submixID)
-            soundmix = false
-        end
-    end
-end)
-
--- -- Giới hạn tốc độ tối đa
-local speedLimit = 120.0 -- mph
-local maxSpeedMS = speedLimit / 2.236936 -- đổi mph sang m/s
-
--- Hàm kiểm tra tốc độ phương tiện
-local function checkSpeed(vehicle)
-    if DoesEntityExist(vehicle) then
-        local speed = GetEntitySpeed(vehicle) * 2.236936 -- mph
-        local class = GetVehicleClass(vehicle)
-
-        -- Loại trừ các class đặc biệt (máy bay, trực thăng, emergency, tàu...)
-        if class ~= 15 and class ~= 16 and class ~= 17 and class ~= 18 and class ~= 19 then
-            -- Cài đặt tốc độ tối đa
-            SetVehicleMaxSpeed(vehicle, maxSpeedMS)
-
-            -- Nếu đã vượt quá tốc độ giới hạn thì giảm ngay
-            if speed > speedLimit then
-                SetEntityMaxSpeed(vehicle, maxSpeedMS)
-            end
-        else
-            -- Bỏ giới hạn cho các phương tiện đặc biệt
-            SetVehicleMaxSpeed(vehicle, 0.0)
-        end
-    end
-end
-
--- -- Thread kiểm tra liên tục
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(500) -- check mỗi nửa giây cho nhẹ
-        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-        if vehicle ~= 0 then
-            checkSpeed(vehicle)
-        end
-    end
-end)
-
--- Citizen.CreateThread(function()
--- 	while true do
--- 		Citizen.Wait(0)
--- 		if currentWeaponHash ~= -1569615261 then
---         	SetPlayerLockon(PlayerId(), false)
---         else
---         	SetPlayerLockon(PlayerId(), true)
--- 		end
--- 	end
--- end)

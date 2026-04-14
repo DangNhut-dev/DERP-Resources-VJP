@@ -87,7 +87,7 @@ export const mockConfig = {
                 { key: 'crypto', width: '140px' },
                 { key: 'suspicious', width: '160px' },
                 { key: 'online', width: '170px' },
-                { key: 'actions', width: '210px' },
+                { key: 'actions', width: '320px' },
             ]
         },
         RankStyles: {
@@ -149,10 +149,54 @@ export const mockConfig = {
         Buttons: {
             Refresh: 'Refresh',
             Close: 'Đóng',
+            ShowNames: 'Hiện tên',
+            HideNames: 'Ẩn tên',
+            BanList: 'List ban',
+            Admin: 'ADMIN',
             Chart: 'Biểu đồ',
             Log: 'Log',
             ViewOnChart: 'Xem trên biểu đồ',
             OpenLog: 'Mở log',
+        },
+        Admin: {
+            Loading: 'Đang tải dữ liệu admin...',
+            ErrorFetch: 'Không lấy được dữ liệu admin: {message}',
+            ActionError: 'Không thể thực hiện thao tác: {message}',
+            ActionsTitle: 'Hành động',
+            AccountsTitle: 'Tài khoản',
+            InformationTitle: 'Thông tin',
+            NoTargetId: 'Người chơi này không online để dùng thao tác nhanh.',
+            Fields: {
+                CharacterName: 'Tên nhân vật',
+                Gender: 'Giới tính',
+            },
+            Actions: {
+                Kick: 'Kick người đó',
+                Ban: 'Ban người đó',
+                Goto: 'Dịch chuyển đến người đó',
+                Bring: 'Kéo người đó về phía mình',
+                Revive: 'Hồi sinh người đó',
+                Spectate: 'Theo dõi người đó',
+            },
+            Tooltips: {
+                Kick: 'Kick',
+                Ban: 'Ban',
+                Goto: 'Goto',
+                Bring: 'Bring',
+                Revive: 'Revive',
+                Spectate: 'Spectate',
+            }
+        },
+        Bans: {
+            Title: 'DANH SÁCH BAN',
+            Loading: 'Đang tải danh sách ban...',
+            Empty: 'Không có người chơi nào đang bị ban.',
+            ErrorFetch: 'Không lấy được danh sách ban: {message}',
+            ErrorUnban: 'Không thể unban: {message}',
+            Unban: 'Unban',
+            Reason: 'Lý do',
+            Expires: 'Hết hạn',
+            BannedBy: 'Ban bởi',
         },
         Toggles: {
             ShowStaff: 'Hiện Admin/Mod',
@@ -412,6 +456,25 @@ export function createMockLeaderboard() {
     };
 }
 
+let mockShowNames = false;
+
+let mockBans = [
+    {
+        id: 'ban_mock_1',
+        steamName: 'Tommy Nguyenx',
+        characterName: 'Tommy Nguyenx',
+        citizenid: 'L2I7F2JC',
+        steam: 'steam:11000010abcdef',
+        discord: 'discord:595982132862779412',
+        license: 'license:296c11f3ca1778f99df144d88623a1a2b1fccbcd',
+        license2: 'license2:296c11f3ca1778f99df144d88623a1a2b1fccbcd',
+        ip: 'ip:127.0.0.1',
+        reason: 'VDM',
+        expire: Math.floor(Date.now() / 1000) + 86400,
+        bannedBy: 'Admin',
+    },
+];
+
 const histories = {
     CIT001: createHistory(1),
     CIT002: createHistory(2),
@@ -502,6 +565,39 @@ export async function mockRequest(action, data = {}) {
 
     if (action === 'close') return true;
     if (action === 'refresh') return createMockLeaderboard();
+    if (action === 'requestSelfProfile') {
+        return {
+            ok: true,
+            player: {
+                id: 1,
+                citizenid: 'L2I7F2JC',
+                name: 'Tommy Nguyenx',
+                steamName: 'Tommy Nguyenx',
+            }
+        };
+    }
+    if (action === 'requestAdminProfile') {
+        return {
+            ok: true,
+            player: {
+                id: 1,
+                steamName: 'Tommy Nguyenx',
+                steam: 'steam:110000112345678',
+                discord: 'discord:595982132862779412',
+                license: 'license:296c11f3ca1778f99df144d88623a1a2b1fccbcd',
+                license2: 'license2:296c11f3ca1778f99df144d88623a1a2b1fccbcd',
+                ip: '127.0.0.1',
+                citizenid: data.citizenid || 'L2I7F2JC',
+                name: 'Tommy Nguyenx',
+                job: 'LSPD | 3',
+                cash: 5950,
+                bank: 48819,
+                gender: 'Nam',
+                isOnline: true,
+            }
+        };
+    }
+    if (action === 'adminAction') return { ok: true };
     if (action === 'requestInventory') return inventoryMap[data.citizenid] || { ok: true, offline: true, items: [] };
     if (action === 'requestVehicles') return vehicleMap[data.citizenid] || { ok: true, offline: true, vehicles: [] };
 

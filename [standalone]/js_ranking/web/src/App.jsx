@@ -156,6 +156,17 @@ function getPlayerSubText(config, player) {
     });
 }
 
+function adminFieldValue(config, value) {
+    if (value == null || value === '') return lang(config, 'Common.NotAvailable', 'N/A');
+    return String(value);
+}
+
+function getAdminHeaderText(config, data, fallbackPlayer = null) {
+    const idText = adminFieldValue(config, data?.id || fallbackPlayer?.id);
+    const steamName = adminFieldValue(config, data?.steamName || fallbackPlayer?.steamName || fallbackPlayer?.name || lang(config, 'Common.Unknown', 'Unknown'));
+    return `ID: ${idText} - ${steamName}`;
+}
+
 function formatAgoFromUnix(config, tsSeconds) {
     const ts = Number(tsSeconds || 0);
     if (!Number.isFinite(ts) || ts <= 0) return '';
@@ -173,6 +184,11 @@ function formatDateTimeUnified(ms) {
     return new Date(value).toLocaleString('vi-VN');
 }
 
+function formatBanExpireText(config, tsSeconds) {
+    const value = Number(tsSeconds || 0);
+    if (!Number.isFinite(value) || value <= 0) return lang(config, 'Common.NotAvailable', 'N/A');
+    return new Date(value * 1000).toLocaleString('vi-VN');
+}
 
 function inferTsUnit(ts) {
     const value = Number(ts || 0);
@@ -550,6 +566,9 @@ function App() {
     const [logModal, setLogModal] = useState({ open: false, player: null, range: '24h', loading: false, logs: [], error: '', findQuery: '', findIndex: -1, tsUnit: 'ms', focusTs: 0 });
     const [imageModal, setImageModal] = useState({ open: false, title: '', sub: '', src: '' });
     const [susModal, setSusModal] = useState({ open: false, player: null, mode: 1, range: '30d', loading: false, items: [], error: '' });
+    const [showNames, setShowNames] = useState(false);
+    const [banListModal, setBanListModal] = useState({ open: false, loading: false, items: [], error: '', busyId: '' });
+    const [adminModal, setAdminModal] = useState({ open: false, loading: false, player: null, data: null, error: '', busy: false });
 
     const debouncedGlobalQuery = useDebouncedValue(globalQuery, 180);
     const debouncedSearch = useDebouncedValue(search, Number(config?.UI?.Search?.DebounceMs || 120));
@@ -585,6 +604,7 @@ function App() {
             if (msg.action === 'open') {
                 setConfig(msg.config || mockConfig);
                 setVisible(true);
+                setShowNames(false);
                 setSearch('');
                 setSortKey(null);
                 setSortDir(0);
@@ -597,6 +617,8 @@ function App() {
                 setChartModal({ open: false, player: null, range: '24h', loading: false, data: null, error: '', key: null, selectedIndex: null, findQuery: '', findIndex: -1 });
                 setLogModal({ open: false, player: null, range: '24h', loading: false, logs: [], error: '', findQuery: '', findIndex: -1, tsUnit: 'ms', focusTs: 0 });
                 setSusModal({ open: false, player: null, mode: 1, range: '30d', loading: false, items: [], error: '' });
+                setBanListModal({ open: false, loading: false, items: [], error: '', busyId: '' });
+                setAdminModal({ open: false, loading: false, player: null, data: null, error: '', busy: false });
                 setImageModal({ open: false, title: '', sub: '', src: '' });
             } else if (msg.action === 'setLeaderboard') {
                 setLeaderboard(msg.data || null);
@@ -608,6 +630,33 @@ function App() {
         window.addEventListener('message', onMessage);
         return () => window.removeEventListener('message', onMessage);
     }, []);
+
+    useEffect(() => {
+        if (!visible) {
+            setShowNames(false);
+            return undefined;
+        }
+
+        let cancelled = false;
+        nuiFetch('requestPlayerNamesState', {})
+            .then((resp) => {
+                if (cancelled) return;
+                if (resp?.ok) {
+                    setShowNames(!!resp.enabled);
+                } else {
+                    setShowNames(false);
+                }
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setShowNames(false);
+                }
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [visible]);
 
     useEffect(() => {
         if (!visible || !leaderboard?.list?.length || !debouncedGlobalQuery.trim()) {
@@ -849,6 +898,99 @@ function App() {
         }
     };
 
+    const closeAdminModal = () => {
+        setAdminModal({ open: false, loading: false, player: null, data: null, error: '', busy: false });
+    };
+
+    const openAdminModal = async (player) => {
+        if (!player?.citizenid && !player?.id) return;
+        setAdminModal({ open: true, loading: true, player, data: null, error: '', busy: false });
+        try {
+            const response = await nuiFetch('requestAdminProfile', { citizenid: player.citizenid, id: player.id });
+            if (response?.ok) {
+                setAdminModal({ open: true, loading: false, player, data: response.player || response.data || null, error: '', busy: false });
+            } else {
+                setAdminModal({ open: true, loading: false, player, data: null, error: response?.message || lang(config, 'Common.Error', 'error'), busy: false });
+            }
+        } catch (error) {
+            setAdminModal({ open: true, loading: false, player, data: null, error: lang(config, 'Admin.ErrorFetch', 'Không lấy được dữ liệu admin: {message}', { message: 'error' }), busy: false });
+        }
+    };
+
+    const runAdminAction = async (action) => {
+        const targetId = Number(adminModal.data?.id || adminModal.player?.id || 0) || 0;
+        setAdminModal((prev) => ({ ...prev, busy: true, error: '' }));
+        try {
+            const response = await nuiFetch('adminAction', {
+                action,
+                id: targetId,
+                citizenid: adminModal.data?.citizenid || adminModal.player?.citizenid || '',
+            });
+
+            if (response?.ok) {
+                setAdminModal((prev) => ({ ...prev, busy: false, error: '' }));
+                if (action !== 'spectate') {
+                    await doRefresh();
+                }
+                if (action === 'kick' || action === 'ban') {
+                    closeAdminModal();
+                }
+            } else if (response?.cancelled) {
+                setAdminModal((prev) => ({ ...prev, busy: false }));
+            } else {
+                setAdminModal((prev) => ({ ...prev, busy: false, error: response?.message || lang(config, 'Admin.ActionError', 'Không thể thực hiện thao tác: {message}', { message: lang(config, 'Common.Error', 'error') }) }));
+            }
+        } catch (error) {
+            setAdminModal((prev) => ({ ...prev, busy: false, error: lang(config, 'Admin.ActionError', 'Không thể thực hiện thao tác: {message}', { message: 'error' }) }));
+        }
+    };
+
+    const togglePlayerNames = async () => {
+        try {
+            const response = await nuiFetch('togglePlayerNames', {});
+            if (response?.ok) {
+                setShowNames(!!response.enabled);
+            }
+        } catch (error) {}
+    };
+
+    const closeBanListModal = () => {
+        setBanListModal({ open: false, loading: false, items: [], error: '', busyId: '' });
+    };
+
+    const openBanListModal = async () => {
+        setBanListModal({ open: true, loading: true, items: [], error: '', busyId: '' });
+        try {
+            const response = await nuiFetch('requestBanList', {});
+            if (response?.ok) {
+                setBanListModal({ open: true, loading: false, items: Array.isArray(response.items) ? response.items : [], error: '', busyId: '' });
+            } else {
+                setBanListModal({ open: true, loading: false, items: [], error: response?.message || lang(config, 'Bans.ErrorFetch', 'Không lấy được danh sách ban: {message}', { message: lang(config, 'Common.Error', 'error') }), busyId: '' });
+            }
+        } catch (error) {
+            setBanListModal({ open: true, loading: false, items: [], error: lang(config, 'Bans.ErrorFetch', 'Không lấy được danh sách ban: {message}', { message: 'error' }), busyId: '' });
+        }
+    };
+
+    const unbanEntry = async (banId) => {
+        if (!banId) return;
+        setBanListModal((prev) => ({ ...prev, busyId: banId, error: '' }));
+        try {
+            const response = await nuiFetch('unbanBan', { banId });
+            if (response?.ok) {
+                setBanListModal((prev) => ({
+                    ...prev,
+                    busyId: '',
+                    items: Array.isArray(prev.items) ? prev.items.filter((item) => item.id !== banId) : [],
+                }));
+            } else {
+                setBanListModal((prev) => ({ ...prev, busyId: '', error: response?.message || lang(config, 'Bans.ErrorUnban', 'Không thể unban: {message}', { message: lang(config, 'Common.Error', 'error') }) }));
+            }
+        } catch (error) {
+            setBanListModal((prev) => ({ ...prev, busyId: '', error: lang(config, 'Bans.ErrorUnban', 'Không thể unban: {message}', { message: 'error' }) }));
+        }
+    };
+
     const doRefresh = async () => {
         try {
             const response = await nuiFetch('refresh', {});
@@ -865,6 +1007,17 @@ function App() {
     };
 
     if (!visible) return <div id="app" className="hidden" />;
+
+    const adminProfile = adminModal.data || adminModal.player || {};
+    const adminTargetOnline = !!(Number(adminProfile?.id || 0) > 0 && adminProfile?.isOnline !== false);
+    const adminActionButtons = [
+        { key: 'kick', icon: '⛔', title: lang(config, 'Admin.Actions.Kick', 'Kick người đó'), tooltip: lang(config, 'Admin.Tooltips.Kick', 'Kick') },
+        { key: 'ban', icon: '🚫', title: lang(config, 'Admin.Actions.Ban', 'Ban người đó'), tooltip: lang(config, 'Admin.Tooltips.Ban', 'Ban') },
+        { key: 'goto', icon: '➜', title: lang(config, 'Admin.Actions.Goto', 'Dịch chuyển đến người đó'), tooltip: lang(config, 'Admin.Tooltips.Goto', 'Goto') },
+        { key: 'bring', icon: '⇠', title: lang(config, 'Admin.Actions.Bring', 'Kéo người đó về phía mình'), tooltip: lang(config, 'Admin.Tooltips.Bring', 'Bring') },
+        { key: 'revive', icon: '❤', title: lang(config, 'Admin.Actions.Revive', 'Hồi sinh người đó'), tooltip: lang(config, 'Admin.Tooltips.Revive', 'Revive') },
+        { key: 'spectate', icon: '👁', title: lang(config, 'Admin.Actions.Spectate', 'Theo dõi người đó'), tooltip: lang(config, 'Admin.Tooltips.Spectate', 'Spectate') },
+    ];
 
     return (
         <div id="app">
@@ -891,7 +1044,9 @@ function App() {
                             <input type="checkbox" checked={hideOffline} onChange={(event) => setHideOffline(event.target.checked)} />
                             <span>{lang(config, 'Toggles.HideOffline', 'Ẩn Offline')}</span>
                         </label>
+                        <button className={`btn ${showNames ? 'btn-active' : ''}`} onClick={togglePlayerNames}>{showNames ? lang(config, 'Buttons.HideNames', 'Ẩn tên') : lang(config, 'Buttons.ShowNames', 'Hiện tên')}</button>
                         <button className="btn" onClick={doRefresh}>{lang(config, 'Buttons.Refresh', 'Refresh')}</button>
+                        <button className="btn" onClick={openBanListModal}>{lang(config, 'Buttons.BanList', 'List ban')}</button>
                         <button className="btn btn-ghost" onClick={doClose}>{lang(config, 'Buttons.Close', 'Đóng')}</button>
                     </div>
                 </div>
@@ -998,6 +1153,7 @@ function App() {
                                             return (
                                                 <div key={column.key} className={`cell ${alignClass} actions`}>
                                                     <div className="cell-actions">
+                                                        <button className="btn btn-mini btn-inline btn-admin" onClick={() => openAdminModal(player)}>{lang(config, 'Buttons.Admin', 'ADMIN')}</button>
                                                         <button className="btn btn-mini btn-inline" onClick={() => openChartModal(player)}>{lang(config, 'Buttons.Chart', 'Biểu đồ')}</button>
                                                         <button className="btn btn-mini btn-inline" onClick={() => openLogModal(player)}>{lang(config, 'Buttons.Log', 'Log')}</button>
                                                     </div>
@@ -1036,6 +1192,99 @@ function App() {
                     <div className="meta">{lang(config, 'Main.MetaUpdated', 'Cập nhật: {time}', { time: generatedAtText })}</div>
                 </div>
             </div>
+
+            <Modal open={adminModal.open} onBackdropClick={closeAdminModal} extraClass="admin-modal">
+                <div className="modal-card admin-modal-card">
+                    <div className="modal-header">
+                        <div className="modal-title admin-modal-title">{getAdminHeaderText(config, adminModal.data, adminModal.player)}</div>
+                        <button className="btn btn-ghost" onClick={closeAdminModal}>{lang(config, 'Buttons.Close', 'Đóng')}</button>
+                    </div>
+                    <div className="modal-body admin-modal-body">
+                        {adminModal.loading && <div className="modal-empty">{lang(config, 'Admin.Loading', 'Đang tải dữ liệu admin...')}</div>}
+                        {!adminModal.loading && adminModal.error && <div className="modal-empty">{adminModal.error}</div>}
+                        {!adminModal.loading && !adminModal.error && (
+                            <>
+                                <div className="admin-section">
+                                    <div className="admin-section-title">{lang(config, 'Admin.ActionsTitle', 'Hành động')}</div>
+                                    <div className="admin-quick-actions">
+                                        {adminActionButtons.map((button) => (
+                                            <button
+                                                key={button.key}
+                                                className={`admin-quick-btn ${button.key === 'ban' ? 'is-danger' : ''}`}
+                                                title={button.tooltip}
+                                                data-tooltip={button.tooltip}
+                                                aria-label={button.tooltip}
+                                                disabled={!adminTargetOnline || adminModal.busy}
+                                                onClick={() => runAdminAction(button.key)}
+                                            >
+                                                <span>{button.icon}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {!adminTargetOnline && <div className="admin-note">{lang(config, 'Admin.NoTargetId', 'Người chơi này không online để dùng thao tác nhanh.')}</div>}
+                                </div>
+
+                                <div className="admin-section">
+                                    <div className="admin-section-title">{lang(config, 'Admin.AccountsTitle', 'Tài khoản')}</div>
+                                    <div className="admin-field-list">
+                                        <div className="admin-field-row"><span>ID Steam</span><strong>{adminFieldValue(config, adminProfile.steam)}</strong></div>
+                                        <div className="admin-field-row"><span>ID Discord</span><strong>{adminFieldValue(config, adminProfile.discord)}</strong></div>
+                                        <div className="admin-field-row"><span>License</span><strong>{adminFieldValue(config, adminProfile.license)}</strong></div>
+                                        <div className="admin-field-row"><span>License 2</span><strong>{adminFieldValue(config, adminProfile.license2)}</strong></div>
+                                        <div className="admin-field-row"><span>IP</span><strong>{adminFieldValue(config, adminProfile.ip)}</strong></div>
+                                    </div>
+                                </div>
+
+                                <div className="admin-section">
+                                    <div className="admin-section-title">{lang(config, 'Admin.InformationTitle', 'Thông tin')}</div>
+                                    <div className="admin-field-list">
+                                        <div className="admin-field-row"><span>CitizenID</span><strong>{adminFieldValue(config, adminProfile.citizenid)}</strong></div>
+                                        <div className="admin-field-row"><span>{lang(config, 'Admin.Fields.CharacterName', 'Tên nhân vật')}</span><strong>{adminFieldValue(config, adminProfile.name)}</strong></div>
+                                        <div className="admin-field-row"><span>Job</span><strong>{adminFieldValue(config, adminProfile.job)}</strong></div>
+                                        <div className="admin-field-row"><span>Cash</span><strong>{adminFieldValue(config, adminProfile.cash)}</strong></div>
+                                        <div className="admin-field-row"><span>Bank</span><strong>{adminFieldValue(config, adminProfile.bank)}</strong></div>
+                                        <div className="admin-field-row"><span>{lang(config, 'Admin.Fields.Gender', 'Giới tính')}</span><strong>{adminFieldValue(config, adminProfile.gender)}</strong></div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal open={banListModal.open} onBackdropClick={closeBanListModal} extraClass="ban-list-modal">
+                <div className="modal-card ban-list-modal-card">
+                    <div className="modal-header">
+                        <div className="modal-title">{lang(config, 'Bans.Title', 'DANH SÁCH BAN')}</div>
+                        <button className="btn btn-ghost" onClick={closeBanListModal}>{lang(config, 'Buttons.Close', 'Đóng')}</button>
+                    </div>
+                    <div className="modal-body ban-list-body">
+                        {banListModal.loading && <div className="modal-empty">{lang(config, 'Bans.Loading', 'Đang tải danh sách ban...')}</div>}
+                        {!banListModal.loading && banListModal.error && <div className="modal-empty">{banListModal.error}</div>}
+                        {!banListModal.loading && !banListModal.error && !banListModal.items.length && <div className="modal-empty">{lang(config, 'Bans.Empty', 'Không có người chơi nào đang bị ban.')}</div>}
+                        {!banListModal.loading && !banListModal.error && banListModal.items.map((ban) => (
+                            <div key={ban.id} className="ban-list-card">
+                                <div className="ban-list-top">
+                                    <div>
+                                        <div className="ban-list-name">{ban.characterName || ban.steamName || lang(config, 'Common.Unknown', 'Unknown')}</div>
+                                        <div className="ban-list-sub">ID Steam: {adminFieldValue(config, ban.steam)} • CitizenID: {adminFieldValue(config, ban.citizenid)}</div>
+                                    </div>
+                                    <button className="btn btn-small btn-danger" disabled={banListModal.busyId === ban.id} onClick={() => unbanEntry(ban.id)}>{lang(config, 'Bans.Unban', 'Unban')}</button>
+                                </div>
+                                <div className="ban-list-grid">
+                                    <div className="ban-list-field"><span>{lang(config, 'Bans.Reason', 'Lý do')}</span><strong>{adminFieldValue(config, ban.reason)}</strong></div>
+                                    <div className="ban-list-field"><span>{lang(config, 'Bans.Expires', 'Hết hạn')}</span><strong>{formatBanExpireText(config, ban.expire)}</strong></div>
+                                    <div className="ban-list-field"><span>{lang(config, 'Bans.BannedBy', 'Ban bởi')}</span><strong>{adminFieldValue(config, ban.bannedBy)}</strong></div>
+                                    <div className="ban-list-field"><span>License</span><strong>{adminFieldValue(config, ban.license)}</strong></div>
+                                    <div className="ban-list-field"><span>License 2</span><strong>{adminFieldValue(config, ban.license2)}</strong></div>
+                                    <div className="ban-list-field"><span>ID Discord</span><strong>{adminFieldValue(config, ban.discord)}</strong></div>
+                                    <div className="ban-list-field"><span>IP</span><strong>{adminFieldValue(config, ban.ip)}</strong></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </Modal>
 
             <Modal open={inventoryModal.open} onBackdropClick={() => setInventoryModal({ open: false, player: null, tab: 'inv', loadingInv: false, loadingVeh: false, items: [], vehicles: [], errorInv: '', errorVeh: '' })}>
                 <div className="modal-card">
