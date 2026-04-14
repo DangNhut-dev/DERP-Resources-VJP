@@ -68,7 +68,7 @@ local ClothingConfig = {
         },
         female = {
             [0] = { drawable = -1, texture = 0 }, [1] = { drawable = 0, texture = 0 },
-            [3] = { drawable = 15, texture = 0 }, [4] = { drawable = 10, texture = 0 },
+            [3] = { drawable = 15, texture = 0 }, [4] = { drawable = 15, texture = 3 },
             [5] = { drawable = 0, texture = 0 },  [6] = { drawable = 35, texture = 0 },
             [7] = { drawable = 0, texture = 0 },  [8] = { drawable = 10, texture = 0 },
             [9] = { drawable = 0, texture = 0 },  [10] = { drawable = 0, texture = 0 },

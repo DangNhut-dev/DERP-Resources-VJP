@@ -706,6 +706,12 @@ Config.Bleeding = {
             duration = 3000,
             anim = {dict = 'mp_suicide', clip = 'pill', flag = 49},
         },
+        ['ifak'] = {
+            value = 10,
+            health = 25, -- health restored by adrenaline [SCRIPT WILL ADD HEALTH IF PLAYER IS NOT BLEEDING, OTHERWISE WILL STOP BLEEDING]
+            duration = 2000,
+            anim = {dict = 'missheistdockssetup1clipboard@idle_a', clip = 'idle_a', flag = 49},
+        },
         ['bandage'] = {
             value = 10,
             health = 20, -- health restored by bandage [SCRIPT WILL ADD HEALTH IF PLAYER IS NOT BLEEDING, OTHERWISE WILL STOP BLEEDING]

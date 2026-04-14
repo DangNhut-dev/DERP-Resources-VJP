@@ -696,7 +696,7 @@ Config.MarketNPCs = {
     {
         id = "chopshop_shop",
         enabled = true,
-        label = "Nói Chuyện Buôn Bán",
+        label = "Cửa Hàng Thiết Bị",
         ped = `g_m_y_ballasout_01`,
         coords = vector4(354.45, -2703.86, 1.71, 72.28),
         type = "buy",
@@ -707,8 +707,8 @@ Config.MarketNPCs = {
     {
         id = "chopshop_shop2",
         enabled = true,
-        label = "Nói Chuyện Buôn Bán",
-        ped = `a_m_m_fatlatin_01`,
+        label = "Thu Mua Phụ Tùng",
+        ped = `a_m_m_salton_03`,
         coords = vector4(340.72, -2732.40, 5.99, 333.60),
         blackmarket = true,
         type = "sell",
@@ -717,6 +717,43 @@ Config.MarketNPCs = {
             {name = "car_door", label = "Cửa Xe", buyPrice = nil, sellMin = 4, sellMax = 8},
             {name = "radiator", label = "Két Nước", buyPrice = nil, sellMin = 6, sellMax = 10},
             {name = "trunk", label = "Cốp Xe", buyPrice = nil, sellMin = 5, sellMax = 9},
+        }
+    },
+    {
+        id = "gunshop1",
+        enabled = true,
+        label = "Cửa Hàng Súng Đạn",
+        ped = `a_m_m_salton_01`,
+        coords = vector4(379.18, 792.58, 190.41, 182.59),
+        blackmarket = true,
+        type = "buy",
+        items = {
+            {name = "weapon_g26", label = "Glock 26", buyPrice = 150, sellMin = nil, sellMax = nil},
+        }
+    },
+    {
+        id = "gunshop2",
+        enabled = true,
+        label = "Cửa Hàng Súng Đạn",
+        ped = `a_m_m_salton_01`,
+        coords = vector4(348.62, -2735.64, 5.99, 12.29),
+        blackmarket = true,
+        type = "buy",
+        items = {
+            {name = "ammo-9", label = "9mm", buyPrice = 6, sellMin = nil, sellMax = nil},
+        }
+    },
+    {
+        id = "weedshop1",
+        enabled = true,
+        label = "Cửa Hàng Nuôi Trồng",
+        ped = `a_m_m_salton_01`,
+        coords = vector4(348.62, -2735.64, 5.99, 12.29),
+        blackmarket = true,
+        type = "buy",
+        items = {
+            {name = "nutrient_solution", label = "Nước Dinh Dưỡng", buyPrice = 2, sellMin = nil, sellMax = nil},
+            {name = "fertilizer", label = "Phân Bón", buyPrice = 2, sellMin = nil, sellMax = nil},
         }
     },
 }

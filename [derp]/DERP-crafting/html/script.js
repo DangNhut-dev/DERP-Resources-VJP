@@ -147,7 +147,7 @@ function showRecipeDetails(itemName, recipe, canCraft) {
             '<div class="ingredients-list">' + ingredientsHtml + '</div>' +
             '<button class="craft-btn" onclick="craftItemWithQuantity(\'' + itemName + '\')" ' + (!canCraft ? 'disabled' : '') + '>' +
                 '<i class="fas fa-hammer"></i>' +
-                '<span id="craft-btn-text">' + (canCraft ? 'CHE TAO NGAY' : 'THIEU NGUYEN LIEU') + '</span>' +
+                '<span id="craft-btn-text">' + (canCraft ? 'CHẾ TẠO NGAY' : 'THIẾU NGUYÊN LIỆU') + '</span>' +
             '</button>' +
         '</div>'
     );
@@ -157,7 +157,7 @@ function clearDetails() {
     $('#recipe-details').html(
         '<div class="no-selection">' +
             '<i class="fas fa-hand-pointer"></i>' +
-            '<p>Chon mot cong thuc de xem chi tiet</p>' +
+            '<p>Chọn một công thức để xem chi tiết</p>' +
         '</div>'
     );
 }
@@ -205,7 +205,7 @@ function updateIngredientAmounts(itemName) {
     });
 
     $('.craft-btn').prop('disabled', !allEnough);
-    $('#craft-btn-text').text(allEnough ? 'CHE TAO NGAY' : 'THIEU NGUYEN LIEU');
+    $('#craft-btn-text').text(allEnough ? 'CHẾ TẠO NGAY' : 'THIẾU NGUYÊN LIỆU');
 }
 
 // ── Craft ──
@@ -234,7 +234,7 @@ function startCraftingProgress(itemName, itemLabel, craftTime, quantity) {
     $('#crafting-overlay').removeClass('hidden');
 
     const quantityText = quantity > 1 ? ' (x' + quantity + ')' : '';
-    $('#crafting-item-label').text('Dang che tao ' + itemLabel + quantityText);
+    $('#crafting-item-label').text('Đang chế tạo ' + itemLabel + quantityText);
 
     let timeElapsed = 0;
     $('#crafting-timer-text').text((craftTime / 1000).toFixed(1) + 's');

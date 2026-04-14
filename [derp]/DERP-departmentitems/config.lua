@@ -1106,6 +1106,11 @@ bcso = {
                                 male   = { drawable = 54, texture = 0 },
                                 female = { drawable = 55, texture = 0 },
                             },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1134,6 +1139,11 @@ bcso = {
                                 name   = 'giay',
                                 male   = { drawable = 54, texture = 0 },
                                 female = { drawable = 55, texture = 0 },
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
                             },
                         },
                     },
@@ -1173,7 +1183,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 1 },
                                 female = { drawable = 226, texture = 1 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1208,7 +1228,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 1 },
                                 female = { drawable = 228, texture = 1 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1247,7 +1277,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 2 },
                                 female = { drawable = 226, texture = 2 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1282,7 +1322,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 2 },
                                 female = { drawable = 228, texture = 2 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1321,7 +1371,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 3 },
                                 female = { drawable = 226, texture = 3 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1356,7 +1416,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 3 },
                                 female = { drawable = 228, texture = 3 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1391,7 +1461,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 216, texture = 0 },
                                 female = { drawable = 230, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1430,7 +1510,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 4 },
                                 female = { drawable = 226, texture = 4 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1465,7 +1555,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 4 },
                                 female = { drawable = 228, texture = 4 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1500,7 +1600,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 216, texture = 0 },
                                 female = { drawable = 230, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1544,7 +1654,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 0 },
                                 female = { drawable = 226, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1584,7 +1704,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 0 },
                                 female = { drawable = 228, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1624,7 +1754,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 216, texture = 0 },
                                 female = { drawable = 230, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1668,7 +1808,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 0 },
                                 female = { drawable = 226, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1708,7 +1858,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 0 },
                                 female = { drawable = 228, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1748,7 +1908,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 216, texture = 0 },
                                 female = { drawable = 230, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                 },
@@ -1792,7 +1962,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 0 },
                                 female = { drawable = 226, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1832,7 +2012,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 0 },
                                 female = { drawable = 228, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1867,6 +2057,16 @@ bcso = {
                                 name   = 'giay',
                                 male   = { drawable = 54, texture = 0 },
                                 female = { drawable = 55, texture = 0 },
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
                             },
                         },
                     },
@@ -1911,7 +2111,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 0 },
                                 female = { drawable = 226, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1951,7 +2161,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 0 },
                                 female = { drawable = 228, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -1986,6 +2206,16 @@ bcso = {
                                 name   = 'giay',
                                 male   = { drawable = 54, texture = 0 },
                                 female = { drawable = 55, texture = 0 },
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
                             },
                         },
                     },
@@ -2030,7 +2260,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 0 },
                                 female = { drawable = 226, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -2070,7 +2310,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 0 },
                                 female = { drawable = 228, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -2105,6 +2355,16 @@ bcso = {
                                 name   = 'giay',
                                 male   = { drawable = 54, texture = 0 },
                                 female = { drawable = 55, texture = 0 },
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
                             },
                         },
                     },
@@ -2149,7 +2409,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 212, texture = 0 },
                                 female = { drawable = 226, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -2189,7 +2459,17 @@ bcso = {
                                 name   = 'huyhieu',
                                 male  = { drawable = 209, texture = 0 },
                                 female = { drawable = 228, texture = 0 },
-                            }
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
+                            },
                         },
                     },
                     {
@@ -2224,6 +2504,16 @@ bcso = {
                                 name   = 'giay',
                                 male   = { drawable = 54, texture = 0 },
                                 female = { drawable = 55, texture = 0 },
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            {
+                                name   = 'daychuyen',
+                                male   = { drawable = 193, texture = 0 },
+                                female = { drawable = 162, texture = 0 },
                             },
                         },
                     },

@@ -514,6 +514,16 @@ function UpdateBars(dist)
         Flashing(true)
         if not mert then
             mert = true
+            if not copsCalled then
+                local pos = GetEntityCoords(PlayerPedId())
+                local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                local street1 = GetStreetNameFromHashKey(s1)
+                local street2 = GetStreetNameFromHashKey(s2)
+                local streetLabel = street1
+                if street2 then streetLabel = streetLabel .. " " .. street2 end
+                TriggerServerEvent('orbit-chopshop:server:callCops', "Chopshop", 0, streetLabel, pos, targetVehicleModel, targetVehiclePlate)
+                copsCalled = true
+            end
             exports['boii_minigames']:chip_hack({
                 style = 'default',
                 loading_time = 5000,
@@ -524,16 +534,6 @@ function UpdateBars(dist)
                     TriggerEvents()
                     TriggerEvent("vehiclekeys:client:SetOwner", LicensePlate)
                     QBX:Notify(Config.Locale["RadarSuccess"], 'success')
-                    if not copsCalled then
-                        local pos = GetEntityCoords(PlayerPedId())
-                        local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                        local street1 = GetStreetNameFromHashKey(s1)
-                        local street2 = GetStreetNameFromHashKey(s2)
-                        local streetLabel = street1
-                        if street2 then streetLabel = streetLabel .. " " .. street2 end
-                        TriggerServerEvent('orbit-chopshop:server:callCops', "Chopshop", 0, streetLabel, pos, targetVehicleModel, targetVehiclePlate)
-                        copsCalled = true
-                    end
                     Wait(5000)
                     QBX:Notify(Config.Locale["FoundVeh"], 'success')
                     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop3"])

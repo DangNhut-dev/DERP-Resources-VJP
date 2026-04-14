@@ -1079,6 +1079,14 @@ return {
 		close = true,
 	},
 
+	['ifak'] = {
+		label = 'ifak',
+		description = 'Cầm máu, băng bó vết thương.',
+		weight = 100,
+		stack = true,
+		close = true,
+	},
+
 	['ointment'] = {
 		label = 'Thuốc mỡ bôi vết thương',
 		weight = 50,
@@ -1188,6 +1196,13 @@ return {
 		stack = true,
 		close = true,
 		description = 'Thanh nhôm nguyên chất',
+	},
+	['circuit'] = {
+		label = 'Mạch Điện Tử',
+		weight = 400,
+		stack = true,
+		close = true,
+		description = 'Mạch Điện Tử',
 	},
 	['steel'] = {
 		label = 'Thép',

@@ -289,9 +289,9 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
 
     if success then
         local label = recipe.customLabel or (exports.ox_inventory:Items()[outputItem] and exports.ox_inventory:Items()[outputItem].label or outputItem)
-        Notify(src, 'Che tao thanh cong: ' .. label, 'success')
+        Notify(src, 'Chế tạo thành công: ' .. label, 'success')
 
-        AddActionLog(src, 'Che tao thanh cong', {
+        AddActionLog(src, 'Chế tạo thành công', {
             { 'ban', benchLabel },
             { 'cong_thuc', tostring(itemName) },
             { 'nhan', craftedItemText },
@@ -303,9 +303,9 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
         for ingredient, baseAmount in pairs(recipe.ingredients) do
             exports.ox_inventory:AddItem(src, ingredient, baseAmount * quantity)
         end
-        Notify(src, 'Khong the them item, da hoan nguyen lieu!', 'error')
+        Notify(src, 'Không thể thêm, đã hoàn nguyên liệu!', 'error')
 
-        AddActionLog(src, 'Che tao that bai', {
+        AddActionLog(src, 'Chế tạo thất bại', {
             { 'ban', benchLabel },
             { 'cong_thuc', tostring(itemName) },
             { 'khong_nhan_duoc', craftedItemText },
