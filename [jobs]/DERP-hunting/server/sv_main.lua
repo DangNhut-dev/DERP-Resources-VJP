@@ -299,7 +299,7 @@ function choiceRewardsForPlayer(animalCfg, src, Player)
                 description = 'Túi không đủ chỗ cho thịt! Hãy bỏ bớt đồ.',
                 duration    = 5000,
             })
-            print(('[DERP-hunting] [DEBUG] choiceRewards | src=%s cant carry meat %sx %s'):format(src, meatAmount, meatItem))
+            -- print(('[DERP-hunting] [DEBUG] choiceRewards | src=%s cant carry meat %sx %s'):format(src, meatAmount, meatItem))
             return
         end
     end
@@ -312,7 +312,7 @@ function choiceRewardsForPlayer(animalCfg, src, Player)
                 description = 'Túi không đủ chỗ cho da! Hãy bỏ bớt đồ.',
                 duration    = 5000,
             })
-            print(('[DERP-hunting] [DEBUG] choiceRewards | src=%s cant carry hide %sx %s'):format(src, hideAmount, hideGrade.item))
+            -- print(('[DERP-hunting] [DEBUG] choiceRewards | src=%s cant carry hide %sx %s'):format(src, hideAmount, hideGrade.item))
             return
         end
     end
@@ -321,13 +321,13 @@ function choiceRewardsForPlayer(animalCfg, src, Player)
     if meatItem then
         exports['ox_inventory']:AddItem(src, meatItem, meatAmount)
         rewardEntries[#rewardEntries + 1] = DERPHuntingBuildItemEntry(meatItem, meatAmount)
-        print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (meat)'):format(src, meatAmount, meatItem))
+        -- print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (meat)'):format(src, meatAmount, meatItem))
     end
 
     if hideGrade then
         exports['ox_inventory']:AddItem(src, hideGrade.item, hideAmount)
         rewardEntries[#rewardEntries + 1] = DERPHuntingBuildItemEntry(hideGrade.item, hideAmount, hideGrade.label)
-        print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (hide grade=%s)'):format(src, hideAmount, hideGrade.item, hideGrade.label))
+        -- print(('[DERP-hunting] [DEBUG] loot | src=%s +%sx %s (hide grade=%s)'):format(src, hideAmount, hideGrade.item, hideGrade.label))
     end
 
     if #rewardEntries > 0 then
