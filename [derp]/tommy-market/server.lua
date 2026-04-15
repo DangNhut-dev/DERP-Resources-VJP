@@ -4,26 +4,26 @@ local buyCooldowns = {}
 local sellCooldowns = {}
 local COOLDOWN_MS = 500
 
-local allEvents = {
-    ["qb-npc-market:sellItem"] = false,
-    ["qb-npc-market:checkout"] = false,
-    ["qb-npc-market:buyItem"] = false
-}
-local fiveguard_resource = "svc_runtime"
-AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
-    if res == "*" or res == GetCurrentResourceName() then
-        fiveguard_resource = fiveguard_res
-        for event,cross_scripts in pairs(allEvents) do
-            local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
-                ban = true,
-                log = true
-            }, cross_scripts)
-            if not retval then
-                print("[fiveguard safe-events] "..errorText)
-            end
-        end
-    end
-end)
+-- local allEvents = {
+--     ["qb-npc-market:sellItem"] = false,
+--     ["qb-npc-market:checkout"] = false,
+--     ["qb-npc-market:buyItem"] = false
+-- }
+-- local fiveguard_resource = "svc_runtime"
+-- AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
+--     if res == "*" or res == GetCurrentResourceName() then
+--         fiveguard_resource = fiveguard_res
+--         for event,cross_scripts in pairs(allEvents) do
+--             local retval, errorText = exports[fiveguard_res]:RegisterSafeEvent(event, {
+--                 ban = true,
+--                 log = true
+--             }, cross_scripts)
+--             if not retval then
+--                 print("[fiveguard safe-events] "..errorText)
+--             end
+--         end
+--     end
+-- end)
 
 local function IsJsRankingStarted()
     return GetResourceState('js_ranking') == 'started'
@@ -450,9 +450,9 @@ end)
 RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
     local src = source
     if not checkCooldown(buyCooldowns, src) then return end
-    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
-        if not exports[fiveguard_resource]:VerifyToken(src) then return end
-    end
+    -- if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+    --     if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    -- end
     if type(npcId) ~= 'string' and type(npcId) ~= 'number' then return end
     if type(items) ~= 'table' or #items == 0 or #items > 20 then return end
     if paymentType ~= 'cash' and paymentType ~= 'bank' and paymentType ~= 'dirty' then
@@ -586,9 +586,9 @@ end)
 RegisterNetEvent('qb-npc-market:sellItem', function(npcId, itemName, amount)
     local src = source
     if not checkCooldown(sellCooldowns, src) then return end
-    if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
-        if not exports[fiveguard_resource]:VerifyToken(src) then return end
-    end
+    -- if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
+    --     if not exports[fiveguard_resource]:VerifyToken(src) then return end
+    -- end
     if type(npcId) ~= 'string' and type(npcId) ~= 'number' then return end
     if type(itemName) ~= 'string' then return end
 
