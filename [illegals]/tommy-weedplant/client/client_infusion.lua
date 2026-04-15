@@ -131,16 +131,12 @@ RegisterNetEvent('tommy-weedplant:client:useInfusionTable', function()
     local ped = cache.ped
     local pedCoords = GetEntityCoords(ped)
     local pedHeading = GetEntityHeading(ped)
-    local forwardX = pedCoords.x + math.sin(math.rad(-pedHeading)) * 1.5
-    local forwardY = pedCoords.y + math.cos(math.rad(-pedHeading)) * 1.5
+    local distance = 1.5
+    local forwardX = pedCoords.x + math.sin(math.rad(-pedHeading)) * distance
+    local forwardY = pedCoords.y + math.cos(math.rad(-pedHeading)) * distance
 
-    local found, groundZ = GetGroundZFor_3dCoord(forwardX, forwardY, pedCoords.z + 100.0, 0)
-    if not found then
-        lib.notify({ description = 'Vị trí không hợp lệ!', type = 'error' })
-        return
-    end
+    local tableCoords = vector3(forwardX, forwardY, pedCoords.z)
 
-    local tableCoords = vector3(forwardX, forwardY, groundZ + 1.0)
     lib.requestAnimDict('amb@world_human_hammering@male@base')
     TaskPlayAnim(ped, 'amb@world_human_hammering@male@base', 'base', 8.0, -8.0, 2000, 1, 0, false, false, false)
 
@@ -152,7 +148,7 @@ RegisterNetEvent('tommy-weedplant:client:useInfusionTable', function()
         disable = { move = true, car = true, combat = true },
     }) then
         ClearPedTasks(ped)
-        TriggerServerEvent('tommy-weedplant:server:placeInfusionTable', tableCoords, GetEntityHeading(cache.ped))
+        TriggerServerEvent('tommy-weedplant:server:placeInfusionTable', tableCoords, pedHeading)
     else
         ClearPedTasks(ped)
     end

@@ -260,6 +260,24 @@ end
 
 local function HarvestPlant(plantId)
     if not activePlants[plantId] then return end
+    local scissors = exports.ox_inventory:Search('slots', 'scissors')
+    if not scissors or not next(scissors) then
+        lib.notify({ description = Config.Notifications['no_scissors'], type = 'error' })
+        return
+    end
+
+    local hasValidScissors = false
+    for _, slot in pairs(scissors) do
+        if (slot.metadata.durability or 0) > 0 then
+            hasValidScissors = true
+            break
+        end
+    end
+
+    if not hasValidScissors then
+        lib.notify({ description = Config.Notifications['scissors_broken'], type = 'error' })
+        return
+    end
     if not CheckCooldown('harvest') then
         lib.notify({ description = Config.Notifications['too_fast_harvesting'], type = 'error' })
         return
@@ -556,7 +574,7 @@ RegisterNetEvent('tommy-weedplant:client:burnPlant', function(data)
 end)
 
 RegisterNetEvent('tommy-weedplant:client:useSeed', function(seedType)
-    print('[DEBUG CLIENT] useSeed received, seedType:', seedType)
+    -- print('[DEBUG CLIENT] useSeed received, seedType:', seedType)
     currentSeedType = seedType
     PlantSeed(seedType)
 end)

@@ -293,10 +293,10 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
         WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Hoàn Thành Infusion | bàn: %s'):format(session.tableId), {
             { name = Config.InfusionRuinedItem, amount = 1, sign = '+' }
         }, src))
-        TriggerClientEvent('ox_lib:notify', src, {
-            description = string.format(Config.InfusionNotifications['infusion_ruined'], Config.InfusionRuinedItem),
-            type = 'error'
-        })
+        -- TriggerClientEvent('ox_lib:notify', src, {
+        --     description = string.format(Config.InfusionNotifications['infusion_ruined'], Config.InfusionRuinedItem),
+        --     type = 'error'
+        -- })
     else
         local quality = DetermineQuality(bestMatch.recipe, bestMatch.comparison, infusionTime)
         local outputItem, notifType
@@ -320,11 +320,11 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
         WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Hoàn Thành Infusion | bàn: %s'):format(session.tableId), {
             { name = outputItem, amount = 1, sign = '+' }
         }, src))
-        local notifKey = 'infusion_' .. quality
-        TriggerClientEvent('ox_lib:notify', src, {
-            description = string.format(Config.InfusionNotifications[notifKey], outputItem),
-            type = notifType
-        })
+        -- local notifKey = 'infusion_' .. quality
+        -- TriggerClientEvent('ox_lib:notify', src, {
+        --     description = string.format(Config.InfusionNotifications[notifKey], outputItem),
+        --     type = notifType
+        -- })
     end
 
     tbl.inUse = false

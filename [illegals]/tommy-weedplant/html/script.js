@@ -13,7 +13,7 @@ function updatePlantInfo(data) {
     document.getElementById('seedName').textContent = data.seedName;
     
     const waterPercent = Math.round(data.waterLevel || 0);
-    document.getElementById('waterLevel').textContent = `${waterPercent}%`;
+    // document.getElementById('waterLevel').textContent = `${waterPercent}%`;
     document.getElementById('waterFill').style.width = `${waterPercent}%`;
     
     const waterFill = document.getElementById('waterFill');
@@ -272,7 +272,7 @@ function populateBudsList(buds) {
         budEl.dataset.name = bud.name;
         budEl.dataset.label = bud.label;
         budEl.innerHTML = `
-            <img src="https://cfx-nui-qb-inventory/html/images/${bud.image}" alt="${bud.label}" draggable="false">
+            <img src="https://cfx-nui-ox_inventory/web/images/${bud.image}" alt="${bud.label}" draggable="false">
             <div class="bud-info">
                 <div class="bud-name">${bud.label}</div>
                 <div class="bud-count">x${bud.amount}</div>
@@ -395,7 +395,7 @@ function updateDryingGrid() {
         slot.className = 'drying-slot';
         if (items[i]) {
             const budName = items[i];
-            slot.innerHTML = `<img src="https://cfx-nui-qb-inventory/html/images/${budName}.png" alt="${budName}">`;
+            slot.innerHTML = `<img src="https://cfx-nui-ox_inventory/web/images/${budName}.png" alt="${budName}">`;
             slot.classList.add('filled');
             slot.addEventListener('click', function() {
                 removeBudFromGrid(budName);
@@ -449,6 +449,7 @@ let currentInfusionTableId = null;
 let selectedBud = null;
 let selectedIngredients = {};
 let originalIngredientsAmount = {};
+let originalIngredientsLabel = {};
 let isInfusing = false;
 let infusionTimer = null;
 
@@ -457,6 +458,7 @@ function openInfusionUI(data) {
     currentInfusionTableId = data.tableId;
     selectedBud = null;
     selectedIngredients = {};
+    originalIngredientsLabel = {};
     originalIngredientsAmount = {};
     isInfusing = false;
     const infusionUI = document.getElementById('infusionStation');
@@ -477,6 +479,7 @@ function closeInfusionUI() {
     }
     selectedBud = null;
     selectedIngredients = {};
+    originalIngredientsLabel = {};
     originalIngredientsAmount = {};
     isInfusing = false;
     currentInfusionTableId = null;
@@ -503,7 +506,7 @@ function populateInfusionBudsList(buds) {
         budEl.dataset.name = bud.name;
         budEl.dataset.label = bud.label;
         budEl.innerHTML = `
-            <img src="https://cfx-nui-qb-inventory/html/images/${bud.image}" alt="${bud.label}" draggable="false">
+            <img src="https://cfx-nui-ox_inventory/web/images/${bud.image}" alt="${bud.label}" draggable="false">
             <div class="bud-info">
                 <div class="bud-name">${bud.label}</div>
                 <div class="bud-count">x${bud.amount}</div>
@@ -536,12 +539,13 @@ function populateInfusionIngredientsList(ingredients) {
     }
     ingredients.forEach(ingredient => {
         originalIngredientsAmount[ingredient.name] = ingredient.amount;
+        originalIngredientsLabel[ingredient.name] = ingredient.label;
         const ingredientEl = document.createElement('div');
         ingredientEl.className = 'infusion-ingredient-item';
         ingredientEl.dataset.name = ingredient.name;
         ingredientEl.dataset.label = ingredient.label;
         ingredientEl.innerHTML = `
-            <img src="https://cfx-nui-qb-inventory/html/images/${ingredient.image}" alt="${ingredient.label}" draggable="false">
+            <img src="https://cfx-nui-ox_inventory/web/images/${ingredient.image}" alt="${ingredient.label}" draggable="false">
             <div class="ingredient-info">
                 <div class="ingredient-name">${ingredient.label}</div>
                 <div class="ingredient-count">x${ingredient.amount}</div>
@@ -631,7 +635,7 @@ function updateSelectedInfusionItems() {
     if (selectedBud) {
         selectedBudEl.innerHTML = `
             <div class="selected-item">
-                <img src="https://cfx-nui-qb-inventory/html/images/${selectedBud.name}.png" alt="${selectedBud.label}">
+                <img src="https://cfx-nui-ox_inventory/web/images/${selectedBud.name}.png" alt="${selectedBud.label}">
                 <span>${selectedBud.label} x1</span>
                 <button onclick="removeSelectedBud()">✕</button>
             </div>
@@ -645,9 +649,10 @@ function updateSelectedInfusionItems() {
             const amount = selectedIngredients[itemName];
             const itemEl = document.createElement('div');
             itemEl.className = 'selected-item';
+            const label = originalIngredientsLabel[itemName] || itemName;
             itemEl.innerHTML = `
-                <img src="https://cfx-nui-qb-inventory/html/images/${itemName}.png" alt="${itemName}">
-                <span>${itemName} x${amount}</span>
+                <img src="https://cfx-nui-ox_inventory/web/images/${itemName}.png" alt="${label}">
+                <span>${label} x${amount}</span>
                 <button onclick="removeSelectedIngredient('${itemName}')">✕</button>
             `;
             selectedIngredientsEl.appendChild(itemEl);
@@ -747,7 +752,7 @@ window.addEventListener('message', (event) => {
             break;
         case 'updateWaterOnly':
             const waterPercent = Math.round(data.waterLevel || 0);
-            document.getElementById('waterLevel').textContent = `${waterPercent}%`;
+            // document.getElementById('waterLevel').textContent = `${waterPercent}%`;
             document.getElementById('waterFill').style.width = `${waterPercent}%`;
             const waterFill = document.getElementById('waterFill');
             if (waterPercent > 60) {

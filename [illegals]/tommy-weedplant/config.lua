@@ -2,7 +2,7 @@ Config = {}
 
 Config.Debug = false
 
-Config.MaxPlantsPerPlayer = 5 -- Số cây tối đa mỗi người có thể trồng
+Config.MaxPlantsPerPlayer = 7 -- Số cây tối đa mỗi người có thể trồng
 
 -- ===========================================
 -- CÁC LOẠI HẠT GIỐNG (SEED TYPES)
@@ -13,10 +13,11 @@ Config.SeedTypes = {
         label = 'Hạt Cần Sa Indica',
         
         -- Thời gian phát triển (ms)
-        growthTime = 120000, -- 2 phút
+        growthTime = 14400000, -- 2 phút
+        -- growthTime = 1000,
         
         -- Thời gian héo sau khi sẵn sàng thu hoạch (ms)
-        witherTime = 30000, -- 30 giây
+        witherTime = 120000, -- 30 giây
         
         -- Props cho từng giai đoạn (custom props)
         props = {
@@ -36,19 +37,19 @@ Config.SeedTypes = {
         -- Yêu cầu nước
         waterRequirement = {
             enabled = true, -- Bật yêu cầu nước
-            maxWater = 100, -- Thanh nước tối đa (%)
+            maxWater = 3600000, -- Thanh nước tối đa (%)
             drainRate = 1.0, -- Mất bao nhiêu % nước mỗi giây phát triển
         },
         
         -- Phân bón
-        fertilizerBonus = 0.3, -- Giảm 30% thời gian phát triển khi bón phân
+        fertilizerBonus = 0.2, -- Giảm 30% thời gian phát triển khi bón phân
     },
     
     ['cannabis_seed_sativa'] = {
         name = 'Sativa',
         label = 'Hạt Cần Sa Sativa',
-        growthTime = 180000, 
-        witherTime = 45000,
+        growthTime = 14400000, 
+        witherTime = 120000,
         props = {
             stage1 = 'nui_props_weed_stage1b',
             stage2 = 'nui_props_weed_stage2b',
@@ -62,17 +63,17 @@ Config.SeedTypes = {
         },
         waterRequirement = {
             enabled = true,
-            maxWater = 100,
+            maxWater = 3600000,
             drainRate = 0.8, 
         },
-        fertilizerBonus = 0.4,
+        fertilizerBonus = 0.2,
     },
     
     ['cannabis_seed_hybrid'] = {
         name = 'Hybrid',
         label = 'Hạt Cần Sa Hybrid',
-        growthTime = 150000,
-        witherTime = 35000,
+        growthTime = 14400000, 
+        witherTime = 120000,
         props = {
             stage1 = 'nui_props_weed_stage1c',
             stage2 = 'nui_props_weed_stage2c',
@@ -86,10 +87,10 @@ Config.SeedTypes = {
         },
         waterRequirement = {
             enabled = true,
-            maxWater = 100,
-            drainRate = 1.2,
+            maxWater = 3600000,
+            drainRate = 0.8, 
         },
-        fertilizerBonus = 0.25,
+        fertilizerBonus = 0.2,
     },
 }
 
@@ -140,10 +141,10 @@ Config.DryingRack = {
     fullProp = 'nui_weed_rack_1', -- Prop khi đang sấy
     
     -- Thời gian sấy
-    dryingTime = 120000, -- 5 phút (300000ms)
+    dryingTime = 3600000, -- 5 phút (300000ms)
     
     -- Thời gian có thể thu hoạch sau khi sấy xong
-    gracePeriod = 10000, -- 1 phút (60000ms)
+    gracePeriod = 300000, -- 1 phút (60000ms)
     
     inputItems = { -- Các loại cần có thể sấy
         ['indica_bud'] = 'indica_bud_dried',
@@ -161,30 +162,30 @@ Config.DryingRack = {
 -- ===========================================
 -- TẨM CẦN SA
 -- ===========================================
-Config.InfusionLocations = {
-    vector3(607.42, -3092.61, 6.07),
-}
-Config.InfusionZoneSize = 2.0
+-- Config.InfusionLocations = {
+--     vector3(607.42, -3092.61, 6.07),
+-- }
+-- Config.InfusionZoneSize = 2.0
 
-Config.InfusionRecipes = {
-    ['sour_diesel'] = {
-        quality = 'high',
-        label = 'Sour Diesel',
-        ingredients = {
-            ['indica_bud_dried'] = 1,
-            ['weapon_petrolcan'] = 1,
-        },
-        time = {
-            min = 3,
-            max = 5
-        },
-        output = {
-            high = { item = 'sour_diesel_bud_high', amount = 1 },
-            medium = { item = 'sour_diesel_bud_medium', amount = 1 },
-            low = { item = 'sour_diesel_bud_low', amount = 1 }
-        }
-    },
-}
+-- Config.InfusionRecipes = {
+--     ['sour_diesel'] = {
+--         quality = 'high',
+--         label = 'Sour Diesel',
+--         ingredients = {
+--             ['indica_bud_dried'] = 1,
+--             ['weapon_petrolcan'] = 1,
+--         },
+--         time = {
+--             min = 3,
+--             max = 5
+--         },
+--         output = {
+--             high = { item = 'sour_diesel_bud_high', amount = 1 },
+--             medium = { item = 'sour_diesel_bud_medium', amount = 1 },
+--             low = { item = 'sour_diesel_bud_low', amount = 1 }
+--         }
+--     },
+-- }
 
 -- ===========================================
 -- ANTI-EXPLOIT
@@ -249,6 +250,8 @@ Config.Notifications = {
     ['not_your_plant'] = 'Đây không phải cây của bạn!',
     ['plant_withered'] = 'Cây đã héo! Bạn không thể thu hoạch nữa.',
     ['plant_ready_harvest'] = 'Cây %s đã sẵn sàng thu hoạch! Hãy thu hoạch trước khi cây héo!',
+    ['no_scissors']     = 'Bạn cần kéo để thu hoạch.',
+    ['scissors_broken'] = 'Kéo của bạn đã hỏng.',
     
     -- Phá cây
     ['burning_plant'] = 'Đang phá cây...',
@@ -293,7 +296,7 @@ Config.InfusionRecipes = {
             ['curing_agent'] = 1,
             ['herbal_mix'] = 1,
         },
-        time = { min = 8.0, max = 14.0 },
+        time = { min = 23.0, max = 28.0 },
         output = { high = 'sour_diesel_high', medium = 'sour_diesel_medium', low = 'sour_diesel_low' }
     },
 
@@ -305,7 +308,7 @@ Config.InfusionRecipes = {
             ['curing_agent'] = 1,
             ['glycerin'] = 1,
         },
-        time = { min = 6.0, max = 12.0 },
+        time = { min = 19.0, max = 24.0 },
         output = { high = 'purple_haze_high', medium = 'purple_haze_medium', low = 'purple_haze_low' }
     },
 
@@ -318,7 +321,7 @@ Config.InfusionRecipes = {
             ['curing_agent'] = 1,
             ['herbal_oil'] = 1,
         },
-        time = { min = 9.0, max = 16.0 },
+        time = { min = 27.0, max = 32.0 },
         output = { high = 'northern_lights_high', medium = 'northern_lights_medium', low = 'northern_lights_low' }
     },
 
@@ -330,7 +333,7 @@ Config.InfusionRecipes = {
             ['citrus_extract'] = 2,
             ['peppermint'] = 1,
         },
-        time = { min = 5.0, max = 10.0 },
+        time = { min = 15.0, max = 20.0 },
         output = { high = 'blue_dream_high', medium = 'blue_dream_medium', low = 'blue_dream_low' }
     },
 
@@ -344,7 +347,7 @@ Config.InfusionRecipes = {
             ['herbal_mix'] = 1,
             ['glycerin'] = 1,
         },
-        time = { min = 10.0, max = 18.0 },
+        time = { min = 31.0, max = 36.0 },
         output = { high = 'jack_herer_high', medium = 'jack_herer_medium', low = 'jack_herer_low' }
     },
 
@@ -357,7 +360,7 @@ Config.InfusionRecipes = {
             ['citrus_extract'] = 1,
             ['peppermint'] = 1,
         },
-        time = { min = 8.0, max = 13.0 },
+        time = { min = 21.0, max = 26.0 },
         output = { high = 'super_lemon_haze_high', medium = 'super_lemon_haze_medium', low = 'super_lemon_haze_low' }
     },
 
@@ -370,7 +373,7 @@ Config.InfusionRecipes = {
             ['curing_agent'] = 1,
             ['herbal_oil'] = 1,
         },
-        time = { min = 7.0, max = 14.0 },
+        time = { min = 14.0, max = 28.0 },
         output = { high = 'og_kush_high', medium = 'og_kush_medium', low = 'og_kush_low' }
     },
 
@@ -383,7 +386,7 @@ Config.InfusionRecipes = {
             ['vanilla_extract'] = 1,
             ['curing_agent'] = 1,
         },
-        time = { min = 9.0, max = 15.0 },
+        time = { min = 18.0, max = 30.0 },
         output = { high = 'gsc_high', medium = 'gsc_medium', low = 'gsc_low' }
     },
 
@@ -397,7 +400,7 @@ Config.InfusionRecipes = {
             ['glycerin'] = 1,
             ['curing_agent'] = 1,
         },
-        time = { min = 10.0, max = 17.0 },
+        time = { min = 29.0, max = 34.0 },
         output = { high = 'wedding_cake_high', medium = 'wedding_cake_medium', low = 'wedding_cake_low' }
     },
 }

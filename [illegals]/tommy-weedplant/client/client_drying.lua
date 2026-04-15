@@ -132,16 +132,12 @@ RegisterNetEvent('tommy-weedplant:client:useDryingRack', function()
     local ped = cache.ped
     local pedCoords = GetEntityCoords(ped)
     local pedHeading = GetEntityHeading(ped)
-    local forwardX = pedCoords.x + math.sin(math.rad(-pedHeading)) * 1.5
-    local forwardY = pedCoords.y + math.cos(math.rad(-pedHeading)) * 1.5
+    local distance = 1.5
+    local forwardX = pedCoords.x + math.sin(math.rad(-pedHeading)) * distance
+    local forwardY = pedCoords.y + math.cos(math.rad(-pedHeading)) * distance
 
-    local found, groundZ = GetGroundZFor_3dCoord(forwardX, forwardY, pedCoords.z + 100.0, 0)
-    if not found then
-        lib.notify({ description = Config.Notifications['invalid_location'], type = 'error' })
-        return
-    end
+    local rackCoords = vector3(forwardX, forwardY, pedCoords.z)
 
-    local rackCoords = vector3(forwardX, forwardY, groundZ + 1.0)
     lib.requestAnimDict('amb@world_human_hammering@male@base')
     TaskPlayAnim(ped, 'amb@world_human_hammering@male@base', 'base', 8.0, -8.0, 2000, 1, 0, false, false, false)
 
@@ -153,7 +149,7 @@ RegisterNetEvent('tommy-weedplant:client:useDryingRack', function()
         disable = { move = true, car = true, combat = true },
     }) then
         ClearPedTasks(ped)
-        TriggerServerEvent('tommy-weedplant:server:placeDryingRack', rackCoords, GetEntityHeading(cache.ped))
+        TriggerServerEvent('tommy-weedplant:server:placeDryingRack', rackCoords, pedHeading)
     else
         ClearPedTasks(ped)
     end
@@ -222,7 +218,7 @@ RegisterNetEvent('tommy-weedplant:client:pickupRack', function(data)
 
     if lib.progressBar({
         duration = 2000,
-        label = 'Đang thu bàn sấy...',
+        label = 'Đang thu kệ phơi...',
         useWhileDead = false,
         canCancel = true,
         disable = { move = true, car = true, combat = true },
