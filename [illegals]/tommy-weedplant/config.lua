@@ -37,8 +37,8 @@ Config.SeedTypes = {
         -- Yêu cầu nước
         waterRequirement = {
             enabled = true, -- Bật yêu cầu nước
-            maxWater = 3600000, -- Thanh nước tối đa (%)
-            drainRate = 1.0, -- Mất bao nhiêu % nước mỗi giây phát triển
+            maxWater = 100, -- Thanh nước tối đa (%)
+            drainRate = 0.002, -- Mất bao nhiêu % nước mỗi giây phát triển
         },
         
         -- Phân bón
@@ -63,7 +63,7 @@ Config.SeedTypes = {
         },
         waterRequirement = {
             enabled = true,
-            maxWater = 3600000,
+            maxWater = 3600,
             drainRate = 0.8, 
         },
         fertilizerBonus = 0.2,
@@ -87,7 +87,7 @@ Config.SeedTypes = {
         },
         waterRequirement = {
             enabled = true,
-            maxWater = 3600000,
+            maxWater = 3600,
             drainRate = 0.8, 
         },
         fertilizerBonus = 0.2,

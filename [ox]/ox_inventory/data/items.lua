@@ -1896,6 +1896,146 @@ return {
 		weight = 100,
 		description = 'Wedding Cake bị tẩm lỗi, chất lượng thấp.',
 	},
+	-- Indica Weed
+	['sour_diesel_high_weed'] = {
+		label = 'Điếu Sour Diesel Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Sour Diesel chất lượng cao, đã cuốn sẵn.',
+	},
+	['sour_diesel_medium_weed'] = {
+		label = 'Điếu Sour Diesel Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Sour Diesel chất lượng trung bình.',
+	},
+	['sour_diesel_low_weed'] = {
+		label = 'Điếu Sour Diesel Kém',
+		weight = 50,
+		description = 'Điếu cần sa Sour Diesel chất lượng kém.',
+	},
+	['purple_haze_high_weed'] = {
+		label = 'Điếu Purple Haze Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Purple Haze chất lượng cao, đã cuốn sẵn.',
+	},
+	['purple_haze_medium_weed'] = {
+		label = 'Điếu Purple Haze Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Purple Haze chất lượng trung bình.',
+	},
+	['purple_haze_low_weed'] = {
+		label = 'Điếu Purple Haze Kém',
+		weight = 50,
+		description = 'Điếu cần sa Purple Haze chất lượng kém.',
+	},
+	['northern_lights_high_weed'] = {
+		label = 'Điếu Northern Lights Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Northern Lights chất lượng cao, đã cuốn sẵn.',
+	},
+	['northern_lights_medium_weed'] = {
+		label = 'Điếu Northern Lights Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Northern Lights chất lượng trung bình.',
+	},
+	['northern_lights_low_weed'] = {
+		label = 'Điếu Northern Lights Kém',
+		weight = 50,
+		description = 'Điếu cần sa Northern Lights chất lượng kém.',
+	},
+
+	-- Sativa Weed
+	['blue_dream_high_weed'] = {
+		label = 'Điếu Blue Dream Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Blue Dream chất lượng cao, đã cuốn sẵn.',
+	},
+	['blue_dream_medium_weed'] = {
+		label = 'Điếu Blue Dream Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Blue Dream chất lượng trung bình.',
+	},
+	['blue_dream_low_weed'] = {
+		label = 'Điếu Blue Dream Kém',
+		weight = 50,
+		description = 'Điếu cần sa Blue Dream chất lượng kém.',
+	},
+	['jack_herer_high_weed'] = {
+		label = 'Điếu Jack Herer Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Jack Herer chất lượng cao, đã cuốn sẵn.',
+	},
+	['jack_herer_medium_weed'] = {
+		label = 'Điếu Jack Herer Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Jack Herer chất lượng trung bình.',
+	},
+	['jack_herer_low_weed'] = {
+		label = 'Điếu Jack Herer Kém',
+		weight = 50,
+		description = 'Điếu cần sa Jack Herer chất lượng kém.',
+	},
+	['super_lemon_haze_high_weed'] = {
+		label = 'Điếu Super Lemon Haze Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Super Lemon Haze chất lượng cao, đã cuốn sẵn.',
+	},
+	['super_lemon_haze_medium_weed'] = {
+		label = 'Điếu Super Lemon Haze Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Super Lemon Haze chất lượng trung bình.',
+	},
+	['super_lemon_haze_low_weed'] = {
+		label = 'Điếu Super Lemon Haze Kém',
+		weight = 50,
+		description = 'Điếu cần sa Super Lemon Haze chất lượng kém.',
+	},
+
+	-- Hybrid Weed
+	['og_kush_high_weed'] = {
+		label = 'Điếu OG Kush Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa OG Kush chất lượng cao, đã cuốn sẵn.',
+	},
+	['og_kush_medium_weed'] = {
+		label = 'Điếu OG Kush Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa OG Kush chất lượng trung bình.',
+	},
+	['og_kush_low_weed'] = {
+		label = 'Điếu OG Kush Kém',
+		weight = 50,
+		description = 'Điếu cần sa OG Kush chất lượng kém.',
+	},
+	['gsc_high_weed'] = {
+		label = 'Điếu Girl Scout Cookies Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Girl Scout Cookies chất lượng cao, đã cuốn sẵn.',
+	},
+	['gsc_medium_weed'] = {
+		label = 'Điếu Girl Scout Cookies Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Girl Scout Cookies chất lượng trung bình.',
+	},
+	['gsc_low_weed'] = {
+		label = 'Điếu Girl Scout Cookies Kém',
+		weight = 50,
+		description = 'Điếu cần sa Girl Scout Cookies chất lượng kém.',
+	},
+	['wedding_cake_high_weed'] = {
+		label = 'Điếu Wedding Cake Cao Cấp',
+		weight = 50,
+		description = 'Điếu cần sa Wedding Cake chất lượng cao, đã cuốn sẵn.',
+	},
+	['wedding_cake_medium_weed'] = {
+		label = 'Điếu Wedding Cake Trung Bình',
+		weight = 50,
+		description = 'Điếu cần sa Wedding Cake chất lượng trung bình.',
+	},
+	['wedding_cake_low_weed'] = {
+		label = 'Điếu Wedding Cake Kém',
+		weight = 50,
+		description = 'Điếu cần sa Wedding Cake chất lượng kém.',
+	},
 
 	-- Nguyên liệu tẩm
 	['herbal_oil'] = {

@@ -599,19 +599,19 @@ Config.Orders = {
     },
     
     -- ILLEGAL JOBS
-    -- {
-    --     id = 100,
-    --     label = 'Trạm Gỗ Lậu',
-    --     pickup = vector3(-575.9, 5352.56, 71.21),
-    --     dropoff = vector3(-94.33, -2719.21, 7.6),
-    --     requiredLevel = 3,
-    --     requiredKg = 150,
-    --     isIllegal = true,
-    --     reward = 850,
-    --     exp = 7,
-    --     cooldown = 280,
-    --     items = { {item = 'vango', chance = 70} }
-    -- },
+    {
+        id = 100,
+        label = 'Đồ Chơi Giới Trẻ',
+        pickup = vector3(-147.92, 6146.84, 32.34),
+        dropoff = vector3(-171.18, -1449.05, 31.62),
+        requiredLevel = 1,
+        requiredKg = 80,
+        isIllegal = true,
+        reward = 350,
+        exp = 25,
+        cooldown = 3600,
+        items = { {item = 'cannabis_seed_indica', chance = 10} }
+    },
     -- {
     --     id = 101,
     --     label = 'Kho Hàng Cấm',

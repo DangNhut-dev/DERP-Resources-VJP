@@ -254,12 +254,12 @@ local function UpdatePlantGrowth(plantId)
             if oldWaterLevel > 0 and plant.waterLevel <= 0 then
                 plant.growthPausedAt = currentTime
                 UpdatePlantInDatabase(plant)
-                local player = exports.qbx_core:GetPlayerByCitizenId(plant.owner)
-                if player then
-                    TriggerClientEvent('ox_lib:notify', player.PlayerData.source, {
-                        description = Config.Notifications['water_depleted'], type = 'error'
-                    })
-                end
+                -- local player = exports.qbx_core:GetPlayerByCitizenId(plant.owner)
+                -- if player then
+                --     TriggerClientEvent('ox_lib:notify', player.PlayerData.source, {
+                --         description = Config.Notifications['water_depleted'], type = 'error'
+                --     })
+                -- end
             end
         end
     end
@@ -690,3 +690,53 @@ AddEventHandler('onResourceStop', function(resourceName)
         print('^3[tommy-weedplant]^7 Resource stopped. All plants saved.')
     end
 end)
+
+RegisterNetEvent('tommy-weedplant:server:rollWeed', function(budItem)
+    local src = source
+    local player = exports.qbx_core:GetPlayer(src)
+    if not player then return end
+
+    if type(budItem) ~= 'string' or budItem == '' then return end
+
+    local outputItem = budItem .. '_weed'
+    if exports.ox_inventory:Search(src, 'count', budItem) < 1 then
+        return TriggerClientEvent('ox_lib:notify', src, { description = 'Bạn không có nguyên liệu!', type = 'error' })
+    end
+    if exports.ox_inventory:Search(src, 'count', 'cut_paper') < 1 then
+        return TriggerClientEvent('ox_lib:notify', src, { description = 'Bạn cần giấy cuốn!', type = 'error' })
+    end
+
+    exports.ox_inventory:RemoveItem(src, budItem, 1)
+    exports.ox_inventory:RemoveItem(src, 'cut_paper', 1)
+    exports.ox_inventory:AddItem(src, outputItem, 1)
+
+    TriggerClientEvent('ox_lib:notify', src, { description = 'Đã cuốn thành công!', type = 'success' })
+end)
+
+local rollableItems = {
+    'sour_diesel_high', 'sour_diesel_medium', 'sour_diesel_low',
+    'purple_haze_high', 'purple_haze_medium', 'purple_haze_low',
+    'northern_lights_high', 'northern_lights_medium', 'northern_lights_low',
+    'blue_dream_high', 'blue_dream_medium', 'blue_dream_low',
+    'jack_herer_high', 'jack_herer_medium', 'jack_herer_low',
+    'super_lemon_haze_high', 'super_lemon_haze_medium', 'super_lemon_haze_low',
+    'og_kush_high', 'og_kush_medium', 'og_kush_low',
+    'gsc_high', 'gsc_medium', 'gsc_low',
+    'wedding_cake_high', 'wedding_cake_medium', 'wedding_cake_low',
+}
+
+local rollableSet = {}
+for _, v in ipairs(rollableItems) do rollableSet[v] = true end
+
+for _, itemName in ipairs(rollableItems) do
+    exports.qbx_core:CreateUseableItem(itemName, function(src)
+        if exports.ox_inventory:Search(src, 'count', itemName) < 1 then return end
+        if exports.ox_inventory:Search(src, 'count', 'cut_paper') < 1 then
+            return TriggerClientEvent('ox_lib:notify', src, { description = 'Bạn cần giấy cuốn!', type = 'error' })
+        end
+        exports.ox_inventory:RemoveItem(src, itemName, 1)
+        exports.ox_inventory:RemoveItem(src, 'cut_paper', 1)
+        exports.ox_inventory:AddItem(src, itemName .. '_weed', 1)
+        TriggerClientEvent('ox_lib:notify', src, { description = 'Đã cuốn thành công!', type = 'success' })
+    end)
+end
