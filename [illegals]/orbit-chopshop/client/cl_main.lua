@@ -21,6 +21,13 @@ local randomCoords = nil
 local blip = nil
 local blip2 = nil
 
+local pendingSpawnCoords = nil
+local pendingSpawnTriggered = false
+
+local function dbg(msg, ...)
+    print(('[chopshop-debug] ' .. msg):format(...))
+end
+
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
 end)
@@ -103,7 +110,9 @@ end)
 
 -- Job accept: validate qua server
 RegisterNetEvent('orbit-chopshop:jobaccept', function()
+    dbg('Job accept triggered')
     local result = lib.callback.await('orbit-chopshop:server:requestJob', false)
+    dbg('RequestJob result: allowed=%s reason=%s', tostring(result and result.allowed), tostring(result and result.reason))
 
     if not result or not result.allowed then
         if result and result.reason == 'cooldown' then
@@ -120,6 +129,8 @@ RegisterNetEvent('orbit-chopshop:jobaccept', function()
     randomCoords = math.random(1, #Config.VehicleCoords)
     randomLoc = math.random(1, #Config.DeliveryCoords)
 
+    dbg('Selected veh=%s coordsIdx=%s deliveryIdx=%s', Config.VehicleList[randomVeh].vehicle, randomCoords, randomLoc)
+
     SpawnVehicle(
         Config.VehicleList[randomVeh].vehicle,
         Config.VehicleCoords[randomCoords]['coords'].x,
@@ -130,39 +141,33 @@ RegisterNetEvent('orbit-chopshop:jobaccept', function()
 end)
 
 function SpawnVehicle(model, x, y, z, w)
-    local hash = GetHashKey(model)
-    RequestModel(hash)
-    while not HasModelLoaded(hash) do Wait(10) end
+    dbg('SpawnVehicle reserve: model=%s coords=%.2f,%.2f,%.2f', model, x, y, z)
 
-    local veh = CreateVehicle(hash, x, y, z, w, true, true)
+    local result = lib.callback.await('orbit-chopshop:server:reserveJobVehicle', false, model, {
+        x = x, y = y, z = z, w = w,
+    })
 
-    local timeout = 0
-    while not DoesEntityExist(veh) and timeout < 100 do
-        Wait(10)
-        timeout = timeout + 1
-    end
+    dbg('Reserve result: plate=%s', tostring(result and result.plate))
 
-    if not DoesEntityExist(veh) then
-        SetModelAsNoLongerNeeded(hash)
+    if not result or not result.plate then
+        dbg('Reserve FAILED')
+        QBX:Notify('Không thể tạo nhiệm vụ, thử lại sau', 'error')
         TriggerServerEvent('orbit-chopshop:server:jobCancel')
         return
     end
 
-    SetEntityHeading(veh, w)
-    SetVehicleEngineOn(veh, false, false)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleNeedsToBeHotwired(veh, false)
-    exports[Config.Fuel]:SetFuel(veh, 100.0)
+    LicensePlate = result.plate
+    targetVehiclePlate = result.plate
+    targetVehicleModel = joaat(model)
 
-    for i = 0, 5 do
-        SetVehicleDoorShut(veh, i, true)
-    end
+    TriggerEvent('orbit-chopshop:client:setJobState', true)
 
-    SetModelAsNoLongerNeeded(hash)
-
-    LicensePlate = GetVehicleNumberPlateText(veh)
-    targetVehicleModel = GetEntityModel(veh)
-    targetVehiclePlate = LicensePlate
+    pendingSpawnCoords = vector3(
+        Config.VehicleCoords[randomCoords]['coords'].x,
+        Config.VehicleCoords[randomCoords]['coords'].y,
+        Config.VehicleCoords[randomCoords]['coords'].z
+    )
+    pendingSpawnTriggered = false
 
     dropoffx = Config.DeliveryCoords[randomLoc]['coords'].x
     dropoffy = Config.DeliveryCoords[randomLoc]['coords'].y
@@ -177,8 +182,8 @@ function SpawnVehicle(model, x, y, z, w)
 
     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop1"])
 
-    Wait(math.random(600000, 1200000)) -- Thời gian đợi nhiệm vụ
-    -- Wait(math.random(600, 1200)) -- Thời gian đợi nhiệm vụ
+    Wait(math.random(600000, 1200000))
+    -- Wait(math.random(600, 1200))
 
     if Config.Email then
         TriggerServerEvent('qb-phone:server:sendNewMail', {
@@ -203,9 +208,15 @@ end
 function ScrapVehicle()
     local ped = PlayerPedId()
     vehicle = GetVehiclePedIsIn(ped, false)
-    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
 
-    if GetVehicleNumberPlateText(veh) ~= LicensePlate then
+    local currentPlate = GetVehicleNumberPlateText(vehicle)
+    if currentPlate then currentPlate = currentPlate:gsub("%s+", "") end
+    local jobPlate = LicensePlate and LicensePlate:gsub("%s+", "") or ""
+
+    dbg('ScrapVehicle check: current=%s job=%s', currentPlate, jobPlate)
+
+    if currentPlate ~= jobPlate then
+        dbg('Plate MISMATCH - reject scrap')
         QBX:Notify(Config.Locale["WrongVeh"], 'error')
     else
         QBX:Notify(Config.Locale["Reminder"], 'inform', 8000)
@@ -277,6 +288,7 @@ CreateThread(function()
                         Wait(1000)
                         DeleteEntity(vehicle)
                         TriggerServerEvent('orbit-chopshop:server:jobComplete')
+                        TriggerEvent('orbit-chopshop:client:setJobState', false)
                         Reset()
                         LicensePlate = nil
                         dropoffx = nil
@@ -342,6 +354,7 @@ function VehicleToFar()
     exports["orbit-ui"]:Close()
     QBX:Notify(Config.Locale["FarAway"], 'error')
     TriggerServerEvent('orbit-chopshop:server:jobCancel')
+    TriggerEvent('orbit-chopshop:client:setJobState', false)
 end
 
 function CreateBlip(x, y)
@@ -397,6 +410,8 @@ function Reset()
     removedpart = false
     copsCalled = false
     mert = false
+    pendingSpawnCoords = nil
+    pendingSpawnTriggered = false
 end
 
 -- SCANNER
@@ -676,5 +691,84 @@ function SetupDigiScanner(vector3Pos, parameters)
         InitiateDigiScanner()
     end
 end
+
+CreateThread(function()
+    while true do
+        Wait(2000)
+        if pendingSpawnCoords and not pendingSpawnTriggered then
+            local pos = GetEntityCoords(PlayerPedId())
+            local dist = #(pos - pendingSpawnCoords)
+            if dist <= 100.0 then
+                pendingSpawnTriggered = true
+                dbg('Player vào range 100m, request spawn xe')
+                local result = lib.callback.await('orbit-chopshop:server:spawnReservedVehicle', false)
+                dbg('Spawn result: netId=%s plate=%s', tostring(result and result.netId), tostring(result and result.plate))
+
+                if not result or not result.netId then
+                    dbg('Spawn FAILED')
+                    QBX:Notify('Lỗi tạo xe, vui lòng thử lại', 'error')
+                    TriggerServerEvent('orbit-chopshop:server:jobCancel')
+                    TriggerEvent('orbit-chopshop:client:setJobState', false)
+                    pendingSpawnCoords = nil
+                    pendingSpawnTriggered = false
+                    LicensePlate = nil
+                    targetVehiclePlate = nil
+                    targetVehicleModel = nil
+                else
+                    local entityCheck = 0
+                    local entity = NetworkGetEntityFromNetworkId(result.netId)
+                    while (not entity or entity == 0 or not DoesEntityExist(entity)) and entityCheck < 30 do
+                        Wait(100)
+                        entity = NetworkGetEntityFromNetworkId(result.netId)
+                        entityCheck = entityCheck + 1
+                    end
+                    dbg('Entity visible: %s', tostring(entity and DoesEntityExist(entity)))
+                    pendingSpawnCoords = nil
+                end
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('orbit-chopshop:client:forceCancel', function()
+    DeleteBlip()
+    Reset()
+    exports["orbit-ui"]:Close()
+    pendingSpawnCoords = nil
+    pendingSpawnTriggered = false
+    LicensePlate = nil
+    targetVehiclePlate = nil
+    targetVehicleModel = nil
+    dropoffx = nil
+    dropoffy = nil
+    dropoffz = nil
+    dropoffm = nil
+    scrapblip = false
+    TriggerEvent('orbit-chopshop:client:setJobState', false)
+end)
+
+RegisterNetEvent('orbit-chopshop:client:cancelJob', function()
+    TriggerServerEvent('orbit-chopshop:server:jobCancel')
+
+    if vehicle and DoesEntityExist(vehicle) then
+        DeleteEntity(vehicle)
+    end
+
+    DeleteBlip()
+    exports["orbit-ui"]:Close()
+    Reset()
+
+    LicensePlate = nil
+    targetVehiclePlate = nil
+    targetVehicleModel = nil
+    dropoffx = nil
+    dropoffy = nil
+    dropoffz = nil
+    dropoffm = nil
+    scrapblip = false
+
+    TriggerEvent('orbit-chopshop:client:setJobState', false)
+    QBX:Notify('Đã hủy chuyến', 'inform')
+end)
 
 exports('SetupDigiScanner', SetupDigiScanner)

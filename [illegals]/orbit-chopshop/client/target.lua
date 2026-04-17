@@ -1,4 +1,9 @@
 local spawnedPed = nil
+local hasActiveJob = false
+
+RegisterNetEvent('orbit-chopshop:client:setJobState', function(state)
+    hasActiveJob = state and true or false
+end)
 
 CreateThread(function()
     -- Spawn NPC
@@ -20,8 +25,23 @@ CreateThread(function()
             icon = 'fas fa-car',
             label = 'Nói chuyện',
             distance = 1.5,
+            canInteract = function()
+                return not hasActiveJob
+            end,
             onSelect = function()
                 TriggerEvent('orbit-chopshop:jobaccept')
+            end,
+        },
+        {
+            name = 'chopshop_cancel',
+            icon = 'fas fa-times',
+            label = 'Hủy chuyến',
+            distance = 1.5,
+            canInteract = function()
+                return hasActiveJob
+            end,
+            onSelect = function()
+                TriggerEvent('orbit-chopshop:client:cancelJob')
             end,
         },
     })

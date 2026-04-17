@@ -23,6 +23,116 @@ end)
 local Cooldowns = {}
 local ActiveJobs = {}
 
+local SpawnedJobVehicles = {}
+local PendingJobVehicles = {}
+
+local function generatePlate()
+    local plate = ""
+    for _ = 1, 3 do
+        plate = plate .. string.char(math.random(65, 90))
+    end
+    plate = plate .. tostring(math.random(100, 999))
+    return plate
+end
+
+local function cleanupJobVehicle(citizenid)
+    local data = SpawnedJobVehicles[citizenid]
+    if data and data.netId then
+        local entity = NetworkGetEntityFromNetworkId(data.netId)
+        if entity and entity ~= 0 and DoesEntityExist(entity) then
+            DeleteEntity(entity)
+        end
+    end
+    SpawnedJobVehicles[citizenid] = nil
+    PendingJobVehicles[citizenid] = nil
+end
+
+lib.callback.register('orbit-chopshop:server:reserveJobVehicle', function(source, model, coords)
+    local player = QBX:GetPlayer(source)
+    if not player then return nil end
+
+    local citizenid = player.PlayerData.citizenid
+    if not ActiveJobs[citizenid] then return nil end
+
+    if type(model) ~= 'string' or model == '' then return nil end
+    if type(coords) ~= 'table' or not coords.x or not coords.y or not coords.z or not coords.w then return nil end
+
+    PendingJobVehicles[citizenid] = nil
+    cleanupJobVehicle(citizenid)
+    ActiveJobs[citizenid] = true
+
+    local plate = generatePlate()
+
+    PendingJobVehicles[citizenid] = {
+        model = model,
+        coords = coords,
+        plate = plate,
+        reservedAt = os.time(),
+    }
+
+    SetTimeout(30 * 60 * 1000, function()
+        local pending = PendingJobVehicles[citizenid]
+        if pending and pending.reservedAt and (os.time() - pending.reservedAt) >= (30 * 60) then
+            PendingJobVehicles[citizenid] = nil
+            ActiveJobs[citizenid] = nil
+            local target = QBX:GetPlayer(source)
+            if target then
+                TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Nhiệm vụ đã bị hủy do quá thời gian' })
+                TriggerClientEvent('orbit-chopshop:client:forceCancel', source)
+            end
+        end
+    end)
+
+    return { plate = plate }
+end)
+
+lib.callback.register('orbit-chopshop:server:spawnReservedVehicle', function(source)
+    local player = QBX:GetPlayer(source)
+    if not player then return nil end
+
+    local citizenid = player.PlayerData.citizenid
+    local pending = PendingJobVehicles[citizenid]
+    if not pending then return nil end
+
+    if SpawnedJobVehicles[citizenid] then
+        return {
+            netId = SpawnedJobVehicles[citizenid].netId,
+            plate = SpawnedJobVehicles[citizenid].plate,
+        }
+    end
+
+    local hash = joaat(pending.model)
+    local veh = CreateVehicleServerSetter(hash, 'automobile', pending.coords.x, pending.coords.y, pending.coords.z, pending.coords.w)
+
+    if not veh or veh == 0 or not DoesEntityExist(veh) then
+        return nil
+    end
+
+    local timeout = 0
+    while not DoesEntityExist(veh) and timeout < 50 do
+        Wait(20)
+        timeout = timeout + 1
+    end
+
+    if not DoesEntityExist(veh) then return nil end
+
+    SetVehicleNumberPlateText(veh, pending.plate)
+    local netId = NetworkGetNetworkIdFromEntity(veh)
+
+    SpawnedJobVehicles[citizenid] = {
+        entity = veh,
+        netId = netId,
+        plate = pending.plate,
+    }
+
+    PendingJobVehicles[citizenid] = nil
+
+    return {
+        netId = netId,
+        plate = pending.plate,
+    }
+end)
+
 local function isResourceStarted(resourceName)
     return GetResourceState(resourceName) == 'started'
 end
@@ -178,10 +288,10 @@ lib.callback.register('orbit-chopshop:server:requestJob', function(source)
     local player = QBX:GetPlayer(source)
     if not player then return { allowed = false } end
 
-    if getOnDutyPoliceCount() < 2 then
-        -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
-        return { allowed = false, reason = 'no_police' }
-    end
+    -- if getOnDutyPoliceCount() < 2 then
+    --     -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
+    --     return { allowed = false, reason = 'no_police' }
+    -- end
 
     local citizenid = player.PlayerData.citizenid
 
@@ -206,6 +316,7 @@ RegisterNetEvent('orbit-chopshop:server:jobComplete', function()
     local citizenid = player.PlayerData.citizenid
     SetCooldown(citizenid)
     ActiveJobs[citizenid] = nil
+    cleanupJobVehicle(citizenid)
 end)
 
 -- Client báo hủy job (xe bị xa, v.v.)
@@ -216,6 +327,7 @@ RegisterNetEvent('orbit-chopshop:server:jobCancel', function()
 
     local citizenid = player.PlayerData.citizenid
     ActiveJobs[citizenid] = nil
+    cleanupJobVehicle(citizenid)
 end)
 
 -- Cleanup khi player disconnect
@@ -223,7 +335,9 @@ AddEventHandler('playerDropped', function()
     local src = source
     local player = QBX:GetPlayer(src)
     if not player then return end
-    ActiveJobs[player.PlayerData.citizenid] = nil
+    local citizenid = player.PlayerData.citizenid
+    ActiveJobs[citizenid] = nil
+    cleanupJobVehicle(citizenid)
 end)
 
 -- Check xem player có thể nhận item không
@@ -464,4 +578,67 @@ RegisterNetEvent("orbit-chopshop:server:choptrunk", function()
             { name = item, count = amount, prefix = '+' },
         })
     end
+end)
+
+local function generatePlate()
+    local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    local plate = ""
+    for _ = 1, 3 do
+        plate = plate .. string.char(math.random(65, 90))
+    end
+    plate = plate .. tostring(math.random(100, 999))
+    return plate
+end
+
+-- lib.callback.register('orbit-chopshop:server:spawnJobVehicle', function(source, model, coords)
+--     local player = QBX:GetPlayer(source)
+--     if not player then return nil end
+
+--     local citizenid = player.PlayerData.citizenid
+--     if not ActiveJobs[citizenid] then return nil end
+
+--     if type(model) ~= 'string' or model == '' then return nil end
+--     if type(coords) ~= 'table' or not coords.x or not coords.y or not coords.z or not coords.w then return nil end
+
+--     cleanupJobVehicle(citizenid)
+
+--     local hash = joaat(model)
+--     local veh = CreateVehicleServerSetter(hash, 'automobile', coords.x, coords.y, coords.z, coords.w)
+
+--     if not veh or veh == 0 or not DoesEntityExist(veh) then
+--         return nil
+--     end
+
+--     local timeout = 0
+--     while not DoesEntityExist(veh) and timeout < 50 do
+--         Wait(20)
+--         timeout = timeout + 1
+--     end
+
+--     if not DoesEntityExist(veh) then
+--         return nil
+--     end
+
+--     local plate = generatePlate()
+--     SetVehicleNumberPlateText(veh, plate)
+
+--     local netId = NetworkGetNetworkIdFromEntity(veh)
+
+--     SpawnedJobVehicles[citizenid] = {
+--         entity = veh,
+--         netId = netId,
+--         plate = plate,
+--     }
+
+--     return {
+--         netId = netId,
+--         plate = plate,
+--     }
+-- end)
+
+RegisterNetEvent('orbit-chopshop:server:cleanupJobVehicle', function()
+    local src = source
+    local player = QBX:GetPlayer(src)
+    if not player then return end
+    cleanupJobVehicle(player.PlayerData.citizenid)
 end)
