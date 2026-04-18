@@ -1896,6 +1896,26 @@ return {
 		weight = 100,
 		description = 'Wedding Cake bị tẩm lỗi, chất lượng thấp.',
 	},
+
+	
+	['indica_bud_dried_weed'] = {
+		label = 'Điếu Indica',
+		weight = 50,
+		description = 'Điếu cần Indica.',
+	},
+	
+	['sativa_bud_dried_weed'] = {
+		label = 'Điếu Sativa',
+		weight = 50,
+		description = 'Điếu cần Sativa.',
+	},
+	
+	['hybrid_bud_dried_weed'] = {
+		label = 'Điếu Hybrid',
+		weight = 50,
+		description = 'Điếu cần Hybrid.',
+	},
+
 	-- Indica Weed
 	['sour_diesel_high_weed'] = {
 		label = 'Điếu Sour Diesel Cao Cấp',

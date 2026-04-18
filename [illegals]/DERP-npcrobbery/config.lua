@@ -22,8 +22,8 @@ Config.ZoneReward = {
     cashMax  = 150,
     itemChance = 25,
     items = {
-        { item = 'phone',      chance = 50 },
-        { item = 'watch',      chance = 40 },
-        { item = 'lockpick', chance = 10 },
+        { item = 'lockpick',      chance = 50 },
+        { item = 'blackmoney',      chance = 50 },
+        -- { item = 'lockpick', chance = 10 },
     },
 }

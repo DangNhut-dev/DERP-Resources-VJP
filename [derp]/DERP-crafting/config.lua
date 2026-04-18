@@ -121,8 +121,26 @@ Config.Benches = {
                 allowQuantity = false,
                 ingredients = {
                     ["finishwood"] = 25,
-                    ["iron"] = 50,
-                    ["metalscrap"] = 15,
+                    ["iron"] = 25,
+                    ["metalscrap"] = 10,
+                }
+            },
+        }
+    },
+    ["craftinglockpick"] = {
+        label = "Bàn Chế Tạo",
+        object = `prop_tool_bench02`,
+        coords = vector3(493.06, -583.07, 23.71),
+        heading = 349.33,
+
+        recipes = {
+            ["lockpick"] = {
+                id = 1,
+                time = 2000,
+                amount = 1,
+                allowQuantity = true,
+                ingredients = {
+                    ["iron"] = 5,
                 }
             },
         }

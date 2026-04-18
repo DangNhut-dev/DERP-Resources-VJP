@@ -216,7 +216,7 @@ RegisterNetEvent('DERP-smokeweed:client:smoke', function(itemName)
         duration = data.progressTime,
         label = Config.ProgressLabel,
         useWhileDead = false,
-        canCancel = false,
+        canCancel = true,
         disable = {
             move = false,
             car = true,

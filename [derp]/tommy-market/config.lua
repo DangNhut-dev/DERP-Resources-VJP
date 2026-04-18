@@ -50,6 +50,7 @@ Config.MarketNPCs = {
         coords = vector4(70.78, -390.46, 41.62, 253.03),
         type = "buy",
         items = {
+            {name = "ifak", label = "ifak", buyPrice = 10, sellMin = nil, sellMax = nil, grade = 0},
             {name = "radio", label = "Bộ Đàm", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0},
             {name = "job_card", label = "Thẻ Ngành", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0},
             {name = "handcuffs", label = "Còng", buyPrice = 200, sellMin = nil, sellMax = nil, grade = 2},
@@ -713,10 +714,10 @@ Config.MarketNPCs = {
         blackmarket = true,
         type = "sell",
         items = {
-            {name = "car_wheel", label = "Bánh Xe", buyPrice = nil, sellMin = 2, sellMax = 6},
-            {name = "car_door", label = "Cửa Xe", buyPrice = nil, sellMin = 4, sellMax = 8},
-            {name = "radiator", label = "Két Nước", buyPrice = nil, sellMin = 6, sellMax = 10},
-            {name = "trunk", label = "Cốp Xe", buyPrice = nil, sellMin = 5, sellMax = 9},
+            {name = "car_wheel", label = "Bánh Xe", buyPrice = nil, sellMin = 3, sellMax = 7},
+            {name = "car_door", label = "Cửa Xe", buyPrice = nil, sellMin = 5, sellMax = 9},
+            {name = "radiator", label = "Két Nước", buyPrice = nil, sellMin = 7, sellMax = 11},
+            {name = "trunk", label = "Cốp Xe", buyPrice = nil, sellMin = 7, sellMax = 11},
         }
     },
     {
@@ -748,14 +749,38 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Cửa Hàng Nuôi Trồng",
         ped = `a_m_m_salton_01`,
-        coords = vector4(348.62, -2735.64, 5.99, 12.29),
+        coords = vector4(355.64, -2731.34, 5.99, 57.01),
         blackmarket = true,
         type = "buy",
         items = {
-            {name = "nutrient_solution", label = "Nước Dinh Dưỡng", buyPrice = 2, sellMin = nil, sellMax = nil},
-            {name = "fertilizer", label = "Phân Bón", buyPrice = 2, sellMin = nil, sellMax = nil},
+            {name = "nutrient_solution", label = "Nước Dinh Dưỡng", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "fertilizer", label = "Phân Bón", buyPrice = 1, sellMin = nil, sellMax = nil},
         }
     },
+    {
+        id = "weedshop2",
+        enabled = true,
+        label = "Cửa Hàng Nuôi Trồng",
+        ped = `a_m_m_salton_01`,
+        coords = vector4(-1926.69, 1787.08, 172.60, 20.82),
+        blackmarket = true,
+        type = "buy",
+        items = {
+            {name = "herbal_oil", label = "Dầu Thảo Mộc", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "glycerin", label = "Glycerin", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "lavender_essence", label = "Hoa Oải Hương", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "curing_agent", label = "Chất Curing", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "flavor_oil", label = "Dầu Hương Liệu", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "herbal_mix", label = "Hỗn Hợp Thảo Mộc", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "citrus_extract", label = "Tinh Chất Cam", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "peppermint", label = "Lá Bạc Hà", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "ethanol", label = "Ethanol", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "lemon_essence", label = "Tinh Chất Chanh", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "stabilizer", label = "Chất Ổn Định", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "vanilla_extract", label = "Tinh Chất Van", buyPrice = 1, sellMin = nil, sellMax = nil},
+        }
+    },
+
 }
 
 Config.MarketBlips = { 

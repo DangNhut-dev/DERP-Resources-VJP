@@ -4,7 +4,7 @@ Config.MinimumCops = 0
 Config.RequireItem  = true  
 Config.RequiredItem = 'hack_laptop'
 
-Config.Cooldown = 30 * 60 * 1000
+Config.Cooldown = 60 * 60 * 1000
 
 Config.Safes = {
     [1]  = { coords = vec3(-709.74,  -904.15,  19.21),   type = 'keypad'  },
@@ -40,7 +40,7 @@ Config.MoneyGame = {
     duration    = 160,
     coinValue   = 1,
     bombPenalty = 3,
-    maxReward   = 50,
+    maxReward   = 120,
     spawnRate   = 1100,
     rewardType  = 'black_money',
 }

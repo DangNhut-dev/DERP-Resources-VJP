@@ -250,4 +250,23 @@ Config.Items = {
         duration = 30000,
         screenEffect = 'DrugsTrevorClownsFight',
     },
+    ['indica_bud_dried_weed'] = {
+        effectType = 'light',
+        progressTime = 30000,
+        duration = 30000,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+    ['sativa_bud_dried_weed'] = {
+        effectType = 'light',
+        progressTime = 30000,
+        duration = 30000,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+    ['hybrid_bud_dried_weed'] = {
+        effectType = 'light',
+        progressTime = 30000,
+        duration = 30000,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+
 }

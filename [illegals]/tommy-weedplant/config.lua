@@ -38,7 +38,7 @@ Config.SeedTypes = {
         waterRequirement = {
             enabled = true, -- Bật yêu cầu nước
             maxWater = 100, -- Thanh nước tối đa (%)
-            drainRate = 0.002, -- Mất bao nhiêu % nước mỗi giây phát triển
+            drainRate = 0.02, -- Mất bao nhiêu % nước mỗi giây phát triển
         },
         
         -- Phân bón
@@ -64,7 +64,7 @@ Config.SeedTypes = {
         waterRequirement = {
             enabled = true,
             maxWater = 3600,
-            drainRate = 0.8, 
+            drainRate = 0.02, 
         },
         fertilizerBonus = 0.2,
     },
@@ -88,7 +88,7 @@ Config.SeedTypes = {
         waterRequirement = {
             enabled = true,
             maxWater = 3600,
-            drainRate = 0.8, 
+            drainRate = 0.02, 
         },
         fertilizerBonus = 0.2,
     },
@@ -290,7 +290,7 @@ Config.InfusionRecipes = {
         bud_type = 'indica_bud_dried',
         bud_amount = 1,
         ingredients = {
-            ['herbal_oil'] = 3,
+            -- ['herbal_oil'] = 3,
             ['glycerin'] = 2,
             ['flavor_oil'] = 1,
             ['curing_agent'] = 1,

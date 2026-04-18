@@ -722,7 +722,7 @@ local rollableItems = {
     'super_lemon_haze_high', 'super_lemon_haze_medium', 'super_lemon_haze_low',
     'og_kush_high', 'og_kush_medium', 'og_kush_low',
     'gsc_high', 'gsc_medium', 'gsc_low',
-    'wedding_cake_high', 'wedding_cake_medium', 'wedding_cake_low',
+    'wedding_cake_high', 'wedding_cake_medium', 'wedding_cake_low', 'indica_bud_dried','sativa_bud_dried', 'hybrid_bud_dried'
 }
 
 local rollableSet = {}

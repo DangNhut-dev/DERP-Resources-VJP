@@ -182,8 +182,8 @@ function SpawnVehicle(model, x, y, z, w)
 
     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop1"])
 
-    Wait(math.random(600000, 1200000))
-    -- Wait(math.random(600, 1200))
+    -- Wait(math.random(600000, 1200000))
+    Wait(math.random(600, 1200))
 
     if Config.Email then
         TriggerServerEvent('qb-phone:server:sendNewMail', {
@@ -216,7 +216,21 @@ function ScrapVehicle()
     dbg('ScrapVehicle check: current=%s job=%s', currentPlate, jobPlate)
 
     if currentPlate ~= jobPlate then
-        dbg('Plate MISMATCH - reject scrap')
+        local retry = 0
+        while not NetworkHasControlOfEntity(vehicle) and retry < 10 do
+            NetworkRequestControlOfEntity(vehicle)
+            Wait(50)
+            retry = retry + 1
+        end
+        SetVehicleNumberPlateText(vehicle, LicensePlate)
+        Wait(200)
+        currentPlate = GetVehicleNumberPlateText(vehicle)
+        if currentPlate then currentPlate = currentPlate:gsub("%s+", "") end
+        dbg('ScrapVehicle retry: current=%s job=%s', currentPlate, jobPlate)
+    end
+
+    if currentPlate ~= jobPlate then
+        dbg('Plate MISMATCH after retry - reject scrap')
         QBX:Notify(Config.Locale["WrongVeh"], 'error')
     else
         QBX:Notify(Config.Locale["Reminder"], 'inform', 8000)
@@ -529,16 +543,6 @@ function UpdateBars(dist)
         Flashing(true)
         if not mert then
             mert = true
-            if not copsCalled then
-                local pos = GetEntityCoords(PlayerPedId())
-                local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                local street1 = GetStreetNameFromHashKey(s1)
-                local street2 = GetStreetNameFromHashKey(s2)
-                local streetLabel = street1
-                if street2 then streetLabel = streetLabel .. " " .. street2 end
-                TriggerServerEvent('orbit-chopshop:server:callCops', "Chopshop", 0, streetLabel, pos, targetVehicleModel, targetVehiclePlate)
-                copsCalled = true
-            end
             exports['boii_minigames']:chip_hack({
                 style = 'default',
                 loading_time = 5000,
@@ -557,6 +561,16 @@ function UpdateBars(dist)
                     CreateBlip2()
                     SetNewWaypoint(dropoffx, dropoffy)
                     scrapblip = false
+                    if not copsCalled then
+                        local pos = GetEntityCoords(PlayerPedId())
+                        local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
+                        local street1 = GetStreetNameFromHashKey(s1)
+                        local street2 = GetStreetNameFromHashKey(s2)
+                        local streetLabel = street1
+                        if street2 then streetLabel = streetLabel .. " " .. street2 end
+                        TriggerServerEvent('orbit-chopshop:server:callCops', "Chopshop", 0, streetLabel, pos, targetVehicleModel, targetVehiclePlate)
+                        copsCalled = true
+                    end
                 else
                     if not copsCalled then
                         local pos = GetEntityCoords(PlayerPedId())
@@ -769,6 +783,79 @@ RegisterNetEvent('orbit-chopshop:client:cancelJob', function()
 
     TriggerEvent('orbit-chopshop:client:setJobState', false)
     QBX:Notify('Đã hủy chuyến', 'inform')
+end)
+
+RegisterNetEvent('orbit-chopshop:client:repairSpawnedVehicle', function(netId, plate)
+    CreateThread(function()
+        local attempts = 0
+        local entity = NetworkGetEntityFromNetworkId(netId)
+
+        while (not entity or entity == 0 or not DoesEntityExist(entity)) and attempts < 30 do
+            Wait(100)
+            entity = NetworkGetEntityFromNetworkId(netId)
+            attempts = attempts + 1
+        end
+
+        if not entity or entity == 0 or not DoesEntityExist(entity) then return end
+
+        local netOwnerTimeout = 0
+        while not NetworkHasControlOfEntity(entity) and netOwnerTimeout < 30 do
+            NetworkRequestControlOfEntity(entity)
+            Wait(100)
+            netOwnerTimeout = netOwnerTimeout + 1
+        end
+
+        if plate and plate ~= '' then
+            SetVehicleNumberPlateText(entity, plate)
+        end
+
+        SetVehicleFixed(entity)
+        SetVehicleDeformationFixed(entity)
+        SetVehicleUndriveable(entity, false)
+        SetVehicleEngineHealth(entity, 1000.0)
+        SetVehicleBodyHealth(entity, 1000.0)
+        SetVehiclePetrolTankHealth(entity, 1000.0)
+        SetVehicleDirtLevel(entity, 0.0)
+
+        for i = 0, 5 do
+            SetVehicleDoorShut(entity, i, false)
+        end
+
+        for i = 0, 7 do
+            SetVehicleTyreFixed(entity, i)
+        end
+
+        for i = 0, 7 do
+            FixVehicleWindow(entity, i)
+        end
+
+        SetVehicleEngineOn(entity, false, true, false)
+        SetVehicleOnGroundProperly(entity)
+
+        Wait(500)
+
+        local actualPlate = GetVehicleNumberPlateText(entity)
+        dbg('After repair - plate set=%s actualPlate=%s', tostring(plate), tostring(actualPlate))
+
+        TriggerServerEvent('orbit-chopshop:server:confirmPlate', netId, actualPlate or '')
+    end)
+end)
+
+RegisterNetEvent('orbit-chopshop:client:forceSetPlate', function(netId, plate)
+    CreateThread(function()
+        local entity = NetworkGetEntityFromNetworkId(netId)
+        if not entity or entity == 0 or not DoesEntityExist(entity) then return end
+
+        local retry = 0
+        while not NetworkHasControlOfEntity(entity) and retry < 20 do
+            NetworkRequestControlOfEntity(entity)
+            Wait(100)
+            retry = retry + 1
+        end
+
+        SetVehicleNumberPlateText(entity, plate)
+        dbg('Force re-set plate=%s', plate)
+    end)
 end)
 
 exports('SetupDigiScanner', SetupDigiScanner)

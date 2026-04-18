@@ -116,7 +116,6 @@ lib.callback.register('orbit-chopshop:server:spawnReservedVehicle', function(sou
 
     if not DoesEntityExist(veh) then return nil end
 
-    SetVehicleNumberPlateText(veh, pending.plate)
     local netId = NetworkGetNetworkIdFromEntity(veh)
 
     SpawnedJobVehicles[citizenid] = {
@@ -126,6 +125,8 @@ lib.callback.register('orbit-chopshop:server:spawnReservedVehicle', function(sou
     }
 
     PendingJobVehicles[citizenid] = nil
+
+    TriggerClientEvent('orbit-chopshop:client:repairSpawnedVehicle', source, netId, pending.plate)
 
     return {
         netId = netId,
