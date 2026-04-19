@@ -182,8 +182,8 @@ function SpawnVehicle(model, x, y, z, w)
 
     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop1"])
 
-    -- Wait(math.random(600000, 1200000))
-    Wait(math.random(600, 1200))
+    Wait(math.random(600000, 1200000))
+    -- Wait(math.random(600, 1200))
 
     if Config.Email then
         TriggerServerEvent('qb-phone:server:sendNewMail', {

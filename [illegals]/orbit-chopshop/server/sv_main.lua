@@ -289,10 +289,10 @@ lib.callback.register('orbit-chopshop:server:requestJob', function(source)
     local player = QBX:GetPlayer(source)
     if not player then return { allowed = false } end
 
-    -- if getOnDutyPoliceCount() < 2 then
-    --     -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
-    --     return { allowed = false, reason = 'no_police' }
-    -- end
+    if getOnDutyPoliceCount() < 1 then
+        -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
+        return { allowed = false, reason = 'no_police' }
+    end
 
     local citizenid = player.PlayerData.citizenid
 

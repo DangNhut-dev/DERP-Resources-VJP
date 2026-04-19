@@ -604,10 +604,10 @@ Config.Orders = {
         label = 'Đồ Chơi Giới Trẻ',
         pickup = vector3(-147.92, 6146.84, 32.34),
         dropoff = vector3(-171.18, -1449.05, 31.62),
-        requiredLevel = 1,
+        requiredLevel = 2,
         requiredKg = 80,
         isIllegal = true,
-        reward = 350,
+        reward = 600,
         exp = 25,
         cooldown = 3600,
         items = { {item = 'cannabis_seed_indica', chance = 10} }
