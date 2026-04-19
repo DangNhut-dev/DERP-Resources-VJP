@@ -8,4 +8,7 @@
     Thay đổi giờ từ 1h -> 6h thay vì 5p -> 60p đi
 Đôi lúc bị delay sẽ bị xác nhận được nhiều đơn trên 1 tin nhắn đó
 Khi reset source hoặc reset server hoặc người chơi out ra vào lại có bị mất không? (Chưa test)
+    Thay đổi lại cách tính giờ (Tính giờ theo giờ ngoài đời), giờ sẽ có 6 option 15 20 25 30 35 40. Và giờ bắt đầu, spawn sẽ tính từ đó. Ví dụ hẹn 15p nữa ở vị trí đó thì trước 5p npc sẽ spawn ra và giao trong 5p sẽ được tính là giao sớm, còn từ mức 15p đó tới 5p nữa  là giao bình thường, từ sau 5p nữa là giao trễ và thêm 5p nữa là hủy đơn. khi đến mức trễ thì NPC sẽ nhắn tin hối hoặc trách, hối thúc.
 Thêm tính năng nếu full độ tin tưởng thì sẽ có thể chủ động liên hệ với người đó được
+sync npc để pd có thể thấy được nữa chứ
+30% báo PD

@@ -32,16 +32,6 @@ function Utils.FormatMoney(n)
     return formatted
 end
 
--- Convert phut game -> giay real
-function Utils.GameMinutesToRealSeconds(gameMinutes)
-    return gameMinutes * Config.GameToRealSecondsRatio
-end
-
--- Convert giay real -> phut game
-function Utils.RealSecondsToGameMinutes(realSeconds)
-    return math.floor(realSeconds / Config.GameToRealSecondsRatio)
-end
-
 -- Tinh gia NPC san sang tra dua tren trust va item quality
 -- trust: 0-100, item: config item
 -- return: gia/gram NPC chap nhan

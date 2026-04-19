@@ -141,14 +141,15 @@ function Customers.CreateInitialOffer(citizenid, npcId, listing)
     local amount = math.random(minAmt, maxAmt)
 
     -- NPC offer gia thap hon listing (chua counter)
-    local listingPrice = listing.price_per_unit
-    local acceptable = Utils.CalculateAcceptablePrice(trust, item)
+    local listingPrice = tonumber(listing.price_per_unit) or 0
+    local acceptable = tonumber(Utils.CalculateAcceptablePrice(trust, item)) or 0
+    local priceMin = tonumber(item.priceMin) or 0
     local initialOffer = math.min(listingPrice, acceptable) * (0.75 + math.random() * 0.15)
-    initialOffer = math.max(item.priceMin, math.floor(initialOffer))
+    initialOffer = math.max(priceMin, math.floor(initialOffer))
 
     -- 1 tin nhan duy nhat (text), co du item + amount + price
     local offerTpl = Utils.PickTemplate('initial_offer')
-    local msg = string.format(offerTpl, amount, item.label, initialOffer)
+    local msg = string.format(offerTpl, amount, tostring(item.label), initialOffer)
     Customers.InsertMessage(citizenid, npcId, 'npc', msg, 'text', nil)
 
     -- Luu active deal

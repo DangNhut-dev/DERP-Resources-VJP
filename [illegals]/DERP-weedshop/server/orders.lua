@@ -163,7 +163,8 @@ function Orders.CreateFromDeal(citizenid, npcId, deal, deliveryMinutes)
     if not item then return false, 'Item loi' end
 
     local totalPrice = deal.amount * deal.currentOffer
-    local deadlineSeconds = Utils.GameMinutesToRealSeconds(deliveryMinutes)
+    -- Deadline theo phut REAL (khong con game time)
+    local deadlineSeconds = deliveryMinutes * 60
     local deadlineUnix = os.time() + deadlineSeconds
 
     local orderId = MySQL.insert.await([[
@@ -194,14 +195,12 @@ function Orders.CreateFromDeal(citizenid, npcId, deal, deliveryMinutes)
     -- Gui tin nhan accept + location (text thuong, full info)
     local loc = Locations.GetByIdx(deal.locationIdx)
     local acceptTemplate = Utils.PickTemplate('accept')
-    local deliveryHours = math.floor(deliveryMinutes / 60)
-    local msg = string.format(acceptTemplate, loc.label, deliveryHours)
+    local msg = string.format(acceptTemplate, loc.label, deliveryMinutes)
     Customers.InsertMessage(citizenid, npcId, 'npc', msg, 'text', {
         order_id = orderId,
         location_idx = deal.locationIdx,
         location_label = loc.label,
         deadline_minutes = deliveryMinutes,
-        deadline_hours = deliveryHours,
         total_price = totalPrice
     })
 
@@ -262,32 +261,33 @@ function Orders.DeliverOrder(src, orderId)
         return false, 'Khong o dia diem hen'
     end
 
-    -- Tinh timing
+    -- Tinh window hien tai
     local now = os.time()
     local deadlineTs = order.deadline_at
     if type(deadlineTs) == 'string' then
-        -- MySQL tra ve string, parse
         deadlineTs = Orders.ParseMySQLTimestamp(deadlineTs)
     end
-    local createdTs = order.created_at
-    if type(createdTs) == 'string' then
-        createdTs = Orders.ParseMySQLTimestamp(createdTs)
-    end
 
-    local totalDuration = deadlineTs - createdTs
-    local elapsed = now - createdTs
-    local ratio = totalDuration > 0 and (elapsed / totalDuration) or 1
+    local earlySec = Config.DeliveryWindows.earlyWindowMinutes * 60
+    local ontimeSec = Config.DeliveryWindows.ontimeWindowMinutes * 60
+    local lateSec = Config.DeliveryWindows.lateWindowMinutes * 60
 
     local status, multiplier, trustDelta
-    if ratio <= Config.TimeThresholds.earlyBonus then
+    -- Truoc deadline - earlyWindow: chua toi gio, khong cho giao
+    if now < (deadlineTs - earlySec) then
+        return false, 'Chua toi gio giao'
+    -- [deadline - earlyWindow, deadline): giao som
+    elseif now < deadlineTs then
         status = 'delivered_early'
         multiplier = Config.Payout.earlyMultiplier
         trustDelta = Config.TrustChanges.delivered_early
-    elseif ratio <= Config.TimeThresholds.onTime then
+    -- [deadline, deadline + ontimeWindow): dung gio
+    elseif now < (deadlineTs + ontimeSec) then
         status = 'delivered_ontime'
         multiplier = Config.Payout.onTimeMultiplier
         trustDelta = Config.TrustChanges.delivered_ontime
-    elseif ratio <= Config.TimeThresholds.lateSmall then
+    -- [deadline + ontimeWindow, deadline + ontimeWindow + lateWindow): tre
+    elseif now < (deadlineTs + ontimeSec + lateSec) then
         status = 'delivered_late'
         multiplier = Config.Payout.lateMultiplier
         trustDelta = Config.TrustChanges.delivered_late
@@ -355,6 +355,18 @@ function Orders.FailOrder(orderId, reason)
         order_id = orderId,
         reason = reason
     })
+
+    -- Cleanup scheduler tracking
+    if _G.Scheduler and Scheduler.ClearRemindedOrder then
+        Scheduler.ClearRemindedOrder(orderId)
+    end
+
+    -- Notify client despawn NPC
+    local src = _G.GetSourceByCitizenId and GetSourceByCitizenId(order.citizenid)
+    if src then
+        TriggerClientEvent('derp-weedshop:client:orderEnded', src, orderId)
+        TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = order.npc_id })
+    end
 end
 
 -- Parse MySQL timestamp string -> unix

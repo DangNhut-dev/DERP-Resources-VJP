@@ -1,15 +1,45 @@
 Scheduler = {}
 
--- Tick moi 30s check expired orders va listings
+-- Set track order da gui late reminder (in-memory, reset khi restart)
+local remindedOrders = {}
+
+-- Tick moi 15s check: orders vao late (reminder), orders qua het han (fail), listings het han
 local function ExpireTick()
-    -- Fail orders qua deadline
-    local expiredOrders = MySQL.query.await([[
-        SELECT id, citizenid, npc_id FROM derp_weed_orders
-        WHERE status = 'pending' AND deadline_at < NOW()
+    local now = os.time()
+    local ontimeSec = Config.DeliveryWindows.ontimeWindowMinutes * 60
+    local lateSec = Config.DeliveryWindows.lateWindowMinutes * 60
+
+    -- Lay tat ca order pending + deadline_at unix seconds
+    local orders = MySQL.query.await([[
+        SELECT id, citizenid, npc_id, UNIX_TIMESTAMP(deadline_at) AS deadline_unix
+        FROM derp_weed_orders WHERE status = 'pending'
     ]], {})
-    if expiredOrders then
-        for i = 1, #expiredOrders do
-            Orders.FailOrder(expiredOrders[i].id, 'expired')
+    if orders then
+        for i = 1, #orders do
+            local o = orders[i]
+            local deadlineTs = tonumber(o.deadline_unix) or 0
+            local lateStart = deadlineTs + ontimeSec
+            local failAt = deadlineTs + ontimeSec + lateSec
+
+            -- Qua thoi gian late -> fail
+            if now >= failAt then
+                Orders.FailOrder(o.id, 'expired')
+                remindedOrders[o.id] = nil
+            -- Vao giai doan late -> gui reminder (1 lan)
+            elseif now >= lateStart and not remindedOrders[o.id] then
+                remindedOrders[o.id] = true
+                local template = Utils.PickTemplate('late_reminder')
+                if template then
+                    Customers.InsertMessage(o.citizenid, o.npc_id, 'npc', template, 'text', {
+                        order_id = o.id,
+                        kind = 'late_reminder'
+                    })
+                    local src = GetSourceByCitizenId(o.citizenid)
+                    if src then
+                        TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = o.npc_id })
+                    end
+                end
+            end
         end
     end
 
@@ -21,7 +51,7 @@ local function ExpireTick()
     ]], {})
 end
 
--- Tick moi X phut: NPC random nhan tin cho listings active
+-- Tick: NPC random nhan tin cho listings active
 local function BuyerMatchTick()
     local listings = MySQL.query.await([[
         SELECT l.id, l.citizenid, l.item, l.amount, l.price_per_unit
@@ -29,25 +59,12 @@ local function BuyerMatchTick()
         WHERE l.status = 'active' AND l.expires_at > NOW()
     ]], {})
 
-    if not listings or #listings == 0 then
-        if Config.Debug then print('[weedshop] BuyerMatchTick: khong co listing active') end
-        return
-    end
-
-    if Config.Debug then
-        print(('[weedshop] BuyerMatchTick: %d listings active'):format(#listings))
-    end
+    if not listings or #listings == 0 then return end
 
     for i = 1, #listings do
         local listing = listings[i]
-
         local unlocked = Relationship.GetUnlockedNPCIds(listing.citizenid)
-        if #unlocked == 0 then
-            if Config.Debug then
-                print(('[weedshop]   Listing #%d (%s): player %s chua unlock NPC nao'):format(
-                    listing.id, listing.item, listing.citizenid))
-            end
-        else
+        if #unlocked > 0 then
             local avgTrust = 0
             for _, npcId in ipairs(unlocked) do
                 avgTrust = avgTrust + Relationship.GetTrust(listing.citizenid, npcId)
@@ -55,29 +72,15 @@ local function BuyerMatchTick()
             avgTrust = avgTrust / #unlocked
 
             local chance = Config.Customer.messageChanceBase + (avgTrust * Config.Customer.messageChancePerTrust)
-            local roll = math.random()
-            if Config.Debug then
-                print(('[weedshop]   Listing #%d (%s x%d @ $%d/g): %d NPC unlocked, avgTrust=%.1f, chance=%.2f, roll=%.2f'):format(
-                    listing.id, listing.item, listing.amount, listing.price_per_unit,
-                    #unlocked, avgTrust, chance, roll))
-            end
-
-            if roll < chance then
+            if math.random() < chance then
                 local npcId = Customers.PickBuyerFor(listing.citizenid, listing)
                 if npcId then
                     local ok = Customers.CreateInitialOffer(listing.citizenid, npcId, listing)
-                    if Config.Debug then
-                        print(('[weedshop]     -> NPC #%d gui offer, ok=%s'):format(npcId, tostring(ok)))
-                    end
                     if ok then
                         local src = GetSourceByCitizenId(listing.citizenid)
                         if src then
                             TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = npcId })
                         end
-                    end
-                else
-                    if Config.Debug then
-                        print('[weedshop]     -> khong NPC nao chiu gia nay (PickBuyerFor tra nil)')
                     end
                 end
             end
@@ -96,6 +99,11 @@ function GetSourceByCitizenId(citizenid)
     return nil
 end
 
+-- Cleanup tracking khi order ket thuc
+function Scheduler.ClearRemindedOrder(orderId)
+    remindedOrders[orderId] = nil
+end
+
 CreateThread(function()
     Wait(10000)
     while true do
@@ -103,7 +111,7 @@ CreateThread(function()
         if not ok and Config.Debug then
             print('[derp-weedshop] ExpireTick error:', err)
         end
-        Wait(30000)
+        Wait(15000)
     end
 end)
 
@@ -114,9 +122,7 @@ CreateThread(function()
         if not ok and Config.Debug then
             print('[derp-weedshop] BuyerMatchTick error:', err)
         end
-        -- Dung phut game -> giay real
-        local waitMs = Config.Customer.messageTickMinutes * Config.GameToRealSecondsRatio * 1000
-        Wait(waitMs)
+        Wait(Config.Customer.messageTickSeconds * 1000)
     end
 end)
 

@@ -131,4 +131,23 @@ return {
 		weight = 100000,
 		groups = {['cardealer'] = 1}
 	},
+
+	{
+		coords = vec3(1385.91, 1139.01, 113.33),
+		target = {
+			loc = vec3(1385.91, 1139.01, 113.33),
+			length = 0.6,
+			width = 1.8,
+			heading = 340,
+			minZ = 43.34,
+			maxZ = 44.74,
+			label = 'Mở Tủ'
+		},
+		name = 'whitedealer',
+		label = 'Tủ Kho',
+		owner = false,
+		slots = 100,
+		weight = 500000,
+		groups = {['dealer'] = 1}
+	},
 }

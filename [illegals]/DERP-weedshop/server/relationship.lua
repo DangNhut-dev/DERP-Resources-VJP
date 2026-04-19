@@ -56,8 +56,8 @@ end
 -- Tang so deal + update daily counter + last_completed_at
 function Relationship.IncrementDeals(citizenid, npcId, success)
     if not citizenid or not npcId then return end
-    -- Lay ngay game hien tai
-    local gameDay = _G.GetCurrentGameDayNumber and GetCurrentGameDayNumber() or 0
+    -- Ngay real YYYYMMDD (reset 00:00 real time)
+    local realDay = tonumber(os.date('%Y%m%d'))
 
     if success then
         MySQL.update.await([[
@@ -68,7 +68,7 @@ function Relationship.IncrementDeals(citizenid, npcId, success)
                 deals_today_game_day = ?,
                 last_completed_at = NOW()
             WHERE citizenid = ? AND npc_id = ?
-        ]], { gameDay, gameDay, citizenid, npcId })
+        ]], { realDay, realDay, citizenid, npcId })
     else
         MySQL.update.await([[
             UPDATE derp_weed_relationships
@@ -77,7 +77,7 @@ function Relationship.IncrementDeals(citizenid, npcId, success)
                 deals_today_game_day = ?,
                 last_completed_at = NOW()
             WHERE citizenid = ? AND npc_id = ?
-        ]], { gameDay, gameDay, citizenid, npcId })
+        ]], { realDay, realDay, citizenid, npcId })
     end
 end
 
@@ -94,15 +94,15 @@ function Relationship.IsNPCBusy(citizenid, npcId)
 
     if not row then return false end -- Chua co relationship -> NPC moi
 
-    -- Daily limit check (chi ap dung cho ngay game hien tai)
-    local gameDay = _G.GetCurrentGameDayNumber and GetCurrentGameDayNumber() or 0
-    if row.deals_today_game_day == gameDay and row.deals_today >= Config.Customer.maxDealsPerNpcPerDay then
+    -- Daily limit check (theo ngay REAL - YYYYMMDD)
+    local realDay = tonumber(os.date('%Y%m%d'))
+    if row.deals_today_game_day == realDay and row.deals_today >= Config.Customer.maxDealsPerNpcPerDay then
         return true, 'daily_limit'
     end
 
-    -- Cooldown check
+    -- Cooldown check (real minutes)
     if row.last_completed_at and row.seconds_since then
-        local cooldownSeconds = Config.Customer.npcCooldownGameMinutes * Config.GameToRealSecondsRatio
+        local cooldownSeconds = Config.Customer.npcCooldownMinutes * 60
         if row.seconds_since < cooldownSeconds then
             return true, 'cooldown'
         end

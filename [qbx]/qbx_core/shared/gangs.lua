@@ -22,12 +22,15 @@ return {
                 name = 'Dealer' -- Người đi giao dịch
             },
             [3] = {
-                name = 'Broker' -- Trung gian, cấp cao hơn dealer
+                name = 'Alchemist' -- Nhà Khoa Học
             },
             [4] = {
-                name = 'Consigliere' -- Cố vấn
+                name = 'Broker' -- Trung gian, cấp cao hơn dealer
             },
             [5] = {
+                name = 'Consigliere' -- Cố vấn
+            },
+            [6] = {
                 name = 'High Table', -- Đầu não
                 isboss = true,
                 bankAuth = true

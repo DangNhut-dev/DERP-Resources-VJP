@@ -347,7 +347,7 @@
         const row4 = el('div', { cls: 'card-row' });
         const countdownEl = el('span', { cls: 'countdown' });
         countdownEl.textContent = '—';
-        row4.innerHTML = '<span class="card-label">Còn lại</span>';
+        row4.innerHTML = '<span class="card-label">Gặp nhau sau</span>';
         row4.appendChild(countdownEl);
         card.appendChild(row4);
         registerCountdown(countdownEl, o.deadline_unix || o.deadline_at);
@@ -391,7 +391,7 @@
         const tick = function () {
             const remain = Math.floor((deadline - Date.now()) / 1000);
             if (remain <= 0) {
-                node.textContent = 'HẾT GIỜ';
+                node.textContent = 'ĐẾN GIỜ';
                 node.classList.remove('warn');
                 node.classList.add('danger');
                 return;
@@ -623,8 +623,7 @@
             const title = el('div', { cls: 'offer-title', text: 'Đã chốt' });
             bubble.appendChild(title);
             bubble.appendChild(buildOfferRow('Điểm hẹn', m.metadata.location_label || '-'));
-            const hours = m.metadata.deadline_hours || (m.metadata.deadline_minutes ? Math.floor(m.metadata.deadline_minutes / 60) : null);
-            if (hours) bubble.appendChild(buildOfferRow('Thời gian', hours + ' giờ game'));
+            if (m.metadata.deadline_minutes) bubble.appendChild(buildOfferRow('Thời gian', m.metadata.deadline_minutes + ' phút'));
             if (m.metadata.total_price) bubble.appendChild(buildOfferRow('Tổng', '$' + formatMoney(m.metadata.total_price), true));
             const textLine = el('div');
             textLine.style.cssText = 'margin-top:8px;font-size:11px;color:var(--text-secondary);font-style:italic;';
@@ -703,7 +702,7 @@
                 return;
             }
             if (res.needsDeliveryTime) {
-                openDeliveryTimeModal(res.location, res.deliveryPresets || [60, 120, 180, 240, 300, 360], deal);
+                openDeliveryTimeModal(res.location, res.deliveryPresets || [15, 20, 25, 30, 35, 40], deal);
             } else {
                 reopenCurrentChat();
             }
@@ -772,7 +771,7 @@
         if (!state.currentChat) return;
         post('dealAccept', { npcId: state.currentChat.npcId }).then(function (res) {
             if (res && res.ok && res.needsDeliveryTime) {
-                openDeliveryTimeModal(res.location, res.deliveryPresets || [60, 120, 180, 240, 300, 360]);
+                openDeliveryTimeModal(res.location, res.deliveryPresets || [15, 20, 25, 30, 35, 40]);
             } else {
                 reopenCurrentChat();
             }
@@ -783,13 +782,12 @@
         const info = $('#delivery-info');
         info.innerHTML =
             '<div>Điểm hẹn: <strong>' + escapeHtml(location.label) + '</strong></div>' +
-            '<div>Chọn thời gian giao (giờ game):</div>';
+            '<div>Chọn thời gian giao:</div>';
         const grid = $('#preset-grid');
         grid.innerHTML = '';
         presets.forEach(function (mins) {
-            const hours = Math.floor(mins / 60);
             const btn = el('button', { cls: 'preset-btn' });
-            btn.innerHTML = '<span class="num">' + hours + '</span><span>giờ</span>';
+            btn.innerHTML = '<span class="num">' + mins + '</span><span>phút</span>';
             btn.addEventListener('click', function () {
                 confirmDeliveryTime(mins);
             });

@@ -88,7 +88,7 @@ Config.Locations = {
                 maxZ = 26.0,
             }
         }
-    }
+    },
     -- Add more jobs as needed
 }
 

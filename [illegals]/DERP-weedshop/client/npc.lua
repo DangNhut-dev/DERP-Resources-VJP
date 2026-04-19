@@ -175,19 +175,36 @@ CreateThread(function()
         local ped = cache.ped
         if ped and ped ~= 0 and next(watchedOrders) then
             local coords = GetEntityCoords(ped)
+            local now = os.time()
+            local earlyWindowSec = (Config.DeliveryWindows and Config.DeliveryWindows.earlyWindowMinutes or 5) * 60
+            local lateMaxSec = earlyWindowSec + ((Config.DeliveryWindows and Config.DeliveryWindows.ontimeWindowMinutes or 5) * 60)
+                                            + ((Config.DeliveryWindows and Config.DeliveryWindows.lateWindowMinutes or 5) * 60)
 
             for orderId, order in pairs(watchedOrders) do
                 if order.location and order.location.coords then
                     local c = order.location.coords
                     local dist = #(coords - vector3(c.x, c.y, c.z))
 
-                    if dist < Config.NPCSpawnRadius then
+                    -- NPC xuat hien tu [deadline - earlyWindow] den [deadline + ontime + late]
+                    local deadlineUnix = tonumber(order.deadline_unix) or 0
+                    local spawnFromUnix = deadlineUnix - earlyWindowSec
+                    local spawnUntilUnix = deadlineUnix + (lateMaxSec - earlyWindowSec)
+                    local npcShouldBePresent = deadlineUnix > 0
+                        and now >= spawnFromUnix
+                        and now <= spawnUntilUnix
+
+                    if Config.Debug and dist < Config.NPCSpawnRadius * 2 then
+                        print(('[weedshop] order#%d dist=%.0f deadlineUnix=%d now=%d should=%s (window %d..%d, diff=%d)')
+                            :format(orderId, dist, deadlineUnix, now, tostring(npcShouldBePresent),
+                                spawnFromUnix, spawnUntilUnix, now - spawnFromUnix))
+                    end
+
+                    if dist < Config.NPCSpawnRadius and npcShouldBePresent then
                         sleep = 500
                         if not spawnedNPCs[orderId] then
                             SpawnDeliveryNPC(order)
                         end
 
-                        -- Dispatch trigger khi trong DispatchRadius (1 lan/order)
                         if dist < Config.DispatchRadius and not dispatchSent[orderId] then
                             dispatchSent[orderId] = true
                             local streetHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
@@ -197,7 +214,7 @@ CreateThread(function()
                                 streetLabel = streetLabel
                             })
                         end
-                    elseif dist > Config.NPCDespawnRadius then
+                    elseif dist > Config.NPCDespawnRadius or not npcShouldBePresent then
                         if spawnedNPCs[orderId] then
                             DespawnNPC(orderId)
                         end

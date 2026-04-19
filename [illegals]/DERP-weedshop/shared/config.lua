@@ -13,27 +13,26 @@ Config.BlackMoneyItem = 'black_money'
 Config.MaxActiveOrders = 3
 Config.MaxDealsPerDay = 10
 Config.ListingDurationMinutes = 30
-Config.MinDeliveryMinutesGame = 60
-Config.MaxDeliveryMinutesGame = 360
--- Preset gio game (de hien thi 1h-6h, luu nhu phut game de tuong thich)
-Config.DeliveryPresets = { 60, 120, 180, 240, 300, 360 }
 
--- Game time ratio: 1 phut game = 2 giay real (GTA V default)
-Config.GameToRealSecondsRatio = 2
+-- Preset deadline theo phut REAL (khong con lien quan game time)
+Config.DeliveryPresets = { 15, 20, 25, 30, 35, 40 }
+
+-- Timing windows (phut real), co dinh cho moi deadline
+-- Flow: [deadline - earlyWindow] -> spawn NPC va bat dau giai doan early
+--       [deadline]                 -> het early, bat dau ontime
+--       [deadline + ontimeWindow]  -> het ontime, bat dau late
+--       [deadline + lateWindow]    -> het late, auto FAIL
+Config.DeliveryWindows = {
+    earlyWindowMinutes = 5,  -- 5p truoc deadline = giao som (bonus)
+    ontimeWindowMinutes = 5, -- 5p sau deadline = giao dung gio
+    lateWindowMinutes = 5    -- 5p sau ontime = giao tre, het thi fail
+}
 
 -- Interaction radius
 Config.DeliveryRadius = 100.0
 Config.DispatchRadius = 100.0
 Config.NPCSpawnRadius = 150.0
 Config.NPCDespawnRadius = 200.0
-
--- Timing thresholds (fraction of total allowed delivery time)
--- 0.0 = order created, 1.0 = deadline
-Config.TimeThresholds = {
-    earlyBonus = 0.75,
-    onTime = 1.0,
-    lateSmall = 1.5
-}
 
 Config.Payout = {
     earlyMultiplier = 1.1,
@@ -53,7 +52,7 @@ Config.TrustChanges = {
 
 -- Customer AI
 Config.Customer = {
-    messageTickMinutes = 1,
+    messageTickSeconds = 10,       -- Scheduler tick moi 10s real
     messageChanceBase = 0.5,
     messageChancePerTrust = 0.005,
     maxCounterRounds = 3,
@@ -61,9 +60,9 @@ Config.Customer = {
     offerAmountMax = 20,
     acceptThreshold = 0.85,
     counterReduction = 0.5,
-    -- Sau khi 1 don ket thuc (delivered/failed/cancelled), NPC do khong nhan tin trong X phut game
-    npcCooldownGameMinutes = 360, -- 6 gio game
-    -- Moi NPC chi mua toi da N don / ngay game (reset 00:00 game time)
+    -- Sau khi don ket thuc (delivered/failed/cancelled), NPC do khong nhan tin trong X phut REAL
+    npcCooldownMinutes = 15,
+    -- Moi NPC chi mua toi da N don / ngay REAL (reset 00:00 real)
     maxDealsPerNpcPerDay = 5
 }
 
@@ -260,15 +259,15 @@ Config.DispatchDescription = 'Phat hien hanh vi kha nghi (nghi ngo mua ban chat 
 Config.ChatTemplates = {
     initial_offer = {
         'Ê bro, tao muốn lấy %dg %s, giá %d/g được không?',
-        'Yo, mày còn %s chứ? Tao cần %dg, trả %d/g nhé.',
-        'Hey, thấy mày đăng %s. Lấy %dg giá %d/g ok hông?',
+        'Yo, tao cần %dg %s, trả %d/g nhé.',
+        'Hey, lấy %dg %s giá %d/g ok hông?',
         'Sup bro, %dg %s với giá %d/g, deal không?',
         'Chào, tao hỏi %dg %s giá %d/g được không.',
         'Ê này, tao muốn mua %dg %s. Trả %d/g.',
         'Bro ơi, %dg %s giá %d/g nhé, tao cần gấp.',
-        'Tao đang cần %dg %s. Mày bán %d/g không?',
-        'Nghe nói mày có %s. Lấy %dg, %d/g deal hông?',
-        'Hàng %s ngon không bro? Tao lấy %dg, %d/g.'
+        'Tao đang cần %dg %s, bán %d/g không?',
+        'Lấy %dg %s giá %d/g deal hông bro?',
+        'Cho tao %dg %s, trả %d/g được chứ?'
     },
     counter_npc = {
         'Giá đó chát quá bro, %d/g thôi nhé.',
@@ -292,12 +291,21 @@ Config.ChatTemplates = {
         '%d/g nhé, deal không?'
     },
     accept = {
-        'Deal. Gặp tao ở %s trong %d giờ nữa.',
-        'Chốt. %s, %d giờ, đừng trễ nha.',
-        'OK, đến %s trong %d giờ. Tao đợi.',
-        'Được, gặp ở %s sau %d giờ.',
-        'Done deal, %s trong %d giờ. Mang đủ hàng.',
-        'Xong, tới %s trong %d giờ. Đừng để tao chờ lâu.'
+        'Deal. Gặp tao ở %s sau %d phút nữa.',
+        'Chốt. %s, %d phút nữa, đừng trễ nha.',
+        'OK, đến %s sau %d phút. Tao đợi.',
+        'Được, gặp ở %s sau %d phút.',
+        'Done deal, %s sau %d phút. Mang đủ hàng.',
+        'Xong, tới %s sau %d phút. Đừng để tao chờ lâu.'
+    },
+    late_reminder = {
+        'Ê, mày đâu rồi? Tao đợi mỏi mòn đây.',
+        'Bro, quá giờ rồi đó. Đến nhanh đi.',
+        'Mày làm gì mà lâu thế? Tao hết kiên nhẫn rồi.',
+        'Ê đến chưa? Tao không đợi được nữa đâu.',
+        'Trễ rồi đấy bro, nhanh lên không tao đi.',
+        'Hối tí đi, tao đứng đây không phải trò đùa.',
+        'Mày đang ở đâu? Đến không thì nói.'
     },
     player_accept = {
         'OK, chốt giá đó đi.',
