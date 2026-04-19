@@ -9,25 +9,31 @@ return {
             },
         },
     },
-    -- ['lostmc'] = {
-    --     label = 'The Lost MC',
-    --     grades = {
-    --         [0] = {
-    --             name = 'Recruit'
-    --         },
-    --         [1] = {
-    --             name = 'Enforcer'
-    --         },
-    --         [2] = {
-    --             name = 'Shot Caller'
-    --         },
-    --         [3] = {
-    --             name = 'Boss',
-    --             isboss = true,
-    --             bankAuth = true
-    --         },
-    --     },
-    -- },
+    ['dealer'] = {
+        label = 'White Dealer', 
+        grades = {
+            [0] = {
+                name = 'Prospect' -- Người mới
+            },
+            [1] = {
+                name = 'Associate' -- Thành viên chính thức
+            },
+            [2] = {
+                name = 'Dealer' -- Người đi giao dịch
+            },
+            [3] = {
+                name = 'Broker' -- Trung gian, cấp cao hơn dealer
+            },
+            [4] = {
+                name = 'Consigliere' -- Cố vấn
+            },
+            [5] = {
+                name = 'High Table', -- Đầu não
+                isboss = true,
+                bankAuth = true
+            },
+        },
+    },
     -- ['ballas'] = {
     --     label = 'Ballas',
     --     grades = {
