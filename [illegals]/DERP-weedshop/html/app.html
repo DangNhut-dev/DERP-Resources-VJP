@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Market</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <div id="app-root">
+        <!-- Tab panels -->
+        <section class="tab-panel active" id="panel-listings">
+            <div class="panel-body" id="listings-body">
+                <div class="empty-state">
+                    <i class="fa-solid fa-cannabis"></i>
+                    <div class="empty-title">Chưa có đăng bán</div>
+                    <div class="empty-sub">Ấn + để đăng món đầu tiên</div>
+                </div>
+            </div>
+            <button class="fab" id="btn-new-listing" title="Đăng mới">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </section>
+
+        <section class="tab-panel" id="panel-messages">
+            <div class="panel-body" id="messages-body">
+                <div class="empty-state">
+                    <i class="fa-solid fa-comment-slash"></i>
+                    <div class="empty-title">Chưa có tin nhắn</div>
+                    <div class="empty-sub">Đăng bán để khách liên hệ</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="panel-orders">
+            <div class="panel-body" id="orders-body">
+                <div class="empty-state">
+                    <i class="fa-solid fa-box-open"></i>
+                    <div class="empty-title">Không có đơn</div>
+                    <div class="empty-sub">Nhận deal để bắt đầu giao</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="panel-contacts">
+            <div class="panel-body" id="contacts-body">
+                <div class="empty-state">
+                    <i class="fa-solid fa-users-slash"></i>
+                    <div class="empty-title">Chưa mở khóa khách</div>
+                    <div class="empty-sub">Giao dịch để tăng quan hệ</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat overlay -->
+        <div class="overlay" id="overlay-chat" hidden>
+            <header class="chat-header">
+                <button class="btn-icon" id="chat-back"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="chat-peer">
+                    <div class="chat-avatar" id="chat-avatar">?</div>
+                    <div class="chat-meta">
+                        <div class="chat-name" id="chat-name">—</div>
+                        <div class="chat-trust">
+                            <span id="chat-trust-label">Trust</span>
+                            <div class="trust-bar"><div class="trust-fill" id="chat-trust-fill"></div></div>
+                            <span id="chat-trust-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="chat-body" id="chat-body"></div>
+            <div class="chat-actions" id="chat-actions"></div>
+        </div>
+
+        <!-- New listing modal -->
+        <div class="modal" id="modal-new-listing" hidden>
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div class="modal-title">Đăng bán mới</div>
+                    <button class="btn-icon" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <label class="field-label">Mặt hàng</label>
+                    <select id="input-item" class="field-input"></select>
+                    <div class="field-hint" id="item-hint"></div>
+
+                    <label class="field-label">Số lượng (g)</label>
+                    <input type="number" id="input-amount" class="field-input" min="1" max="1000" value="10">
+
+                    <label class="field-label">Giá / gram</label>
+                    <input type="number" id="input-price" class="field-input" min="1" value="100">
+
+                    <div class="price-preview" id="price-preview">Tổng: —</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="modal-cancel">Hủy</button>
+                    <button class="btn-primary" id="modal-submit">Đăng bán</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery time modal -->
+        <div class="modal" id="modal-delivery-time" hidden>
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div class="modal-title">Chọn thời gian giao</div>
+                </div>
+                <div class="modal-body">
+                    <div class="delivery-info" id="delivery-info"></div>
+                    <div class="preset-grid" id="preset-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Counter offer modal -->
+        <div class="modal" id="modal-counter" hidden>
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div class="modal-title">Ra giá</div>
+                    <button class="btn-icon" id="counter-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="counter-info" id="counter-info"></div>
+                    <label class="field-label">Giá / gram</label>
+                    <input type="number" id="counter-input" class="field-input" min="1">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="counter-cancel">Hủy</button>
+                    <button class="btn-primary" id="counter-submit">Gửi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab bar (at bottom) -->
+        <nav class="tab-bar">
+            <button class="tab-btn active" data-tab="listings">
+                <i class="fa-solid fa-tags"></i>
+                <span>Bán</span>
+            </button>
+            <button class="tab-btn" data-tab="messages">
+                <i class="fa-solid fa-message"></i>
+                <span>Tin nhắn</span>
+                <span class="tab-badge" id="badge-messages" hidden></span>
+            </button>
+            <button class="tab-btn" data-tab="orders">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Đơn</span>
+                <span class="tab-badge" id="badge-orders" hidden></span>
+            </button>
+            <button class="tab-btn" data-tab="contacts">
+                <i class="fa-solid fa-address-book"></i>
+                <span>Khách</span>
+            </button>
+        </nav>
+
+        <!-- Toast -->
+        <div class="toast" id="toast" hidden></div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

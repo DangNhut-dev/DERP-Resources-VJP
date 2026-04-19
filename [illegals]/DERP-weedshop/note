@@ -1,0 +1,11 @@
+    Tin nhắn: Tên phải hiện đúng tên thay vì hiện tại là NPC #1.
+    Khi deal giá thì cho deal bao nhiêu cũng được nhưng npc sẽ tự chối chứ không phải hiện tại là deal giá cao hơn sẽ hiện lỗi. Và nếu trong khoảng giá đó thì npc sẽ dựa vào độ thân thiết mà đồng ý hay không.
+    Lúc đăng bán cũng được để giá nào cũng được, nhưng sẽ có giá thị trường để người chơi biết (Chỉ hiện giá trung bình)
+    Hiện tại thì lần đầu ra giá luôn luôn được đồng ý và lần 2 luôn bị từ chối. hãy xem lại việc thân thiết mà tăng phần trăm random đi
+    Khi nhắn tin cũng sai sai. Khi ra giá thì bạn ra giá lại bị load sau giá mới. Và tin nhắn + các thông báo không rõ ràng khỏi nhau.
+    Có hiện tượng chốt khách đó rồi nhưng họ lại deal tiếp 1 đơn nữa khi đang giao hàng trên chính đơn đó.
+    Thêm progressbar khi giao giúp tôi
+    Thay đổi giờ từ 1h -> 6h thay vì 5p -> 60p đi
+Đôi lúc bị delay sẽ bị xác nhận được nhiều đơn trên 1 tin nhắn đó
+Khi reset source hoặc reset server hoặc người chơi out ra vào lại có bị mất không? (Chưa test)
+Thêm tính năng nếu full độ tin tưởng thì sẽ có thể chủ động liên hệ với người đó được
