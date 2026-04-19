@@ -1,0 +1,204 @@
+.screen--home {
+    display: flex;
+    flex-direction: column;
+    padding: 60px 24px 30px;
+}
+
+.home-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(5, 242, 242, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 0% 100%, rgba(5, 242, 242, 0.05) 0%, transparent 40%),
+        linear-gradient(180deg, #0a0a0b 0%, #050505 60%, #0a0a0b 100%);
+    z-index: 0;
+}
+
+.home-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+}
+
+.home-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 28px;
+    padding: 0 4px;
+}
+
+.home-greeting {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.greeting-small {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+.greeting-big {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+}
+
+.home-date {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-transform: uppercase;
+}
+
+.app-grid {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 12px;
+    align-content: start;
+    padding: 16px 4px;
+    overflow-y: auto;
+}
+
+.app-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.app-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s var(--ease-out);
+    animation: app-appear 0.5s var(--ease-out) backwards;
+}
+
+.app-icon:active {
+    transform: scale(0.92);
+}
+
+.app-icon-shape {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 0 0 1px var(--line),
+        0 8px 20px -6px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+    transition: box-shadow 0.3s var(--ease-out);
+}
+
+.app-icon-shape::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--app-color, var(--gold)) 0%, transparent 60%);
+    opacity: 0.15;
+}
+
+.app-icon-shape::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+    pointer-events: none;
+}
+
+.app-icon-shape i {
+    position: relative;
+    z-index: 1;
+    font-size: 26px;
+    color: var(--app-color, var(--gold));
+    filter: drop-shadow(0 0 8px var(--app-glow, rgba(5, 242, 242, 0.3)));
+}
+
+.app-icon-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1.2;
+    max-width: 72px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-icon-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.25;
+}
+
+.app-icon-empty .app-icon-shape {
+    background: transparent;
+    box-shadow: 0 0 0 1px var(--line);
+    border: 1px dashed var(--line-strong);
+}
+
+.app-icon-empty .app-icon-shape::before,
+.app-icon-empty .app-icon-shape::after {
+    display: none;
+}
+
+.app-icon-empty .app-icon-shape i {
+    color: var(--text-tertiary);
+    font-size: 18px;
+    filter: none;
+}
+
+.home-dock {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+}
+
+.dock-pill {
+    width: 110px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--text-primary);
+    opacity: 0.8;
+}
+
+@keyframes app-appear {
+    0% {
+        opacity: 0;
+        transform: translateY(12px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

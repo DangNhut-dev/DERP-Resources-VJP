@@ -826,10 +826,21 @@ return {
 
 	['phone'] = {
 		label = 'Điện Thoại',
-		weight = 190,
+		weight = 200,
 		stack = false,
 		consume = 0,
 		export = 'lb-phone.UsePhoneItem',
+	},
+
+	['blackphone'] = {
+		label = 'Điện Thoại Vệ Tinh',
+		weight = 200,
+		stack = false,
+		close = true,
+		description = 'Có tính bảo mật cao',
+		client = {
+			event = 'derp-blackphone:client:useItem'
+		}
 	},
 
 	['money'] = {
@@ -1897,7 +1908,7 @@ return {
 		description = 'Wedding Cake bị tẩm lỗi, chất lượng thấp.',
 	},
 
-	
+	--base
 	['indica_bud_dried_weed'] = {
 		label = 'Điếu Indica',
 		weight = 50,
