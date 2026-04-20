@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `derp_weed_listings` (
 
 CREATE TABLE IF NOT EXISTS `derp_weed_orders` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `listing_id` INT NOT NULL,
+    `listing_id` INT NULL,
     `citizenid` VARCHAR(50) NOT NULL,
     `npc_id` INT NOT NULL,
     `item` VARCHAR(50) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `derp_weed_messages` (
     `npc_id` INT NOT NULL,
     `sender` ENUM('npc','player') NOT NULL,
     `message` TEXT NOT NULL,
-    `message_type` ENUM('text','offer','counter','accept','decline','system','location') DEFAULT 'text',
+    `message_type` ENUM('text','offer','counter','accept','decline','system','location','call_status') DEFAULT 'text',
     `metadata` JSON NULL,
     `read_at` TIMESTAMP NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `derp_weed_stats` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET @dbname = DATABASE();
- 
+
 SET @col1 := (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_SCHEMA = @dbname
     AND TABLE_NAME = 'derp_weed_relationships'
@@ -80,7 +80,7 @@ SET @sql1 := IF(@col1 = 0,
     'ALTER TABLE derp_weed_relationships ADD COLUMN deals_today INT NOT NULL DEFAULT 0 AFTER successful_deals',
     'SELECT "deals_today already exists"');
 PREPARE stmt FROM @sql1; EXECUTE stmt; DEALLOCATE PREPARE stmt;
- 
+
 SET @col2 := (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_SCHEMA = @dbname
     AND TABLE_NAME = 'derp_weed_relationships'
@@ -89,7 +89,7 @@ SET @sql2 := IF(@col2 = 0,
     'ALTER TABLE derp_weed_relationships ADD COLUMN deals_today_game_day INT NOT NULL DEFAULT 0 AFTER deals_today',
     'SELECT "deals_today_game_day already exists"');
 PREPARE stmt FROM @sql2; EXECUTE stmt; DEALLOCATE PREPARE stmt;
- 
+
 SET @col3 := (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_SCHEMA = @dbname
     AND TABLE_NAME = 'derp_weed_relationships'
@@ -98,3 +98,17 @@ SET @sql3 := IF(@col3 = 0,
     'ALTER TABLE derp_weed_relationships ADD COLUMN last_completed_at TIMESTAMP NULL AFTER last_deal_at',
     'SELECT "last_completed_at already exists"');
 PREPARE stmt FROM @sql3; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Cho phep listing_id NULL (cho proactive call - khong co listing)
+SET @col4 := (SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = @dbname
+    AND TABLE_NAME = 'derp_weed_orders'
+    AND COLUMN_NAME = 'listing_id');
+SET @sql4 := IF(@col4 = 'NO',
+    'ALTER TABLE derp_weed_orders MODIFY COLUMN listing_id INT NULL',
+    'SELECT "listing_id already nullable"');
+PREPARE stmt FROM @sql4; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Them 'call_status' vao ENUM message_type (cho feature proactive call)
+ALTER TABLE derp_weed_messages
+MODIFY COLUMN message_type ENUM('text','offer','counter','accept','decline','system','location','call_status') DEFAULT 'text';

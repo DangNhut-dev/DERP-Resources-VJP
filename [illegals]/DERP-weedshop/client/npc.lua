@@ -71,7 +71,7 @@ local function SpawnDeliveryNPC(order)
     exports.ox_target:addLocalEntity(ped, {
         {
             name = 'derp_weedshop_deliver_' .. order.id,
-            label = 'Giao hang (' .. order.amount .. 'g)',
+            label = 'Giao hàng (' .. order.amount .. 'g)',
             icon = 'fa-solid fa-hand-holding-dollar',
             distance = 2.0,
             onSelect = function()
@@ -116,7 +116,7 @@ local function CreateOrderBlip(order)
     SetBlipScale(blip, 0.9)
     SetBlipAsShortRange(blip, false)
     BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString('Giao hang: ' .. (order.location.label or ''))
+    AddTextComponentString('Giao hàng: ' .. (order.location.label or ''))
     EndTextCommandSetBlipName(blip)
     blips[order.id] = blip
 end
@@ -145,6 +145,21 @@ end
 RegisterNetEvent('derp-weedshop:client:syncOrders', function(orders)
     if Config.Debug then
         print(('[weedshop] syncOrders nhan %d orders'):format(#(orders or {})))
+        for _, o in ipairs(orders or {}) do
+            print(('[weedshop]   Order #%s: npc_id=%s deadline_unix=%s deadline_at=%s location=%s'):format(
+                tostring(o.id),
+                tostring(o.npc_id),
+                tostring(o.deadline_unix),
+                tostring(o.deadline_at),
+                tostring(o.location and o.location.label or 'nil')
+            ))
+            if o.npc then
+                print(('[weedshop]     npc: id=%s name=%s ped=%s'):format(
+                    tostring(o.npc.id), tostring(o.npc.name), tostring(o.npc.ped)))
+            else
+                print('[weedshop]     npc: nil')
+            end
+        end
     end
     -- Remove orders khong con
     local activeIds = {}
@@ -155,11 +170,10 @@ RegisterNetEvent('derp-weedshop:client:syncOrders', function(orders)
     -- Add orders moi
     for _, o in ipairs(orders or {}) do
         if not watchedOrders[o.id] then
-            if Config.Debug then
-                local loc = o.location and o.location.label or 'KHONG CO LOCATION'
-                print(('[weedshop] Watching order #%d tai %s'):format(o.id, loc))
-            end
             AddWatchedOrder(o)
+        else
+            -- Update data (deadline, npc) neu da watched
+            watchedOrders[o.id] = o
         end
     end
 end)
@@ -175,7 +189,7 @@ CreateThread(function()
         local ped = cache.ped
         if ped and ped ~= 0 and next(watchedOrders) then
             local coords = GetEntityCoords(ped)
-            local now = os.time()
+            local now = GetCloudTimeAsInt()
             local earlyWindowSec = (Config.DeliveryWindows and Config.DeliveryWindows.earlyWindowMinutes or 5) * 60
             local lateMaxSec = earlyWindowSec + ((Config.DeliveryWindows and Config.DeliveryWindows.ontimeWindowMinutes or 5) * 60)
                                             + ((Config.DeliveryWindows and Config.DeliveryWindows.lateWindowMinutes or 5) * 60)

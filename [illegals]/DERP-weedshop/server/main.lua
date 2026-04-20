@@ -220,12 +220,14 @@ lib.callback.register('derp-weedshop:server:getInitialData', function(src)
         contacts = Relationship.GetUnlockedNPCsWithTrust(citizenid),
         conversations = EnrichConversations(Customers.GetConversations(citizenid)),
         unreadCount = Customers.GetUnreadCount(citizenid),
+        pendingDeals = Customers.GetPendingAcceptedDeals(citizenid),
         myItems = itemsList,
         config = {
             deliveryPresets = Config.DeliveryPresets,
             maxActiveOrders = Config.MaxActiveOrders,
             maxDealsPerDay = Config.MaxDealsPerDay,
-            listingDurationMinutes = Config.ListingDurationMinutes
+            listingDurationMinutes = Config.ListingDurationMinutes,
+            proactiveCallMinTrust = Config.Customer.proactiveCallMinTrust
         }
     }
 end)
@@ -393,6 +395,91 @@ lib.callback.register('derp-weedshop:server:deal:confirmDelivery', function(src,
     local ok, result = Orders.CreateFromDeal(citizenid, data.npcId, deal, data.deliveryMinutes)
     if not ok then return { ok = false, msg = result } end
     return { ok = true, orderId = result }
+end)
+
+-- Player resume deal (da accept nhung chua chon thoi gian) -> propose location lai
+lib.callback.register('derp-weedshop:server:deal:resumeDelivery', function(src, data)
+    local citizenid = GetCitizenId(src)
+    if not citizenid then return { ok = false } end
+    if not data or not data.npcId then return { ok = false, msg = 'Thieu data' } end
+
+    local deal = Customers.GetActiveDeal(citizenid, data.npcId)
+    if not deal then return { ok = false, msg = 'Khong co deal' } end
+    if not deal.accepted then return { ok = false, msg = 'Deal chua accept' } end
+
+    -- Dung location cu neu co, khong thi propose moi
+    local loc
+    if deal.locationIdx then
+        loc = Locations.GetByIdx(deal.locationIdx)
+    end
+    if not loc then
+        loc = Orders.ProposeLocation(citizenid, data.npcId)
+    end
+    if not loc then return { ok = false, msg = 'Khong co dia diem' } end
+
+    return {
+        ok = true,
+        location = { idx = loc.idx, label = loc.label },
+        deliveryPresets = Config.DeliveryPresets
+    }
+end)
+
+-- Player chu dong goi NPC (trust >= proactiveCallMinTrust)
+lib.callback.register('derp-weedshop:server:proactiveCall', function(src, data)
+    local citizenid = GetCitizenId(src)
+    if not citizenid then return { ok = false, msg = 'Khong xac dinh player' } end
+    if not CheckCooldown(src, 'proactiveCall', 3) then
+        return { ok = false, msg = 'Lam cham lai' }
+    end
+    if not data then return { ok = false, msg = 'Thieu data' } end
+
+    local ok, result, extra = Customers.PlayerProactiveCall(
+        src, citizenid, data.npcId, data.item, data.amount, data.pricePerUnit
+    )
+    if not ok then return { ok = false, msg = result } end
+
+    -- NPC tu choi: busy / price_too_high / daily_limit
+    if result == 'busy' then
+        return { ok = true, result = 'busy', reason = extra and extra.reason }
+    end
+    if result == 'price_too_high' then
+        return { ok = true, result = 'price_too_high' }
+    end
+
+    -- Accepted: propose location, return cho client chon thoi gian
+    local loc = Orders.ProposeLocation(citizenid, data.npcId)
+    if not loc then
+        Customers.ClearActiveDeal(citizenid, data.npcId)
+        return { ok = false, msg = 'Khong co dia diem' }
+    end
+
+    return {
+        ok = true,
+        result = 'accepted',
+        location = { idx = loc.idx, label = loc.label },
+        deliveryPresets = Config.DeliveryPresets
+    }
+end)
+
+-- Lay thong tin cho modal proactive call: items trong tui + contacts trust >= threshold
+lib.callback.register('derp-weedshop:server:getProactiveInfo', function(src)
+    local citizenid = GetCitizenId(src)
+    if not citizenid then return { items = {}, contacts = {} } end
+
+    local items = ListMyWeedItems(src)
+    local allContacts = Relationship.GetUnlockedNPCsWithTrust(citizenid)
+    local eligible = {}
+    for i = 1, #allContacts do
+        if (allContacts[i].trust or 0) >= Config.Customer.proactiveCallMinTrust then
+            eligible[#eligible + 1] = allContacts[i]
+        end
+    end
+
+    return {
+        items = items,
+        contacts = eligible,
+        minTrust = Config.Customer.proactiveCallMinTrust
+    }
 end)
 
 -- Player decline

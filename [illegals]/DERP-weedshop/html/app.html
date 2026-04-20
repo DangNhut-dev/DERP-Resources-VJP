@@ -136,6 +136,39 @@
             </div>
         </div>
 
+        <!-- Proactive call modal -->
+        <div class="modal" id="modal-proactive-call" hidden>
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div class="modal-title"><i class="fa-solid fa-phone"></i> Gọi khách</div>
+                    <button class="btn-icon" id="proactive-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="proactive-info" id="proactive-info"></div>
+
+                    <label class="field-label">Mặt hàng</label>
+                    <select id="proactive-item" class="field-input"></select>
+                    <div class="field-hint" id="proactive-hint"></div>
+
+                    <label class="field-label">Số lượng (g)</label>
+                    <input type="number" id="proactive-amount" class="field-input" min="1" max="1000" value="5">
+
+                    <label class="field-label">Giá / gram</label>
+                    <input type="number" id="proactive-price" class="field-input" min="1" value="50">
+
+                    <div class="price-preview" id="proactive-preview">Tổng: —</div>
+                    <div class="proactive-note">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Khách trả thấp hơn 5% giá bạn đề xuất. Nếu giá quá cao có thể bị từ chối.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="proactive-cancel">Hủy</button>
+                    <button class="btn-primary" id="proactive-submit"><i class="fa-solid fa-phone"></i> Gọi</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Tab bar (at bottom) -->
         <nav class="tab-bar">
             <button class="tab-btn active" data-tab="listings">

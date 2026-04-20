@@ -103,6 +103,43 @@ function Customers.ClearActiveDeal(citizenid, npcId)
     activeDeals[DealKey(citizenid, npcId)] = nil
 end
 
+-- Lay danh sach deal cua player dang accepted nhung chua chon thoi gian giao
+-- Dung de UI hien nhac nho cho player
+function Customers.GetPendingAcceptedDeals(citizenid)
+    local prefix = citizenid .. ':'
+    local result = {}
+    if Config.Debug then
+        local total = 0
+        for _ in pairs(activeDeals) do total = total + 1 end
+        print(('[weedshop] GetPendingAcceptedDeals for %s: total activeDeals=%d'):format(citizenid, total))
+    end
+    for key, deal in pairs(activeDeals) do
+        if Config.Debug then
+            print(('[weedshop]   Deal key=%s accepted=%s locationIdx=%s proactive=%s'):format(
+                key, tostring(deal.accepted), tostring(deal.locationIdx), tostring(deal.proactive)))
+        end
+        if key:sub(1, #prefix) == prefix and deal.accepted then
+            local npcIdStr = key:sub(#prefix + 1)
+            local npcId = tonumber(npcIdStr)
+            if npcId then
+                local npc = NPCs.GetById(npcId)
+                result[#result + 1] = {
+                    npc_id = npcId,
+                    npc_name = npc and npc.name or ('NPC #' .. npcId),
+                    item = deal.item,
+                    amount = deal.amount,
+                    price = deal.currentOffer,
+                    proactive = deal.proactive or false
+                }
+            end
+        end
+    end
+    if Config.Debug then
+        print(('[weedshop] GetPendingAcceptedDeals returning %d items'):format(#result))
+    end
+    return result
+end
+
 -- ==================== NPC SENDS INITIAL OFFER ====================
 
 -- Tao offer khoi tao tu NPC khi "find buyer"
@@ -324,6 +361,138 @@ function Customers.PickBuyerFor(citizenid, listing)
         if roll <= acc then return candidates[i].id end
     end
     return candidates[1].id
+end
+
+-- ==================== PROACTIVE CALL (player chu dong goi NPC) ====================
+
+-- Player chu dong goi NPC voi offer (item, amount, price)
+-- NPC se accept va tao order, hoac decline neu busy
+-- return: ok, result ('accepted' | 'busy' | 'daily_limit' | 'trust_low' | 'active_deal'), extra data
+function Customers.PlayerProactiveCall(src, citizenid, npcId, itemName, amount, pricePerUnit)
+    if not citizenid or not npcId or not itemName or not amount or not pricePerUnit then
+        return false, 'Thieu du lieu'
+    end
+
+    npcId = tonumber(npcId)
+    amount = tonumber(amount)
+    pricePerUnit = tonumber(pricePerUnit)
+    if not npcId or not amount or not pricePerUnit then
+        return false, 'Du lieu khong hop le'
+    end
+    if amount < 1 or amount > 1000 then return false, 'So luong khong hop le' end
+    if pricePerUnit < 1 then return false, 'Gia phai > 0' end
+
+    -- Check NPC ton tai + player da unlock
+    local npc = NPCs.GetById(npcId)
+    if not npc then return false, 'NPC khong ton tai' end
+    if not Relationship.HasUnlocked(citizenid, npcId) then
+        return false, 'Chua unlock NPC nay'
+    end
+
+    -- Check trust du de proactive
+    local trust = Relationship.GetTrust(citizenid, npcId)
+    if trust < Config.Customer.proactiveCallMinTrust then
+        return false, 'trust_low', {
+            required = Config.Customer.proactiveCallMinTrust,
+            current = trust
+        }
+    end
+
+    -- Check item hop le
+    local item = Config.Items[itemName]
+    if not item then return false, 'Item khong ho tro' end
+
+    -- Check player dang co deal active voi NPC nay?
+    if Customers.GetActiveDeal(citizenid, npcId) then
+        return false, 'active_deal'
+    end
+
+    -- Check NPC co pending order khong
+    local pending = MySQL.single.await(
+        "SELECT id FROM derp_weed_orders WHERE citizenid = ? AND npc_id = ? AND status = 'pending'",
+        { citizenid, npcId }
+    )
+    if pending then return false, 'active_deal' end
+
+    -- Check player co du hang
+    if not HasItemCount(src, itemName, amount) then
+        return false, 'Khong du hang trong tui'
+    end
+
+    -- Check gioi han active orders
+    local activeCount = Orders.CountActiveListings(citizenid) + Orders.CountPendingOrders(citizenid)
+    if activeCount >= Config.MaxActiveOrders then
+        return false, string.format('Toi da %d order cung luc', Config.MaxActiveOrders)
+    end
+
+    -- Check NPC busy (cooldown hoac daily limit)
+    local busy, reason = Relationship.IsNPCBusy(citizenid, npcId)
+    if busy then
+        -- Insert call bubble (declined)
+        Customers.InsertMessage(citizenid, npcId, 'player', 'Đã gọi', 'call_status', {
+            status = 'declined',
+            reason = reason
+        })
+        -- NPC nhan tin tu choi
+        local tplKey = reason == 'daily_limit' and 'proactive_too_many_today' or 'proactive_busy'
+        local template = Utils.PickTemplate(tplKey)
+        Customers.InsertMessage(citizenid, npcId, 'npc', template, 'text', nil)
+        return true, 'busy', { reason = reason }
+    end
+
+    -- Check gia hop le (giong deal thuong: giá qua cao -> NPC decline)
+    local acceptable = Utils.CalculateAcceptablePrice(trust, item)
+    local maxAcceptable = acceptable * 1.5
+    if pricePerUnit > maxAcceptable then
+        -- Insert call bubble (declined)
+        Customers.InsertMessage(citizenid, npcId, 'player', 'Đã gọi', 'call_status', {
+            status = 'declined',
+            reason = 'price_too_high'
+        })
+        -- Player van gui tin offer truoc
+        local playerTpl = Utils.PickTemplate('proactive_player_offer')
+        Customers.InsertMessage(citizenid, npcId, 'player',
+            string.format(playerTpl, amount, tostring(item.label), pricePerUnit),
+            'text', nil
+        )
+        -- NPC decline
+        local declineTpl = Utils.PickTemplate('decline')
+        Customers.InsertMessage(citizenid, npcId, 'npc', declineTpl, 'text', nil)
+        return true, 'price_too_high', { maxAcceptable = math.floor(maxAcceptable) }
+    end
+
+    -- Insert call bubble (connected) truoc offer
+    Customers.InsertMessage(citizenid, npcId, 'player', 'Đã gọi', 'call_status', {
+        status = 'connected'
+    })
+
+    -- Player gui offer
+    local playerTpl = Utils.PickTemplate('proactive_player_offer')
+    Customers.InsertMessage(citizenid, npcId, 'player',
+        string.format(playerTpl, amount, tostring(item.label), pricePerUnit),
+        'text', nil
+    )
+
+    -- NPC tra loi: dong y va bao cho player chon thoi gian + dia diem
+    local npcReplyTpl = Utils.PickTemplate('proactive_npc_interested')
+    if npcReplyTpl then
+        Customers.InsertMessage(citizenid, npcId, 'npc', npcReplyTpl, 'text', nil)
+    end
+
+    -- Luu active deal (giong nhu flow thuong nhung lastActor = player, accepted = true)
+    Customers.SetActiveDeal(citizenid, npcId, {
+        listingId = nil,
+        item = itemName,
+        amount = amount,
+        currentOffer = pricePerUnit,
+        round = 1,
+        lastActor = 'npc',  -- NPC la nguoi gui tin cuoi
+        accepted = true,
+        locationIdx = nil,
+        proactive = true
+    })
+
+    return true, 'accepted'
 end
 
 _G.Customers = Customers

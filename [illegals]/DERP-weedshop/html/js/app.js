@@ -101,8 +101,18 @@
             state.contacts = data.contacts || [];
             state.conversations = data.conversations || [];
             state.myItems = data.myItems || [];
+            state.pendingDeals = data.pendingDeals || [];
+            console.log('[weedshop] pendingDeals:', JSON.stringify(state.pendingDeals));
             updateBadges(data.unreadCount || 0);
             renderActiveTab();
+
+            if (state.pendingDeals.length > 0 && !state.pendingDealNoticeShown) {
+                state.pendingDealNoticeShown = true;
+                const d = state.pendingDeals[0];
+                setTimeout(function () {
+                    toast('Còn deal chưa chọn giờ giao với ' + d.npc_name, 'warn');
+                }, 600);
+            }
         });
     }
 
@@ -229,6 +239,17 @@
         $('#counter-cancel').addEventListener('click', closeCounterModal);
         $('#counter-submit').addEventListener('click', submitCounter);
         $('#chat-back').addEventListener('click', closeChat);
+
+        // Proactive call modal
+        const pcClose = $('#proactive-close');
+        if (pcClose) {
+            pcClose.addEventListener('click', closeProactiveCallModal);
+            $('#proactive-cancel').addEventListener('click', closeProactiveCallModal);
+            $('#proactive-submit').addEventListener('click', submitProactiveCall);
+            $('#proactive-item').addEventListener('change', updateProactiveHint);
+            $('#proactive-amount').addEventListener('input', updateProactivePreview);
+            $('#proactive-price').addEventListener('input', updateProactivePreview);
+        }
     }
 
     function openNewListingModal() {
@@ -473,7 +494,6 @@
         const trustBar = el('div', { cls: 'trust-bar' });
         const trustFill = el('div', { cls: 'trust-fill' });
         const tv = Math.max(0, Math.min(100, c.trust || 0));
-        // Neu trust > 0 nhung < 8, hien thi 8% de thay duoc visually
         trustFill.style.width = (tv > 0 && tv < 8 ? 8 : tv) + '%';
         trustBar.appendChild(trustFill);
         const trustLabel = el('span', { text: 'Trust ' + (c.trust || 0) });
@@ -485,6 +505,19 @@
         info.appendChild(sub);
         row.appendChild(av);
         row.appendChild(info);
+
+        // Nut goi khi trust >= proactiveCallMinTrust (80)
+        const minTrust = (state.config && state.config.proactiveCallMinTrust) || 80;
+        if ((c.trust || 0) >= minTrust) {
+            const callBtn = el('button', { cls: 'contact-call-btn', html: '<i class="fa-solid fa-phone"></i>' });
+            callBtn.title = 'Gọi chủ động';
+            callBtn.addEventListener('click', function (ev) {
+                ev.stopPropagation();
+                openProactiveCallModal(c);
+            });
+            row.appendChild(callBtn);
+        }
+
         row.addEventListener('click', function () { openChat(c.id, c); });
         return row;
     }
@@ -511,10 +544,22 @@
         const row = el('div', { cls: 'conv-row' + (c.unread_count > 0 ? ' unread' : '') });
         const av = el('div', { cls: 'contact-avatar', text: avatarInitials(c.npc_name) });
         const main = el('div', { cls: 'conv-main' });
-        const name = el('div', { cls: 'conv-name', text: c.npc_name || ('NPC #' + c.npc_id) });
+
+        // Check pending deal voi NPC nay
+        const hasPending = (state.pendingDeals || []).some(function (p) { return p.npc_id === c.npc_id; });
+
+        const name = el('div', { cls: 'conv-name' });
+        name.textContent = c.npc_name || ('NPC #' + c.npc_id);
+        if (hasPending) {
+            const pendingIcon = el('span', { cls: 'conv-pending-badge', html: ' <i class="fa-solid fa-circle-exclamation"></i>' });
+            pendingIcon.title = 'Còn deal chưa hoàn tất';
+            name.appendChild(pendingIcon);
+        }
+
         const preview = el('div', { cls: 'conv-preview' });
         const prefix = c.last_sender === 'player' ? 'Bạn: ' : '';
-        preview.textContent = prefix + (c.last_message || '');
+        preview.textContent = hasPending ? 'Đợi bạn chọn thời gian giao' : (prefix + (c.last_message || ''));
+        if (hasPending) preview.style.color = 'var(--warn)';
         main.appendChild(name);
         main.appendChild(preview);
 
@@ -593,6 +638,30 @@
         const isSystem = (m.message_type === 'system');
         const isOffer = (m.message_type === 'offer' || m.message_type === 'counter');
         const isAccept = (m.message_type === 'accept');
+        const isCallStatus = (m.message_type === 'call_status');
+
+        if (isCallStatus) {
+            const meta = m.metadata || {};
+            const status = meta.status || 'declined';
+            const connected = status === 'connected';
+            bubble = el('div', { cls: 'bubble call-bubble ' + (connected ? 'connected' : 'declined') });
+            let label;
+            if (connected) {
+                label = 'Đã gọi';
+            } else if (meta.reason === 'price_too_high') {
+                label = 'Cuộc gọi bị từ chối (giá cao)';
+            } else if (meta.reason === 'daily_limit') {
+                label = 'Cuộc gọi bị từ chối (đã đủ hàng)';
+            } else {
+                label = 'Cuộc gọi bị từ chối (bận)';
+            }
+            bubble.innerHTML = '<i class="fa-solid ' + (connected ? 'fa-phone' : 'fa-phone-slash') + '"></i>' +
+                '<span>' + escapeHtml(label) + '</span>';
+            const time = el('div', { cls: 'bubble-time', text: formatDateShort(m.created_at) });
+            wrap.appendChild(bubble);
+            wrap.appendChild(time);
+            return wrap;
+        }
 
         if (isSystem) {
             bubble = el('div', { cls: 'bubble system-msg', text: m.message });
@@ -662,16 +731,27 @@
             return;
         }
 
+        // Deal da chot nhung chua confirm thoi gian giao -> hien nut chon thoi gian
+        // (sau khi confirm delivery, deal se bi ClearActiveDeal nen se vao nhanh 'no deal')
+        if (deal.accepted) {
+            const pickBtn = el('button', { cls: 'btn-primary', text: 'Chọn thời gian giao' });
+            pickBtn.addEventListener('click', function () {
+                resumeDeliveryTimeModal(deal);
+            });
+            const cancelBtn = el('button', { cls: 'btn-danger', text: 'Hủy deal' });
+            cancelBtn.addEventListener('click', function () {
+                cancelActiveDeal();
+            });
+            container.appendChild(pickBtn);
+            container.appendChild(cancelBtn);
+            return;
+        }
+
         // Player vua counter xong -> cho NPC
         if (deal.lastActor === 'player') {
             const hint = el('div', { cls: 'hint', text: 'Đang chờ khách phản hồi...' });
             container.appendChild(hint);
             return;
-        }
-
-        // Deal da accept va dang cho chon delivery time
-        if (deal.accepted && !deal.hasLocation === false && state.pendingDeal) {
-            // handled by delivery modal
         }
 
         // NPC vua gui offer/counter
@@ -828,6 +908,112 @@
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;');
+    }
+
+    // ---------- PROACTIVE CALL ----------
+    function openProactiveCallModal(contact) {
+        state.proactiveTarget = contact;
+        post('getProactiveInfo').then(function (res) {
+            const items = (res && res.items) || [];
+            if (!items.length) {
+                toast('Bạn không có hàng nào trong túi', 'error');
+                return;
+            }
+            const info = $('#proactive-info');
+            info.innerHTML =
+                '<div>Gọi: <strong>' + escapeHtml(contact.name || ('NPC #' + contact.id)) + '</strong></div>' +
+                '<div>Trust: <strong>' + (contact.trust || 0) + '</strong></div>';
+            const select = $('#proactive-item');
+            select.innerHTML = '';
+            items.forEach(function (it) {
+                const opt = el('option', {
+                    text: it.label + ' (x' + it.count + ')',
+                    attrs: { value: it.name }
+                });
+                select.appendChild(opt);
+            });
+            state.proactiveItems = items;
+            updateProactiveHint();
+            $('#modal-proactive-call').hidden = false;
+        });
+    }
+
+    function closeProactiveCallModal() {
+        $('#modal-proactive-call').hidden = true;
+        state.proactiveTarget = null;
+        state.proactiveItems = [];
+    }
+
+    // Mo lai modal chon thoi gian giao khi player da accept nhung chua chon
+    function resumeDeliveryTimeModal(deal) {
+        if (!state.currentChat) return;
+        post('resumeDelivery', { npcId: state.currentChat.npcId }).then(function (res) {
+            if (res && res.ok) {
+                openDeliveryTimeModal(res.location, res.deliveryPresets || [15, 20, 25, 30, 35, 40]);
+            } else {
+                toast((res && res.msg) || 'Lỗi resume deal', 'error');
+            }
+        });
+    }
+
+    // Hủy active deal neu player khong muon tiep tuc
+    function cancelActiveDeal() {
+        if (!state.currentChat) return;
+        post('dealDecline', { npcId: state.currentChat.npcId }).then(function (res) {
+            if (res && res.ok) {
+                setTimeout(function () { reopenCurrentChat(); }, 250);
+            }
+        });
+    }
+
+    function updateProactiveHint() {
+        const name = $('#proactive-item').value;
+        const item = (state.proactiveItems || []).find(function (i) { return i.name === name; });
+        const hint = $('#proactive-hint');
+        if (!item) { hint.textContent = ''; return; }
+        const marketPrice = Math.floor((item.priceMin + item.priceMax) / 2);
+        hint.innerHTML = 'Giá thị trường: <strong>$' + formatMoney(marketPrice) + '/g</strong> &middot; Có: ' + item.count + 'g';
+        const amountEl = $('#proactive-amount');
+        amountEl.max = item.count;
+        if (parseInt(amountEl.value, 10) > item.count) amountEl.value = item.count;
+        const priceEl = $('#proactive-price');
+        if (!priceEl.value || parseInt(priceEl.value, 10) < 1) priceEl.value = marketPrice;
+        updateProactivePreview();
+    }
+
+    function updateProactivePreview() {
+        const a = parseInt($('#proactive-amount').value, 10) || 0;
+        const p = parseInt($('#proactive-price').value, 10) || 0;
+        $('#proactive-preview').textContent = 'Tổng: $' + formatMoney(a * p);
+    }
+
+    function submitProactiveCall() {
+        if (!state.proactiveTarget) return;
+        const itemName = $('#proactive-item').value;
+        const amount = parseInt($('#proactive-amount').value, 10);
+        const price = parseInt($('#proactive-price').value, 10);
+        if (!itemName || !amount || !price || amount < 1 || price < 1) {
+            toast('Dữ liệu không hợp lệ', 'error'); return;
+        }
+        const target = state.proactiveTarget;
+        post('proactiveCall', {
+            npcId: target.id,
+            item: itemName,
+            amount: amount,
+            pricePerUnit: price
+        }).then(function (res) {
+            closeProactiveCallModal();
+            if (!res) return;
+            // Delay 300ms cho DB flush tin moi roi moi open chat
+            setTimeout(function () {
+                openChat(target.id, target);
+                if (res.ok && res.result === 'accepted') {
+                    setTimeout(function () {
+                        openDeliveryTimeModal(res.location, res.deliveryPresets || [15, 20, 25, 30, 35, 40]);
+                    }, 300);
+                }
+            }, 300);
+        });
     }
 
     // ---------- Listen for push updates ----------

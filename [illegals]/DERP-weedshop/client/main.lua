@@ -81,5 +81,10 @@ CreateThread(function()
     end
 end)
 
+-- Event de trigger refresh tu file khac trong cung resource
+RegisterNetEvent('derp-weedshop:client:refreshOrders', function()
+    RefreshOrders()
+end)
+
 -- Export de app trigger refresh
 exports('RefreshOrders', RefreshOrders)

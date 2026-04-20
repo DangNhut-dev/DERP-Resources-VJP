@@ -63,7 +63,11 @@ Config.Customer = {
     -- Sau khi don ket thuc (delivered/failed/cancelled), NPC do khong nhan tin trong X phut REAL
     npcCooldownMinutes = 15,
     -- Moi NPC chi mua toi da N don / ngay REAL (reset 00:00 real)
-    maxDealsPerNpcPerDay = 5
+    maxDealsPerNpcPerDay = 5,
+    -- Proactive call: trust toi thieu de player chu dong goi NPC
+    proactiveCallMinTrust = 80,
+    -- Payout khi player chu dong goi (NPC tra thap hon 5%)
+    proactiveCallPayoutMultiplier = 0.95
 }
 
 -- Anti-abuse
@@ -291,12 +295,12 @@ Config.ChatTemplates = {
         '%d/g nhé, deal không?'
     },
     accept = {
-        'Deal. Gặp tao ở %s sau %d phút nữa.',
-        'Chốt. %s, %d phút nữa, đừng trễ nha.',
-        'OK, đến %s sau %d phút. Tao đợi.',
+        'Deal. Gặp tao ở %s trong %d phút nữa.',
+        'Chốt. %s, %d phút, đừng trễ nha.',
+        'OK, đến %s trong %d phút. Tao đợi.',
         'Được, gặp ở %s sau %d phút.',
-        'Done deal, %s sau %d phút. Mang đủ hàng.',
-        'Xong, tới %s sau %d phút. Đừng để tao chờ lâu.'
+        'Done deal, %s trong %d phút. Mang đủ hàng.',
+        'Xong, tới %s trong %d phút. Đừng để tao chờ lâu.'
     },
     late_reminder = {
         'Ê, mày đâu rồi? Tao đợi mỏi mòn đây.',
@@ -360,5 +364,50 @@ Config.ChatTemplates = {
         'Hủy giữa chừng? Lần sau khó liên lạc.',
         'Pro à, hủy là hủy. Trách sao được.',
         'Mất hứng thật, lần sau chắc chọn người khác.'
+    },
+    -- Player chu dong goi NPC
+    proactive_player_offer = {
+        'Yo bro, tao có %dg %s đây, %d/g lấy không?',
+        'Ê, tao đang có %dg %s giá %d/g, mày có hứng không?',
+        'Bro, %dg %s với giá %d/g, deal không?',
+        'Tao đẩy %dg %s, %d/g thôi. Chơi không?',
+        'Hàng ngon đây, %dg %s giá %d/g, lấy đi bro.'
+    },
+    proactive_accept = {
+        'Ok, gặp tao ở %s trong %d phút nữa.',
+        'Deal. %s, %d phút, tao đợi.',
+        'Được, đến %s sau %d phút nhé.',
+        'OK bro, %s trong %d phút. Cảm ơn đã gọi.',
+        'Chốt, %s sau %d phút. Khỏi lo.'
+    },
+    proactive_busy = {
+        'Xin lỗi bro, giờ tao đang bận, để lần khác.',
+        'Tao đang có deal khác rồi, lần sau nhé.',
+        'Tiếc ghê, giờ không tiện. Gọi lại sau đi.',
+        'Bận quá bro, lúc khác tao sẽ nhận hàng.',
+        'Gia đình đang có việc, chưa mua được đâu.'
+    },
+    proactive_too_many_today = {
+        'Hôm nay tao đã mua đủ rồi, mai nhé.',
+        'Đủ hàng cho hôm nay rồi bro, mai liên hệ lại.',
+        'Tao full hàng rồi, ngày mai qua.',
+        'Hết ngân sách hôm nay, mai mua tiếp.'
+    },
+    proactive_npc_interested = {
+        'OK bro, deal thế đi. Chốt thời gian giao đi.',
+        'Được, giá hợp lý đó. Khi nào mày giao được?',
+        'Ok deal, chọn thời gian giao hẹn đi.',
+        'Hợp lý, chọn giờ giao nhé bro.',
+        'Tao đồng ý, cho tao biết mấy giờ nhận.',
+        'Deal, báo giờ với địa điểm đi.',
+        'OK, sắp xếp thời gian giao giúp tao với.'
+    },
+    proactive_player_confirm = {
+        'OK, gặp ở %s sau %d phút nhé.',
+        'Tao đến %s trong %d phút, đợi tao.',
+        'Chốt, hẹn %s sau %d phút.',
+        'Được, có mặt ở %s sau %d phút.',
+        'OK bro, %s trong %d phút, tao đang đi đây.',
+        'Deal, gặp ở %s sau %d phút.'
     }
 }

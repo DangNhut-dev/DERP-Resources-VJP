@@ -162,7 +162,12 @@ function Orders.CreateFromDeal(citizenid, npcId, deal, deliveryMinutes)
     local item = Config.Items[deal.item]
     if not item then return false, 'Item loi' end
 
-    local totalPrice = deal.amount * deal.currentOffer
+    -- Proactive: NPC tra thap hon, apply multiplier
+    local effectivePrice = deal.currentOffer
+    if deal.proactive then
+        effectivePrice = math.floor(deal.currentOffer * Config.Customer.proactiveCallPayoutMultiplier)
+    end
+    local totalPrice = deal.amount * effectivePrice
     -- Deadline theo phut REAL (khong con game time)
     local deadlineSeconds = deliveryMinutes * 60
     local deadlineUnix = os.time() + deadlineSeconds
@@ -173,35 +178,51 @@ function Orders.CreateFromDeal(citizenid, npcId, deal, deliveryMinutes)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, FROM_UNIXTIME(?), 'pending')
     ]], {
         deal.listingId, citizenid, npcId, deal.item,
-        deal.amount, deal.currentOffer, totalPrice,
+        deal.amount, effectivePrice, totalPrice,
         deal.locationIdx, deadlineUnix
     })
 
     if not orderId then return false, 'Loi DB' end
 
-    -- Trir so luong khoi listing hoac mark sold neu het
-    local listing = Orders.GetListing(deal.listingId)
-    if listing then
-        if listing.amount <= deal.amount then
-            Orders.MarkListingSold(deal.listingId)
-        else
-            MySQL.update.await(
-                'UPDATE derp_weed_listings SET amount = amount - ? WHERE id = ?',
-                { deal.amount, deal.listingId }
-            )
+    -- Trir so luong khoi listing (neu co - proactive khong co listing)
+    if deal.listingId then
+        local listing = Orders.GetListing(deal.listingId)
+        if listing then
+            if listing.amount <= deal.amount then
+                Orders.MarkListingSold(deal.listingId)
+            else
+                MySQL.update.await(
+                    'UPDATE derp_weed_listings SET amount = amount - ? WHERE id = ?',
+                    { deal.amount, deal.listingId }
+                )
+            end
         end
     end
 
     -- Gui tin nhan accept + location (text thuong, full info)
     local loc = Locations.GetByIdx(deal.locationIdx)
-    local acceptTemplate = Utils.PickTemplate('accept')
+
+    if deal.proactive then
+        -- Proactive: player xac nhan truoc, NPC confirm sau (realistic)
+        local playerConfirmTpl = Utils.PickTemplate('proactive_player_confirm')
+        if playerConfirmTpl then
+            Customers.InsertMessage(citizenid, npcId, 'player',
+                string.format(playerConfirmTpl, loc.label, deliveryMinutes),
+                'text', nil
+            )
+        end
+    end
+
+    local acceptTplKey = deal.proactive and 'proactive_accept' or 'accept'
+    local acceptTemplate = Utils.PickTemplate(acceptTplKey)
     local msg = string.format(acceptTemplate, loc.label, deliveryMinutes)
     Customers.InsertMessage(citizenid, npcId, 'npc', msg, 'text', {
         order_id = orderId,
         location_idx = deal.locationIdx,
         location_label = loc.label,
         deadline_minutes = deliveryMinutes,
-        total_price = totalPrice
+        total_price = totalPrice,
+        proactive = deal.proactive or nil
     })
 
     Customers.ClearActiveDeal(citizenid, npcId)
@@ -266,6 +287,11 @@ function Orders.DeliverOrder(src, orderId)
     local deadlineTs = order.deadline_at
     if type(deadlineTs) == 'string' then
         deadlineTs = Orders.ParseMySQLTimestamp(deadlineTs)
+    elseif type(deadlineTs) == 'number' then
+        -- oxmysql co the tra ve ms (>1e12) - convert ve seconds
+        if deadlineTs > 1e12 then
+            deadlineTs = math.floor(deadlineTs / 1000)
+        end
     end
 
     local earlySec = Config.DeliveryWindows.earlyWindowMinutes * 60

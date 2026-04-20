@@ -114,7 +114,7 @@ RegisterNUICallback('dealConfirmDelivery', function(data, cb)
     lib.callback('derp-weedshop:server:deal:confirmDelivery', false, function(res)
         cb(res or {})
         if res and res.ok then
-            exports['derp-weedshop']:RefreshOrders()
+            TriggerEvent('derp-weedshop:client:refreshOrders')
         end
     end, data)
 end)
@@ -127,7 +127,7 @@ RegisterNUICallback('cancelOrder', function(data, cb)
     lib.callback('derp-weedshop:server:cancelOrder', false, function(res)
         cb(res or {})
         if res and res.ok then
-            exports['derp-weedshop']:RefreshOrders()
+            TriggerEvent('derp-weedshop:client:refreshOrders')
         end
     end, data and data.orderId)
 end)
@@ -137,6 +137,24 @@ RegisterNUICallback('setWaypoint', function(data, cb)
         SetNewWaypoint(data.x + 0.0, data.y + 0.0)
     end
     cb({ ok = true })
+end)
+
+RegisterNUICallback('getProactiveInfo', function(data, cb)
+    lib.callback('derp-weedshop:server:getProactiveInfo', false, function(res)
+        cb(res or { items = {}, contacts = {} })
+    end)
+end)
+
+RegisterNUICallback('proactiveCall', function(data, cb)
+    lib.callback('derp-weedshop:server:proactiveCall', false, function(res)
+        cb(res or {})
+    end, data)
+end)
+
+RegisterNUICallback('resumeDelivery', function(data, cb)
+    lib.callback('derp-weedshop:server:deal:resumeDelivery', false, function(res)
+        cb(res or {})
+    end, data)
 end)
 
 -- Server push event -> forward qua blackphone toi app NUI (iframe)
