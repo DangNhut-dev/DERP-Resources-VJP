@@ -6,32 +6,58 @@ local function getStreetLabel(coords)
     return GetStreetNameFromHashKey(hash) or 'Không xác định'
 end
 
-local function startMoneyGame()
-    SetNuiFocus(true, true)
-    SendNUIMessage({
-        action = 'start',
-        config = {
-            duration    = Config.MoneyGame.duration,
-            coinValue   = Config.MoneyGame.coinValue,
-            bombPenalty = Config.MoneyGame.bombPenalty,
-            maxReward   = Config.MoneyGame.maxReward,
-            spawnRate   = Config.MoneyGame.spawnRate,
-        }
-    })
-end
+-- local function startMoneyGame()
+--     SetNuiFocus(true, true)
+--     SendNUIMessage({
+--         action = 'start',
+--         config = {
+--             duration    = Config.MoneyGame.duration,
+--             coinValue   = Config.MoneyGame.coinValue,
+--             bombPenalty = Config.MoneyGame.bombPenalty,
+--             maxReward   = Config.MoneyGame.maxReward,
+--             spawnRate   = Config.MoneyGame.spawnRate,
+--         }
+--     })
+-- end
 
-RegisterNUICallback('moneyGameEnd', function(data, cb)
-    SetNuiFocus(false, false)
-    local amount = tonumber(data.amount) or 0
-    if amount > 0 then
+-- RegisterNUICallback('moneyGameEnd', function(data, cb)
+--     SetNuiFocus(false, false)
+--     local amount = tonumber(data.amount) or 0
+--     if amount > 0 then
+--         if GetResourceState('svc_runtime') == 'started' then
+--         exports['svc_runtime']:ExecuteServerEvent('derp_storerobbery:server:giveReward', amount)
+--     else
+--         TriggerServerEvent('derp_storerobbery:server:giveReward', amount)
+--     end
+--     end
+--     cb('ok')
+-- end)
+
+local function startMoneyCollect()
+    lib.requestAnimDict('anim@heists@ornate_bank@grab_cash')
+    TaskPlayAnim(cache.ped, 'anim@heists@ornate_bank@grab_cash', 'grab',
+        3.0, 1.0, -1, 49, 0, false, false, false)
+
+    local success = lib.progressBar({
+        duration = 120000,
+        label = 'Đang gom tiền...',
+        useWhileDead = false,
+        canCancel = false,
+        disable = { move = true, car = true, combat = true },
+    })
+
+    ClearPedTasks(cache.ped)
+    RemoveAnimDict('anim@heists@ornate_bank@grab_cash')
+
+    if success then
+        local amount = math.random(80, 120)
         if GetResourceState('svc_runtime') == 'started' then
-        exports['svc_runtime']:ExecuteServerEvent('derp_storerobbery:server:giveReward', amount)
-    else
-        TriggerServerEvent('derp_storerobbery:server:giveReward', amount)
+            exports['svc_runtime']:ExecuteServerEvent('derp_storerobbery:server:giveReward', amount)
+        else
+            TriggerServerEvent('derp_storerobbery:server:giveReward', amount)
+        end
     end
-    end
-    cb('ok')
-end)
+end
 
 local function handleSafe(safeIndex)
     if isDoingAction then return end
@@ -141,7 +167,8 @@ local function handleSafe(safeIndex)
         end
         TriggerServerEvent('derp_storerobbery:server:setSafeRobbed', safeIndex)
 
-        startMoneyGame()
+        -- startMoneyGame()
+        startMoneyCollect()
         isDoingAction = false
     end, safeIndex)
 end

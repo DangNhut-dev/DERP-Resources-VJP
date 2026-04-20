@@ -153,8 +153,8 @@ local function addStoreRewardLog(src, safeIndex, rewardType, cashAmount, itemLis
 end
 
 lib.callback.register('derp_storerobbery:server:checkSafe', function(source, safeIndex)
-    if getOnDutyPoliceCount() < 3 then
-        TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
+    if getOnDutyPoliceCount() < 0 then
+        -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
         return false
     end
 
@@ -218,7 +218,8 @@ RegisterNetEvent('derp_storerobbery:server:giveReward', function(amount)
     if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
         if not exports[fiveguard_resource]:VerifyToken(src) then return end
     end
-    local capped = math.min(math.max(tonumber(amount) or 0, 60), Config.MoneyGame.maxReward)
+    -- local capped = math.min(math.max(tonumber(amount) or 0, 60), Config.MoneyGame.maxReward)
+    local capped = math.min(math.max(tonumber(amount) or 0, 80), 120)
     if capped <= 0 then return end
 
     local xPlayer = QBX:GetPlayer(src)
