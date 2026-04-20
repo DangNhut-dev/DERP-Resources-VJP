@@ -122,8 +122,28 @@ function Orders.ProposeLocation(citizenid, npcId)
     local deal = Customers.GetActiveDeal(citizenid, npcId)
     if not deal or not deal.accepted then return nil end
 
-    local loc = Locations.GetRandom()
-    if not loc then return nil end
+    -- Lay danh sach location index dang bi chiem (order pending toan server)
+    local busyIdx = {}
+    local rows = MySQL.query.await([[
+        SELECT DISTINCT location_idx FROM derp_weed_orders WHERE status = 'pending'
+    ]])
+    if rows then
+        for i = 1, #rows do
+            busyIdx[tonumber(rows[i].location_idx)] = true
+        end
+    end
+
+    -- Cong them location dang duoc propose (accepted + locationIdx) tu activeDeals in-memory
+    local proposedIdx = Customers.GetProposedLocationIndices()
+    for _, idx in ipairs(proposedIdx) do busyIdx[idx] = true end
+
+    -- Tim location rảnh
+    local loc = Locations.GetRandomExcluding(busyIdx)
+    -- Fallback: neu het thi dung random bat ky (chap nhan trung)
+    if not loc then
+        loc = Locations.GetRandom()
+        if not loc then return nil end
+    end
 
     deal.locationIdx = loc.idx
     Customers.SetActiveDeal(citizenid, npcId, deal)
@@ -228,6 +248,13 @@ function Orders.CreateFromDeal(citizenid, npcId, deal, deliveryMinutes)
     Customers.ClearActiveDeal(citizenid, npcId)
     IncrementTotalDeals(citizenid)
 
+    -- Broadcast cho player khac thay NPC + location
+    if _G.BroadcastForeignOrderAdd then
+        local order = Orders.GetOrder(orderId)
+        local ownerSrc = _G.GetSourceByCitizenId and GetSourceByCitizenId(citizenid)
+        if order then BroadcastForeignOrderAdd(order, ownerSrc) end
+    end
+
     return true, orderId
 end
 
@@ -248,6 +275,12 @@ function Orders.CancelOrder(citizenid, orderId)
 
     local template = Utils.PickTemplate('cancelled')
     Customers.InsertMessage(citizenid, order.npc_id, 'npc', template, 'text', nil)
+
+    -- Broadcast remove foreign order
+    if _G.BroadcastForeignOrderRemove then
+        local ownerSrc = _G.GetSourceByCitizenId and GetSourceByCitizenId(citizenid)
+        BroadcastForeignOrderRemove(orderId, ownerSrc)
+    end
     return true
 end
 
@@ -358,6 +391,16 @@ function Orders.DeliverOrder(src, orderId)
         status = status
     })
 
+    -- Log action cho js_ranking (chi log ban hang, khong log khac)
+    if _G.LogWeedSale then
+        LogWeedSale(src, order, payout, status)
+    end
+
+    -- Broadcast remove foreign order cho player khac
+    if _G.BroadcastForeignOrderRemove then
+        BroadcastForeignOrderRemove(orderId, src)
+    end
+
     return true, status, payout
 end
 
@@ -392,6 +435,11 @@ function Orders.FailOrder(orderId, reason)
     if src then
         TriggerClientEvent('derp-weedshop:client:orderEnded', src, orderId)
         TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = order.npc_id })
+    end
+
+    -- Broadcast remove foreign order cho player khac
+    if _G.BroadcastForeignOrderRemove then
+        BroadcastForeignOrderRemove(orderId, src)
     end
 end
 

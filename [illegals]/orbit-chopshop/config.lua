@@ -1,7 +1,7 @@
 Config = {}
 
 Config.CallCops = true
-Config.CoolDown = 30
+Config.CoolDown = 1
 Config.Email = false
 Config.Fuel = 'cdn-fuel'
 

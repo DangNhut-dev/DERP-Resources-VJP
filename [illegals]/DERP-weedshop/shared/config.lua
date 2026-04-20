@@ -253,7 +253,7 @@ Config.UnlockTiers = {
 }
 
 -- Dispatch chance khi giao (0-1)
-Config.DispatchChance = 0.35
+Config.DispatchChance = 0.30
 Config.DispatchCode = '10-66'
 Config.DispatchTitle = 'Giao Dich Kha Nghi'
 Config.DispatchDescription = 'Phat hien hanh vi kha nghi (nghi ngo mua ban chat cam)'

@@ -108,7 +108,6 @@ CreateThread(function()
     end
 end)
 
--- Job accept: validate qua server
 RegisterNetEvent('orbit-chopshop:jobaccept', function()
     dbg('Job accept triggered')
     local result = lib.callback.await('orbit-chopshop:server:requestJob', false)
@@ -182,8 +181,8 @@ function SpawnVehicle(model, x, y, z, w)
 
     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop1"])
 
-    Wait(math.random(600000, 1200000))
-    -- Wait(math.random(600, 1200))
+    -- Wait(math.random(600000, 1200000))
+    Wait(math.random(600, 1200))
 
     if Config.Email then
         TriggerServerEvent('qb-phone:server:sendNewMail', {
@@ -428,8 +427,10 @@ function Reset()
     pendingSpawnTriggered = false
 end
 
--- SCANNER
-local scaleform = RequestScaleformMovie("DIGISCANNER")
+-- ==================== SCANNER ====================
+
+-- FIX: Không gọi RequestScaleformMovie ở top-level khi resource load
+local scaleform = nil
 local inScaleform = false
 local ped = PlayerPedId()
 local targetCoords = vector3(0, 0, 0)
@@ -443,6 +444,11 @@ local sfcolors = {
     lightblue = { r = 67, g = 200, b = 255 },
     green = { r = 0, g = 255, b = 80 }
 }
+
+CreateThread(function()
+    scaleform = RequestScaleformMovie("DIGISCANNER")
+    while not HasScaleformMovieLoaded(scaleform) do Wait(0) end
+end)
 
 local function ScaleformMethod(sf, name, data)
     BeginScaleformMovieMethod(sf, name)
@@ -527,7 +533,8 @@ function SetupScaleform(sfName, Buttons)
 end
 
 function UpdateBars(dist)
-    if not scaleform then return end
+    -- FIX: Guard scaleform chưa load
+    if not scaleform or scaleform == 0 then return end
 
     for i = 1, #sfbars do
         if dist > sfbars[i].dist then
@@ -599,10 +606,6 @@ local function HeadingCheck(playerCoords, playerHeading, tgtCoords)
     return math.abs(playerHeading - targetHeading) < 20
 end
 
-CreateThread(function()
-    while not HasScaleformMovieLoaded(scaleform) do Wait(0) end
-end)
-
 local function InitiateDigiScanner()
     ped = PlayerPedId()
     if not inScaleform then
@@ -631,6 +634,12 @@ local function InitiateDigiScanner()
         end
 
         while inScaleform do
+            -- FIX: Thoát loop khi player cất súng
+            if GetSelectedPedWeapon(ped) ~= joaat('weapon_digiscanner') then
+                inScaleform = false
+                break
+            end
+
             SetTextRenderId(data)
             DrawScaleformMovie(scaleform, sfpos.x, sfpos.y, sfpos.width, sfpos.height, 100, 100, 100, 255, 0)
             SetTextRenderId(1)

@@ -103,6 +103,18 @@ function Customers.ClearActiveDeal(citizenid, npcId)
     activeDeals[DealKey(citizenid, npcId)] = nil
 end
 
+-- Lay tat ca location_idx dang duoc propose (chua confirm -> chua co order)
+-- Dung de exclude khi pick location moi (tranh trung)
+function Customers.GetProposedLocationIndices()
+    local result = {}
+    for _, deal in pairs(activeDeals) do
+        if deal.accepted and deal.locationIdx then
+            result[#result + 1] = deal.locationIdx
+        end
+    end
+    return result
+end
+
 -- Lay danh sach deal cua player dang accepted nhung chua chon thoi gian giao
 -- Dung de UI hien nhac nho cho player
 function Customers.GetPendingAcceptedDeals(citizenid)

@@ -1,5 +1,6 @@
 local spawnedNPCs = {}
-local watchedOrders = {}
+local watchedOrders = {}  -- Orders cua chinh player (co option giao hang)
+local foreignOrders = {}  -- Orders cua player khac (chi hien NPC, khong co target)
 local dispatchSent = {}
 local blips = {}
 
@@ -64,21 +65,24 @@ local function SpawnDeliveryNPC(order)
         ped = ped,
         orderId = order.id,
         npcId = order.npc.id,
-        npcName = order.npc.name
+        npcName = order.npc.name,
+        foreign = order.foreign or false
     }
 
-    -- Add ox_target
-    exports.ox_target:addLocalEntity(ped, {
-        {
-            name = 'derp_weedshop_deliver_' .. order.id,
-            label = 'Giao hàng (' .. order.amount .. 'g)',
-            icon = 'fa-solid fa-hand-holding-dollar',
-            distance = 2.0,
-            onSelect = function()
-                TriggerEvent('derp-weedshop:client:tryDeliver', order.id)
-            end
-        }
-    })
+    -- Chi add ox_target cho NPC cua chinh player (owner)
+    if not order.foreign then
+        exports.ox_target:addLocalEntity(ped, {
+            {
+                name = 'derp_weedshop_deliver_' .. order.id,
+                label = 'Giao hang (' .. order.amount .. 'g)',
+                icon = 'fa-solid fa-hand-holding-dollar',
+                distance = 2.0,
+                onSelect = function()
+                    TriggerEvent('derp-weedshop:client:tryDeliver', order.id)
+                end
+            }
+        })
+    end
 end
 
 -- Despawn NPC cua 1 order
@@ -116,7 +120,7 @@ local function CreateOrderBlip(order)
     SetBlipScale(blip, 0.9)
     SetBlipAsShortRange(blip, false)
     BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString('Giao hàng: ' .. (order.location.label or ''))
+    AddTextComponentString('Giao hang: ' .. (order.location.label or ''))
     EndTextCommandSetBlipName(blip)
     blips[order.id] = blip
 end
@@ -180,6 +184,46 @@ end)
 
 RegisterNetEvent('derp-weedshop:client:orderEnded', function(orderId)
     RemoveWatchedOrder(orderId)
+    if foreignOrders[orderId] then
+        foreignOrders[orderId] = nil
+        DespawnNPC(orderId)
+    end
+end)
+
+-- Sync foreign orders (NPC cua player khac) tu server
+-- Server broadcast khi order moi tao va khi order ket thuc
+RegisterNetEvent('derp-weedshop:client:foreignOrderAdd', function(order)
+    if not order or not order.id then return end
+    -- Tranh overlap voi own order
+    if watchedOrders[order.id] then return end
+    order.foreign = true
+    foreignOrders[order.id] = order
+end)
+
+RegisterNetEvent('derp-weedshop:client:foreignOrderRemove', function(orderId)
+    if not orderId then return end
+    foreignOrders[orderId] = nil
+    if spawnedNPCs[orderId] and spawnedNPCs[orderId].foreign then
+        DespawnNPC(orderId)
+    end
+end)
+
+-- Full sync foreign orders khi player join / resource start
+RegisterNetEvent('derp-weedshop:client:syncForeignOrders', function(orders)
+    -- Clear cu
+    for id, _ in pairs(foreignOrders) do
+        if spawnedNPCs[id] and spawnedNPCs[id].foreign then
+            DespawnNPC(id)
+        end
+    end
+    foreignOrders = {}
+    -- Add moi
+    for _, o in ipairs(orders or {}) do
+        if not watchedOrders[o.id] then
+            o.foreign = true
+            foreignOrders[o.id] = o
+        end
+    end
 end)
 
 -- Thread check proximity -> spawn/despawn NPC + trigger dispatch
@@ -187,31 +231,25 @@ CreateThread(function()
     while true do
         local sleep = 2000
         local ped = cache.ped
-        if ped and ped ~= 0 and next(watchedOrders) then
+        local hasAny = next(watchedOrders) or next(foreignOrders)
+        if ped and ped ~= 0 and hasAny then
             local coords = GetEntityCoords(ped)
             local now = GetCloudTimeAsInt()
             local earlyWindowSec = (Config.DeliveryWindows and Config.DeliveryWindows.earlyWindowMinutes or 5) * 60
             local lateMaxSec = earlyWindowSec + ((Config.DeliveryWindows and Config.DeliveryWindows.ontimeWindowMinutes or 5) * 60)
                                             + ((Config.DeliveryWindows and Config.DeliveryWindows.lateWindowMinutes or 5) * 60)
 
+            -- Process own orders (co dispatch + target)
             for orderId, order in pairs(watchedOrders) do
                 if order.location and order.location.coords then
                     local c = order.location.coords
                     local dist = #(coords - vector3(c.x, c.y, c.z))
-
-                    -- NPC xuat hien tu [deadline - earlyWindow] den [deadline + ontime + late]
                     local deadlineUnix = tonumber(order.deadline_unix) or 0
                     local spawnFromUnix = deadlineUnix - earlyWindowSec
                     local spawnUntilUnix = deadlineUnix + (lateMaxSec - earlyWindowSec)
                     local npcShouldBePresent = deadlineUnix > 0
                         and now >= spawnFromUnix
                         and now <= spawnUntilUnix
-
-                    if Config.Debug and dist < Config.NPCSpawnRadius * 2 then
-                        print(('[weedshop] order#%d dist=%.0f deadlineUnix=%d now=%d should=%s (window %d..%d, diff=%d)')
-                            :format(orderId, dist, deadlineUnix, now, tostring(npcShouldBePresent),
-                                spawnFromUnix, spawnUntilUnix, now - spawnFromUnix))
-                    end
 
                     if dist < Config.NPCSpawnRadius and npcShouldBePresent then
                         sleep = 500
@@ -235,6 +273,31 @@ CreateThread(function()
                     end
                 end
             end
+
+            -- Process foreign orders (chi spawn NPC, khong target, khong dispatch)
+            for orderId, order in pairs(foreignOrders) do
+                if order.location and order.location.coords then
+                    local c = order.location.coords
+                    local dist = #(coords - vector3(c.x, c.y, c.z))
+                    local deadlineUnix = tonumber(order.deadline_unix) or 0
+                    local spawnFromUnix = deadlineUnix - earlyWindowSec
+                    local spawnUntilUnix = deadlineUnix + (lateMaxSec - earlyWindowSec)
+                    local npcShouldBePresent = deadlineUnix > 0
+                        and now >= spawnFromUnix
+                        and now <= spawnUntilUnix
+
+                    if dist < Config.NPCSpawnRadius and npcShouldBePresent then
+                        sleep = 500
+                        if not spawnedNPCs[orderId] then
+                            SpawnDeliveryNPC(order)
+                        end
+                    elseif dist > Config.NPCDespawnRadius or not npcShouldBePresent then
+                        if spawnedNPCs[orderId] then
+                            DespawnNPC(orderId)
+                        end
+                    end
+                end
+            end
         end
         Wait(sleep)
     end
@@ -245,6 +308,12 @@ AddEventHandler('onResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
     for orderId, _ in pairs(spawnedNPCs) do DespawnNPC(orderId) end
     for orderId, _ in pairs(blips) do RemoveBlip(blips[orderId]) end
+end)
+
+-- Request foreign orders sync khi resource start
+CreateThread(function()
+    Wait(3000) -- Cho player load xong
+    TriggerServerEvent('derp-weedshop:server:requestForeignSync')
 end)
 
 -- Export cho main.lua

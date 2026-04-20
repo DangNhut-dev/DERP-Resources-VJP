@@ -1,5 +1,129 @@
 local ox_inventory = exports.ox_inventory
 
+-- ==================== ACTION LOG (js_ranking) ====================
+local function IsJsRankingStarted()
+    return GetResourceState('js_ranking') == 'started'
+end
+
+local function AddActionLog(anyPlayer, actionText, opts)
+    if not IsJsRankingStarted() then return false end
+    if not actionText or actionText == '' then return false end
+    local ok = pcall(function()
+        exports['js_ranking']:AddActionLog(anyPlayer, actionText, opts)
+    end)
+    return ok
+end
+
+-- Log khi player giao hang thanh cong (bán hàng cho NPC)
+function LogWeedSale(src, order, payout, status)
+    if not src or not order then return end
+    local itemCfg = Config.Items[order.item]
+    local itemLabel = itemCfg and itemCfg.label or order.item
+    local npc = NPCs.GetById(order.npc_id)
+    local npcName = npc and npc.name or ('NPC #' .. order.npc_id)
+
+    local statusLabel = 'đúng giờ'
+    if status == 'delivered_early' then statusLabel = 'sớm'
+    elseif status == 'delivered_late' then statusLabel = 'trễ' end
+
+    local actionText = ('[derp-weedshop] | bán cỏ | khách: %s | hàng: %s(%s) x%d | nhận: +black_money $%d | giao %s'):format(
+        npcName, order.item, itemLabel, order.amount, payout, statusLabel
+    )
+
+    AddActionLog(src, actionText, nil)
+end
+
+-- Tra ve so ngay game (kieu epoch day) dua tren real time
+-- (Hien khong dung vi da chuyen sang real time, giu lai cho tuong thich)
+
+-- Build order payload cho foreign sync (khong can all fields, chi can spawn NPC)
+local function BuildForeignOrderPayload(order)
+    local npc = NPCs.GetById(order.npc_id)
+    local loc = Locations.GetByIdx(order.location_idx)
+    if not npc or not loc then return nil end
+
+    local deadlineUnix
+    if type(order.deadline_at) == 'number' then
+        deadlineUnix = order.deadline_at > 1e12 and math.floor(order.deadline_at / 1000) or order.deadline_at
+    elseif type(order.deadline_at) == 'string' then
+        deadlineUnix = Orders.ParseMySQLTimestamp(order.deadline_at)
+    end
+
+    return {
+        id = order.id,
+        amount = order.amount,
+        npc = { id = npc.id, name = npc.name, ped = npc.ped },
+        location = {
+            label = loc.label,
+            coords = { x = loc.coords.x, y = loc.coords.y, z = loc.coords.z, w = loc.coords.w }
+        },
+        deadline_unix = deadlineUnix
+    }
+end
+
+-- Broadcast foreign order add/remove toi tat ca player tru owner
+function BroadcastForeignOrderAdd(order, ownerSrc)
+    local payload = BuildForeignOrderPayload(order)
+    if not payload then return end
+    for _, pid in ipairs(GetPlayers()) do
+        local sid = tonumber(pid)
+        if sid and sid ~= ownerSrc then
+            TriggerClientEvent('derp-weedshop:client:foreignOrderAdd', sid, payload)
+        end
+    end
+end
+
+function BroadcastForeignOrderRemove(orderId, ownerSrc)
+    if not orderId then return end
+    for _, pid in ipairs(GetPlayers()) do
+        local sid = tonumber(pid)
+        if sid and sid ~= ownerSrc then
+            TriggerClientEvent('derp-weedshop:client:foreignOrderRemove', sid, orderId)
+        end
+    end
+end
+
+-- Full sync foreign orders cho 1 player (khi join)
+function SyncForeignOrdersForPlayer(src)
+    local citizenid = GetCitizenId(src)
+    if not citizenid then return end
+
+    local rows = MySQL.query.await([[
+        SELECT id, citizenid, npc_id, amount, location_idx, UNIX_TIMESTAMP(deadline_at) AS deadline_unix
+        FROM derp_weed_orders
+        WHERE status = 'pending' AND citizenid != ?
+    ]], { citizenid })
+
+    if not rows then return end
+    local payloads = {}
+    for i = 1, #rows do
+        local r = rows[i]
+        local npc = NPCs.GetById(r.npc_id)
+        local loc = Locations.GetByIdx(r.location_idx)
+        if npc and loc then
+            payloads[#payloads + 1] = {
+                id = r.id,
+                amount = r.amount,
+                npc = { id = npc.id, name = npc.name, ped = npc.ped },
+                location = {
+                    label = loc.label,
+                    coords = { x = loc.coords.x, y = loc.coords.y, z = loc.coords.z, w = loc.coords.w }
+                },
+                deadline_unix = tonumber(r.deadline_unix)
+            }
+        end
+    end
+    TriggerClientEvent('derp-weedshop:client:syncForeignOrders', src, payloads)
+end
+
+-- Khi player join / resource start -> client tu request sync qua requestForeignSync
+-- (Khong dung playerJoining vi chua stable, de client request khi load xong)
+
+-- Callback cho client request sync (goi khi resource start)
+RegisterNetEvent('derp-weedshop:server:requestForeignSync', function()
+    SyncForeignOrdersForPlayer(source)
+end)
+
 -- ==================== HELPERS ====================
 
 function GetCitizenId(src)

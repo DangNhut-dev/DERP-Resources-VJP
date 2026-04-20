@@ -69,6 +69,18 @@ function Locations.GetRandom()
     return valid[math.random(#valid)]
 end
 
+function Locations.GetRandomExcluding(excludeIdx)
+    excludeIdx = excludeIdx or {}
+    local valid = {}
+    for i = 1, #Locations do
+        if not Locations[i].pdZone and not excludeIdx[Locations[i].idx] then
+            valid[#valid + 1] = Locations[i]
+        end
+    end
+    if #valid == 0 then return nil end
+    return valid[math.random(#valid)]
+end
+
 function Locations.Count()
     return #Locations
 end
