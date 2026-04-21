@@ -323,6 +323,7 @@ RegisterNetEvent('tommy-trucker:client:spawnRentalVehicle', function(rentalInfo)
     end
 
     SetVehicleNumberPlateText(vehicle, plate)
+    exports['cdn-fuel']:SetFuel(vehicle, 100.0)
 
     local ped = PlayerPedId()
     TaskWarpPedIntoVehicle(ped, vehicle, -1)
@@ -347,7 +348,7 @@ RegisterNetEvent('tommy-trucker:client:spawnRentalVehicle', function(rentalInfo)
         })
 
         Notify(
-            ('🔑 Xe %s đã sẵn sàng! Chúc lái xe vui vẻ.'):format(string.upper(model)),
+            ('Xe %s đã sẵn sàng! Chúc lái xe vui vẻ.'):format(string.upper(model)),
             'success', 5000
         )
     end)

@@ -100,11 +100,12 @@ local function CloseInfusionUI()
     currentTableId = nil
 end
 
+-- Luôn gửi budAmount = 1, server cũng hardcode lại
 local function StartInfusion(budType, budAmount, ingredients)
     if isInfusing then return end
     isInfusing = true
     infusionStartTime = GetGameTimer()
-    TriggerServerEvent('tommy-weedplant:server:startInfusion', currentTableId, budType, budAmount, ingredients)
+    TriggerServerEvent('tommy-weedplant:server:startInfusion', currentTableId, budType, 1, ingredients)
 
     CreateThread(function()
         while isInfusing do

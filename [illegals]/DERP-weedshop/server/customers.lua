@@ -20,6 +20,18 @@ function Customers.InsertMessage(citizenid, npcId, sender, message, msgType, met
     ]], { citizenid, npcId, sender, message, msgType or 'text', metadata and json.encode(metadata) or nil })
 end
 
+-- Lay 1 dong tin nhan moi nhat NPC gui cho player (text type)
+-- Dung de hien thi banner notification
+function Customers.GetLastNpcMessage(citizenid, npcId)
+    if not citizenid or not npcId then return nil end
+    local row = MySQL.single.await([[
+        SELECT message FROM derp_weed_messages
+        WHERE citizenid = ? AND npc_id = ? AND sender = 'npc' AND message_type = 'text'
+        ORDER BY id DESC LIMIT 1
+    ]], { citizenid, npcId })
+    return row and row.message or nil
+end
+
 function Customers.GetMessages(citizenid, npcId, limit)
     if not citizenid or not npcId then return {} end
     -- Lay N messages gan nhat (DESC), sau do dao lai ASC de hien thi theo thu tu

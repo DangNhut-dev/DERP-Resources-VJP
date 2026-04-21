@@ -289,3 +289,115 @@ exports('PushAppMessage', function(appId, payload)
     })
     return true
 end)
+
+-- Check player co phone item khong (client-side cache)
+local function PlayerHasPhone()
+    if not Config.Item then return false end
+    local count = exports.ox_inventory:Search('count', Config.Item)
+    return type(count) == 'number' and count > 0
+end
+
+-- Notify export: hien banner thong bao tren UI cua phone
+-- data = {
+--   appId = 'weedshop',           -- bat buoc, app ID da register
+--   title = 'Marcus Johnson',     -- bat buoc, line dau
+--   body = 'Hang ngon do bro',    -- bat buoc, line noi dung
+--   icon = 'fa-solid fa-cannabis',-- optional, font awesome class (default tu app config)
+--   color = '#4ade80',            -- optional, mau icon (default tu app config)
+--   onClick = { ... }             -- optional, payload gui cho app khi click banner
+-- }
+exports('Notify', function(data)
+    if Config.Debug then
+        print(('[BlackPhone] Notify called: appId=%s title=%s'):format(
+            tostring(data and data.appId), tostring(data and data.title)))
+    end
+    if not data or not data.appId or not data.title or not data.body then
+        if Config.Debug then print('[BlackPhone] Notify rejected: missing required fields') end
+        return false
+    end
+    if isAnimating then
+        if Config.Debug then print('[BlackPhone] Notify rejected: isAnimating') end
+        return false
+    end
+    -- Khong notify khi phone dang mo (vi user dang dung phone roi)
+    if isPhoneOpen then
+        if Config.Debug then print('[BlackPhone] Notify rejected: phone is open') end
+        return false
+    end
+    if not PlayerHasPhone() then
+        if Config.Debug then print('[BlackPhone] Notify rejected: no phone item') end
+        return false
+    end
+
+    local app = Apps.Get(data.appId)
+    if Config.Debug then
+        print(('[BlackPhone] Notify sending to NUI (app registered: %s)'):format(tostring(app ~= nil)))
+    end
+    SendNUIMessage({
+        action = 'notify',
+        notification = {
+            appId = data.appId,
+            appName = (app and app.name) or data.appName or 'App',
+            title = data.title,
+            body = data.body,
+            icon = data.icon or (app and app.icon) or 'fa-solid fa-bell',
+            color = data.color or (app and app.color) or '#05F2F2',
+            onClick = data.onClick or nil,
+            timestamp = GetCloudTimeAsInt()
+        }
+    })
+    return true
+end)
+
+-- Command test notification
+-- RegisterCommand('testphonenotify', function(_, args)
+--     local title = args[1] or 'Test Notify'
+--     local body = args[2] or 'Banner thong bao tu command test'
+--     local appId = args[3] or 'weedshop'
+--     local resName = GetCurrentResourceName()
+--     local result = exports[resName]:Notify({
+--         appId = appId,
+--         title = title,
+--         body = body,
+--         icon = 'fa-solid fa-bell',
+--         color = '#05F2F2'
+--     })
+--     print(('[BlackPhone] testphonenotify result: %s (resource: %s)'):format(tostring(result), resName))
+--     lib.notify({ title = 'Test Notify', description = 'Result: ' .. tostring(result), type = 'inform' })
+-- end, false)
+
+-- NUI callback: phat sound notify (native GTA fallback khi HTML5 audio bi block)
+RegisterNUICallback('playNotifSound', function(data, cb)
+    cb({ ok = true })
+    -- Native GTA sound: dung PHONE notification sound
+    PlaySoundFrontend(-1, 'Text_Arrive_Tone', 'Phone_SoundSet_Default', true)
+end)
+
+-- Khi player click banner notification -> mo phone + auto navigate vao app
+RegisterNUICallback('notificationClicked', function(data, cb)
+    cb({ ok = true })
+    if not data or not data.appId then return end
+    -- Trigger mo phone (giong nhu su dung item)
+    TriggerEvent('derp-blackphone:client:useItem')
+    -- Sau khi phone mo, push vao app target
+    SetTimeout(600, function()
+        if isPhoneOpen then
+            SendNUIMessage({
+                action = 'openApp',
+                appId = data.appId,
+                onClick = data.onClick
+            })
+            -- Forward onClick payload vao app neu app dang chay
+            if data.onClick then
+                SendNUIMessage({
+                    action = 'pushToApp',
+                    appId = data.appId,
+                    payload = {
+                        action = 'notification:click',
+                        data = data.onClick
+                    }
+                })
+            end
+        end
+    end)
+end)

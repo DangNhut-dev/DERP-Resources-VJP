@@ -434,7 +434,12 @@ function Orders.FailOrder(orderId, reason)
     local src = _G.GetSourceByCitizenId and GetSourceByCitizenId(order.citizenid)
     if src then
         TriggerClientEvent('derp-weedshop:client:orderEnded', src, orderId)
-        TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = order.npc_id })
+        local npc = NPCs.GetById(order.npc_id)
+        TriggerClientEvent('derp-weedshop:client:newMessage', src, {
+            npcId = order.npc_id,
+            npcName = npc and npc.name or ('NPC #' .. order.npc_id),
+            body = template
+        })
     end
 
     -- Broadcast remove foreign order cho player khac

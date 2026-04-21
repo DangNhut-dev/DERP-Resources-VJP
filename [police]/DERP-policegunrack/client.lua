@@ -1,8 +1,3 @@
-local isPolice           = false
-local isInAllowedVehicle = false
-local radialActive       = false
-
-local RADIAL_ID      = 'gunrack_open'
 local vehicleHashSet = {}
 
 local function buildVehicleHashSet()
@@ -12,81 +7,19 @@ local function buildVehicleHashSet()
     end
 end
 
-buildVehicleHashSet() 
+buildVehicleHashSet()
 
-local function addRadialItem()
-    lib.addRadialItem({
-        id       = RADIAL_ID,
-        label    = 'Mở Giá Đựng Súng',
-        icon     = 'gun',
-        onSelect = function()
-            TriggerServerEvent('gunrack:server:open')
-        end,
-    })
+local function isInAllowedVehicle()
+    local vehicle = cache.vehicle
+    if not vehicle then return false end
+    return vehicleHashSet[GetEntityModel(vehicle)] == true
 end
 
-local function removeRadialItem()
-    lib.removeRadialItem(RADIAL_ID)
-end
-
-local function updateRadial()
-    local shouldShow = isPolice and isInAllowedVehicle
-    if shouldShow and not radialActive then
-        radialActive = true
-        addRadialItem()
-    elseif not shouldShow and radialActive then
-        radialActive = false
-        removeRadialItem()
+-- Event cho qbx_radialmenu jobItems.police gọi vào
+RegisterNetEvent('gunrack:client:openFromRadial', function()
+    if not isInAllowedVehicle() then
+        exports.qbx_core:Notify('Bạn không ở trong xe cảnh sát hợp lệ', 'error')
+        return
     end
-end
-
-local function checkJob(job)
-    isPolice = false
-    for i = 1, #Config.GunRack.AllowedJobs do
-        if Config.GunRack.AllowedJobs[i] == job.name then
-            isPolice = true
-            break
-        end
-    end
-end
-
-lib.onCache('vehicle', function(vehicle)
-    if vehicle then
-        isInAllowedVehicle = vehicleHashSet[GetEntityModel(vehicle)] == true
-    else
-        isInAllowedVehicle = false
-    end
-    updateRadial()
-end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    local PlayerData = exports.qbx_core:GetPlayerData()
-    if PlayerData and PlayerData.job then
-        checkJob(PlayerData.job)
-    end
-    updateRadial()
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
-    checkJob(job)
-    updateRadial()
-end)
-
-AddEventHandler('onResourceStop', function(resourceName)
-    if resourceName ~= GetCurrentResourceName() then return end
-    if radialActive then
-        removeRadialItem()
-    end
-end)
-
-CreateThread(function()
-    local PlayerData = exports.qbx_core:GetPlayerData()
-    if PlayerData and PlayerData.job then
-        checkJob(PlayerData.job)
-        local vehicle = cache.vehicle
-        if vehicle then
-            isInAllowedVehicle = vehicleHashSet[GetEntityModel(vehicle)] == true
-        end
-        updateRadial()
-    end
+    TriggerServerEvent('gunrack:server:open')
 end)

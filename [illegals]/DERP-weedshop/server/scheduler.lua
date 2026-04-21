@@ -36,7 +36,12 @@ local function ExpireTick()
                     })
                     local src = GetSourceByCitizenId(o.citizenid)
                     if src then
-                        TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = o.npc_id })
+                        local npc = NPCs.GetById(o.npc_id)
+                        TriggerClientEvent('derp-weedshop:client:newMessage', src, {
+                            npcId = o.npc_id,
+                            npcName = npc and npc.name or ('NPC #' .. o.npc_id),
+                            body = template
+                        })
                     end
                 end
             end
@@ -79,7 +84,13 @@ local function BuyerMatchTick()
                     if ok then
                         local src = GetSourceByCitizenId(listing.citizenid)
                         if src then
-                            TriggerClientEvent('derp-weedshop:client:newMessage', src, { npcId = npcId })
+                            local npc = NPCs.GetById(npcId)
+                            local lastMsg = Customers.GetLastNpcMessage(listing.citizenid, npcId)
+                            TriggerClientEvent('derp-weedshop:client:newMessage', src, {
+                                npcId = npcId,
+                                npcName = npc and npc.name or ('NPC #' .. npcId),
+                                body = lastMsg or 'Có tin nhắn mới'
+                            })
                         end
                     end
                 end

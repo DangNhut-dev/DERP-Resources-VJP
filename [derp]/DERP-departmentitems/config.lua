@@ -1116,19 +1116,56 @@ bcso = {
                 },
             },
             [1] = {
+                -- outfits = {
+                --     {
+                --         label = 'Đồng phục Solo Cadet',
+                --         items = {
+                --             {
+                --                 name   = 'aokhoac',
+                --                 male   = { drawable = 576, texture = 0 },
+                --                 female = { drawable = 623, texture = 0 },
+                --             },
+                --             {
+                --                 name   = 'aotrong',
+                --                 male   = { drawable = 227, texture = 0 },
+                --                 female = { drawable = 259, texture = 0 },
+                --             },
+                --             {
+                --                 name   = 'quan',
+                --                 male   = { drawable = 232, texture = 1 },
+                --                 female = { drawable = 230, texture = 1 },
+                --             },
+                --             {
+                --                 name   = 'giay',
+                --                 male   = { drawable = 54, texture = 0 },
+                --                 female = { drawable = 55, texture = 0 },
+                --             },
+                --             {
+                --                 name   = 'matna',
+                --                 male   = { drawable = 121, texture = 0 },
+                --                 female = { drawable = 121, texture = 0 },
+                --             },
+                --         },
+                --     },
+                -- },
                 outfits = {
                     {
-                        label = 'Đồng phục Solo Cadet',
+                        label = 'Đồng phục Solo Cadet (Tay dài)',
                         items = {
                             {
                                 name   = 'aokhoac',
-                                male   = { drawable = 576, texture = 0 },
-                                female = { drawable = 623, texture = 0 },
+                                male   = { drawable = 578, texture = 0 },
+                                female = { drawable = 625, texture = 0 },
                             },
                             {
                                 name   = 'aotrong',
                                 male   = { drawable = 227, texture = 0 },
                                 female = { drawable = 259, texture = 0 },
+                            },
+                            {
+                                name   = 'giap',
+                                male   = { drawable = 64, texture = 1 },
+                                female = { drawable = 63, texture = 1 },
                             },
                             {
                                 name   = 'quan',
@@ -1141,10 +1178,65 @@ bcso = {
                                 female = { drawable = 55, texture = 0 },
                             },
                             {
+                                name   = 'huyhieu',
+                                male  = { drawable = 212, texture = 0 },
+                                female = { drawable = 226, texture = 0 },
+                            },
+                            {
                                 name   = 'matna',
                                 male   = { drawable = 121, texture = 0 },
                                 female = { drawable = 121, texture = 0 },
                             },
+                            -- {
+                            --     name   = 'daychuyen',
+                            --     male   = { drawable = 193, texture = 0 },
+                            --     female = { drawable = 162, texture = 0 },
+                            -- },
+                        },
+                    },
+                    {
+                        label = 'Đồng phục Solo Cadet (Tay ngắn)',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 577, texture = 0 },
+                                female = { drawable = 624, texture = 0 },
+                            },
+                            {
+                                name   = 'aotrong',
+                                male   = { drawable = 227, texture = 0 },
+                                female = { drawable = 259, texture = 0 },
+                            },
+                            {
+                                name   = 'giap',
+                                male   = { drawable = 64, texture = 1 },
+                                female = { drawable = 63, texture = 1 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 232, texture = 1 },
+                                female = { drawable = 230, texture = 1 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 54, texture = 0 },
+                                female = { drawable = 55, texture = 0 },
+                            },
+                            {
+                                name   = 'huyhieu',
+                                male  = { drawable = 209, texture = 0 },
+                                female = { drawable = 228, texture = 0 },
+                            },
+                            {
+                                name   = 'matna',
+                                male   = { drawable = 121, texture = 0 },
+                                female = { drawable = 121, texture = 0 },
+                            },
+                            -- {
+                            --     name   = 'daychuyen',
+                            --     male   = { drawable = 193, texture = 0 },
+                            --     female = { drawable = 162, texture = 0 },
+                            -- },
                         },
                     },
                 },

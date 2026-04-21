@@ -208,6 +208,24 @@
                 if (iframe && iframe.contentWindow) {
                     iframe.contentWindow.postMessage(data.payload || {}, '*');
                 }
+            } else if (data.action === 'openApp') {
+                // Goi tu Lua khi click notification - mo app theo appId
+                const app = (state.apps || []).find(function (a) { return a.id === data.appId; });
+                if (app) {
+                    openAppView(app);
+                    // Forward onClick payload vao app sau khi iframe load
+                    if (data.onClick) {
+                        setTimeout(function () {
+                            const iframe = document.querySelector('iframe.app-iframe[data-app-id="' + data.appId + '"]');
+                            if (iframe && iframe.contentWindow) {
+                                iframe.contentWindow.postMessage({
+                                    action: 'notification:click',
+                                    data: data.onClick
+                                }, '*');
+                            }
+                        }, 400);
+                    }
+                }
             }
         } catch (err) {
             console.error('[BlackPhone] handleMessage error:', err);

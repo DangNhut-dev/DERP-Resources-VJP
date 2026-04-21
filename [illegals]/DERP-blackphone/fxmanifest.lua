@@ -29,9 +29,8 @@ files {
     'html/index.html',
     'html/css/*.css',
     'html/js/*.js',
-    'html/img/*.png',
-    'html/img/*.jpg',
-    'html/img/*.svg'
+    'html/sounds/*.ogg',
+    'html/sounds/*.mp3'
 }
 
 dependencies {

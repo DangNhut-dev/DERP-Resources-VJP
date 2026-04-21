@@ -30,8 +30,8 @@ Config.SeedTypes = {
         -- Sản phẩm thu hoạch
         harvestItem = 'indica_bud',
         harvestAmount = {
-            base = 1, -- Số lượng cơ bản
-            withUVLight = 2, -- Số lượng khi có đèn UV
+            base = 5, -- Số lượng cơ bản
+            withUVLight = 10, -- Số lượng khi có đèn UV
         },
         
         -- Yêu cầu nước
@@ -58,12 +58,12 @@ Config.SeedTypes = {
         },
         harvestItem = 'sativa_bud',
         harvestAmount = {
-            base = 1,
-            withUVLight = 2,
+            base = 5,
+            withUVLight = 10,
         },
         waterRequirement = {
             enabled = true,
-            maxWater = 3600,
+            maxWater = 100,
             drainRate = 0.02, 
         },
         fertilizerBonus = 0.2,
@@ -82,12 +82,12 @@ Config.SeedTypes = {
         },
         harvestItem = 'hybrid_bud',
         harvestAmount = {
-            base = 1,
-            withUVLight = 2,
+            base = 5,
+            withUVLight = 10,
         },
         waterRequirement = {
             enabled = true,
-            maxWater = 3600,
+            maxWater = 100,
             drainRate = 0.02, 
         },
         fertilizerBonus = 0.2,

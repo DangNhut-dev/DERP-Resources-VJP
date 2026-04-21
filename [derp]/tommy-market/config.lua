@@ -741,7 +741,7 @@ Config.MarketNPCs = {
         blackmarket = true,
         type = "buy",
         items = {
-            {name = "ammo-9", label = "9mm", buyPrice = 6, sellMin = nil, sellMax = nil},
+            {name = "ammo-9", label = "9mm", buyPrice = 2, sellMin = nil, sellMax = nil},
         }
     },
     {

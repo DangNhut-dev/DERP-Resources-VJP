@@ -24,6 +24,9 @@ local blip2 = nil
 local pendingSpawnCoords = nil
 local pendingSpawnTriggered = false
 
+local scannerActive = false
+local minigameActive = false
+
 local function dbg(msg, ...)
     print(('[chopshop-debug] ' .. msg):format(...))
 end
@@ -44,10 +47,11 @@ CreateThread(function()
     end
 end)
 
+-- Dropoff prompt - chỉ hiển thị sau khi đã có chìa khóa (scrapblip == false nghĩa là đã pass minigame)
 CreateThread(function()
     while true do
         Wait(200)
-        while dropoffx and dropoffy and dropoffz do
+        while dropoffx and dropoffy and dropoffz and not scrapblip do
             local ped = PlayerPedId()
             local pos = GetEntityCoords(ped)
             local dis = #(pos - vector3(dropoffx, dropoffy, dropoffz))
@@ -66,43 +70,36 @@ CreateThread(function()
     end
 end)
 
-local mert = false
-
+-- Setup scanner khi đến gần xe VÀ player đã cầm weapon_digiscanner
 CreateThread(function()
+    local digiHash = joaat('weapon_digiscanner')
+    local lastDebug = 0
     while true do
-        Wait(200)
-        if scrapblip then
-            Wait(1000)
-            local ped = PlayerPedId()
-            local pos = GetEntityCoords(ped)
-            local dist = #(pos - vector3(Config.VehicleCoords[randomCoords]['coords'].x, Config.VehicleCoords[randomCoords]['coords'].y, Config.VehicleCoords[randomCoords]['coords'].z))
-            local scanner = vector3(Config.VehicleCoords[randomCoords]['radarCoords'].x, Config.VehicleCoords[randomCoords]['radarCoords'].y, Config.VehicleCoords[randomCoords]['radarCoords'].z)
+        Wait(500)
+        if scrapblip and not scannerActive and not inScaleform then
+            local playerPed = PlayerPedId()
+            local currentWeapon = GetSelectedPedWeapon(playerPed)
 
-            Wait(1)
-
-            if not mert then
-                exports['orbit-chopshop']:SetupDigiScanner(scanner, {})
-                mert = true
+            -- Debug mỗi 3s khi scrapblip active
+            if GetGameTimer() - lastDebug > 3000 then
+                dbg('Scanner check: scrapblip=%s scannerActive=%s weapon=%s expected=%s match=%s',
+                    tostring(scrapblip), tostring(scannerActive),
+                    tostring(currentWeapon), tostring(digiHash),
+                    tostring(currentWeapon == digiHash))
+                lastDebug = GetGameTimer()
             end
 
-            if dist <= 3 then
-                if not copsCalled then
-                    local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
-                    local street1 = GetStreetNameFromHashKey(s1)
-                    local street2 = GetStreetNameFromHashKey(s2)
-                    local streetLabel = street1
-                    if street2 then streetLabel = streetLabel .. " " .. street2 end
-                    TriggerServerEvent('orbit-chopshop:server:callCops', "Chopshop", 0, streetLabel, pos, targetVehicleModel, targetVehiclePlate)
-                    copsCalled = true
-                end
-                Wait(5000)
-                QBX:Notify(Config.Locale["FoundVeh"], 'success')
-                exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop3"])
-                Wait(10000)
-                QBX:Notify(Config.Locale["ScrapBlip"], 'inform')
-                CreateBlip2()
-                SetNewWaypoint(dropoffx, dropoffy)
-                scrapblip = false
+            if currentWeapon == digiHash then
+                local scanner = vector3(
+                    Config.VehicleCoords[randomCoords]['radarCoords'].x,
+                    Config.VehicleCoords[randomCoords]['radarCoords'].y,
+                    Config.VehicleCoords[randomCoords]['radarCoords'].z
+                )
+                dbg('Trigger SetupDigiScanner at %.2f,%.2f,%.2f', scanner.x, scanner.y, scanner.z)
+                scannerActive = true
+                exports['orbit-chopshop']:SetupDigiScanner(scanner, {})
+                scannerActive = false
+                dbg('SetupDigiScanner returned, scannerActive reset')
             end
         end
     end
@@ -181,8 +178,7 @@ function SpawnVehicle(model, x, y, z, w)
 
     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop1"])
 
-    -- Wait(math.random(600000, 1200000))
-    Wait(math.random(600, 1200))
+    Wait(math.random(600000, 1200000))
 
     if Config.Email then
         TriggerServerEvent('qb-phone:server:sendNewMail', {
@@ -204,39 +200,32 @@ function SpawnVehicle(model, x, y, z, w)
     scrapblip = true
 end
 
+-- Chỉ cho phép rã khi plate khớp - KHÔNG tự set plate xe khác
 function ScrapVehicle()
     local ped = PlayerPedId()
     vehicle = GetVehiclePedIsIn(ped, false)
+
+    if not vehicle or vehicle == 0 or not DoesEntityExist(vehicle) then
+        QBX:Notify(Config.Locale["WrongVeh"], 'error')
+        return
+    end
 
     local currentPlate = GetVehicleNumberPlateText(vehicle)
     if currentPlate then currentPlate = currentPlate:gsub("%s+", "") end
     local jobPlate = LicensePlate and LicensePlate:gsub("%s+", "") or ""
 
-    dbg('ScrapVehicle check: current=%s job=%s', currentPlate, jobPlate)
+    dbg('ScrapVehicle check: current=%s job=%s', tostring(currentPlate), tostring(jobPlate))
 
-    if currentPlate ~= jobPlate then
-        local retry = 0
-        while not NetworkHasControlOfEntity(vehicle) and retry < 10 do
-            NetworkRequestControlOfEntity(vehicle)
-            Wait(50)
-            retry = retry + 1
-        end
-        SetVehicleNumberPlateText(vehicle, LicensePlate)
-        Wait(200)
-        currentPlate = GetVehicleNumberPlateText(vehicle)
-        if currentPlate then currentPlate = currentPlate:gsub("%s+", "") end
-        dbg('ScrapVehicle retry: current=%s job=%s', currentPlate, jobPlate)
-    end
-
-    if currentPlate ~= jobPlate then
-        dbg('Plate MISMATCH after retry - reject scrap')
+    if currentPlate ~= jobPlate or jobPlate == '' then
+        dbg('Plate MISMATCH - reject scrap')
         QBX:Notify(Config.Locale["WrongVeh"], 'error')
-    else
-        QBX:Notify(Config.Locale["Reminder"], 'inform', 8000)
-        exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop4"])
-        StartChopping()
-        DeleteBlip()
+        return
     end
+
+    QBX:Notify(Config.Locale["Reminder"], 'inform', 8000)
+    exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop4"])
+    StartChopping()
+    DeleteBlip()
 end
 
 CreateThread(function()
@@ -422,14 +411,14 @@ function Reset()
     start = false
     removedpart = false
     copsCalled = false
-    mert = false
+    scannerActive = false
+    minigameActive = false
     pendingSpawnCoords = nil
     pendingSpawnTriggered = false
 end
 
 -- ==================== SCANNER ====================
 
--- FIX: Không gọi RequestScaleformMovie ở top-level khi resource load
 local scaleform = nil
 local inScaleform = false
 local ped = PlayerPedId()
@@ -451,6 +440,7 @@ CreateThread(function()
 end)
 
 local function ScaleformMethod(sf, name, data)
+    if not sf or sf == 0 then return end
     BeginScaleformMovieMethod(sf, name)
     for _, v in ipairs(data or {}) do
         if name == "SET_DISTANCE" then
@@ -486,12 +476,20 @@ local function Flashing(dat)
     end
 end
 
-local function TriggerEvents()
+-- Cleanup render target khi thoát scanner - fix bug đen màn hình
+local function CleanupScanner()
     inScaleform = false
+    if IsNamedRendertargetRegistered('digiscanner') then
+        ReleaseNamedRendertarget('digiscanner')
+    end
     if scannerBlip then
         RemoveBlip(scannerBlip)
         scannerBlip = nil
     end
+end
+
+local function TriggerEvents()
+    CleanupScanner()
     if params.event then
         if params.isServer then
             TriggerServerEvent(params.event, params.args)
@@ -533,7 +531,6 @@ function SetupScaleform(sfName, Buttons)
 end
 
 function UpdateBars(dist)
-    -- FIX: Guard scaleform chưa load
     if not scaleform or scaleform == 0 then return end
 
     for i = 1, #sfbars do
@@ -548,8 +545,8 @@ function UpdateBars(dist)
         wait_time = 250
         SetScaleformColor(sfcolors.green, sfcolors.green)
         Flashing(true)
-        if not mert then
-            mert = true
+        if not minigameActive then
+            minigameActive = true
             exports['boii_minigames']:chip_hack({
                 style = 'default',
                 loading_time = 5000,
@@ -560,14 +557,15 @@ function UpdateBars(dist)
                     TriggerEvents()
                     TriggerEvent("vehiclekeys:client:SetOwner", LicensePlate)
                     QBX:Notify(Config.Locale["RadarSuccess"], 'success')
-                    Wait(5000)
+                    Wait(2000)
                     QBX:Notify(Config.Locale["FoundVeh"], 'success')
                     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop3"])
-                    Wait(10000)
+                    Wait(3000)
                     QBX:Notify(Config.Locale["ScrapBlip"], 'inform')
                     CreateBlip2()
                     SetNewWaypoint(dropoffx, dropoffy)
                     scrapblip = false
+                    scannerActive = false
                     if not copsCalled then
                         local pos = GetEntityCoords(PlayerPedId())
                         local s1, s2 = GetStreetNameAtCoord(pos.x, pos.y, pos.z, Citizen.PointerValueInt(), Citizen.PointerValueInt())
@@ -591,7 +589,7 @@ function UpdateBars(dist)
                     end
                     QBX:Notify(Config.Locale["RadarError"], 'error')
                     Wait(2000)
-                    mert = false
+                    minigameActive = false
                 end
             end)
         end
@@ -608,12 +606,14 @@ end
 
 local function InitiateDigiScanner()
     ped = PlayerPedId()
+    dbg('InitiateDigiScanner called: inScaleform=%s', tostring(inScaleform))
     if not inScaleform then
         inScaleform = true
         local data = 0
         local playerCoords = GetEntityCoords(ped)
         local playerHeading = GetEntityHeading(ped)
         local dist = #(playerCoords - targetCoords)
+        dbg('Scanner init: target=%s dist=%.2f', tostring(targetCoords), dist)
 
         if HeadingCheck(playerCoords, playerHeading, targetCoords) then
             SetScaleformColor(sfcolors.lightblue, sfcolors.yellow)
@@ -622,7 +622,12 @@ local function InitiateDigiScanner()
         end
 
         UpdateBars(dist)
-        inScaleform = true
+
+        -- Release nếu đã register trước đó - tránh link nhiều lần gây đen màn hình
+        if IsNamedRendertargetRegistered('digiscanner') then
+            ReleaseNamedRendertarget('digiscanner')
+            Wait(50)
+        end
 
         if not IsNamedRendertargetRegistered('digiscanner') then
             RegisterNamedRendertarget('digiscanner', 0)
@@ -632,17 +637,20 @@ local function InitiateDigiScanner()
         if IsNamedRendertargetRegistered('digiscanner') then
             data = GetNamedRendertargetRenderId('digiscanner')
         end
+        dbg('Scanner render setup: data=%s registered=%s', tostring(data), tostring(IsNamedRendertargetRegistered('digiscanner')))
 
         while inScaleform do
-            -- FIX: Thoát loop khi player cất súng
             if GetSelectedPedWeapon(ped) ~= joaat('weapon_digiscanner') then
-                inScaleform = false
+                dbg('Scanner loop: weapon changed, exit')
+                CleanupScanner()
                 break
             end
 
-            SetTextRenderId(data)
-            DrawScaleformMovie(scaleform, sfpos.x, sfpos.y, sfpos.width, sfpos.height, 100, 100, 100, 255, 0)
-            SetTextRenderId(1)
+            if data and data ~= 0 then
+                SetTextRenderId(data)
+                DrawScaleformMovie(scaleform, sfpos.x, sfpos.y, sfpos.width, sfpos.height, 100, 100, 100, 255, 0)
+                SetTextRenderId(1)
+            end
 
             if IsPlayerFreeAiming(PlayerId()) then
                 playerCoords = GetEntityCoords(ped)
@@ -661,6 +669,8 @@ local function InitiateDigiScanner()
             if not inScaleform then break end
             Wait(1)
         end
+
+        CleanupScanner()
     else
         inScaleform = false
         EndScaleformMovieMethodReturn()
@@ -687,8 +697,17 @@ CreateThread(function()
 end)
 
 function SetupDigiScanner(vector3Pos, parameters)
+    dbg('SetupDigiScanner called: pos=%s params=%s', tostring(vector3Pos), tostring(parameters))
     params = {}
     if vector3Pos and parameters then
+        -- Wait cho scaleform main load xong nếu chưa ready
+        local waitScaleform = 0
+        while (not scaleform or scaleform == 0 or not HasScaleformMovieLoaded(scaleform)) and waitScaleform < 50 do
+            Wait(100)
+            waitScaleform = waitScaleform + 1
+        end
+        dbg('Scaleform ready after %d waits: scaleform=%s loaded=%s', waitScaleform, tostring(scaleform), tostring(scaleform and HasScaleformMovieLoaded(scaleform)))
+
         form = SetupScaleform("instructional_buttons", {
             { type = "CLEAR_ALL" },
             { type = "SET_CLEAR_SPACE", int = 200 },
@@ -715,15 +734,16 @@ function SetupDigiScanner(vector3Pos, parameters)
     end
 end
 
+-- Player vào zone quanh pendingSpawnCoords -> request server spawn xe
 CreateThread(function()
     while true do
         Wait(2000)
         if pendingSpawnCoords and not pendingSpawnTriggered then
             local pos = GetEntityCoords(PlayerPedId())
             local dist = #(pos - pendingSpawnCoords)
-            if dist <= 100.0 then
+            if dist <= 150.0 then
                 pendingSpawnTriggered = true
-                dbg('Player vào range 100m, request spawn xe')
+                dbg('Player vào range, request spawn xe')
                 local result = lib.callback.await('orbit-chopshop:server:spawnReservedVehicle', false)
                 dbg('Spawn result: netId=%s plate=%s', tostring(result and result.netId), tostring(result and result.plate))
 
@@ -738,14 +758,15 @@ CreateThread(function()
                     targetVehiclePlate = nil
                     targetVehicleModel = nil
                 else
+                    -- Wait entity stream về client
                     local entityCheck = 0
                     local entity = NetworkGetEntityFromNetworkId(result.netId)
-                    while (not entity or entity == 0 or not DoesEntityExist(entity)) and entityCheck < 30 do
+                    while (not entity or entity == 0 or not DoesEntityExist(entity)) and entityCheck < 50 do
                         Wait(100)
                         entity = NetworkGetEntityFromNetworkId(result.netId)
                         entityCheck = entityCheck + 1
                     end
-                    dbg('Entity visible: %s', tostring(entity and DoesEntityExist(entity)))
+                    dbg('Entity visible after %d checks: %s', entityCheck, tostring(entity and DoesEntityExist(entity)))
                     pendingSpawnCoords = nil
                 end
             end
@@ -755,6 +776,7 @@ end)
 
 RegisterNetEvent('orbit-chopshop:client:forceCancel', function()
     DeleteBlip()
+    CleanupScanner()
     Reset()
     exports["orbit-ui"]:Close()
     pendingSpawnCoords = nil
@@ -778,6 +800,7 @@ RegisterNetEvent('orbit-chopshop:client:cancelJob', function()
     end
 
     DeleteBlip()
+    CleanupScanner()
     exports["orbit-ui"]:Close()
     Reset()
 
@@ -794,30 +817,41 @@ RegisterNetEvent('orbit-chopshop:client:cancelJob', function()
     QBX:Notify('Đã hủy chuyến', 'inform')
 end)
 
+-- Repair xe sau khi spawn - đảm bảo full HP 100%
 RegisterNetEvent('orbit-chopshop:client:repairSpawnedVehicle', function(netId, plate)
     CreateThread(function()
         local attempts = 0
         local entity = NetworkGetEntityFromNetworkId(netId)
 
-        while (not entity or entity == 0 or not DoesEntityExist(entity)) and attempts < 30 do
+        while (not entity or entity == 0 or not DoesEntityExist(entity)) and attempts < 50 do
             Wait(100)
             entity = NetworkGetEntityFromNetworkId(netId)
             attempts = attempts + 1
         end
 
-        if not entity or entity == 0 or not DoesEntityExist(entity) then return end
+        if not entity or entity == 0 or not DoesEntityExist(entity) then
+            dbg('Repair FAIL: entity not exist after %d attempts', attempts)
+            return
+        end
 
+        -- Đợi network owner ổn định
         local netOwnerTimeout = 0
-        while not NetworkHasControlOfEntity(entity) and netOwnerTimeout < 30 do
+        while not NetworkHasControlOfEntity(entity) and netOwnerTimeout < 50 do
             NetworkRequestControlOfEntity(entity)
             Wait(100)
             netOwnerTimeout = netOwnerTimeout + 1
         end
 
+        if not NetworkHasControlOfEntity(entity) then
+            dbg('Repair: no control, force continue')
+        end
+
+        -- Set plate
         if plate and plate ~= '' then
             SetVehicleNumberPlateText(entity, plate)
         end
 
+        -- Full repair
         SetVehicleFixed(entity)
         SetVehicleDeformationFixed(entity)
         SetVehicleUndriveable(entity, false)
@@ -826,22 +860,35 @@ RegisterNetEvent('orbit-chopshop:client:repairSpawnedVehicle', function(netId, p
         SetVehiclePetrolTankHealth(entity, 1000.0)
         SetVehicleDirtLevel(entity, 0.0)
 
+        -- Đóng tất cả cửa, không hư hại
         for i = 0, 5 do
             SetVehicleDoorShut(entity, i, false)
         end
 
+        -- Fix toàn bộ lốp
         for i = 0, 7 do
             SetVehicleTyreFixed(entity, i)
+            SetVehicleTyreBurst(entity, i, false, 0.0)
         end
 
+        -- Fix toàn bộ kính
         for i = 0, 7 do
             FixVehicleWindow(entity, i)
+            RollUpWindow(entity, i)
         end
 
         SetVehicleEngineOn(entity, false, true, false)
         SetVehicleOnGroundProperly(entity)
 
         Wait(500)
+
+        -- Apply lần 2 cho chắc sau khi entity đã stable
+        SetVehicleFixed(entity)
+        SetVehicleEngineHealth(entity, 1000.0)
+        SetVehicleBodyHealth(entity, 1000.0)
+        for i = 0, 7 do
+            SetVehicleTyreFixed(entity, i)
+        end
 
         local actualPlate = GetVehicleNumberPlateText(entity)
         dbg('After repair - plate set=%s actualPlate=%s', tostring(plate), tostring(actualPlate))

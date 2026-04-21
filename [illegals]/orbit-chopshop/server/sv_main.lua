@@ -20,6 +20,7 @@ AddEventHandler("fg:ExportsLoaded", function(fiveguard_res, res)
         end
     end
 end)
+
 local Cooldowns = {}
 local ActiveJobs = {}
 
@@ -70,9 +71,9 @@ lib.callback.register('orbit-chopshop:server:reserveJobVehicle', function(source
         reservedAt = os.time(),
     }
 
-    SetTimeout(30 * 60 * 1000, function()
+    SetTimeout(60 * 60 * 1000, function()
         local pending = PendingJobVehicles[citizenid]
-        if pending and pending.reservedAt and (os.time() - pending.reservedAt) >= (30 * 60) then
+        if pending and pending.reservedAt and (os.time() - pending.reservedAt) >= (60 * 60) then
             PendingJobVehicles[citizenid] = nil
             ActiveJobs[citizenid] = nil
             local target = QBX:GetPlayer(source)
@@ -108,13 +109,17 @@ lib.callback.register('orbit-chopshop:server:spawnReservedVehicle', function(sou
         return nil
     end
 
+    -- Đợi entity stream ổn định
     local timeout = 0
-    while not DoesEntityExist(veh) and timeout < 50 do
+    while not DoesEntityExist(veh) and timeout < 100 do
         Wait(20)
         timeout = timeout + 1
     end
 
     if not DoesEntityExist(veh) then return nil end
+
+    -- Tăng culling radius để entity không bị despawn khi player đi xa tạm thời
+    SetEntityDistanceCullingRadius(veh, 500.0)
 
     local netId = NetworkGetNetworkIdFromEntity(veh)
 
@@ -132,6 +137,26 @@ lib.callback.register('orbit-chopshop:server:spawnReservedVehicle', function(sou
         netId = netId,
         plate = pending.plate,
     }
+end)
+
+-- Verify plate sau khi client repair - nếu sai thì force set lại
+RegisterNetEvent('orbit-chopshop:server:confirmPlate', function(netId, actualPlate)
+    local src = source
+    local player = QBX:GetPlayer(src)
+    if not player then return end
+
+    local citizenid = player.PlayerData.citizenid
+    local spawned = SpawnedJobVehicles[citizenid]
+    if not spawned then return end
+
+    if spawned.netId ~= netId then return end
+
+    local cleanActual = actualPlate and actualPlate:gsub('%s+', '') or ''
+    local cleanExpect = spawned.plate and spawned.plate:gsub('%s+', '') or ''
+
+    if cleanActual ~= cleanExpect then
+        TriggerClientEvent('orbit-chopshop:client:forceSetPlate', src, netId, spawned.plate)
+    end
 end)
 
 local function isResourceStarted(resourceName)
@@ -259,7 +284,6 @@ local function getRewardActionTitle(data)
     return 'Tháo Bộ Phận Xe'
 end
 
--- Kiểm tra cooldown theo citizenid
 local function IsOnCooldown(citizenid)
     if not Cooldowns[citizenid] then return false end
     return (os.time() - Cooldowns[citizenid]) < (Config.CoolDown * 60)
@@ -289,8 +313,7 @@ lib.callback.register('orbit-chopshop:server:requestJob', function(source)
     local player = QBX:GetPlayer(source)
     if not player then return { allowed = false } end
 
-    if getOnDutyPoliceCount() < 0 then
-        -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
+    if getOnDutyPoliceCount() < 1 then
         return { allowed = false, reason = 'no_police' }
     end
 
@@ -308,7 +331,6 @@ lib.callback.register('orbit-chopshop:server:requestJob', function(source)
     return { allowed = true }
 end)
 
--- Client báo hoàn thành job → set cooldown
 RegisterNetEvent('orbit-chopshop:server:jobComplete', function()
     local src = source
     local player = QBX:GetPlayer(src)
@@ -320,7 +342,6 @@ RegisterNetEvent('orbit-chopshop:server:jobComplete', function()
     cleanupJobVehicle(citizenid)
 end)
 
--- Client báo hủy job (xe bị xa, v.v.)
 RegisterNetEvent('orbit-chopshop:server:jobCancel', function()
     local src = source
     local player = QBX:GetPlayer(src)
@@ -331,7 +352,6 @@ RegisterNetEvent('orbit-chopshop:server:jobCancel', function()
     cleanupJobVehicle(citizenid)
 end)
 
--- Cleanup khi player disconnect
 AddEventHandler('playerDropped', function()
     local src = source
     local player = QBX:GetPlayer(src)
@@ -341,7 +361,6 @@ AddEventHandler('playerDropped', function()
     cleanupJobVehicle(citizenid)
 end)
 
--- Check xem player có thể nhận item không
 local function CanCarryItem(src, item, amount)
     local canCarry = exports.ox_inventory:CanCarryItem(src, item, amount)
     return canCarry
@@ -580,62 +599,6 @@ RegisterNetEvent("orbit-chopshop:server:choptrunk", function()
         })
     end
 end)
-
-local function generatePlate()
-    local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    local plate = ""
-    for _ = 1, 3 do
-        plate = plate .. string.char(math.random(65, 90))
-    end
-    plate = plate .. tostring(math.random(100, 999))
-    return plate
-end
-
--- lib.callback.register('orbit-chopshop:server:spawnJobVehicle', function(source, model, coords)
---     local player = QBX:GetPlayer(source)
---     if not player then return nil end
-
---     local citizenid = player.PlayerData.citizenid
---     if not ActiveJobs[citizenid] then return nil end
-
---     if type(model) ~= 'string' or model == '' then return nil end
---     if type(coords) ~= 'table' or not coords.x or not coords.y or not coords.z or not coords.w then return nil end
-
---     cleanupJobVehicle(citizenid)
-
---     local hash = joaat(model)
---     local veh = CreateVehicleServerSetter(hash, 'automobile', coords.x, coords.y, coords.z, coords.w)
-
---     if not veh or veh == 0 or not DoesEntityExist(veh) then
---         return nil
---     end
-
---     local timeout = 0
---     while not DoesEntityExist(veh) and timeout < 50 do
---         Wait(20)
---         timeout = timeout + 1
---     end
-
---     if not DoesEntityExist(veh) then
---         return nil
---     end
-
---     local plate = generatePlate()
---     SetVehicleNumberPlateText(veh, plate)
-
---     local netId = NetworkGetNetworkIdFromEntity(veh)
-
---     SpawnedJobVehicles[citizenid] = {
---         entity = veh,
---         netId = netId,
---         plate = plate,
---     }
-
---     return {
---         netId = netId,
---         plate = plate,
---     }
--- end)
 
 RegisterNetEvent('orbit-chopshop:server:cleanupJobVehicle', function()
     local src = source

@@ -224,6 +224,12 @@ return {
     jobItems = {
         police = {
             {
+                id    = 'gunrack',
+                icon  = 'gun',
+                label = 'Mở Giá Đựng Súng',
+                event = 'gunrack:client:openFromRadial',
+            },
+            {
                 id    = 'emergencyButton',
                 icon  = 'bell',
                 label = 'Yêu Cầu Hỗ Trợ',
@@ -334,13 +340,13 @@ return {
                         event = 'police:client:spawnPObj',
                         args = 'barrier',
                     },
-                    {
-                        id = 'speedSign',
-                        icon = 'sign-hanging',
-                        label = 'Giới Hạn Tốc Độ',
-                        event = 'police:client:spawnPObj',
-                        args = 'roadsign',
-                    },
+                    -- {
+                    --     id = 'speedSign',
+                    --     icon = 'sign-hanging',
+                    --     label = 'Giới Hạn Tốc Độ',
+                    --     event = 'police:client:spawnPObj',
+                    --     args = 'roadsign',
+                    -- },
                     {
                         id = 'tent',
                         icon = 'campground',

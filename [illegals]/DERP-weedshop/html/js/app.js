@@ -1022,6 +1022,21 @@
         if (data.action === 'weedshop:refresh') {
             refreshAll();
             if (state.currentChat) reopenCurrentChat();
+        } else if (data.action === 'notification:click') {
+            // User click banner notification -> navigate
+            const payload = data.data || {};
+            // Reset notice flag de toast lai neu can
+            state.pendingDealNoticeShown = true;
+            // Refresh roi navigate
+            refreshAll();
+            setTimeout(function () {
+                if (payload.tab) {
+                    switchTab(payload.tab);
+                }
+                if (payload.npcId) {
+                    setTimeout(function () { openChat(payload.npcId); }, 200);
+                }
+            }, 300);
         }
     });
 

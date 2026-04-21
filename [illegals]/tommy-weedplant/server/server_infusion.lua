@@ -91,7 +91,7 @@ local function LoadInfusionTablesFromDatabase()
         local coords = json.decode(row.coords)
         infusionTables[row.table_id] = {
             id = row.table_id, coords = vector3(coords.x, coords.y, coords.z),
-            owner = row.citizenid, inUse = false,
+            owner = row.citizenid,
             heading = row.heading or 0.0,
         }
     end
@@ -138,7 +138,7 @@ RegisterNetEvent('tommy-weedplant:server:placeInfusionTable', function(coords, h
     local tableId = GenerateTableId()
     infusionTables[tableId] = {
         id = tableId, coords = coords, owner = citizenid,
-        inUse = false, heading = heading or 0.0,
+        heading = heading or 0.0,
     }
     SaveTableToDatabase(infusionTables[tableId])
 
@@ -162,9 +162,13 @@ RegisterNetEvent('tommy-weedplant:server:pickupInfusionTable', function(tableId)
         TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['too_far_from_table'], type = 'error' })
         return
     end
-    if tbl.inUse then
-        TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['table_in_use'], type = 'error' })
-        return
+
+    -- Block pickup nếu đang có ai đó tẩm trên bàn này
+    for _, session in pairs(activeInfusions) do
+        if session.tableId == tableId then
+            TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['table_in_use'], type = 'error' })
+            return
+        end
     end
 
     exports.ox_inventory:AddItem(src, Config.InfusionTableItem, 1)
@@ -220,50 +224,86 @@ lib.callback.register('tommy-weedplant:server:getInfusionInventory', function(so
     return { buds = buds, ingredients = ingredients }
 end)
 
+-- Bud amount HARDCODE = 1 phía server, không trust client
 RegisterNetEvent('tommy-weedplant:server:startInfusion', function(tableId, budType, budAmount, ingredients)
     local src = source
     local player = exports.qbx_core:GetPlayer(src)
     if not player or not infusionTables[tableId] then return end
+
+    -- Reject nếu player này đã tẩm 1 bàn khác
+    if activeInfusions[src] then
+        TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['table_in_use'], type = 'error' })
+        return
+    end
 
     local tbl = infusionTables[tableId]
     if not ValidateDistance(src, tbl.coords, Config.InfusionAntiExploit.MaxDistanceFromTable) then
         TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['too_far_from_table'], type = 'error' })
         return
     end
-    if tbl.inUse then
-        TriggerClientEvent('ox_lib:notify', src, { description = Config.InfusionNotifications['table_in_use'], type = 'error' })
-        return
+
+    if type(budType) ~= 'string' or budType == '' then return end
+    if type(ingredients) ~= 'table' then return end
+
+    -- Validate budType phải thuộc recipe hợp lệ
+    local validBud = false
+    for _, recipe in pairs(Config.InfusionRecipes) do
+        if recipe.bud_type == budType then
+            validBud = true
+            break
+        end
     end
-    if exports.ox_inventory:Search(src, 'count', budType) < budAmount then
+    if not validBud then return end
+
+    -- Force = 1 bud mỗi lần
+    local fixedBudAmount = 1
+
+    -- Sanitize ingredients
+    local sanitized = {}
+    local validIngredientSet = {}
+    for _, recipe in pairs(Config.InfusionRecipes) do
+        for ing, _ in pairs(recipe.ingredients) do
+            validIngredientSet[ing] = true
+        end
+    end
+
+    for ingredient, amount in pairs(ingredients) do
+        if type(ingredient) == 'string' and type(amount) == 'number' and amount > 0 and amount < 1000 and validIngredientSet[ingredient] then
+            sanitized[ingredient] = math.floor(amount)
+        end
+    end
+
+    if exports.ox_inventory:Search(src, 'count', budType) < fixedBudAmount then
         TriggerClientEvent('ox_lib:notify', src, { description = string.format(Config.InfusionNotifications['missing_bud'], budType), type = 'error' })
         return
     end
-    for ingredient, amount in pairs(ingredients) do
+    for ingredient, amount in pairs(sanitized) do
         if exports.ox_inventory:Search(src, 'count', ingredient) < amount then
             TriggerClientEvent('ox_lib:notify', src, { description = string.format(Config.InfusionNotifications['missing_ingredient'], ingredient), type = 'error' })
             return
         end
     end
 
-    exports.ox_inventory:RemoveItem(src, budType, budAmount)
-    for ingredient, amount in pairs(ingredients) do
+    local removedBud = exports.ox_inventory:RemoveItem(src, budType, fixedBudAmount)
+    if removedBud == false then return end
+
+    for ingredient, amount in pairs(sanitized) do
         exports.ox_inventory:RemoveItem(src, ingredient, amount)
     end
 
     local infusionLogItems = {
-        { name = budType, amount = budAmount, sign = '-' }
+        { name = budType, amount = fixedBudAmount, sign = '-' }
     }
 
-    for ingredient, amount in pairs(ingredients) do
+    for ingredient, amount in pairs(sanitized) do
         infusionLogItems[#infusionLogItems + 1] = { name = ingredient, amount = amount, sign = '-' }
     end
 
     WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Bắt Đầu Infusion | bàn: %s'):format(tableId), infusionLogItems, src))
 
-    tbl.inUse = true
     activeInfusions[src] = {
         tableId = tableId, budType = budType,
-        ingredients = ingredients, startTime = os.time() * 1000,
+        ingredients = sanitized, startTime = os.time() * 1000,
     }
 end)
 
@@ -281,7 +321,6 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
 
     if infusionTime < Config.InfusionAntiExploit.MinInfusionTime then
         activeInfusions[src] = nil
-        tbl.inUse = false
         return
     end
 
@@ -293,10 +332,6 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
         WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Hoàn Thành Infusion | bàn: %s'):format(session.tableId), {
             { name = Config.InfusionRuinedItem, amount = 1, sign = '+' }
         }, src))
-        -- TriggerClientEvent('ox_lib:notify', src, {
-        --     description = string.format(Config.InfusionNotifications['infusion_ruined'], Config.InfusionRuinedItem),
-        --     type = 'error'
-        -- })
     else
         local quality = DetermineQuality(bestMatch.recipe, bestMatch.comparison, infusionTime)
         local outputItem, notifType
@@ -320,22 +355,14 @@ RegisterNetEvent('tommy-weedplant:server:finishInfusion', function(infusionTime)
         WeedLogger.AddActionLog(src, WeedLogger.AppendItems(('[weedplant] | Hoàn Thành Infusion | bàn: %s'):format(session.tableId), {
             { name = outputItem, amount = 1, sign = '+' }
         }, src))
-        -- local notifKey = 'infusion_' .. quality
-        -- TriggerClientEvent('ox_lib:notify', src, {
-        --     description = string.format(Config.InfusionNotifications[notifKey], outputItem),
-        --     type = notifType
-        -- })
     end
 
-    tbl.inUse = false
     activeInfusions[src] = nil
 end)
 
 RegisterNetEvent('tommy-weedplant:server:cancelInfusion', function()
     local src = source
     if activeInfusions[src] then
-        local tbl = infusionTables[activeInfusions[src].tableId]
-        if tbl then tbl.inUse = false end
         activeInfusions[src] = nil
     end
 end)
@@ -366,8 +393,6 @@ end)
 AddEventHandler('playerDropped', function()
     local src = source
     if activeInfusions[src] then
-        local tbl = infusionTables[activeInfusions[src].tableId]
-        if tbl then tbl.inUse = false end
         activeInfusions[src] = nil
     end
 end)

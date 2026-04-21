@@ -145,4 +145,22 @@ Config.Benches = {
             },
         }
     },
+    ["washingmoney"] = {
+        label = "Rửa Tiền",
+        object = `v_ind_cs_hammer`,
+        coords = vector3(1400.00, 1155.06, 108.28),
+        heading = 218.87,
+
+        recipes = {
+            ["cash"] = {
+                id = 1,
+                time = 1000,
+                amount = 150,
+                allowQuantity = true,
+                ingredients = {
+                    ["black_money"] = 1,
+                }
+            },
+        }
+    },
 }
