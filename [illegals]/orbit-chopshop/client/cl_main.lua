@@ -158,13 +158,6 @@ function SpawnVehicle(model, x, y, z, w)
 
     TriggerEvent('orbit-chopshop:client:setJobState', true)
 
-    pendingSpawnCoords = vector3(
-        Config.VehicleCoords[randomCoords]['coords'].x,
-        Config.VehicleCoords[randomCoords]['coords'].y,
-        Config.VehicleCoords[randomCoords]['coords'].z
-    )
-    pendingSpawnTriggered = false
-
     dropoffx = Config.DeliveryCoords[randomLoc]['coords'].x
     dropoffy = Config.DeliveryCoords[randomLoc]['coords'].y
     dropoffz = Config.DeliveryCoords[randomLoc]['coords'].z
@@ -178,7 +171,17 @@ function SpawnVehicle(model, x, y, z, w)
 
     exports["orbit-ui"]:Show(Config.Locale["title"], Config.Locale["chop1"])
 
+    -- Wait tìm xe 10-20 phút. Trong lúc này pendingSpawnCoords CHƯA set
+    -- => player đi ngang vị trí xe cũng không spawn, xe không bị "mất"
     Wait(math.random(600000, 1200000))
+
+    -- Sau khi wait xong MỚI cho phép spawn xe
+    pendingSpawnCoords = vector3(
+        Config.VehicleCoords[randomCoords]['coords'].x,
+        Config.VehicleCoords[randomCoords]['coords'].y,
+        Config.VehicleCoords[randomCoords]['coords'].z
+    )
+    pendingSpawnTriggered = false
 
     if Config.Email then
         TriggerServerEvent('qb-phone:server:sendNewMail', {

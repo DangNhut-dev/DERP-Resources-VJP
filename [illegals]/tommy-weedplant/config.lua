@@ -17,7 +17,7 @@ Config.SeedTypes = {
         -- growthTime = 1000,
         
         -- Thời gian héo sau khi sẵn sàng thu hoạch (ms)
-        witherTime = 120000, -- 30 giây
+        witherTime = 900000, -- 30 giây
         
         -- Props cho từng giai đoạn (custom props)
         props = {
@@ -49,7 +49,7 @@ Config.SeedTypes = {
         name = 'Sativa',
         label = 'Hạt Cần Sa Sativa',
         growthTime = 14400000, 
-        witherTime = 120000,
+        witherTime = 900000,
         props = {
             stage1 = 'nui_props_weed_stage1b',
             stage2 = 'nui_props_weed_stage2b',
@@ -73,7 +73,7 @@ Config.SeedTypes = {
         name = 'Hybrid',
         label = 'Hạt Cần Sa Hybrid',
         growthTime = 14400000, 
-        witherTime = 120000,
+        witherTime = 900000,
         props = {
             stage1 = 'nui_props_weed_stage1c',
             stage2 = 'nui_props_weed_stage2c',
