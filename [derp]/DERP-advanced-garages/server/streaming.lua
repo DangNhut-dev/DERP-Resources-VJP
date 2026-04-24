@@ -315,13 +315,24 @@ local function SaveDirtyVehicles()
                 end
             end
 
+            -- MySQL.update.await([[
+            --     UPDATE player_vehicles
+            --     SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
+            --     WHERE plate = ? AND state = 0
+            -- ]], {
+            --     json.encode(coords), fuel, engine, body,
+            --     status and json.encode(status) or nil,
+            --     mods   and json.encode(mods)   or nil,
+            --     lockState,
+            --     plate
+            -- })
+
             MySQL.update.await([[
                 UPDATE player_vehicles
-                SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
+                SET coords = ?, fuel = ?, engine = ?, body = ?, mods = ?, lock_state = ?
                 WHERE plate = ? AND state = 0
             ]], {
                 json.encode(coords), fuel, engine, body,
-                status and json.encode(status) or nil,
                 mods   and json.encode(mods)   or nil,
                 lockState,
                 plate
@@ -374,7 +385,7 @@ local function DespawnVehicle(plate)
                 fuel   = cached.fuel   or fuel
                 engine = cached.engine or engine
                 body   = cached.body   or body
-                if cached.status    then status = cached.status               end
+                -- if cached.status    then status = cached.status               end
                 if cached.mods      then mods   = cached.mods                 end
                 if cached.lockState then tracked.lockState = cached.lockState end
                 if cached.coords then
@@ -411,13 +422,24 @@ local function DespawnVehicle(plate)
                 .. ' | Lock: ' .. tostring(tracked.lockState or 2)
                 .. ' | Mods: ' .. (mods and 'YES (len=' .. #json.encode(mods) .. ')' or 'NO/NIL'))
 
+            -- local success = MySQL.update.await([[
+            --     UPDATE player_vehicles
+            --     SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
+            --     WHERE plate = ? AND state = 0
+            -- ]], {
+            --     json.encode(tracked.coords), fuel, engine, body,
+            --     status and json.encode(status) or nil,
+            --     mods   and json.encode(mods)   or nil,
+            --     tracked.lockState or 2,
+            --     plate
+            -- })
+
             local success = MySQL.update.await([[
                 UPDATE player_vehicles
-                SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
+                SET coords = ?, fuel = ?, engine = ?, body = ?, mods = ?, lock_state = ?
                 WHERE plate = ? AND state = 0
             ]], {
                 json.encode(tracked.coords), fuel, engine, body,
-                status and json.encode(status) or nil,
                 mods   and json.encode(mods)   or nil,
                 tracked.lockState or 2,
                 plate
@@ -577,13 +599,13 @@ local function SpawnVehicleFromDB(plate)
 
     Wait(200)
 
-    if rec.status then
-        local status = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
-        if status then
-            TriggerClientEvent('derp:applyVehicleStatus', -1, netId, status)
-            DebugPrint('Applied status for: ' .. plate)
-        end
-    end
+    -- if rec.status then
+    --     local status = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
+    --     if status then
+    --         TriggerClientEvent('derp:applyVehicleStatus', -1, netId, status)
+    --         DebugPrint('Applied status for: ' .. plate)
+    --     end
+    -- end
 
     TriggerClientEvent('derp:applyVehicleLockState', -1, netId, lockState)
     Entity(vehicle).state:set('doorslockstate', lockState, true)
@@ -595,7 +617,8 @@ local function SpawnVehicleFromDB(plate)
     tracked.engine    = engineHealth
     tracked.body      = bodyHealth
     tracked.lockState = lockState
-    tracked.status    = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
+    -- tracked.status    = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
+    tracked.status    = nil
     tracked.mods      = modsToApply
     tracked.state     = "spawned"
     tracked.despawnMarkedAt = 0
@@ -934,10 +957,24 @@ end
 local function ExecuteSaveQuery(record, isSync)
     -- print('^2[SAVE DEBUG] Saving ' .. record.plate .. ' | lockState=' .. tostring(record.lockState))
     
+    -- local params = {
+    --     json.encode(record.coords),
+    --     record.fuel, record.engine, record.body,
+    --     record.status and json.encode(record.status) or nil,
+    --     record.mods   and json.encode(record.mods)   or nil,
+    --     record.lockState or 2,
+    --     record.plate
+    -- }
+
+    -- local query = [[
+    --     UPDATE player_vehicles
+    --     SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
+    --     WHERE plate = ? AND state = 0
+    -- ]]
+
     local params = {
         json.encode(record.coords),
         record.fuel, record.engine, record.body,
-        record.status and json.encode(record.status) or nil,
         record.mods   and json.encode(record.mods)   or nil,
         record.lockState or 2,
         record.plate
@@ -945,7 +982,7 @@ local function ExecuteSaveQuery(record, isSync)
 
     local query = [[
         UPDATE player_vehicles
-        SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
+        SET coords = ?, fuel = ?, engine = ?, body = ?, mods = ?, lock_state = ?
         WHERE plate = ? AND state = 0
     ]]
 
@@ -1355,6 +1392,17 @@ lib.addCommand('streaming:check_mods', {
     end
 
     TriggerClientEvent('QBCore:Notify', source, msg, 'success', 5000)
+end)
+
+exports('GetTrackedVehiclesForDebug', function()
+    local snapshot = {}
+    for plate, data in pairs(TrackedVehicles) do
+        snapshot[plate] = {
+            netId = data.netId,
+            state = data.state,
+        }
+    end
+    return snapshot
 end)
 
 exports('RegisterVehicleSpawn',   RegisterVehicleSpawn)

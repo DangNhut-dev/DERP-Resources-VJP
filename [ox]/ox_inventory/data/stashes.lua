@@ -94,24 +94,24 @@ return {
 		groups = {['mechanic'] = 1}
 	},
 
-	-- {
-	-- 	coords = vec3(-348.59, -158.04, 38.79),
-	-- 	target = {
-	-- 		loc = vec3(-348.59, -158.04, 38.79),
-	-- 		length = 0.6,
-	-- 		width = 1.8,
-	-- 		heading = 340,
-	-- 		minZ = 43.34,
-	-- 		maxZ = 44.74,
-	-- 		label = 'Mở Tủ'
-	-- 	},
-	-- 	name = 'mechaniclocker2',
-	-- 	label = 'Tủ Kho',
-	-- 	owner = false,
-	-- 	slots = 50,
-	-- 	weight = 100000,
-	-- 	groups = {['mechanic'] = 1}
-	-- },
+	{
+		coords = vec3(-348.59, -158.04, 38.79),
+		target = {
+			loc = vec3(-348.59, -158.04, 38.79),
+			length = 0.6,
+			width = 1.8,
+			heading = 340,
+			minZ = 43.34,
+			maxZ = 44.74,
+			label = 'Mở Tủ'
+		},
+		name = 'mechaniclocker2',
+		label = 'Tủ Boss',
+		owner = false,
+		slots = 50,
+		weight = 200000,
+		groups = {['mechanic'] = 3}
+	},
 
 	{
 		coords = vec3(-2242.99, -390.21, 12.52),

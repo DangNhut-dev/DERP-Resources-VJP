@@ -184,9 +184,15 @@ lib.callback.register('DERP-advanced-garages:server:spawnVehicle', function(sour
                 string.format(Config.Lang['impound_released'], impoundPrice), 'success')
         end
 
+        -- if Config.Impound.ResetHealthOnRelease then
+        --     vehicleData.engine = Config.Impound.DefaultEngineHealth
+        --     vehicleData.body   = Config.Impound.DefaultBodyHealth
+        -- end
+
         if Config.Impound.ResetHealthOnRelease then
             vehicleData.engine = Config.Impound.DefaultEngineHealth
             vehicleData.body   = Config.Impound.DefaultBodyHealth
+            vehicleData.status = nil
         end
 
         MySQL.update.await([[
