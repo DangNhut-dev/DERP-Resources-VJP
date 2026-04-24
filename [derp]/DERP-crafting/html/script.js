@@ -142,7 +142,7 @@ function showRecipeDetails(itemName, recipe, canCraft) {
             '</div>' +
             '<div class="ingredients-title">' +
                 '<i class="fas fa-layer-group"></i>' +
-                '<span>NGUYEN LIEU CAN THIET</span>' +
+                '<span>NGUYÊN LIỆU CẦN THIẾT</span>' +
             '</div>' +
             '<div class="ingredients-list">' + ingredientsHtml + '</div>' +
             '<button class="craft-btn" onclick="craftItemWithQuantity(\'' + itemName + '\')" ' + (!canCraft ? 'disabled' : '') + '>' +

@@ -35,15 +35,22 @@ Config.SkillCheckDifficulty = { "easy", "easy", "easy", "easy", "easy" } -- for 
 Config.SkillCheckInputs = { "e"} -- for ox only
 
 -- Servicing
-Config.EnableVehicleServicing = false
+Config.EnableVehicleServicing = true
 Config.ServiceRequiredThreshold = 20 -- [%] if any of the servicable parts hit this %, it will flag that the vehicle needs servicing 
 Config.ServicingBlacklist = {
-  "npolchar" -- Vehicles that are excluded from servicing damage
+  "npolchar",
+  "npolvic",
+  "clrgtaurus",
+  "npolmm",
+  "npolchal",
+  "npolstang",
+  "npolexp",
+  "npolvette",
 }
 
 -- Nitrous
-Config.NitrousScreenEffects = true
-Config.NitrousRearLightTrails = true -- Only really visible at night
+Config.NitrousScreenEffects = false
+Config.NitrousRearLightTrails = false -- Only really visible at night
 Config.NitrousPowerIncreaseMult = 2.0
 Config.NitrousDefaultKeyMapping = "RMENU"
 Config.NitrousMaxBottlesPerVehicle = 3 -- The UI can't really handle more than 7, more than that would be unrealistic anyway
