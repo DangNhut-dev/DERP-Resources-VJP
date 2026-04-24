@@ -125,6 +125,36 @@ Config.Benches = {
                     ["metalscrap"] = 10,
                 }
             },
+            ["infusion_table"] = {
+                id = 2,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                ingredients = {
+                    ["finishwood"] = 25,
+                    ["iron"] = 25,
+                    ["metalscrap"] = 10,
+                }
+            },
+        }
+    },
+    ["craftingweed2"] = {
+        label = "Bàn Chế Tạo",
+        object = `prop_tool_bench02`,
+        coords = vector3(1216.37, 1892.68, 76.97),
+        heading = 124.45,
+
+        recipes = {
+            ["uv_lamp"] = {
+                id = 1,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                ingredients = {
+                    ["glass"] = 1,
+                    ["metalscrap"] = 2,
+                }
+            },
         }
     },
     ["craftinglockpick"] = {

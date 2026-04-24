@@ -745,6 +745,18 @@ Config.MarketNPCs = {
         }
     },
     {
+        id = "blackmarket1",
+        enabled = true,
+        label = "Cửa Hàng Dụng Cụ",
+        ped = `a_m_m_salton_02`,
+        coords = vector4(356.97, -2728.09, 5.99, 56.55),
+        blackmarket = true,
+        type = "buy",
+        items = {
+            {name = "blackphone", label = "Điện Thoại Vệ Tinh", buyPrice = 100, sellMin = nil, sellMax = nil},
+        }
+    },
+    {
         id = "weedshop1",
         enabled = true,
         label = "Cửa Hàng Nuôi Trồng",
