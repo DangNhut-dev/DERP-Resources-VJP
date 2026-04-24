@@ -78,6 +78,11 @@ CreateThread(function()
 
         local tracked = getTrackedPlatesFromGarage()
         if tracked then
+            local count = 0
+            for _ in pairs(tracked) do count = count + 1 end
+            print(('[veh_damage_tracker-debug] Monitoring %d tracked vehicles'):format(count))
+        end
+        if tracked then
             for plate, data in pairs(tracked) do
                 if data.state == 'spawned' and data.netId then
                     if NetworkDoesNetworkIdExist(data.netId) then
