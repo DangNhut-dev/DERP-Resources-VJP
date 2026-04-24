@@ -313,9 +313,9 @@ lib.callback.register('orbit-chopshop:server:requestJob', function(source)
     local player = QBX:GetPlayer(source)
     if not player then return { allowed = false } end
 
-    if getOnDutyPoliceCount() < 1 then
-        return { allowed = false, reason = 'no_police' }
-    end
+    -- if getOnDutyPoliceCount() < 1 then
+    --     return { allowed = false, reason = 'no_police' }
+    -- end
 
     local citizenid = player.PlayerData.citizenid
 

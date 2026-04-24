@@ -21,7 +21,7 @@ Config = {
 
         SkillTypes = {
             ['Stamina']  = {
-                Use = true,
+                Use = false,
                 Label = 'Thể lực',
                 Color = 'rgb(24, 191, 238)',
                 Description = 'Ảnh hưởng đến khả năng chạy nước rút, đạp xe và bơi. Thể lực tối đa giúp bạn không bị hụt sức.'

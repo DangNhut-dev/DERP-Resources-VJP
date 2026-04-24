@@ -2789,4 +2789,235 @@ bcso = {
             },
         },
     },
+
+    mechanic = {
+        label = 'Nhận Đồng Phục',
+        npc = {
+            model    = 's_m_m_autoshop_02',
+            coords   = vec4(-349.62, -154.01, 38.99, 122.50),
+            scenario = 'WORLD_HUMAN_STAND_IMPATIENT',
+        },
+        grades = {
+            [0] = {
+                outfits = {
+                    {
+                        label = 'Đồng Phục Tay Ngắn',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 66, texture = 0 },
+                                female = { drawable = 60, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 39, texture = 0 },
+                                female = { drawable = 39, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                    {
+                        label = 'Đồng Phục Tay Dài',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 65, texture = 0 },
+                                female = { drawable = 59, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 38, texture = 0 },
+                                female = { drawable = 38, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                }
+            },
+            [1] = {
+                outfits = {
+                    {
+                        label = 'Đồng Phục Tay Ngắn',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 66, texture = 0 },
+                                female = { drawable = 60, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 39, texture = 0 },
+                                female = { drawable = 39, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                    {
+                        label = 'Đồng Phục Tay Dài',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 65, texture = 0 },
+                                female = { drawable = 59, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 38, texture = 0 },
+                                female = { drawable = 38, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                }
+            },
+            [2] = {
+                outfits = {
+                    {
+                        label = 'Đồng Phục Tay Ngắn',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 66, texture = 0 },
+                                female = { drawable = 60, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 39, texture = 0 },
+                                female = { drawable = 39, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                    {
+                        label = 'Đồng Phục Tay Dài',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 65, texture = 0 },
+                                female = { drawable = 59, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 38, texture = 0 },
+                                female = { drawable = 38, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                }
+            },
+            [3] = {
+                outfits = {
+                    {
+                        label = 'Đồng Phục Tay Ngắn',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 66, texture = 0 },
+                                female = { drawable = 60, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 39, texture = 0 },
+                                female = { drawable = 39, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                    {
+                        label = 'Đồng Phục Tay Dài',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 65, texture = 0 },
+                                female = { drawable = 59, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 38, texture = 0 },
+                                female = { drawable = 38, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                }
+            },
+            [4] = {
+                outfits = {
+                    {
+                        label = 'Đồng Phục Tay Ngắn',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 66, texture = 0 },
+                                female = { drawable = 60, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 39, texture = 0 },
+                                female = { drawable = 39, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                    {
+                        label = 'Đồng Phục Tay Dài',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 65, texture = 0 },
+                                female = { drawable = 59, texture = 0 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 38, texture = 0 },
+                                female = { drawable = 38, texture = 0 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 97, texture = 0 },
+                                female = { drawable = 86, texture = 0 },
+                            },
+                        },
+                    },
+                }
+            },
+        }
+    }
 }

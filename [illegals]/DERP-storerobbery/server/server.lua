@@ -153,7 +153,7 @@ local function addStoreRewardLog(src, safeIndex, rewardType, cashAmount, itemLis
 end
 
 lib.callback.register('derp_storerobbery:server:checkSafe', function(source, safeIndex)
-    if getOnDutyPoliceCount() < 0 then
+    if getOnDutyPoliceCount() < 3 then
         -- TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Không thể thực hiện được ngay bây giờ' })
         return false
     end

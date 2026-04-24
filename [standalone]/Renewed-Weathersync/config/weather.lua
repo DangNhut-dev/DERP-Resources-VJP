@@ -1,11 +1,11 @@
 return {
 
-    useScheduledWeather = true, -- Do you want txAdmin to schedule custom rain and thunder near restart?
+    useScheduledWeather = false, -- Do you want txAdmin to schedule custom rain and thunder near restart?
     serverDuration = 14, -- How many hours will the server run before restarting?, if a server restarts every 8 hours put this to 9 etc.
     weatherCycletimer = 30, -- How many minutes between weather changes
 
-    timeBetweenRain = 180, -- How many minutes between rain events
-    rainAfterRestart = 60, -- How many minutes AFTER a server restart before rain will start to show?
+    timeBetweenRain = 99999, -- How many minutes between rain events
+    rainAfterRestart = 99999, -- How many minutes AFTER a server restart before rain will start to show?
 
     decemberSnow = true, -- if turned on means that only snow will happen in december
 
@@ -13,21 +13,21 @@ return {
     staticWeather = {
         ['BLIZZARD'] = 0.0,
         ['CLEAR'] = 0.1,
-        ['CLEARING'] = 0.05,
-        ['CLOUDS'] = 0.05,
-        ['EXTRASUNNY'] = 0.4, -- tăng nắng
-        ['FOGGY'] = 0.05,
+        ['CLEARING'] = 0.1,
+        ['CLOUDS'] = 0.1,
+        ['EXTRASUNNY'] = 0.5, -- chủ đạo nắng đẹp
+        ['FOGGY'] = 0.0,
         ['NEUTRAL'] = 0.0,
-        ['OVERCAST'] = 0.4, -- tăng u ám
-        ['RAIN'] = 0.02, -- giảm cực thấp
-        ['SMOG'] = 0.05,
+        ['OVERCAST'] = 0.2, -- bỏ u ám luôn
+        ['RAIN'] = 0.0,
+        ['SMOG'] = 0.0,
         ['SNOW'] = 0.0,
         ['SNOWLIGHT'] = 0.0,
-        ['THUNDER'] = 0.01, -- gần như không có
+        ['THUNDER'] = 0.0,
         ['XMAS'] = 0.0
     },
 
-    useWeatherSequences = true,
+    useWeatherSequences = false,
 
     weatherSequences = {
 

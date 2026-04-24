@@ -367,7 +367,7 @@ lib.callback.register('derp-weedshop:server:createListing', function(src, data)
     if not citizenid then return { ok = false, msg = 'Khong xac dinh' } end
 
     if not CheckCooldown(src, 'createListing', 3) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
 
     if not data or type(data) ~= 'table' then
@@ -384,7 +384,7 @@ lib.callback.register('derp-weedshop:server:cancelListing', function(src, listin
     local citizenid = GetCitizenId(src)
     if not citizenid then return { ok = false } end
     if not CheckCooldown(src, 'cancelListing', 2) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
     local ok = Orders.CancelListing(citizenid, listingId)
     return { ok = ok }
@@ -462,7 +462,7 @@ lib.callback.register('derp-weedshop:server:deal:counter', function(src, data)
     local citizenid = GetCitizenId(src)
     if not citizenid then return { ok = false } end
     if not CheckCooldown(src, 'dealCounter', 2) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
     if not data or not data.npcId or not data.price then
         return { ok = false, msg = 'Thieu data' }
@@ -477,7 +477,7 @@ lib.callback.register('derp-weedshop:server:deal:accept', function(src, data)
     if not citizenid then return { ok = false } end
     if not data or not data.npcId then return { ok = false, msg = 'Thieu data' } end
     if not CheckCooldown(src, 'dealAccept', 2) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
 
     local deal = Customers.GetActiveDeal(citizenid, data.npcId)
@@ -553,7 +553,7 @@ lib.callback.register('derp-weedshop:server:proactiveCall', function(src, data)
     local citizenid = GetCitizenId(src)
     if not citizenid then return { ok = false, msg = 'Khong xac dinh player' } end
     if not CheckCooldown(src, 'proactiveCall', 3) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
     if not data then return { ok = false, msg = 'Thieu data' } end
 
@@ -620,7 +620,7 @@ lib.callback.register('derp-weedshop:server:cancelOrder', function(src, orderId)
     local citizenid = GetCitizenId(src)
     if not citizenid then return { ok = false } end
     if not CheckCooldown(src, 'cancelOrder', 3) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
     local ok, msg = Orders.CancelOrder(citizenid, orderId)
     return { ok = ok, msg = msg }
@@ -629,7 +629,7 @@ end)
 -- Giao hang (goi tu client khi interact NPC)
 lib.callback.register('derp-weedshop:server:deliver', function(src, orderId)
     if not CheckCooldown(src, 'deliver', Config.AntiAbuse.deliverCooldownSeconds) then
-        return { ok = false, msg = 'Lam cham lai' }
+        return { ok = false, msg = 'Thao Tác Quá Nhanh' }
     end
     local ok, result, payout = Orders.DeliverOrder(src, orderId)
     return { ok = ok, status = result, payout = payout }
