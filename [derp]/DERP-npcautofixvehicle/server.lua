@@ -1,9 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
--- Cache busy state per npc id
 local npcBusy = {}
-
--- Track duty state
 local cachedMechOnDuty = false
 
 local function hasMechanicOnDuty()
@@ -30,6 +27,12 @@ local function recalcDuty()
 end
 
 CreateThread(function()
+    GlobalState[Config.MechanicOnDutyStateKey] = false
+    for _, cfg in ipairs(Config.NPCs) do
+        GlobalState['DERO_npcautofix_busy_' .. cfg.id] = false
+        npcBusy[cfg.id] = false
+    end
+
     Wait(5000)
     recalcDuty()
     while true do

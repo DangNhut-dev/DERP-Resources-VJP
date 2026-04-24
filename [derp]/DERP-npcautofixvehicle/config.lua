@@ -13,7 +13,7 @@ Config.MechanicOnDutyStateKey = 'DERO_npcautofix_mechOnduty'
 Config.NPCs = {
     {
         id            = 'engine',
-        coords        = vec4(-356.93, -126.22, 38.71, 69.26),
+        coords        = vec4(-356.96, -126.65, 38.70, 69.96),
         model         = 's_m_m_autoshop_02',
         targetLabel   = 'Sửa động cơ ($100)',
         price         = 100,

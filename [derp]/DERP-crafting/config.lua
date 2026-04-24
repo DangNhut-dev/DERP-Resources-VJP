@@ -170,160 +170,158 @@ Config.Benches = {
         heading = 122.75,
 
         recipes = {
-            recipes = {
-                ["repair_kit"] = {
-                    id = 1,
-                    time = 4000,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["steel"] = 6,
-                        ["aluminum"] = 6,
-                        ["plastic"] = 3,
-                    }
-                },
+            ["repair_kit"] = {
+                id = 1,
+                time = 4000,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["steel"] = 6,
+                    ["aluminum"] = 6,
+                    ["plastic"] = 3,
+                }
+            },
 
-                ["duct_tape"] = {
-                    id = 2,
-                    time = 1500,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["rubber"] = 4,
-                        ["plastic"] = 3,
-                    }
-                },
+            ["duct_tape"] = {
+                id = 2,
+                time = 1500,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["rubber"] = 4,
+                    ["plastic"] = 3,
+                }
+            },
 
-                ["engine_oil"] = {
-                    id = 4,
-                    time = 2500,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["plastic"] = 4,
-                        ["rubber"] = 2,
-                    }
-                },
+            ["engine_oil"] = {
+                id = 4,
+                time = 2500,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["plastic"] = 4,
+                    ["rubber"] = 2,
+                }
+            },
 
-                ["tyre_replacement"] = {
-                    id = 5,
-                    time = 3500,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["rubber"] = 8,
-                        ["steel"] = 3,
-                    }
-                },
+            ["tyre_replacement"] = {
+                id = 5,
+                time = 3500,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["rubber"] = 8,
+                    ["steel"] = 3,
+                }
+            },
 
-                ["clutch_replacement"] = {
-                    id = 6,
-                    time = 3500,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["steel"] = 5,
-                        ["copper"] = 2,
-                        ["plastic"] = 3,
-                    }
-                },
+            ["clutch_replacement"] = {
+                id = 6,
+                time = 3500,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["steel"] = 5,
+                    ["copper"] = 2,
+                    ["plastic"] = 3,
+                }
+            },
 
-                ["air_filter"] = {
-                    id = 7,
-                    time = 2500,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["plastic"] = 5,
-                        ["cloth"] = 3, -- nếu có
-                    }
-                },
+            ["air_filter"] = {
+                id = 7,
+                time = 2500,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["plastic"] = 5,
+                    ["cloth"] = 3, -- nếu có
+                }
+            },
 
-                ["spark_plug"] = {
-                    id = 8,
-                    time = 2000,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["copper"] = 4,
-                        ["iron"] = 2,
-                    }
-                },
+            ["spark_plug"] = {
+                id = 8,
+                time = 2000,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["copper"] = 4,
+                    ["iron"] = 2,
+                }
+            },
 
-                ["suspension_parts"] = {
-                    id = 9,
-                    time = 4000,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["steel"] = 6,
-                        ["rubber"] = 4,
-                    }
-                },
+            ["suspension_parts"] = {
+                id = 9,
+                time = 4000,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["steel"] = 6,
+                    ["rubber"] = 4,
+                }
+            },
 
-                ["brakepad_replacement"] = {
-                    id = 10,
-                    time = 3000,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["steel"] = 4,
-                        ["rubber"] = 4,
-                    }
-                },
+            ["brakepad_replacement"] = {
+                id = 10,
+                time = 3000,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["steel"] = 4,
+                    ["rubber"] = 4,
+                }
+            },
 
-                -- ================= EV PARTS (HI-END) =================
+            -- ================= EV PARTS (HI-END) =================
 
-                ["ev_motor"] = {
-                    id = 11,
-                    time = 6000,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["copper"] = 12,
-                        ["steel"] = 6,
-                        ["aluminum"] = 8,
-                    }
-                },
+            ["ev_motor"] = {
+                id = 11,
+                time = 6000,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["copper"] = 12,
+                    ["steel"] = 6,
+                    ["aluminum"] = 8,
+                }
+            },
 
-                ["ev_battery"] = {
-                    id = 12,
-                    time = 6500,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["copper"] = 10,
-                        ["aluminum"] = 10,
-                        ["plastic"] = 5,
-                    }
-                },
+            ["ev_battery"] = {
+                id = 12,
+                time = 6500,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["copper"] = 10,
+                    ["aluminum"] = 10,
+                    ["plastic"] = 5,
+                }
+            },
 
-                ["ev_coolant"] = {
-                    id = 13,
-                    time = 4000,
-                    amount = 1,
-                    quality = nil,
-                    allowQuantity = false,
-                    ingredients = {
-                        ["plastic"] = 6,
-                        ["aluminum"] = 4,
-                    }
-                },
-            }
+            ["ev_coolant"] = {
+                id = 13,
+                time = 4000,
+                amount = 1,
+                quality = nil,
+                allowQuantity = false,
+                ingredients = {
+                    ["plastic"] = 6,
+                    ["aluminum"] = 4,
+                }
+            },
         },
         jobs = {
-             ["mechanic"] = 2,
+            ["mechanic"] = 2,
                 
         },
     },
