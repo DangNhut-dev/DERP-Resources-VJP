@@ -5,7 +5,7 @@ Config.Peds = {
                 "derp_yakuza",
                 "derp_otis",
                 "luis",
-                "tobi",
+                "derp_tommy",
                 "derp_patrick",
                 "a_c_boar",
                 "a_c_boar_02",

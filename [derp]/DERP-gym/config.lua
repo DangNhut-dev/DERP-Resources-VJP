@@ -21,7 +21,7 @@ Config = {
 
         SkillTypes = {
             ['Stamina']  = {
-                Use = false,
+                Use = true,
                 Label = 'Thể lực',
                 Color = 'rgb(24, 191, 238)',
                 Description = 'Ảnh hưởng đến khả năng chạy nước rút, đạp xe và bơi. Thể lực tối đa giúp bạn không bị hụt sức.'
@@ -39,7 +39,7 @@ Config = {
                 Description = 'Cải thiện khả năng điều khiển xe, giữ thăng bằng tốt hơn và kiểm soát xe khi bay trên không.'
             },
             ['Strength'] = {
-                Use = true,
+                Use = false,
                 Label = 'Sức mạnh',
                 Color = 'rgb(237, 24, 24)',
                 Description = 'Tăng sức mạnh cận chiến, leo trèo nhanh hơn và giảm sát thương nhận vào.'

@@ -382,6 +382,41 @@ Config.Garages = {
         },
     },
     
+    ['garage_mechanic'] = {
+        label = 'Garage Mechanic',
+        type = 'public',  
+        
+        storeZone = {
+            coords = vec3(-385.16, -127.37, 38.68),
+            radius = 10.0,
+            showText = '[E] Cất Xe'
+        },
+        
+        npc = {
+            coords = vec3(-377.98, -124.68, 37.61),
+            heading = 118.61,
+            model = 's_m_y_dealer_01'
+        },
+        
+        blip = {
+            enabled = false,
+            sprite = 56,
+            color = 29,
+            scale = 0.8
+        },
+        
+        spawnPoints = {
+            vec4(-381.22, -140.96, 38.08, 298.77),
+            vec4(-384.61, -134.65, 38.08, 299.09),
+            vec4(-388.32, -128.64, 38.08, 300.30),
+            vec4(-391.62, -122.44, 38.08, 298.93),
+        },
+        
+        preview = {
+            vehicle = vec4(-371.81, -137.35, 38.03, 32.10),
+        },
+    },
+    
     ['impound'] = {
         label = 'Bãi Xe Vi Phạm',
         type = 'public', -- Ai cũng có thể lấy xe (nếu hết hạn + trả tiền, hoặc là LEO)

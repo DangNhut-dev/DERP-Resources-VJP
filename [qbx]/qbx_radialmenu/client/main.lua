@@ -135,7 +135,7 @@ function setupVehicleMenu(seat)
             label = 'Thành Phố',
             icon = 'city',
             onSelect = function()
-                TriggerEvent('autopilot:start')
+                TriggerEvent('autopilot:city')
                 lib.hideRadial()
             end,
         },
@@ -144,7 +144,7 @@ function setupVehicleMenu(seat)
             label = 'Cao Tốc',
             icon = 'road',
             onSelect = function()
-                TriggerEvent('autopilot:city')
+                TriggerEvent('autopilot:start')
                 lib.hideRadial()
             end,
         },
