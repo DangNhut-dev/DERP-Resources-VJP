@@ -61,6 +61,7 @@ local props = {
 	["weapon_beanbagshotgun"] = { model = "w_sg_beanbagshotgun", hash = joaat("weapon_beanbagshotgun"), tier = 1 },
 	["weapon_ar15"] = { model = "w_ar_ar15", hash = joaat("weapon_ar15"), tier = 1, z = -0.15, x = 0.1, y = -0.18 },
 	["weapon_katana"] = { model = "w_me_katana", hash = joaat("weapon_katana"), tier = 2, yr = 240.0, x = 0.4, z = 0.17, y = -0.18 },
+	["weapon_katanablackgold"] = { model = "mo_katanaprop", hash = joaat("weapon_katanablackgold"), tier = 1, zr = 90.0, z = -0.01, x = 0.15, y = -0.14, xr = 215.0, yr = 8.0},
 	["weapon_sledgehammer"] = { model = "w_me_sledgehammer", hash = joaat("weapon_sledgehammer"), tier = 2, xr = 50.0, yr = 150.0, x = 0.45, zr = 80.0, z = -0.2 },
 	["weapon_perforator"] = { model = "w_me_perforator", hash = joaat("weapon_perforator"), tier = 2,},
 
