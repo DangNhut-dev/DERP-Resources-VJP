@@ -244,8 +244,8 @@ Config.Benches = {
                 quality = nil,
                 allowQuantity = false,
                 ingredients = {
-                    ["rubber"] = 8,
-                    ["steel"] = 3,
+                    ["rubber"] = 2,
+                    ["steel"] = 1,
                 }
             },
 
@@ -269,8 +269,8 @@ Config.Benches = {
                 quality = nil,
                 allowQuantity = false,
                 ingredients = {
-                    ["plastic"] = 5,
-                    ["cloth"] = 3, -- nếu có
+                    ["plastic"] = 3,
+                    ["cloth"] = 1, -- nếu có
                 }
             },
 

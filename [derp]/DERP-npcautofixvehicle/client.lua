@@ -249,6 +249,18 @@ RegisterNetEvent('DERO_npcautofix:doRepair', function(npcId, vehNet, price, repa
 
         SetVehicleDoorShut(veh, 4, false)
 
+        -- Reset toàn bộ servicingData về 100
+        local vehicleState = Entity(veh).state
+        local currentServicing = vehicleState.servicingData
+        if currentServicing and type(currentServicing) == 'table' then
+            local resetData = {}
+            for part, _ in pairs(currentServicing) do
+                resetData[part] = 100
+            end
+            -- Gọi server set statebag (client không được set shared statebag trực tiếp)
+            TriggerServerEvent('DERO_npcautofix:resetServicing', vehNet, resetData)
+        end
+
         -- NPC về nhà
         movePedTo(ped, homePos, 12000, 1.2)
 

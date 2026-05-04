@@ -161,3 +161,11 @@ RegisterNetEvent('DERO_npcautofix:repairDone', function(npcId)
     npcBusy[npcId] = false
     GlobalState['DERO_npcautofix_busy_' .. npcId] = false
 end)
+
+RegisterNetEvent('DERO_npcautofix:resetServicing', function(vehNet, resetData)
+    local src = source
+    if not vehNet or not resetData then return end
+    local veh = NetworkGetEntityFromNetworkId(vehNet)
+    if not DoesEntityExist(veh) then return end
+    Entity(veh).state:set('servicingData', resetData, true)
+end)
