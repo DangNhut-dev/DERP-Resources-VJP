@@ -41,8 +41,8 @@ local function ApplyArmorPlate(plateType)
     local currentArmor = GetPedArmour(PlayerPedId())
     if currentArmor >= armorConfig.maxArmor then
         lib.notify({
-            title = 'Error',
-            description = 'Maximum armor capacity reached!',
+            title = 'Đã hủy',
+            description = 'Không còn chỗ để trang bị!',
             type = 'error'
         })
         return
@@ -50,7 +50,7 @@ local function ApplyArmorPlate(plateType)
     
     if lib.progressBar({
         duration = armorConfig.useTime,
-        label = 'Applying Armor Plate...',
+        label = 'Trang Bị Giáp...',
         useWhileDead = false,
         canCancel = true,
         disable = {
@@ -61,21 +61,21 @@ local function ApplyArmorPlate(plateType)
         anim = {
             dict = 'clothingshirt',
             clip = 'try_shirt_positive_d',
-            flag = 49
+            flag = 51
         },
     }) then
         local newArmor = math.min(currentArmor + armorConfig.armorIncrease, armorConfig.maxArmor)
         SetPedArmour(PlayerPedId(), newArmor)
         TriggerServerEvent('DERP-armor:server:removePlate', armorConfig.item)
         lib.notify({
-            title = 'Success',
-            description = 'Armor plate applied successfully!',
+            title = 'Hoàn tất',
+            description = 'Giáp đã được trang bị.',
             type = 'success'
         })
     else
         lib.notify({
-            title = 'Cancelled',
-            description = 'Cancelled applying armor plate!',
+            title = 'Đã hủy',
+            description = 'Bạn đã hủy việc trang bị giáp!',
             type = 'error'
         })
     end

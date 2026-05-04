@@ -2,7 +2,7 @@ Config = {}
 
 Config.Cooldown = 15000
 Config.WitnessMaxDistance = 100.0
-Config.RequireWitness = false
+Config.RequireWitness = true
 Config.RequireLos = true
 Config.DispatchDuration = 30
 Config.Priority = 'medium'
@@ -12,5 +12,5 @@ Config.DispatchDescription = 'Có người đang đánh nhau tại khu vực %s'
 
 Config.MeleeWeaponGroups = {
     `GROUP_MELEE`,
-    `GROUP_UNARMED`,
+    -- `GROUP_UNARMED`,
 }

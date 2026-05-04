@@ -39,7 +39,7 @@ Config.AllowedJobs = {
     },
     ['mechanic'] = {
         label = 'Sửa Xe',
-        commission = 0.0,
+        commission = 0.5,
         allowNegativeBalance = false,
     },
     ['redlinecustom'] = {
