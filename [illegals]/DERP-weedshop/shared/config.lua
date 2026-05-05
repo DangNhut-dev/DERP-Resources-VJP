@@ -84,17 +84,17 @@ Config.Items = {
     -- ===== BASE =====
     ['indica_bud_dried_weed'] = {
         label = 'Điếu Indica',
-        priceMin = 8.5, priceMax = 11.0,
+        priceMin = 8.0, priceMax = 11.0,
         qualityBias = 1
     },
     ['sativa_bud_dried_weed'] = {
         label = 'Điếu Sativa',
-        priceMin = 8.5, priceMax = 11.0,
+        priceMin = 8.0, priceMax = 11.0,
         qualityBias = 1
     },
     ['hybrid_bud_dried_weed'] = {
         label = 'Điếu Hybrid',
-        priceMin = 9.0, priceMax = 11.5,
+        priceMin = 9.0, priceMax = 11.0,
         qualityBias = 1
     },
 
@@ -106,7 +106,7 @@ Config.Items = {
     },
     ['sour_diesel_medium_weed'] = {
         label = 'Sour Diesel (Trung Bình)',
-        priceMin = 17.0, priceMax = 20.5,
+        priceMin = 17.0, priceMax = 20.0,
         qualityBias = 2
     },
     ['sour_diesel_high_weed'] = {
@@ -122,7 +122,7 @@ Config.Items = {
     },
     ['purple_haze_medium_weed'] = {
         label = 'Purple Haze (Trung Bình)',
-        priceMin = 14.5, priceMax = 17.5,
+        priceMin = 14.0, priceMax = 17.0,
         qualityBias = 2
     },
     ['purple_haze_high_weed'] = {
@@ -138,24 +138,24 @@ Config.Items = {
     },
     ['northern_lights_medium_weed'] = {
         label = 'Northern Lights (Trung Bình)',
-        priceMin = 15.5, priceMax = 18.5,
+        priceMin = 15.0, priceMax = 18.0,
         qualityBias = 2
     },
     ['northern_lights_high_weed'] = {
         label = 'Northern Lights (Cao Cấp)',
-        priceMin = 20.5, priceMax = 24.0,
+        priceMin = 20.0, priceMax = 24.0,
         qualityBias = 3
     },
 
     -- ===== SATIVA =====
     ['blue_dream_low_weed'] = {
         label = 'Blue Dream (Kém)',
-        priceMin = 9.5, priceMax = 12.0,
+        priceMin = 9.0, priceMax = 12.0,
         qualityBias = 1
     },
     ['blue_dream_medium_weed'] = {
         label = 'Blue Dream (Trung Bình)',
-        priceMin = 13.5, priceMax = 16.5,
+        priceMin = 13.0, priceMax = 16.0,
         qualityBias = 2
     },
     ['blue_dream_high_weed'] = {
@@ -176,7 +176,7 @@ Config.Items = {
     },
     ['jack_herer_high_weed'] = {
         label = 'Jack Herer (Cao Cấp)',
-        priceMin = 24.0, priceMax = 28.5,
+        priceMin = 24.0, priceMax = 28.0,
         qualityBias = 3
     },
 
@@ -187,56 +187,56 @@ Config.Items = {
     },
     ['super_lemon_haze_medium_weed'] = {
         label = 'Super Lemon Haze (Trung Bình)',
-        priceMin = 14.5, priceMax = 17.5,
+        priceMin = 14.0, priceMax = 17.0,
         qualityBias = 2
     },
     ['super_lemon_haze_high_weed'] = {
         label = 'Super Lemon Haze (Cao Cấp)',
-        priceMin = 19.5, priceMax = 23.0,
+        priceMin = 19.0, priceMax = 23.0,
         qualityBias = 3
     },
 
     -- ===== HYBRID =====
     ['og_kush_low_weed'] = {
         label = 'OG Kush (Kém)',
-        priceMin = 11.5, priceMax = 14.5,
+        priceMin = 11.0, priceMax = 14.0,
         qualityBias = 1
     },
     ['og_kush_medium_weed'] = {
         label = 'OG Kush (Trung Bình)',
-        priceMin = 16.0, priceMax = 19.5,
+        priceMin = 16.0, priceMax = 19.0,
         qualityBias = 2
     },
     ['og_kush_high_weed'] = {
         label = 'OG Kush (Cao Cấp)',
-        priceMin = 21.5, priceMax = 25.0,
+        priceMin = 21.0, priceMax = 25.0,
         qualityBias = 3
     },
 
     ['gsc_low_weed'] = {
         label = 'Girl Scout Cookies (Kém)',
-        priceMin = 12.5, priceMax = 15.5,
+        priceMin = 12.0, priceMax = 15.0,
         qualityBias = 1
     },
     ['gsc_medium_weed'] = {
         label = 'Girl Scout Cookies (Trung Bình)',
-        priceMin = 17.5, priceMax = 21.0,
+        priceMin = 17.0, priceMax = 21.0,
         qualityBias = 2
     },
     ['gsc_high_weed'] = {
         label = 'Girl Scout Cookies (Cao Cấp)',
-        priceMin = 23.5, priceMax = 27.5,
+        priceMin = 23.0, priceMax = 27.0,
         qualityBias = 3
     },
 
     ['wedding_cake_low_weed'] = {
         label = 'Wedding Cake (Kém)',
-        priceMin = 13.5, priceMax = 16.5,
+        priceMin = 13.0, priceMax = 16.0,
         qualityBias = 1
     },
     ['wedding_cake_medium_weed'] = {
         label = 'Wedding Cake (Trung Bình)',
-        priceMin = 18.5, priceMax = 22.5,
+        priceMin = 18.0, priceMax = 22.0,
         qualityBias = 2
     },
     ['wedding_cake_high_weed'] = {
@@ -260,8 +260,8 @@ Config.UnlockTiers = {
 -- Dispatch chance khi giao (0-1)
 Config.DispatchChance = 0.30
 Config.DispatchCode = '10-66'
-Config.DispatchTitle = 'Giao Dich Kha Nghi'
-Config.DispatchDescription = 'Phat hien hanh vi kha nghi (nghi ngo mua ban chat cam)'
+Config.DispatchTitle = 'Giao Dịch Khả Nghi'
+Config.DispatchDescription = 'Phát hiện hành vi khả nghi (nghi ngờ mua bán chất cấm)'
 
 -- Chat templates (random pick)
 -- Format: %s (item label), %d (amount), %d (price)
