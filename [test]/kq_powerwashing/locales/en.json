@@ -1,0 +1,130 @@
+{
+  "settings": {
+    "vehicle": "Werkvoertuig"
+  },
+  "headquarters": {
+    "name": "Schoonmaak Hoofdkantoor",
+    "finish_contract_3d": "[E] Contract afronden",
+    "finish_contract_target": "Contract afronden",
+    "job_board_3d": "[E] Bekijk klussen",
+    "job_board_target": "Klussen bekijken"
+  },
+  "vehicles": {
+    "kqbison": "Bison",
+    "kqcaracara": "Caracara"
+  },
+  "blips": {
+    "work_vehicle": "Werkvoertuig",
+    "go_to_area": "Ga naar gebied",
+    "clean": "Schoonmaken",
+    "supervisor": "Leidinggevende"
+  },
+  "tasks": {
+    "enter_vehicle": "Stap in het werkvoertuig",
+    "go_to_prefix": "Ga naar ",
+    "clean_prefix": "Maak schoon: ",
+    "return_to_hq": "Keer terug naar het hoofdkantoor",
+    "report_to_supervisor": "Meld je bij de leidinggevende"
+  },
+  "job_board": {
+    "title": "Hogedruk reinigingsklussen"
+  },
+  "units": {
+    "meters": "m",
+    "kilometers": "km",
+    "yards": "yd",
+    "miles": "mi"
+  },
+  "bonuses": {
+    "perfect_time": "Perfecte tijdsbonus",
+    "perfect_time_tip": "Je hebt het contract binnen perfecte tijd afgerond!",
+    "good_time": "Snelle afleverbonus",
+    "good_time_tip": "Je hebt het contract in een nette tijd afgerond!",
+    "vehicle_care": "Voertuigzorg bonus",
+    "vehicle_care_tip": "Bonus voor goed zorgen voor het werkvoertuig",
+    "vehicle_damage": "Voertuigschade",
+    "vehicle_damage_tip": "Voertuig heeft ernstige schade opgelopen tijdens het contract",
+    "missing_vehicle": "Voertuig vermist",
+    "missing_vehicle_tip": "Voertuig is kwijtgeraakt",
+    "top_washer": "Beste schoonmaker bonus",
+    "top_washer_tip": "Jij hebt het meeste schoongemaakt tijdens dit contract",
+    "team_size_bonus": "Teamwerk bonus",
+    "team_size_bonus_tip": "Bonus voor werken in een team",
+    "experience": "Ervaringsbonus",
+    "experience_tip": "Bonus ontgrendeld door een hoog baanniveau te bereiken"
+  },
+  "supervisor": {
+    "prefix": "<strong>Leidinggevende:</strong>",
+    "stars_5": [
+      "Uitstekend werk daar! Dat is precies de efficiëntie die ik wil zien.",
+      "Nu zo hoort het! Je laat mij goed overkomen bij de klanten.",
+      "Ongelooflijk gedaan! Je bent misschien wel de beste schoonmaker die ik heb."
+    ],
+    "stars_4": [
+      "Goed gewerkt vandaag, ga zo door.",
+      "Netjes gedaan. De klant zal hier blij mee zijn.",
+      "Lekker snel! Je krijgt het onder de knie."
+    ],
+    "stars_3": [
+      "Niet slecht, maar ik weet dat je beter kan. Blijf zo doorgaan.",
+      "Klus is klaar. Niets bijzonders, maar het is goed zo.",
+      "Gemiddeld werk, gemiddelde beloning. Wil je bonussen? Volgende keer wat harder werken."
+    ],
+    "stars_2": [
+      "Je hebt het afgemaakt. Maar ten koste van wat? Je moet de volgende keer echt verbeteren.",
+      "Dit is NIET hoe het hoort. Kom op, pak het beter aan."
+    ],
+    "stars_1": [
+      "Volgende keer beter."
+    ],
+    "job_short": [
+      "Vandaag een snelle, maar die houden ons bedrijf draaiende.",
+      "Kleine klus, makkelijk verdiend. Daar klaag ik niet over.",
+      "Deze kleine contracten stapelen wel lekker op. Echt brood en water werk."
+    ],
+    "job_medium": [
+      "Mooi formaat klus, eerlijk werk.",
+      "Standaard klus, niks geks. Precies zoals ik het wil.",
+      "Dat is werk dat de rekeningen betaalt."
+    ],
+    "job_long": [
+      "Dat was een grote! Misschien minder leuk, maar daar zit het echte geld.",
+      "Enorme klus dit. De klant heeft flink betaald voor zo'n schoonmaak.",
+      "Dat noem ik een echte klus. Die grote houden de tent draaiende."
+    ],
+    "vehicle_perfect": [
+      "De wagen is ook in perfecte staat teruggekomen. Dank voor het netjes achterlaten!",
+      "Mooi om te zien dat het voertuig zonder kras is. Dat is de professionele houding die ik wil zien.",
+      "De wagen lijkt wel nieuw, dat zet ik positief in je dossier."
+    ],
+    "vehicle_damaged": [
+      "Over het voertuig gesproken... wat is daar gebeurd? Ik trek de reparatiekosten van je loon af.",
+      "Je hebt het voertuig behoorlijk beschadigd. Dat gaat van je vergoeding af, wees voorzichtiger de volgende keer.",
+      "Maar, de wagen is teruggekomen alsof hij een oorlog heeft doorstaan. Reparaties zijn niet gratis, dus dat is jouw probleem."
+    ],
+    "vehicle_missing": [
+      "Waar is de truck?! Ik zal iemand moeten sturen om het te zoeken. Dat grapje gaat van je loon af.",
+      "Je hebt het voertuig ergens achtergelaten. Weet je hoeveel tijd het kost om hem terug te vinden? Dat kost je geld.",
+      "Geen wagen, geen uitleg... Ik wil het niet eens weten. Maar je betaalt wel voor de terughaalactie."
+    ]
+  },
+  "outfit": {
+    "apply": "{{name}} aantrekken",
+    "switch_regular": "Wissel naar gewone kleding",
+    "required": "Je moet je werkkleding dragen",
+    "not_unlocked": "Deze outfit heb je nog niet vrijgespeeld"
+  },
+  "water_tank": {
+    "empty": "Je bent door het water heen! Vul bij het voertuig.",
+    "refilled": "Watertank bijgevuld!",
+    "refill_3d": "[E] Watertank bijvullen",
+    "refill_target": "Watertank bijvullen"
+  },
+  "cancellation_ban": {
+    "applied": "Je bent geschorst voor nieuwe contracten voor {{time}} minuten.",
+    "blocked": "Je bent geschorst voor nieuwe contracten. Nog te wachten: {{time}} minuut/minuten"
+  },
+  "keybinds": {
+    "washer_vision": "Druk op ~INPUT_RELOAD~ om het vuil te markeren"
+  }
+}

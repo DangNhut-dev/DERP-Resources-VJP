@@ -754,6 +754,13 @@ Config.MarketNPCs = {
         type = "buy",
         items = {
             {name = "blackphone", label = "Điện Thoại Vệ Tinh", buyPrice = 100, sellMin = nil, sellMax = nil},
+            {name = "heistpack_drone", label = "Drone", buyPrice = 25, sellMin = nil, sellMax = nil},
+            {name = "gasmask", label = "Mặt Nạ Phòng Độc", buyPrice = 10, sellMin = nil, sellMax = nil},
+            {name = "heistpack_drill", label = "Máy Khoan Công Nghiệp", buyPrice = 20, sellMin = nil, sellMax = nil},
+            -- {name = "weapon_hackingdevice", label = "Thiết Bị Hack", buyPrice = 50, sellMin = nil, sellMax = nil},
+            {name = "heavy_rope", label = "Dây Thừng Cỡ Lớn", buyPrice = 10, sellMin = nil, sellMax = nil},
+            {name = "heistpack_anchor", label = "Mỏ Neo", buyPrice = 10, sellMin = nil, sellMax = nil},
+            {name = "heistpack_grinder", label = "Máy Cắt Cầm Tay", buyPrice = 50, sellMin = nil, sellMax = nil},
         }
     },
     {

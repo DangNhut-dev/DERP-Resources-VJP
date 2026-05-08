@@ -1,6 +1,6 @@
 return {
     useTarget = true, -- Use ox_target interactions
-    inJailMoney = 100,
+    inJailMoney = 200,
     takePhoto = false,
     gateCrack = 'gatecrack',
 

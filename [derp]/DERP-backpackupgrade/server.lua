@@ -231,7 +231,7 @@ lib.callback.register('DERP-backpackupgrade:getItems', function(source)
         if not base then
             base = key:match('^(.+)_%d+_%d+$')
         end
-        if base and not baseNames[base] then
+        if base and base ~= 'balo' and not baseNames[base] then
             baseNames[base] = true
         end
     end
@@ -314,6 +314,7 @@ lib.callback.register('DERP-backpackupgrade:upgrade', function(source, baloSlot,
     for _, slot in ipairs(materialSlots) do
         local item = exports.ox_inventory:GetSlot(source, slot)
         if not item then return { error = 'mat_missing' } end
+        if item.name == 'balo' then return { error = 'balo_not_allowed' } end
 
         local meta   = item.metadata or {}
         local draw   = tostring(meta.drawableId or '')
@@ -475,19 +476,19 @@ lib.cron.new('* * * * *', function()
     end
 end)
 
-RegisterCommand('bpdbg', function(src, args)
-    if src ~= 0 then return end
-    local target = tonumber(args[1])
-    if not target then print('Usage: bpdbg <serverid>') return end
+-- RegisterCommand('bpdbg', function(src, args)
+--     if src ~= 0 then return end
+--     local target = tonumber(args[1])
+--     if not target then print('Usage: bpdbg <serverid>') return end
 
-    local items = exports.ox_inventory:GetInventoryItems(target)
+--     local items = exports.ox_inventory:GetInventoryItems(target)
 
-    local testItems = {'aokhoac_1_0_0','aokhoac_2_0_0','aokhoac_3_0_0','aokhoac_4_0_0','aokhoac_5_0_0','balo'}
-    for _, name in ipairs(testItems) do
-        local r = exports.ox_inventory:Search(target, 'slots', name)
-    end
+--     local testItems = {'aokhoac_1_0_0','aokhoac_2_0_0','aokhoac_3_0_0','aokhoac_4_0_0','aokhoac_5_0_0','balo'}
+--     for _, name in ipairs(testItems) do
+--         local r = exports.ox_inventory:Search(target, 'slots', name)
+--     end
 
-    local n = 0
-    for _ in pairs(ClothingRarity) do n = n + 1 end
-    print('[BPD] ClothingRarity dump = ' .. json.encode(ClothingRarity))
-end, true)
+--     local n = 0
+--     for _ in pairs(ClothingRarity) do n = n + 1 end
+--     print('[BPD] ClothingRarity dump = ' .. json.encode(ClothingRarity))
+-- end, true)

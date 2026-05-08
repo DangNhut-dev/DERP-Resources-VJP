@@ -13,7 +13,8 @@ Config.SeedTypes = {
         label = 'Hạt Cần Sa Indica',
         
         -- Thời gian phát triển (ms)
-        growthTime = 14400000, -- 2 phút
+        -- growthTime = 14400000, -- 2 phút
+        growthTime = 9000000,
         -- growthTime = 1000,
         
         -- Thời gian héo sau khi sẵn sàng thu hoạch (ms)
@@ -30,8 +31,8 @@ Config.SeedTypes = {
         -- Sản phẩm thu hoạch
         harvestItem = 'indica_bud',
         harvestAmount = {
-            base = 5, -- Số lượng cơ bản
-            withUVLight = 10, -- Số lượng khi có đèn UV
+            base = 2, -- Số lượng cơ bản
+            withUVLight = 5, -- Số lượng khi có đèn UV
         },
         
         -- Yêu cầu nước
@@ -42,24 +43,24 @@ Config.SeedTypes = {
         },
         
         -- Phân bón
-        fertilizerBonus = 0.2, -- Giảm 30% thời gian phát triển khi bón phân
+        fertilizerBonus = 0.2, -- Giảm 20% thời gian phát triển khi bón phân
     },
     
     ['cannabis_seed_sativa'] = {
         name = 'Sativa',
         label = 'Hạt Cần Sa Sativa',
-        growthTime = 14400000, 
+        growthTime = 9000000, 
         witherTime = 900000,
         props = {
             stage1 = 'nui_props_weed_stage1b',
             stage2 = 'nui_props_weed_stage2b',
             stage3 = 'nui_props_weed_stage3b',
-            withered = 'nui_props_weed_stage1b',
+            withered = 'nui_props_weed_stage1',
         },
         harvestItem = 'sativa_bud',
         harvestAmount = {
-            base = 5,
-            withUVLight = 10,
+            base = 2,
+            withUVLight = 5,
         },
         waterRequirement = {
             enabled = true,
@@ -72,18 +73,18 @@ Config.SeedTypes = {
     ['cannabis_seed_hybrid'] = {
         name = 'Hybrid',
         label = 'Hạt Cần Sa Hybrid',
-        growthTime = 14400000, 
-        witherTime = 900000,
+        growthTime = 5, 
+        witherTime = 10,
         props = {
             stage1 = 'nui_props_weed_stage1c',
             stage2 = 'nui_props_weed_stage2c',
             stage3 = 'nui_props_weed_stage3c',
-            withered = 'nui_props_weed_stage1c',
+            withered = 'de_weed_withered',
         },
         harvestItem = 'hybrid_bud',
         harvestAmount = {
-            base = 5,
-            withUVLight = 10,
+            base = 2,
+            withUVLight = 5,
         },
         waterRequirement = {
             enabled = true,

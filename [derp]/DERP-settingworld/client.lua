@@ -94,28 +94,28 @@ lib.onCache('vehicle', function(vehicle)
 end)
 
 -- Speed limit
-local speedLimit = 120.0
-local maxSpeedMS = speedLimit / 2.236936
-local excludedClass = { [15] = true, [16] = true, [17] = true, [18] = true, [19] = true }
+-- local speedLimit = 120.0
+-- local maxSpeedMS = speedLimit / 2.236936
+-- local excludedClass = { [15] = true, [16] = true, [17] = true, [18] = true, [19] = true }
 
-lib.onCache('vehicle', function(vehicle)
-    if not vehicle then return end
-    CreateThread(function()
-        while cache.vehicle == vehicle do
-            Wait(500)
-            if not DoesEntityExist(vehicle) then break end
-            local class = GetVehicleClass(vehicle)
-            if excludedClass[class] then
-                SetVehicleMaxSpeed(vehicle, 0.0)
-            else
-                SetVehicleMaxSpeed(vehicle, maxSpeedMS)
-                if GetEntitySpeed(vehicle) * 2.236936 > speedLimit then
-                    SetEntityMaxSpeed(vehicle, maxSpeedMS)
-                end
-            end
-        end
-    end)
-end)
+-- lib.onCache('vehicle', function(vehicle)
+--     if not vehicle then return end
+--     CreateThread(function()
+--         while cache.vehicle == vehicle do
+--             Wait(500)
+--             if not DoesEntityExist(vehicle) then break end
+--             local class = GetVehicleClass(vehicle)
+--             if excludedClass[class] then
+--                 SetVehicleMaxSpeed(vehicle, 0.0)
+--             else
+--                 SetVehicleMaxSpeed(vehicle, maxSpeedMS)
+--                 if GetEntitySpeed(vehicle) * 2.236936 > speedLimit then
+--                     SetEntityMaxSpeed(vehicle, maxSpeedMS)
+--                 end
+--             end
+--         end
+--     end)
+-- end)
 
 -- Helicopter audio
 local function EnableSubmix(id)

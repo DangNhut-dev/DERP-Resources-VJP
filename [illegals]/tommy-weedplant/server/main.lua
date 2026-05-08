@@ -152,43 +152,77 @@ local function IsPlantTooClose(coords, minDistance)
     return false, 0
 end
 
+local function CalculateTimeRemaining(plant)
+    local seedConfig = Config.SeedTypes[plant.seedType]
+    if not seedConfig then return 0 end
+
+    if not plant.growthStartedAt then
+        local effectiveGrowthTime = seedConfig.growthTime
+        if plant.hasFertilizer then
+            effectiveGrowthTime = effectiveGrowthTime * (1 - seedConfig.fertilizerBonus)
+        end
+        return effectiveGrowthTime
+    end
+
+    local effectiveGrowthTime = seedConfig.growthTime
+    if plant.hasFertilizer then
+        effectiveGrowthTime = effectiveGrowthTime * (1 - seedConfig.fertilizerBonus)
+    end
+
+    local referenceTime = os.time() * 1000
+    if plant.waterLevel <= 0 and plant.growthPausedAt then
+        referenceTime = plant.growthPausedAt
+    end
+
+    local timePassed = referenceTime - plant.growthStartedAt
+    return math.max(0, effectiveGrowthTime - timePassed)
+end
+
 local function LoadPlantsFromDatabase()
     local result = exports.oxmysql:executeSync('SELECT * FROM cannabis_plants', {})
     if not result then return end
+
     for _, row in ipairs(result) do
         local coords = json.decode(row.coords)
         local uvLightCoords = row.uv_light_coords and json.decode(row.uv_light_coords) or nil
+
         plants[row.plant_id] = {
-            id = row.plant_id, coords = vector3(coords.x, coords.y, coords.z),
-            owner = row.citizenid, seedType = row.seed_type,
-            plantedAt = row.planted_at, waterLevel = row.water_level or 0,
-            waterCount = row.water_count or 0, isReady = row.is_ready == 1,
-            isWithered = row.is_withered == 1, lastWateredAt = row.last_watered_at,
-            growthStartedAt = row.growth_started_at, growthPausedAt = row.growth_paused_at,
+            id = row.plant_id,
+            coords = vector3(coords.x, coords.y, coords.z),
+            owner = row.citizenid,
+            seedType = row.seed_type,
+            plantedAt = row.planted_at,
+            waterLevel = row.water_level or 0,
+            waterCount = row.water_count or 0,
+            isReady = row.is_ready == 1,
+            isWithered = row.is_withered == 1,
+            lastWateredAt = row.last_watered_at,
+            growthStartedAt = row.growth_started_at,
+            growthPausedAt = row.growth_paused_at,
             hasFertilizer = row.has_fertilizer == 1,
             hasUVLight = (row.has_uv_light == 1 or row.has_uv_light == true),
             uvLightCoords = uvLightCoords and vector3(uvLightCoords.x, uvLightCoords.y, uvLightCoords.z) or nil,
         }
+
         local stage, isWithered = CalculatePlantStage(plants[row.plant_id])
         plants[row.plant_id].stage = stage
         plants[row.plant_id].isWithered = isWithered
-
-        local currentTime = os.time() * 1000
-        local seedConfig = Config.SeedTypes[plants[row.plant_id].seedType]
-        if seedConfig and plants[row.plant_id].growthStartedAt then
-            local effectiveGrowthTime = seedConfig.growthTime
-            if plants[row.plant_id].hasFertilizer then
-                effectiveGrowthTime = effectiveGrowthTime * (1 - seedConfig.fertilizerBonus)
-            end
-            local timePassed = currentTime - plants[row.plant_id].growthStartedAt
-            plants[row.plant_id].timeRemaining = math.max(0, effectiveGrowthTime - timePassed)
-        else
-            plants[row.plant_id].timeRemaining = seedConfig and seedConfig.growthTime or 0
-        end
+        plants[row.plant_id].timeRemaining = CalculateTimeRemaining(plants[row.plant_id])
     end
+
     print('^2[tommy-weedplant]^7 Loaded ' .. #result .. ' plants from database')
     Wait(1000)
-    TriggerClientEvent('tommy-weedplant:client:syncPlants', -1, plants)
+
+    local syncData = {}
+    for plantId, plant in pairs(plants) do
+        syncData[plantId] = {}
+        for k, v in pairs(plant) do
+            syncData[plantId][k] = v
+        end
+        syncData[plantId].timeRemaining = CalculateTimeRemaining(plant)
+    end
+
+    TriggerClientEvent('tommy-weedplant:client:syncPlants', -1, syncData)
 end
 
 local function SavePlantToDatabase(plant)
@@ -655,7 +689,18 @@ RegisterNetEvent('tommy-weedplant:server:requestSync', function()
     local src = source
     local player = exports.qbx_core:GetPlayer(src)
     if not player then return end
-    TriggerClientEvent('tommy-weedplant:client:syncPlants', src, plants)
+
+    local syncData = {}
+    for plantId, plant in pairs(plants) do
+        syncData[plantId] = {}
+        for k, v in pairs(plant) do
+            syncData[plantId][k] = v
+        end
+        syncData[plantId].timeRemaining = CalculateTimeRemaining(plant)
+    end
+
+    TriggerClientEvent('tommy-weedplant:client:syncPlants', src, syncData)
+
     local citizenid = player.PlayerData.citizenid
     TriggerClientEvent('tommy-weedplant:client:updatePlantCount', src, GetPlayerPlantCount(citizenid))
 end)

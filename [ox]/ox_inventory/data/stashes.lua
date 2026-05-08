@@ -90,7 +90,7 @@ return {
 		label = 'Tủ Kho',
 		owner = false,
 		slots = 100,
-		weight = 1000000,
+		weight = 2000000,
 		groups = {['mechanic'] = 1}
 	},
 

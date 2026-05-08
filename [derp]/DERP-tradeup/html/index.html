@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="hidden">
+    <div class="overlay">
+        <div class="container">
+
+            <div class="header">
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <span class="header-title">TRAO ĐỔI QUẦN ÁO</span>
+                    <span class="header-sub">9 món cùng cấp → 1 món cấp kế tiếp</span>
+                </div>
+                <button id="btn-close">✕</button>
+            </div>
+
+            <div class="main">
+                <!-- LEFT: material selection -->
+                <div class="panel-left">
+                    <div class="section-label">
+                        NGUYÊN LIỆU
+                        <span id="mat-count" class="badge">0 / 9</span>
+                    </div>
+                    <div class="rarity-info" id="rarity-info">Chọn 9 món cùng cấp để trao đổi</div>
+                    <div id="mat-grid" class="item-grid scrollable"></div>
+                </div>
+
+                <!-- RIGHT: result reveal -->
+                <div class="panel-right">
+                    <div class="result-stage">
+                        <div class="result-card" id="result-card">
+                            <div class="result-placeholder" id="result-placeholder">?</div>
+                            <img id="result-img" alt="">
+                            <span class="result-rarity-dot" id="result-rarity-dot"></span>
+                        </div>
+                        <div class="result-label" id="result-label">CHƯA CÓ KẾT QUẢ</div>
+                    </div>
+
+                    <div class="rarity-flow" id="rarity-flow">-- → --</div>
+
+                    <div class="gender-row">
+                        <span class="gender-label">GIỚI TÍNH</span>
+                        <div class="gender-toggle">
+                            <button class="gender-btn active" data-gender="0">NAM</button>
+                            <button class="gender-btn" data-gender="1">NỮ</button>
+                        </div>
+                    </div>
+
+                    <div class="hint-text" id="hint-text">Chọn 9 món cùng cấp</div>
+                    <button id="btn-tradeup" disabled>TRAO ĐỔI</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

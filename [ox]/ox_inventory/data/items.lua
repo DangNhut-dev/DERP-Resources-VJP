@@ -2467,6 +2467,165 @@ return {
 		client = {
 			event = 'kzo_contract:useitem'
 		}
-	}
+	},
+
+	['boombox_white_large'] = {
+		label = 'Large Boombox (White)',
+		weight = 160,
+	},
+	['boombox_red_large'] = {
+		label = 'Large Boombox (Red)',
+		weight = 160,
+	},
+	['boombox_purple_large'] = {
+		label = 'Large Boombox (Purple)',
+		weight = 160,
+	},
+	['boombox_pink_large'] = {
+		label = 'Large Boombox (Pink)',
+		weight = 160,
+	},
+	['boombox_orange_large'] = {
+		label = 'Large Boombox (Orange)',
+		weight = 160,
+	},
+	['boombox_green_large'] = {
+		label = 'Large Boombox (Green)',
+		weight = 160,
+	},
+	['boombox_blue_large'] = {
+		label = 'Large Boombox (Blue)',
+		weight = 160,
+	},
+
+	['boombox_white_medium'] = {
+		label = 'Medium Boombox (White)',
+		weight = 160,
+	},
+	['boombox_red_medium'] = {
+		label = 'Medium Boombox (Red)',
+		weight = 160,
+	},
+	['boombox_purple_medium'] = {
+		label = 'Medium Boombox (Purple)',
+		weight = 160,
+	},
+	['boombox_pink_medium'] = {
+		label = 'Medium Boombox (Pink)',
+		weight = 160,
+	},
+	['boombox_orange_medium'] = {
+		label = 'Medium Boombox (Orange)',
+		weight = 160,
+	},
+	['boombox_green_medium'] = {
+		label = 'Medium Boombox (Green)',
+		weight = 160,
+	},
+	['boombox_blue_medium'] = {
+		label = 'Medium Boombox (Blue)',
+		weight = 160,
+	},
+
+	['boombox_white_small'] = {
+		label = 'Small Boombox (White)',
+		weight = 160,
+	},
+	['boombox_red_small'] = {
+		label = 'Small Boombox (Red)',
+		weight = 160,
+	},
+	['boombox_purple_small'] = {
+		label = 'Small Boombox (Purple)',
+		weight = 160,
+	},
+	['boombox_pink_small'] = {
+		label = 'Small Boombox (Pink)',
+		weight = 160,
+	},
+	['boombox_orange_small'] = {
+		label = 'Small Boombox (Orange)',
+		weight = 160,
+	},
+	['boombox_green_small'] = {
+		label = 'Small Boombox (Green)',
+		weight = 160,
+	},
+	['boombox_blue_small'] = {
+		label = 'Small Boombox (Blue)',
+		weight = 160,
+	},
+
+	['heistpack_drone'] = {
+		label = 'Drone',
+		weight = 3000,
+		stack = false,
+		close = true,
+		description = 'Drone chiến thuật dùng cho các phi vụ cướp chuyên nghiệp.'
+	},
+
+	['gasmask'] = {
+		label = 'Mặt Nạ Phòng Độc',
+		weight = 1000,
+		stack = false,
+		close = true,
+		description = 'Bảo vệ khỏi khí độc và khói nguy hiểm.'
+	},
+
+	['heistpack_drill'] = {
+		label = 'Máy Khoan Công Nghiệp',
+		weight = 5000,
+		stack = false,
+		close = true,
+		description = 'Máy khoan chuyên dụng để phá két và cửa kho bạc.'
+	},
+
+	-- ['weapon_hackingdevice'] = {
+	-- 	label = 'Thiết Bị Hack',
+	-- 	weight = 1500,
+	-- 	stack = false,
+	-- 	close = true,
+	-- 	description = 'Thiết bị điện tử dùng để xâm nhập hệ thống bảo mật.'
+	-- },
+
+	['heavy_rope'] = {
+		label = 'Dây Thừng Cỡ Lớn',
+		weight = 2500,
+		stack = true,
+		close = true,
+		description = 'Loại dây chắc chắn có thể kéo vật nặng.'
+	},
+
+	['weapon_stickybomb'] = {
+		label = 'Bom Dính',
+		weight = 2000,
+		stack = false,
+		close = true,
+		description = 'Chất nổ có khả năng bám dính lên bề mặt.'
+	},
+
+	['heistpack_anchor'] = {
+		label = 'Mỏ Neo',
+		weight = 4000,
+		stack = false,
+		close = true,
+		description = 'Mỏ neo hạng nặng dùng trong các phi vụ tàu hàng.'
+	},
+
+	['heistpack_grinder'] = {
+		label = 'Máy Cắt Cầm Tay',
+		weight = 3500,
+		stack = false,
+		close = true,
+		description = 'Máy cắt dùng để phá khóa và cắt kim loại.'
+	},
+
+	['heistpack_tablet'] = {
+		label = 'Máy Tính Bảng Nhiệm Vụ',
+		weight = 1800,
+		stack = false,
+		close = true,
+		description = 'Máy tính bảng chuyên dụng.'
+	},
 }
 
