@@ -80,8 +80,8 @@ return {
         },
         ["atm_robbery"] = {
             level = 1,
-            requiredCops = 2,
-            maxMemberCount = 2,
+            requiredCops = 0,
+            maxMemberCount = 5,
             simultaneous = 2,
 
             scenarioCooldown = 0,

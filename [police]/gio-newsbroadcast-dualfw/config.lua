@@ -34,24 +34,24 @@ Config.AnnouncementTypes = {
         header    = 'EMS NEWS',
         subheader = 'EMERGENCY MEDICAL SERVICES',
         color     = '#cc0000',
-        cooldown  = 30          -- seconds between broadcasts per player (0 = disabled)
+        cooldown  = 60          -- seconds between broadcasts per player (0 = disabled)
     },
     ['police'] = {
         job       = 'police',   -- Change to match your server's job name
-        grade     = 7,          -- Change: 0 = any officer, 3 = sergeant+, 5 = command only
+        grade     = 3,          -- Change: 0 = any officer, 3 = sergeant+, 5 = command only
         header    = 'PD NEWS',
         subheader = 'LOS SANTOS POLICE DEPARTMENT',
         color     = '#cc0000',
-        cooldown  = 30          -- seconds between broadcasts per player (0 = disabled)
+        cooldown  = 60          -- seconds between broadcasts per player (0 = disabled)
     },
-    -- ['gov'] = {
-    --     job       = 'gov',
-    --     grade     = 1,          -- Change: 0 = any gov employee, 1 = senior staff+
-    --     header    = 'GOV NEWS',
-    --     subheader = 'CITY GOVERNMENT',
-    --     color     = '#cc0000',
-    --     cooldown  = 60          -- seconds between broadcasts per player (0 = disabled)
-    -- },
+    ['lsnews'] = {
+        job       = 'lsnews',
+        grade     = 1,          -- Change: 0 = any gov employee, 1 = senior staff+
+        header    = 'LS NEWS',
+        subheader = 'LOS SANTOS NEWS',
+        color     = '#cc0000',
+        cooldown  = 60          -- seconds between broadcasts per player (0 = disabled)
+    },
     -- ['event'] = {
     --     job       = false,      -- false = no job required
     --     grade     = 0,          -- ignored when job = false
