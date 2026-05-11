@@ -1,0 +1,95 @@
+$color: #38d989;
+$color2: rgba(56, 217, 137, 0.72);
+$muted: rgba(243, 255, 248, 0.68);
+
+.job_progress{
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translate(0, -50%);
+    background:
+        radial-gradient(circle at 15% 0%, rgba($color, 0.18), transparent 38%),
+        linear-gradient(145deg, rgba(8, 17, 14, 0.94), rgba(13, 29, 23, 0.94));
+    border: 1px solid rgba($color, 0.18);
+    box-shadow: var(--landscape-shadow);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 16px;
+    min-width: 230px;
+
+    .info{
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: $color;
+    }
+
+    .line{
+        width: 100%;
+        min-width: 150px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba($color, 0.35), transparent);
+    }
+
+    .data{
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        width: 100%;
+        .dd{
+            position: relative;
+            font-size: .82rem;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 14px;
+            padding: 9px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            .finished_line{
+                position: absolute;
+                left: 8px;
+                right: 8px;
+                width: 0%;
+                height: 2px;
+                background-color: rgba(255, 255, 255, 0.82);
+                top: 50%;
+                transform: translate(0, -50%);
+                animation: finished_line_animation 1s forwards 1s;
+            }
+
+            .left{
+                flex-grow: 1;
+                color: $muted;
+                span:first-child{
+                    margin-right: 5px;
+                    font-weight: 800;
+                    color: white;
+                }
+            }
+
+            & > span:last-child{
+                color: $color;
+                font-weight: 800;
+            }
+        }
+    }
+}
+
+@keyframes finished_line_animation {
+    0%{
+        width: 0%;
+    }
+
+    100%{
+        width: calc(100% - 16px);
+    }
+}

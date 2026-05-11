@@ -1,0 +1,71 @@
+$color: #38d989;
+$color2: rgba(56, 217, 137, 0.72);
+$muted: rgba(243, 255, 248, 0.68);
+
+.notification{
+    background:
+        radial-gradient(circle at 16% 0%, rgba($color, 0.18), transparent 42%),
+        linear-gradient(145deg, rgba(8, 17, 14, 0.94), rgba(13, 29, 23, 0.94));
+    border: 1px solid rgba($color, 0.18);
+    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.34);
+    padding: 13px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    max-width: 320px;
+    overflow: hidden;
+    transform: translateX(1000px);
+    animation: anim 7.5s forwards;
+
+    .text{
+        display: flex;
+        flex-direction: column;
+        width: 270px;
+        font-size: .82rem;
+        color: $muted;
+        line-height: 1.35;
+        span:first-child{
+            font-size: 1.0rem;
+            font-weight: 850;
+            color: $color;
+        }
+    }
+
+    .pb{
+        position: relative;
+        min-width: 270px;
+        width: 270px;
+        height: 7px;
+        background-color: rgba($color, 0.16);
+        border-radius: 999px;
+        overflow: hidden;
+
+        .p_bar{
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, $color, #9dffd0);
+            border-radius: 999px;
+            transition: width 5s linear;
+        }
+    }
+}
+
+@keyframes anim {
+    0%{
+        transform: translate(1000px);
+    }
+    
+    10%{
+        transform: translate(0px);
+    }
+    
+    90%{
+        transform: translate(0px);
+    }
+    
+    100%{
+        transform: translate(1000px);
+    }
+}
