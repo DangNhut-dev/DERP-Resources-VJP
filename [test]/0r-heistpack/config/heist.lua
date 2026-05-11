@@ -9,10 +9,10 @@ return {
 
     employers = {
         {
-            coords = vector4(-159.65, -993.95, 179.12, 326.20),
+            coords = vector4(-79.36, 6220.69, 46.30, 31.07),
             pedModel = "s_m_m_movprem_01",
             vehicleSpawnPoints = {
-                vector4(-159.65, -993.95, 179.12, 326.20),
+                vector4(-94.73, 6181.13, 30.57, 130.39),
             },
         },
     },
