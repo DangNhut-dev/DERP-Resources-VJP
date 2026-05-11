@@ -1,0 +1,35 @@
+// @import url('https://fonts.cdnfonts.com/css/gilroy-bold?styles=20876,20877,20878,20879,20880');
+
+:root {
+  --landscape-primary: #38d989;
+  --landscape-primary-soft: rgba(56, 217, 137, 0.18);
+  --landscape-primary-strong: rgba(56, 217, 137, 0.9);
+  --landscape-panel: rgba(9, 18, 15, 0.92);
+  --landscape-panel-2: rgba(14, 29, 24, 0.9);
+  --landscape-card: rgba(255, 255, 255, 0.065);
+  --landscape-card-hover: rgba(255, 255, 255, 0.105);
+  --landscape-line: rgba(255, 255, 255, 0.11);
+  --landscape-text: #f3fff8;
+  --landscape-muted: rgba(243, 255, 248, 0.62);
+  --landscape-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+}
+
+body {
+  margin: 0;
+  // font-family: 'Gilroy-Medium', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  overflow: hidden;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  // font-family: 'Gilroy-Medium', sans-serif;
+}
+
+#root {
+  height: 100%
+}

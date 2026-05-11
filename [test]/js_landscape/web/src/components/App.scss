@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..800&display=swap');
+
+body {
+    user-select: none;
+    font-family: "Wix Madefor Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--landscape-text);
+    padding: 0;
+    margin: 0;
+}
+
+.kariee_container{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    .bgg{
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .notifications{
+        position: absolute;
+        right: 1.5rem;
+        top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        z-index: 150;
+    }
+}
+
+.minigames{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 125;
+}

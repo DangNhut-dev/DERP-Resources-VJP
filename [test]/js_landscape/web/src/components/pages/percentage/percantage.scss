@@ -1,0 +1,109 @@
+$color: #38d989;
+$color2: rgba(56, 217, 137, 0.72);
+$muted: rgba(243, 255, 248, 0.68);
+
+.percentage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background:
+        radial-gradient(circle at 20% 0%, rgba($color, 0.22), transparent 45%),
+        linear-gradient(145deg, rgba(8, 17, 14, 0.95), rgba(13, 29, 23, 0.95));
+    border: 1px solid rgba($color, 0.18);
+    box-shadow: var(--landscape-shadow);
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 20px;
+    z-index: 100;
+    min-width: 340px;
+
+
+    input {
+        background-color: rgba(0, 0, 0, 0.28);
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        outline: unset;
+        margin-top: 14px;
+        border-radius: 14px;
+        color: white;
+        font-weight: 800;
+        min-width: 300px;
+        text-align: center;
+        font-size: 1.2rem;
+        transition: border-color 0.2s ease, background 0.2s ease;
+
+        &:focus{
+            border-color: rgba($color, 0.45);
+            background: rgba($color, 0.08);
+        }
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    }
+
+    .text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 4px;
+
+        span:first-child {
+            color: $muted;
+            font-size: .82rem;
+
+            span {
+                color: $color;
+                font-size: .82rem;
+                font-weight: 800;
+            }
+        }
+
+        span:last-child {
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+    }
+
+    .btns {
+        display: flex;
+        width: 100%;
+        gap: 10px;
+        margin-top: 12px;
+
+        .btn {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $color;
+            background: rgba($color, 0.12);
+            border: 1px solid rgba($color, 0.2);
+            border-radius: 14px;
+            padding: 10px;
+            font-weight: 800;
+            transition: background 0.2s ease, scale 0.2s ease;
+
+            &:hover {
+                background: rgba($color, 0.2);
+            }
+
+            &:active {
+                scale: 0.95;
+            }
+        }
+    }
+
+    .info {
+        text-align: center;
+        opacity: .65;
+        font-size: .72rem;
+        margin-top: 5px;
+    }
+}

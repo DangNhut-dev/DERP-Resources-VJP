@@ -1,0 +1,103 @@
+$color: #38d989;
+$color2: rgba(56, 217, 137, 0.72);
+:root {
+    --color: #38d989;
+    --color2: rgba(56, 217, 137, 0.72);
+}
+
+.minigame_holes{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+
+    .title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        .tit{
+            font-weight: 850;
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+            font-size: 1.35rem;
+            letter-spacing: .02em;
+        }
+        .rem{
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+            font-size: 1.0rem;
+            color: rgba(243, 255, 248, 0.72);
+            span{
+                color: $color;
+                font-weight: 850;
+            }
+        }
+    }
+
+    .keys{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5vw;
+        background:
+            radial-gradient(circle at 16% 0%, rgba($color, 0.2), transparent 42%),
+            linear-gradient(145deg, rgba(8, 17, 14, 0.94), rgba(13, 29, 23, 0.94));
+        border: 1px solid rgba($color, 0.22);
+        padding: 0.6vw;
+        border-radius: 1vw;
+        font-weight: 850;
+
+    }
+
+    .click_container{
+        position: relative;
+        width: min(650px, 64vh);
+        height: min(650px, 64vh);
+        background:
+            radial-gradient(circle at center, rgba($color, 0.08), transparent 62%),
+            linear-gradient(145deg, rgba(8, 17, 14, 0.94), rgba(13, 29, 23, 0.94));
+        border: 1px solid rgba($color, 0.2);
+        box-shadow: var(--landscape-shadow);
+        border-radius: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .p_bar_container{
+        position: relative;
+        height: 10px;
+        background: rgba(8, 17, 14, 0.94);
+        border: 1px solid rgba($color, 0.22);
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.28);
+
+        .p_bar{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 999px;
+            .pb{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, $color 0%, #9dffd0 100%);
+                border-radius: 999px;
+                transition: width 0.1s;
+            }
+        }
+    }
+}

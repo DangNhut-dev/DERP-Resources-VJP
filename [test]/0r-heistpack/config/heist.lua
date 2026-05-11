@@ -80,8 +80,8 @@ return {
         },
         ["atm_robbery"] = {
             level = 1,
-            requiredCops = 2,
-            maxMemberCount = 2,
+            requiredCops = 0,
+            maxMemberCount = 5,
             simultaneous = 2,
 
             scenarioCooldown = 0,
@@ -231,7 +231,7 @@ return {
         },
         ["ammunation_robbery"] = {
             level = 1,
-            requiredCops = 6,
+            requiredCops = 0,
             maxMemberCount = 10,
 
             scenarioCooldown = SHARED_CONFIG.gameplay.cooldowns.long,
@@ -305,7 +305,7 @@ return {
         },
         ["truck_robbery"] = {
             level = 1,
-            requiredCops = 5,
+            requiredCops = 0,
             maxMemberCount = 8,
 
             scenarioCooldown = SHARED_CONFIG.gameplay.cooldowns.medium,
