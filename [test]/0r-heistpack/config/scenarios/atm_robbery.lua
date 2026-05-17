@@ -24,14 +24,14 @@ return {
 
         ---@type RewardItem[]
         rewards = {
-            { itemName = "money", chance = 1.0, quantity = { min = 1000, max = 3000 } },
+            { itemName = "black_money", chance = 1.0, quantity = { min = 200, max = 500 } },
         }
     },
 
     hackingOptions = {
         ---@type RewardItem[]
         rewards = {
-            { itemName = "money", chance = 1.0, quantity = { min = 2000, max = 5000 } },
+            { itemName = "black_money", chance = 1.0, quantity = { min = 200, max = 500 } },
         }
     },
 
@@ -49,7 +49,7 @@ return {
 
         ---@type RewardItem[]
         rewards = {
-            { itemName = "money", chance = 1.0, quantity = { min = 3000, max = 7000 } },
+            { itemName = "black_money", chance = 1.0, quantity = { min = 200, max = 500 } },
         }
     },
 
@@ -63,7 +63,7 @@ return {
         positionOffset = vector3(0.0, -0.5, 0.0), ---@type RewardItem[]
 
         rewards = {
-            { itemName = "money", chance = 1.0, quantity = { min = 2500, max = 6000 } },
+            { itemName = "black_money", chance = 1.0, quantity = { min = 200, max = 500 } },
         }
     },
 

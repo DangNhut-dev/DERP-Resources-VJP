@@ -182,6 +182,8 @@ local function LoadPlantsFromDatabase()
     local result = exports.oxmysql:executeSync('SELECT * FROM cannabis_plants', {})
     if not result then return end
 
+    local currentTime = os.time() * 1000
+
     for _, row in ipairs(result) do
         local coords = json.decode(row.coords)
         local uvLightCoords = row.uv_light_coords and json.decode(row.uv_light_coords) or nil
@@ -194,20 +196,46 @@ local function LoadPlantsFromDatabase()
             plantedAt = row.planted_at,
             waterLevel = row.water_level or 0,
             waterCount = row.water_count or 0,
-            isReady = row.is_ready == 1,
-            isWithered = row.is_withered == 1,
+            isReady = (row.is_ready == 1 or row.is_ready == true),
+            isWithered = (row.is_withered == 1 or row.is_withered == true),
             lastWateredAt = row.last_watered_at,
             growthStartedAt = row.growth_started_at,
             growthPausedAt = row.growth_paused_at,
-            hasFertilizer = row.has_fertilizer == 1,
+            hasFertilizer = (row.has_fertilizer == 1 or row.has_fertilizer == true),
             hasUVLight = (row.has_uv_light == 1 or row.has_uv_light == true),
             uvLightCoords = uvLightCoords and vector3(uvLightCoords.x, uvLightCoords.y, uvLightCoords.z) or nil,
+            lastWaterUpdate = currentTime,
         }
 
-        local stage, isWithered = CalculatePlantStage(plants[row.plant_id])
-        plants[row.plant_id].stage = stage
-        plants[row.plant_id].isWithered = isWithered
-        plants[row.plant_id].timeRemaining = CalculateTimeRemaining(plants[row.plant_id])
+        local plant = plants[row.plant_id]
+        local seedConfig = Config.SeedTypes[plant.seedType]
+
+        if seedConfig and plant.growthStartedAt and not plant.isReady and not plant.isWithered then
+            local referenceTime = plant.lastWateredAt or plant.growthStartedAt
+            local offlineElapsed = currentTime - referenceTime
+
+            if seedConfig.waterRequirement.enabled and seedConfig.waterRequirement.drainRate > 0 then
+                local maxWater = seedConfig.waterRequirement.maxWater
+                local drainRate = seedConfig.waterRequirement.drainRate
+                local timeUntilDry = (plant.waterLevel / drainRate) * 1000
+
+                if offlineElapsed >= timeUntilDry then
+                    plant.waterLevel = 0
+                    if not plant.growthPausedAt then
+                        plant.growthPausedAt = referenceTime + timeUntilDry
+                    end
+                else
+                    plant.waterLevel = math.max(0, plant.waterLevel - (offlineElapsed / 1000) * drainRate)
+                end
+            end
+
+            -- UpdatePlantInDatabase(plant)
+        end
+
+        local stage, isWithered = CalculatePlantStage(plant)
+        plant.stage = stage
+        plant.isWithered = isWithered
+        plant.timeRemaining = CalculateTimeRemaining(plant)
     end
 
     print('^2[tommy-weedplant]^7 Loaded ' .. #result .. ' plants from database')

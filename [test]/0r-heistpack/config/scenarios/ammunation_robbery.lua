@@ -6,13 +6,13 @@ return {
 
     guardWeapon = "WEAPON_CARBINERIFLE",
 
-    requiredGrinderItem = { itemName = "heistpack_grinder", label = "Grinder" },
+    requiredGrinderItem = { itemName = "heistpack_grinder", label = "Máy Cắt Cầm Tay" },
 
     ---@type RewardItem[]
     lootableRewards = {
-        { itemName = "black_money",         chance = 1.0, quantity = { min = 10000, max = 20000 } },
-        { itemName = "weapon_glock17", chance = 1.0, quantity = { min = 3, max = 5 } },
-        { itemName = "ammo-9", chance = 1.0, quantity = { min = 300, max = 500 } },
+        { itemName = "black_money",         chance = 1.0, quantity = { min = 5000, max = 10000 } },
+        { itemName = "weapon_glock17", chance = 1.0, quantity = { min = 2, max = 5 } },
+        { itemName = "ammo-9", chance = 1.0, quantity = { min = 200, max = 500 } },
         -- { itemName = "weapon_smg",    chance = 0.4, quantity = { min = 1, max = 1 } },
         -- { itemName = "weapon_ammo",   chance = 0.9, quantity = { min = 100, max = 200 } },
     },

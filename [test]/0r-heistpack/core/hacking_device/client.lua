@@ -105,7 +105,7 @@ function HackingDeviceClientClass.new()
         textureName = "0resmon_heistpack_dui_tex",
         weaponModel = "w_am_hackdevice_m32",
         textureTarget = "script_rt_w_am_hackdevice_m32",
-        requiredWeapon = "weapon_hackingdevice",
+        requiredWeapon = "weapon_digiscanner",
     }
 
     return self

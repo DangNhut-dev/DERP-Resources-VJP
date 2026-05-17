@@ -7,10 +7,10 @@ local function setJailStatus(src, jailTime)
     if not player then return end
     player.Functions.SetMetaData("injail", jailTime)
     if jailTime > 0 then
-        if player.PlayerData.job.name ~= "unemployed" then
-            player.Functions.SetJob("unemployed")
-            exports.qbx_core:Notify(src, locale("info.lost_job"))
-        end
+        -- if player.PlayerData.job.name ~= "unemployed" then
+        --     player.Functions.SetJob("unemployed")
+        --     exports.qbx_core:Notify(src, locale("info.lost_job"))
+        -- end
     else
         gotItems[src] = nil
     end

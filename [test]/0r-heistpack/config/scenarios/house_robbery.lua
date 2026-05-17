@@ -23,7 +23,7 @@ return {
 
     ---@section EQUIPMENT CONFIGURATION
     hackingDeviceOptions = {
-        itemName = "weapon_hackingdevice",
+        itemName = "weapon_digiscanner",
     },
 
     ---@section PROP PRICING

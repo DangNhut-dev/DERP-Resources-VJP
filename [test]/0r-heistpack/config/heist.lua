@@ -55,7 +55,7 @@ return {
         ["house_robbery"] = {
             isActive = false, 
             level = 1,
-            requiredCops = 1,
+            requiredCops = 0,
             maxMemberCount = 4,
             simultaneous = 1,
 
@@ -72,7 +72,7 @@ return {
 
             infoTexts = {
                 "Nếu thiếu vật phẩm, hãy đến chợ để mua.",
-                "Đến khu vực được đánh dấu trên bản đồ và dùng hacking_device để đột nhập vào nhà.",
+                "Đến khu vực được đánh dấu trên bản đồ và dùng máy dò để đột nhập vào nhà.",
                 "Lục soát các phòng để tìm đồ có giá trị như tiền mặt, trang sức và đồ điện tử.",
                 "Thu thập càng nhiều đồ có giá trị càng tốt.",
                 "Di chuyển đủ xa để kết thúc vụ cướp và quay lại gặp chủ thuê.",
@@ -80,8 +80,8 @@ return {
         },
         ["atm_robbery"] = {
             level = 1,
-            requiredCops = 0,
-            maxMemberCount = 5,
+            requiredCops = 4,
+            maxMemberCount = 4,
             simultaneous = 2,
 
             scenarioCooldown = 0,
@@ -105,8 +105,8 @@ return {
         ["store_robbery"] = {
             isActive = false, 
             level = 1,
-            requiredCops = 1,
-            maxMemberCount = 3,
+            requiredCops = 3,
+            maxMemberCount = 4,
             simultaneous = 2,
 
             scenarioDuration = SHARED_CONFIG.gameplay.maxDuration.short,
@@ -231,8 +231,8 @@ return {
         },
         ["ammunation_robbery"] = {
             level = 1,
-            requiredCops = 0,
-            maxMemberCount = 10,
+            requiredCops = 6,
+            maxMemberCount = 8,
 
             scenarioCooldown = SHARED_CONFIG.gameplay.cooldowns.long,
             playerCooldown = SHARED_CONFIG.gameplay.cooldowns.short,
@@ -304,8 +304,9 @@ return {
             },
         },
         ["truck_robbery"] = {
+            isActive = false, 
             level = 1,
-            requiredCops = 0,
+            requiredCops = 8,
             maxMemberCount = 8,
 
             scenarioCooldown = SHARED_CONFIG.gameplay.cooldowns.medium,

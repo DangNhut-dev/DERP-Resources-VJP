@@ -3,7 +3,7 @@
 --]]
 
 return {
-    enabled = true, -- Enable or disable the market system.
+    enabled = false, -- Enable or disable the market system.
 
     -- Drone delivery settings
     droneDeliveryOptions = {
@@ -15,14 +15,14 @@ return {
 
     -- Items available for purchase in the market
     items = {
-        { itemName = "heistpack_drone",      price = 5000,  label = "Heist Drone",    scenario = "Vangelico Robbery" },
-        { itemName = "gasmask",              price = 1500,  label = "Gas Mask",       scenario = "Vangelico Robbery" },
-        { itemName = "heistpack_drill",      price = 10000, label = "Heist Drill",    scenario = "Vangelico Robbery" },
-        { itemName = "lockpick",             price = 500,   label = "Lockpick",       scenario = "General Heists" },
-        { itemName = "weapon_hackingdevice", price = 2000,  label = "Hacking Device", scenario = "House Robbery,ATM Robbery" },
-        { itemName = "heavy_rope",           price = 800,   label = "Heavy Rope",     scenario = "ATM Robbery" },
-        { itemName = "weapon_stickybomb",    price = 12000, label = "Sticky Bomb",    scenario = "Bank Heist" },
-        { itemName = "heistpack_anchor",     price = 3000,  label = "Anchor",         scenario = "Cargo Ship Robbery" },
-        { itemName = "heistpack_grinder",    price = 5000,  label = "Angle Grinder",  scenario = "Ammunation Robbery" }
+        { itemName = "heistpack_drone",      price = 5000,  label = "Drone Trinh Sát",    scenario = "Vangelico Robbery" },
+        { itemName = "gasmask",              price = 1500,  label = "Mặt Nạ Phòng Độc",   scenario = "Vangelico Robbery" },
+        { itemName = "heistpack_drill",      price = 10000, label = "Máy Khoan",          scenario = "Vangelico Robbery" },
+        { itemName = "lockpick",             price = 500,   label = "Đồ Cạy Khóa",        scenario = "General Heists" },
+        { itemName = "weapon_hackingdevice", price = 2000,  label = "Thiết Bị Hack",      scenario = "House Robbery,ATM Robbery" },
+        { itemName = "heavy_rope",           price = 800,   label = "Dây Thừng Chắc",     scenario = "ATM Robbery" },
+        { itemName = "weapon_stickybomb",    price = 12000, label = "Bom Dính",           scenario = "Bank Heist" },
+        { itemName = "heistpack_anchor",     price = 3000,  label = "Mỏ Neo",             scenario = "Cargo Ship Robbery" },
+        { itemName = "heistpack_grinder",    price = 5000,  label = "Máy Cắt Cầm Tay",        scenario = "Ammunation Robbery" }
     }
 }

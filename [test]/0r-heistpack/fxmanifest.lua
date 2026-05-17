@@ -32,6 +32,7 @@ server_scripts {
 	"@oxmysql/lib/MySQL.lua",
 	"core/**/server.lua",
 	"server.lua",
+    'modules/utils/server.lua',
 }
 
 ui_page "ui/build/index.html"

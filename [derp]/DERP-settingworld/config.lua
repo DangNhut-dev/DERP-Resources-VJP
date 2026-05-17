@@ -1,7 +1,7 @@
 Config = {}
 
-Config.DisableCrouch = true
-Config.AntiJumpSpam = true
+Config.DisableCrouch = false
+Config.AntiJumpSpam = false
 Config.JumpCooldown = 1500 -- ms
 Config.AntiPunchSpam = false
 Config.PunchCooldown = 800 -- ms

@@ -1,7 +1,7 @@
 Config = {}
 
 Config.progressPerCatch = 1
-Config.xpPerLevel = 10000
+Config.xpPerLevel = 5000
 
 ---@class Fish
 ---@field minLevel integer

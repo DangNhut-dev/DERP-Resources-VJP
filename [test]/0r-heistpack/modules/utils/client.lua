@@ -98,7 +98,10 @@ end
 ---@param message string
 ---@param coords vector3
 function Utils.triggerPoliceAlert(key, message, coords)
-    -- ? Use your own alert dispatch script export/event
+    local streetHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+    local streetLabel = streetHash ~= 0 and GetStreetNameFromHashKey(streetHash) or 'Không xác định'
+
+    TriggerServerEvent('utils:triggerPoliceAlert', key, message, coords, streetLabel)
 end
 
 function Utils.canPlayerOpenHeistMenu()

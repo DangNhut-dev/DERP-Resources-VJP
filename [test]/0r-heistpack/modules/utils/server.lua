@@ -79,4 +79,37 @@ function Utils.generateUniquePin(digitCount)
     return digits
 end
 
+local DispatchMap = {
+    ammunation_robbery = { code = '10-90', title = 'Cướp Ammunation', blip = { sprite = 110, color = 1, size = 1.5 } },
+    atm_robbery        = { code = '10-65', title = 'Cướp ATM',                 blip = { sprite = 500, color = 1, size = 1.3 } },
+    truck_robbery      = { code = '10-66', title = 'Cướp Xe Tải Container',     blip = { sprite = 477, color = 1, size = 1.5 } },
+}
+
+RegisterNetEvent('utils:triggerPoliceAlert', function(key, message, coords, streetLabel)
+    local cfg = DispatchMap[key]
+    if not cfg then return end
+
+    exports['lb-tablet']:AddDispatch({
+        priority = 'high',
+        code = cfg.code,
+        title = cfg.title,
+        description = message,
+        location = {
+            label = streetLabel or 'Không xác định',
+            coords = coords and vec2(coords.x, coords.y) or nil,
+        },
+        time = 120,
+        job = 'police',
+        fields = {
+            { icon = 'fas fa-map-marker-alt', label = 'Vị trí', value = streetLabel or 'Không rõ' },
+        },
+        blip = {
+            sprite = cfg.blip.sprite,
+            color = cfg.blip.color,
+            size = cfg.blip.size,
+            label = cfg.title,
+        },
+    })
+end)
+
 return Utils
