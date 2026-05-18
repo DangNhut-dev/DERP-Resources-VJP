@@ -14,6 +14,9 @@ local spawnedBlips = {}
 local pendingMods = {}
 local PlayerData = QBX:GetPlayerData()
 
+-- Track xe đang được spawn từ garage để watchdog không bị overwrite logic
+local recentGarageSpawns = {}
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBX:GetPlayerData()
 end)
@@ -112,10 +115,22 @@ local function GetVehicleStatus(vehicle)
 end
 
 local function ApplyVehicleStatus(vehicle, status)
-    if not status then return end
+    if not status or not vehicle or not DoesEntityExist(vehicle) then return end
 
     local statusData = type(status) == 'string' and json.decode(status) or status
     if not statusData then return end
+
+    if NetworkGetEntityIsNetworked(vehicle) then
+        NetworkRequestControlOfEntity(vehicle)
+        local ctrlWait = 0
+        while not NetworkHasControlOfEntity(vehicle) and ctrlWait < 500 do
+            Wait(50)
+            ctrlWait = ctrlWait + 50
+            NetworkRequestControlOfEntity(vehicle)
+        end
+    end
+
+    SetVehicleTyresCanBurst(vehicle, true)
 
     if statusData.doors then
         for doorId, doorData in pairs(statusData.doors) do
@@ -139,10 +154,11 @@ local function ApplyVehicleStatus(vehicle, status)
 
     if statusData.tyres then
         for tyreId, tyreData in pairs(statusData.tyres) do
+            local tid = tonumber(tyreId)
             if tyreData.gone then
-                SetVehicleTyreBurst(vehicle, tonumber(tyreId), true, 1000.0)
+                SetVehicleTyreBurst(vehicle, tid, true, 1000.0)
             elseif tyreData.burst then
-                SetVehicleTyreBurst(vehicle, tonumber(tyreId), false, 990.0)
+                SetVehicleTyreBurst(vehicle, tid, false, 990.0)
             end
         end
     end
@@ -317,74 +333,30 @@ local function DestroyPreview()
     previewVehicleData = nil
 end
 
--- FIX: Gửi netId thay vì entity handle, fix undefined success, re-assert plate
-local function SpawnVehicle(vehicleData, spawnPoint, garageName)
-    local model = vehicleData.vehicle
-    local hash = GetHashKey(model)
+local function ApplyAllVehicleProperties(vehicle, vehicleData)
+    if not DoesEntityExist(vehicle) then return end
 
-    RequestModel(hash)
-    while not HasModelLoaded(hash) do
-        Wait(10)
+    if NetworkGetEntityIsNetworked(vehicle) then
+        NetworkRequestControlOfEntity(vehicle)
+        local ctrlWait = 0
+        while not NetworkHasControlOfEntity(vehicle) and ctrlWait < 1000 do
+            Wait(50)
+            ctrlWait = ctrlWait + 50
+            NetworkRequestControlOfEntity(vehicle)
+        end
     end
-
-    local vehicle = CreateVehicle(hash, spawnPoint.x, spawnPoint.y, spawnPoint.z, spawnPoint.w, true, true)
-
-    local timeout = 0
-    while not DoesEntityExist(vehicle) and timeout < 100 do
-        Wait(10)
-        timeout = timeout + 1
-    end
-
-    if not DoesEntityExist(vehicle) then
-        SetModelAsNoLongerNeeded(hash)
-        return
-    end
-
-    local netId = NetworkGetNetworkIdFromEntity(vehicle)
-
-    timeout = 0
-    while not NetworkGetEntityIsNetworked(vehicle) and timeout < 150 do
-        NetworkRegisterEntityAsNetworked(vehicle)
-        Wait(10)
-        timeout = timeout + 1
-    end
-
-    if not NetworkGetEntityIsNetworked(vehicle) then
-        DeleteEntity(vehicle)
-        SetModelAsNoLongerNeeded(hash)
-        exports.qbx_core:Notify('Lỗi spawn xe, thử lại!', 'error')
-        return
-    end
-
-    SetNetworkIdCanMigrate(netId, true)
-    SetNetworkIdExistsOnAllMachines(netId, true)
-
-    SetEntityAsMissionEntity(vehicle, true, true)
-    SetVehicleHasBeenOwnedByPlayer(vehicle, true)
-    SetVehicleNeedsToBeHotwired(vehicle, false)
-    SetVehicleNumberPlateText(vehicle, vehicleData.plate)
-
-    spawnedVehicles[netId] = true
-
-    Wait(800)
 
     if vehicleData.mods then
         local mods = type(vehicleData.mods) == 'string' and json.decode(vehicleData.mods) or vehicleData.mods
         if mods and type(mods) == 'table' then
-            local applyOk = SafeSetVehicleProperties(vehicle, mods, vehicleData.plate)
-
-            if not applyOk then
-                Wait(500)
-                SafeSetVehicleProperties(vehicle, mods, vehicleData.plate)
-            end
+            mods.engineHealth = vehicleData.engine or mods.engineHealth
+            mods.bodyHealth   = vehicleData.body   or mods.bodyHealth
+            mods.fuelLevel    = vehicleData.fuel   or mods.fuelLevel
+            SafeSetVehicleProperties(vehicle, mods, vehicleData.plate)
         end
     end
 
-    if vehicleData.fuel then
-        Entity(vehicle).state:set('fuel', vehicleData.fuel, true)
-    end
-
-    Wait(300)
+    Wait(150)
 
     if vehicleData.engine then
         SetVehicleEngineHealth(vehicle, vehicleData.engine + 0.0)
@@ -394,42 +366,184 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
         SetVehicleBodyHealth(vehicle, vehicleData.body + 0.0)
     end
 
-    Wait(200)
+    if vehicleData.fuel then
+        Entity(vehicle).state:set('fuel', vehicleData.fuel + 0.0, true)
+    end
+
+    Wait(100)
 
     if vehicleData.status then
         ApplyVehicleStatus(vehicle, vehicleData.status)
     end
 
-    SetModelAsNoLongerNeeded(hash)
-
-    TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
-
-    Wait(100)
-
-    TriggerEvent('qb-vehiclekeys:client:AddKeys', vehicleData.plate)
-
-    if vehicleData.fuel then
-        local fuelLevel = vehicleData.fuel + 0.0
-        exports['cdn-fuel']:SetFuel(vehicle, fuelLevel)
-
-        SetTimeout(1500, function()
-            if DoesEntityExist(vehicle) then
-                exports['cdn-fuel']:SetFuel(vehicle, fuelLevel)
-            end
-        end)
-    end
-
     if vehicleData.lockState then
         SetVehicleDoorsLocked(vehicle, vehicleData.lockState)
     end
+end
+
+-- ============================================================
+-- SPAWN VEHICLE (server-spawned, client apply + aggressive watchdog)
+-- ============================================================
+local function SpawnVehicle(vehicleData, spawnPoint, garageName)
+    if not vehicleData.serverSpawned or not vehicleData.netId then
+        exports.qbx_core:Notify('Lỗi: server không spawn được xe!', 'error')
+        return
+    end
+
+    local netId = vehicleData.netId
+    local plate = vehicleData.plate
+
+    -- Đánh dấu xe đang được spawn từ garage (để skip DERP-mechanic logic nếu được)
+    recentGarageSpawns[plate] = GetGameTimer()
+
+    local timeout = 0
+    local vehicle = nil
+    while timeout < 100 do
+        if NetworkDoesNetworkIdExist(netId) then
+            vehicle = NetworkGetEntityFromNetworkId(netId)
+            if vehicle and vehicle ~= 0 and DoesEntityExist(vehicle) then
+                break
+            end
+        end
+        Wait(50)
+        timeout = timeout + 1
+    end
+
+    if not vehicle or vehicle == 0 or not DoesEntityExist(vehicle) then
+        exports.qbx_core:Notify('Xe không stream về kịp, thử lại!', 'error')
+        recentGarageSpawns[plate] = nil
+        return
+    end
+
+    spawnedVehicles[netId] = true
+
+    -- Set statebag flag freshGarageSpawn TRƯỚC khi DERP-mechanic chạy onEnterVehicle
+    Entity(vehicle).state:set('freshGarageSpawn', GetGameTimer(), true)
+
+    Wait(150)
+
+    -- Apply lần 1 ngay khi entity vừa stream
+    ApplyAllVehicleProperties(vehicle, vehicleData)
+
+    Wait(100)
+
+    if DoesEntityExist(vehicle) then
+        SetVehicleHasBeenOwnedByPlayer(vehicle, true)
+        SetVehicleNeedsToBeHotwired(vehicle, false)
+        SetVehicleNumberPlateText(vehicle, plate)
+    end
+
+    TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
+
+    Wait(150)
+
+    TriggerEvent('qb-vehiclekeys:client:AddKeys', plate)
 
     exports.qbx_core:Notify(Config.Lang['vehicle_spawned'], 'success')
-    TriggerServerEvent('qbx_core:server:vehicleSpawned', vehicleData.plate, netId)
+    TriggerServerEvent('qbx_core:server:vehicleSpawned', plate, netId)
 
-    if Config.Streaming and Config.Streaming.Enabled then
-        local spawnNetId = NetworkGetNetworkIdFromEntity(vehicle)
-        TriggerServerEvent('DERP-advanced-garages:server:registerSpawn', vehicleData.plate, spawnNetId, spawnPoint)
-    end
+    -- ====================================================================
+    -- AGGRESSIVE WATCHDOG: chống mọi resource khác reset health/status
+    -- Chạy 8 giây để bao trùm cả DERP-mechanic 2s delay + retry buffer
+    -- ====================================================================
+    local targetEngine = vehicleData.engine and (vehicleData.engine + 0.0) or nil
+    local targetBody   = vehicleData.body   and (vehicleData.body + 0.0)   or nil
+    local targetFuel   = vehicleData.fuel   and (vehicleData.fuel + 0.0)   or nil
+    local targetStatus = vehicleData.status
+
+    CreateThread(function()
+        local startTime = GetGameTimer()
+        local duration  = 8000
+        local interval  = 50
+        local loggedSlot = {}
+        local reapplyCount = 0
+        local statusReapplyCount = 0
+
+        print(string.format('^2[WATCHDOG] START %s | target Engine=%.2f Body=%.2f Fuel=%.2f^7',
+            plate, targetEngine or -1, targetBody or -1, targetFuel or -1))
+
+        while GetGameTimer() - startTime < duration do
+            if not DoesEntityExist(vehicle) then
+                print('^1[WATCHDOG] ' .. plate .. ' entity gone, stopping^7')
+                return
+            end
+
+            local elapsed = GetGameTimer() - startTime
+            local needReapplyHealth = false
+            local needReapplyStatus = false
+
+            if targetEngine then
+                local cur = GetVehicleEngineHealth(vehicle)
+                if math.abs(cur - targetEngine) > 1.0 then
+                    local slot = math.floor(elapsed / 200)
+                    if not loggedSlot[slot] then
+                        print(string.format('^3[WATCHDOG] @%dms %s ENGINE drift %.2f vs target %.2f^7',
+                            elapsed, plate, cur, targetEngine))
+                        loggedSlot[slot] = true
+                    end
+                    needReapplyHealth = true
+                end
+            end
+
+            if targetBody then
+                local cur = GetVehicleBodyHealth(vehicle)
+                if math.abs(cur - targetBody) > 1.0 then
+                    needReapplyHealth = true
+                end
+            end
+
+            -- Check status (lốp, kính, cửa) bị restore không
+            if targetStatus and type(targetStatus) == 'table' then
+                if targetStatus.windows then
+                    for windowId, shouldBeBroken in pairs(targetStatus.windows) do
+                        local wid = tonumber(windowId)
+                        if shouldBeBroken and IsVehicleWindowIntact(vehicle, wid) then
+                            needReapplyStatus = true
+                            break
+                        end
+                    end
+                end
+                if not needReapplyStatus and targetStatus.tyres then
+                    for tyreId, tyreData in pairs(targetStatus.tyres) do
+                        local tid = tonumber(tyreId)
+                        if (tyreData.burst or tyreData.gone) and not IsVehicleTyreBurst(vehicle, tid, false) then
+                            needReapplyStatus = true
+                            break
+                        end
+                    end
+                end
+            end
+
+            if needReapplyHealth then
+                if NetworkGetEntityIsNetworked(vehicle) then
+                    NetworkRequestControlOfEntity(vehicle)
+                end
+                if targetEngine then SetVehicleEngineHealth(vehicle, targetEngine) end
+                if targetBody   then SetVehicleBodyHealth(vehicle,   targetBody)   end
+                if targetFuel   then Entity(vehicle).state:set('fuel', targetFuel, true) end
+                reapplyCount = reapplyCount + 1
+            end
+
+            if needReapplyStatus then
+                ApplyVehicleStatus(vehicle, targetStatus)
+                statusReapplyCount = statusReapplyCount + 1
+            end
+
+            Wait(interval)
+        end
+
+        -- Final state check
+        if DoesEntityExist(vehicle) then
+            print(string.format('^2[WATCHDOG] DONE %s | reapplies: health=%d status=%d | Final Engine=%.2f Body=%.2f^7',
+                plate, reapplyCount, statusReapplyCount,
+                GetVehicleEngineHealth(vehicle), GetVehicleBodyHealth(vehicle)))
+        end
+
+        -- Cleanup
+        SetTimeout(2000, function()
+            recentGarageSpawns[plate] = nil
+        end)
+    end)
 end
 
 local function OpenGarageUI(garageName)
@@ -611,7 +725,6 @@ CreateThread(function()
     end
 end)
 
--- FIX: StateBag handler với retry khi entity chưa stream vào
 AddStateBagChangeHandler('pendingMods', '', function(bagName, key, value)
     if not value or type(value) ~= 'table' then return end
 
@@ -668,7 +781,12 @@ RegisterNetEvent('derp:applyVehicleState', function(netId, data)
     end
 
     if data.fuel then
-        exports['cdn-fuel']:SetFuel(vehicle, data.fuel + 0.0)
+        Entity(vehicle).state:set('fuel', data.fuel + 0.0, true)
+    end
+
+    if data.status then
+        Wait(100)
+        ApplyVehicleStatus(vehicle, data.status)
     end
 end)
 
@@ -1036,23 +1154,24 @@ local function StoreVehicle(garageName)
 
     local currentMods = lib.getVehicleProperties(vehicle)
 
-    local nativeFuel = GetVehicleFuelLevel(vehicle)
-    local stateBagFuel = Entity(vehicle).state.fuel
+    local clientEngine = GetVehicleEngineHealth(vehicle)
+    local clientBody   = GetVehicleBodyHealth(vehicle)
+    local clientFuel   = GetVehicleFuelLevel(vehicle)
 
-    -- print('[FUEL DEBUG STORE] Plate: ' .. plate)
-    -- print('[FUEL DEBUG STORE] Native fuel: ' .. tostring(nativeFuel))
-    -- print('[FUEL DEBUG STORE] StateBag fuel: ' .. tostring(stateBagFuel))
+    if type(currentMods) == 'table' then
+        currentMods.engineHealth = clientEngine
+        currentMods.bodyHealth   = clientBody
+        currentMods.fuelLevel    = clientFuel
+    end
 
     local vehicleData = {
-        fuel      = GetVehicleFuelLevel(vehicle),
-        engine    = GetVehicleEngineHealth(vehicle),
-        body      = GetVehicleBodyHealth(vehicle),
+        fuel      = clientFuel,
+        engine    = clientEngine,
+        body      = clientBody,
         status    = GetVehicleStatus(vehicle),
         mods      = currentMods,
         lockState = GetVehicleDoorLockStatus(vehicle)
     }
-
-    -- print('[FUEL DEBUG STORE] Sending fuel: ' .. tostring(vehicleData.fuel))
 
     TriggerServerEvent('DERP-advanced-garages:server:storeVehicle', plate, garageName, vehicleData, netId)
 
@@ -1291,16 +1410,6 @@ RegisterNetEvent('DERP-advanced-garages:client:openAdminUI', function()
     OpenAdminUI()
 end)
 
--- RegisterNetEvent('DERP-advanced-garages:client:requestVehicleLockState', function(netId, plate)
---     if not netId or not plate or not NetworkDoesNetworkIdExist(netId) then return end
-
---     local vehicle = NetworkGetEntityFromNetworkId(netId)
---     if not vehicle or vehicle == 0 or not DoesEntityExist(vehicle) then return end
-
---     local lockState = GetVehicleDoorLockStatus(vehicle)
---     TriggerServerEvent('DERP-advanced-garages:server:receiveLockState', plate, lockState)
--- end)
-
 RegisterNetEvent('derp:applyVehicleLockState', function(netId, lockState)
     if not netId or not lockState or not NetworkDoesNetworkIdExist(netId) then return end
 
@@ -1457,87 +1566,6 @@ CreateThread(function()
     end
 end)
 
--- Debug: DrawText3D trên mỗi xe đang đếm ngược
--- CreateThread(function()
---     while true do
---         local sleep = 500
-
---         if Config.WaterImpound and Config.WaterImpound.Enabled and Config.WaterImpound.Debug and next(waterImpoundDebug) then
---             sleep = 0
---             for plate, data in pairs(waterImpoundDebug) do
---                 local remaining = math.max(0, math.floor(data.remaining))
---                 local text = string.format(
---                     '~r~IMPOUND: %ds~n~~w~Engine: %.0f | Water: %.1f~n~%s',
---                     remaining, data.engine, data.submerged, plate
---                 )
---                 SetTextScale(0.35, 0.35)
---                 SetTextFont(4)
---                 SetTextColour(255, 255, 255, 255)
---                 SetTextDropshadow(0, 0, 0, 0, 255)
---                 SetTextEdge(2, 0, 0, 0, 150)
---                 SetTextDropShadow()
---                 SetTextOutline()
---                 SetTextCentre(true)
---                 BeginTextCommandDisplayText('STRING')
---                 AddTextComponentSubstringPlayerName(text)
---                 SetDrawOrigin(data.coords.x, data.coords.y, data.coords.z, 0)
---                 EndTextCommandDisplayText(0.0, 0.0)
---                 ClearDrawOrigin()
---             end
---         end
-
---         Wait(sleep)
---     end
--- end)
-
--- Command debug: check xe gần nhất realtime
--- RegisterCommand('watercheck', function()
---     local ped = PlayerPedId()
---     local playerCoords = GetEntityCoords(ped)
---     local vehicles = GetGamePool('CVehicle')
---     local found = false
-
---     for _, vehicle in ipairs(vehicles) do
---         if DoesEntityExist(vehicle) then
---             local vehCoords = GetEntityCoords(vehicle)
---             if #(playerCoords - vehCoords) <= 30.0 then
---                 local plate = string.gsub(GetVehicleNumberPlateText(vehicle), '^%s*(.-)%s*$', '%1')
---                 local engine = GetVehicleEngineHealth(vehicle)
---                 local submerged = GetEntitySubmergedLevel(vehicle)
---                 local inWater = IsEntityInWater(vehicle)
---                 local netId = NetworkGetNetworkIdFromEntity(vehicle)
-
---                 local msg = string.format(
---                     '[%s] Engine: %.1f | Submerged: %.2f | InWater: %s | NetID: %s | Timer: %s',
---                     plate, engine, submerged,
---                     tostring(inWater), tostring(netId),
---                     waterImpoundTimers[plate] and string.format('%.1fs', (GetGameTimer() - waterImpoundTimers[plate]) / 1000) or 'NONE'
---                 )
-
---                 print(msg)
---                 exports.qbx_core:Notify(msg, 'primary', 8000)
---                 found = true
---             end
---         end
---     end
-
---     if not found then
---         exports.qbx_core:Notify('Không tìm thấy xe trong 30m', 'error')
---     end
-
---     -- Config check
---     local cfgMsg = string.format(
---         'Config: Enabled=%s | EngineThreshold=%s | SubmergedThreshold=%s | Time=%ss | Debug=%s',
---         tostring(Config.WaterImpound and Config.WaterImpound.Enabled),
---         tostring(Config.WaterImpound and Config.WaterImpound.EngineHealthThreshold),
---         tostring(Config.WaterImpound and Config.WaterImpound.SubmergedThreshold),
---         tostring(Config.WaterImpound and Config.WaterImpound.SubmergedTime),
---         tostring(Config.WaterImpound and Config.WaterImpound.Debug)
---     )
---     print(cfgMsg)
--- end, false)
-
--- Cleanup
 CreateThread(function()
     while true do
         Wait(10000)
@@ -1564,4 +1592,4 @@ CreateThread(function()
             end
         end
     end
-end)
+end)t

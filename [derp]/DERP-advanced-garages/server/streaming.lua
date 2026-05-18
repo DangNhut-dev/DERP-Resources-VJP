@@ -315,24 +315,13 @@ local function SaveDirtyVehicles()
                 end
             end
 
-            -- MySQL.update.await([[
-            --     UPDATE player_vehicles
-            --     SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
-            --     WHERE plate = ? AND state = 0
-            -- ]], {
-            --     json.encode(coords), fuel, engine, body,
-            --     status and json.encode(status) or nil,
-            --     mods   and json.encode(mods)   or nil,
-            --     lockState,
-            --     plate
-            -- })
-
             MySQL.update.await([[
                 UPDATE player_vehicles
-                SET coords = ?, fuel = ?, engine = ?, body = ?, mods = ?, lock_state = ?
+                SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
                 WHERE plate = ? AND state = 0
             ]], {
                 json.encode(coords), fuel, engine, body,
+                status and json.encode(status) or nil,
                 mods   and json.encode(mods)   or nil,
                 lockState,
                 plate
@@ -385,7 +374,7 @@ local function DespawnVehicle(plate)
                 fuel   = cached.fuel   or fuel
                 engine = cached.engine or engine
                 body   = cached.body   or body
-                -- if cached.status    then status = cached.status               end
+                if cached.status    then status = cached.status               end
                 if cached.mods      then mods   = cached.mods                 end
                 if cached.lockState then tracked.lockState = cached.lockState end
                 if cached.coords then
@@ -436,10 +425,11 @@ local function DespawnVehicle(plate)
 
             local success = MySQL.update.await([[
                 UPDATE player_vehicles
-                SET coords = ?, fuel = ?, engine = ?, body = ?, mods = ?, lock_state = ?
+                SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
                 WHERE plate = ? AND state = 0
             ]], {
                 json.encode(tracked.coords), fuel, engine, body,
+                status and json.encode(status) or nil,
                 mods   and json.encode(mods)   or nil,
                 tracked.lockState or 2,
                 plate
@@ -599,13 +589,15 @@ local function SpawnVehicleFromDB(plate)
 
     Wait(200)
 
-    -- if rec.status then
-    --     local status = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
-    --     if status then
-    --         TriggerClientEvent('derp:applyVehicleStatus', -1, netId, status)
-    --         DebugPrint('Applied status for: ' .. plate)
-    --     end
-    -- end
+    local statusData = nil
+    if rec.status then
+        statusData = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
+        if statusData then
+            Entity(vehicle).state:set('persistentStatus', statusData, true)
+            TriggerClientEvent('derp:applyVehicleStatus', -1, netId, statusData)
+            DebugPrint('Applied status for: ' .. plate)
+        end
+    end
 
     TriggerClientEvent('derp:applyVehicleLockState', -1, netId, lockState)
     Entity(vehicle).state:set('doorslockstate', lockState, true)
@@ -617,8 +609,7 @@ local function SpawnVehicleFromDB(plate)
     tracked.engine    = engineHealth
     tracked.body      = bodyHealth
     tracked.lockState = lockState
-    -- tracked.status    = type(rec.status) == 'string' and json.decode(rec.status) or rec.status
-    tracked.status    = nil
+    tracked.status    = statusData
     tracked.mods      = modsToApply
     tracked.state     = "spawned"
     tracked.despawnMarkedAt = 0
@@ -844,6 +835,13 @@ function RegisterVehicleSpawn(plate, entity, coords, owner, dbRecord)
     local netId = NetworkGetNetworkIdFromEntity(entity)
     if not netId or netId == 0 then return end
 
+    print('^5[REG SPAWN DEBUG] === ' .. plate .. ' ===^7')
+    print('^5[REG SPAWN DEBUG] dbRecord -> Fuel: ' .. tostring(dbRecord and dbRecord.fuel)
+        .. ' | Engine: ' .. tostring(dbRecord and dbRecord.engine)
+        .. ' | Body: ' .. tostring(dbRecord and dbRecord.body) .. '^7')
+    print('^5[REG SPAWN DEBUG] Server-read entity -> Engine: ' .. tostring(GetVehicleEngineHealth(entity))
+        .. ' | Body: ' .. tostring(GetVehicleBodyHealth(entity)) .. '^7')
+
     if type(coords) == "table" then
         coords = vector4(coords.x, coords.y, coords.z, coords.w or 0.0)
     end
@@ -895,6 +893,10 @@ function RegisterVehicleSpawn(plate, entity, coords, owner, dbRecord)
     }
 
     MarkVehicleDirty(plate)
+
+    print('^5[REG SPAWN DEBUG] Stored in TrackedVehicles -> Fuel: ' .. tostring(fuel)
+        .. ' | Engine: ' .. tostring(engine)
+        .. ' | Body: ' .. tostring(body) .. '^7')
 
     if owner then GiveVehicleKeysToOwner(owner, plate, entity, false) end
 
@@ -955,26 +957,10 @@ end
 
 -- Helper: execute save query
 local function ExecuteSaveQuery(record, isSync)
-    -- print('^2[SAVE DEBUG] Saving ' .. record.plate .. ' | lockState=' .. tostring(record.lockState))
-    
-    -- local params = {
-    --     json.encode(record.coords),
-    --     record.fuel, record.engine, record.body,
-    --     record.status and json.encode(record.status) or nil,
-    --     record.mods   and json.encode(record.mods)   or nil,
-    --     record.lockState or 2,
-    --     record.plate
-    -- }
-
-    -- local query = [[
-    --     UPDATE player_vehicles
-    --     SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
-    --     WHERE plate = ? AND state = 0
-    -- ]]
-
     local params = {
         json.encode(record.coords),
         record.fuel, record.engine, record.body,
+        record.status and json.encode(record.status) or nil,
         record.mods   and json.encode(record.mods)   or nil,
         record.lockState or 2,
         record.plate
@@ -982,7 +968,7 @@ local function ExecuteSaveQuery(record, isSync)
 
     local query = [[
         UPDATE player_vehicles
-        SET coords = ?, fuel = ?, engine = ?, body = ?, mods = ?, lock_state = ?
+        SET coords = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = ?, lock_state = ?
         WHERE plate = ? AND state = 0
     ]]
 

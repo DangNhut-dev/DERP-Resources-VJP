@@ -184,11 +184,6 @@ lib.callback.register('DERP-advanced-garages:server:spawnVehicle', function(sour
                 string.format(Config.Lang['impound_released'], impoundPrice), 'success')
         end
 
-        -- if Config.Impound.ResetHealthOnRelease then
-        --     vehicleData.engine = Config.Impound.DefaultEngineHealth
-        --     vehicleData.body   = Config.Impound.DefaultBodyHealth
-        -- end
-
         if Config.Impound.ResetHealthOnRelease then
             vehicleData.engine = Config.Impound.DefaultEngineHealth
             vehicleData.body   = Config.Impound.DefaultBodyHealth
@@ -209,19 +204,99 @@ lib.callback.register('DERP-advanced-garages:server:spawnVehicle', function(sour
 
     SetCooldown(source)
 
+    -- Spawn server-side, server làm chủ entity ngay từ đầu (giống streaming SpawnVehicleFromDB)
+    local sx = spawnCoords.x or spawnCoords[1]
+    local sy = spawnCoords.y or spawnCoords[2]
+    local sz = spawnCoords.z or spawnCoords[3]
+    local sw = spawnCoords.w or spawnCoords[4] or 0.0
+
+    local entity = CreateVehicleServerSetter(GetHashKey(vehicleData.vehicle), "automobile", sx, sy, sz, sw)
+
+    if not entity or entity == 0 then
+        TriggerClientEvent('QBCore:Notify', source, 'Lỗi spawn xe (server)!', 'error')
+        return false
+    end
+
+    local entTimeout = 0
+    while not DoesEntityExist(entity) and entTimeout < 50 do
+        Wait(50)
+        entTimeout = entTimeout + 1
+    end
+
+    if not DoesEntityExist(entity) then
+        TriggerClientEvent('QBCore:Notify', source, 'Lỗi spawn xe (entity)!', 'error')
+        return false
+    end
+
+    local netId = NetworkGetNetworkIdFromEntity(entity)
+    if not netId or netId == 0 then
+        DeleteEntity(entity)
+        TriggerClientEvent('QBCore:Notify', source, 'Lỗi spawn xe (netId)!', 'error')
+        return false
+    end
+
+    SetVehicleNumberPlateText(entity, plate)
+
+    -- Parse mods + inject health authoritative
     local modsData = type(vehicleData.mods) == 'string' and json.decode(vehicleData.mods) or vehicleData.mods
 
+    if type(modsData) == 'table' then
+        modsData.engineHealth = vehicleData.engine or modsData.engineHealth or 1000
+        modsData.bodyHealth   = vehicleData.body   or modsData.bodyHealth   or 1000
+        modsData.fuelLevel    = vehicleData.fuel   or modsData.fuelLevel    or 100
+        modsData.plate        = plate
+    else
+        modsData = {
+            engineHealth = vehicleData.engine or 1000,
+            bodyHealth   = vehicleData.body   or 1000,
+            fuelLevel    = vehicleData.fuel   or 100,
+            plate        = plate
+        }
+    end
+
+    local statusData = type(vehicleData.status) == 'string' and json.decode(vehicleData.status) or vehicleData.status
+
+    -- Set statebag authoritative để DERP-mechanic khi đọc statebag sẽ thấy giá trị đúng
+    Entity(entity).state:set('fuel', vehicleData.fuel or 100, true)
+    Entity(entity).state:set('persistentEngine', vehicleData.engine or 1000, true)
+    Entity(entity).state:set('persistentBody',   vehicleData.body   or 1000, true)
+    Entity(entity).state:set('pendingMods', modsData, true)
+    if statusData then
+        Entity(entity).state:set('persistentStatus', statusData, true)
+    end
+
+    -- Đăng ký vào streaming NGAY từ server vì entity là server-owned
+    if Config.Streaming and Config.Streaming.Enabled then
+        local coordsVec = vector4(sx, sy, sz, sw)
+        pcall(function()
+            exports['DERP-advanced-garages']:RegisterVehicleSpawn(plate, entity, coordsVec, citizenid, {
+                mods   = json.encode(modsData),
+                status = statusData and json.encode(statusData) or nil,
+                fuel   = vehicleData.fuel,
+                engine = vehicleData.engine,
+                body   = vehicleData.body,
+            })
+        end)
+    end
+
+    print('^2[SPAWN SERVER] ' .. plate .. ' netId=' .. netId
+        .. ' | Engine: ' .. tostring(vehicleData.engine)
+        .. ' | Body: ' .. tostring(vehicleData.body)
+        .. ' | Fuel: ' .. tostring(vehicleData.fuel) .. '^7')
+
     return {
-        success   = true,
-        vehicle   = vehicleData.vehicle,
-        mods      = modsData,
-        fuel      = vehicleData.fuel   or 100,
-        engine    = vehicleData.engine or 1000,
-        body      = vehicleData.body   or 1000,
-        status    = vehicleData.status,
-        plate     = plate,
-        citizenid = citizenid,
-        lockState = vehicleData.lock_state or 2
+        success       = true,
+        vehicle       = vehicleData.vehicle,
+        mods          = modsData,
+        fuel          = vehicleData.fuel   or 100,
+        engine        = vehicleData.engine or 1000,
+        body          = vehicleData.body   or 1000,
+        status        = statusData,
+        plate         = plate,
+        citizenid     = citizenid,
+        lockState     = vehicleData.lock_state or 2,
+        netId         = netId,
+        serverSpawned = true
     }
 end)
 
@@ -272,27 +347,29 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
     local serverEngine = vehicleData.engine or 1000
     local serverBody   = vehicleData.body   or 1000
     local serverMods   = nil
-    -- print('[FUEL DEBUG SERVER] Plate: ' .. plate .. ' | clientFuel: ' .. tostring(vehicleData.fuel))
 
-    if netId then
-        local vehicle = NetworkGetEntityFromNetworkId(netId)
-        if vehicle and vehicle ~= 0 and DoesEntityExist(vehicle) then
-            serverEngine = GetVehicleEngineHealth(vehicle)
-            serverBody   = GetVehicleBodyHealth(vehicle)
-        end
-    end
-    -- print('[FUEL DEBUG SERVER] After server check | serverFuel: ' .. tostring(serverFuel) .. ' | stateBagFuel: ' .. tostring(netId and NetworkGetEntityFromNetworkId(netId) and Entity(NetworkGetEntityFromNetworkId(netId)).state.fuel or 'N/A'))
-    -- Lấy mods từ DB hiện tại nếu client không gửi (đảm bảo không mất mods khi store)
     if not vehicleData.mods then
         local currentMods = MySQL.scalar.await(
             'SELECT mods FROM player_vehicles WHERE plate = ? LIMIT 1', { plate })
         if currentMods then
-            serverMods = currentMods
+            local modsTable = type(currentMods) == 'string' and json.decode(currentMods) or currentMods
+            if modsTable and type(modsTable) == 'table' then
+                modsTable.engineHealth = serverEngine
+                modsTable.bodyHealth   = serverBody
+                modsTable.fuelLevel    = serverFuel
+                modsTable.plate        = nil
+                serverMods = json.encode(modsTable)
+            else
+                serverMods = currentMods
+            end
         end
     else
         local modsTable = type(vehicleData.mods) == 'string' and json.decode(vehicleData.mods) or vehicleData.mods
         if modsTable and type(modsTable) == 'table' then
             modsTable.plate = nil
+            modsTable.engineHealth = serverEngine
+            modsTable.bodyHealth   = serverBody
+            modsTable.fuelLevel    = serverFuel
             serverMods = json.encode(modsTable)
         else
             serverMods = type(vehicleData.mods) == 'string' and vehicleData.mods or json.encode(vehicleData.mods)
@@ -301,7 +378,10 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
 
     local serverLockState = vehicleData.lockState or 2
 
-    -- print('[FUEL DEBUG SERVER] Final saving fuel: ' .. tostring(serverFuel) .. ' for plate: ' .. plate)
+    print('^2[STORE DEBUG] Final SAVE to DB -> Fuel: ' .. tostring(serverFuel)
+        .. ' | Engine: ' .. tostring(serverEngine)
+        .. ' | Body: ' .. tostring(serverBody) .. '^7')
+
     MySQL.update.await([[
         UPDATE player_vehicles
         SET state = 1, garage = ?, fuel = ?, engine = ?, body = ?, status = ?, mods = COALESCE(?, mods), lock_state = ?, coords = NULL
@@ -316,6 +396,13 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
         serverLockState,
         plate
     })
+
+    local verify = MySQL.query.await('SELECT fuel, engine, body FROM player_vehicles WHERE plate = ? LIMIT 1', { plate })
+    if verify and verify[1] then
+        print('^2[STORE DEBUG] DB after UPDATE -> Fuel: ' .. tostring(verify[1].fuel)
+            .. ' | Engine: ' .. tostring(verify[1].engine)
+            .. ' | Body: ' .. tostring(verify[1].body) .. '^7')
+    end
 
     if Config.Streaming and Config.Streaming.Enabled then
         exports['DERP-advanced-garages']:UnregisterVehicle(plate)
@@ -418,14 +505,19 @@ RegisterNetEvent('DERP-advanced-garages:server:impoundVehicle', function(netId, 
         string.format(Config.Lang['vehicle_impounded'], price, duration), 'success')
 end)
 
--- FIX: Validate netId type và retry entity resolution
-RegisterNetEvent('DERP-advanced-garages:server:registerSpawn', function(plate, netId, coords)
+RegisterNetEvent('DERP-advanced-garages:server:registerSpawn', function(plate, netId, coords, vehicleState)
     local src    = source
     local player = QBX:GetPlayer(src)
     if not player or not plate or not netId then return end
     if type(netId) ~= 'number' or netId <= 0 then return end
 
     if not (Config.Streaming and Config.Streaming.Enabled) then return end
+
+    -- Nếu xe đã được track rồi (do server spawn trong callback) thì bỏ qua
+    local tracked = exports['DERP-advanced-garages']:GetTrackedVehiclesForDebug()
+    if tracked and tracked[plate] then
+        return
+    end
 
     local entity = nil
     local retries = 0
@@ -438,7 +530,6 @@ RegisterNetEvent('DERP-advanced-garages:server:registerSpawn', function(plate, n
 
     if not entity or entity == 0 or not DoesEntityExist(entity) then return end
 
-    -- Validate plate server-side
     local serverPlate = string.gsub(GetVehicleNumberPlateText(entity), '^%s*(.-)%s*$', '%1')
     if serverPlate ~= plate then return end
 
@@ -450,6 +541,37 @@ RegisterNetEvent('DERP-advanced-garages:server:registerSpawn', function(plate, n
         WHERE plate = ? AND citizenid = ?
         LIMIT 1
     ]], { plate, citizenid })
+
+    if result and result[1] then
+        print('^3[REGISTER SPAWN EVENT] ' .. plate .. ' DB query -> Fuel: ' .. tostring(result[1].fuel)
+            .. ' | Engine: ' .. tostring(result[1].engine)
+            .. ' | Body: ' .. tostring(result[1].body) .. '^7')
+
+        local dbEngine = result[1].engine
+        local dbBody   = result[1].body
+        local dbFuel   = result[1].fuel
+        local dbStatus = type(result[1].status) == 'string' and json.decode(result[1].status) or result[1].status
+
+        if dbEngine and dbBody then
+            Entity(entity).state:set('persistentEngine', dbEngine, true)
+            Entity(entity).state:set('persistentBody',   dbBody,   true)
+            if dbFuel then
+                Entity(entity).state:set('fuel', dbFuel, true)
+            end
+            if dbStatus then
+                Entity(entity).state:set('persistentStatus', dbStatus, true)
+            end
+
+            TriggerClientEvent('derp:applyVehicleState', src, netId, {
+                engine = dbEngine,
+                body   = dbBody,
+                fuel   = dbFuel,
+                status = dbStatus
+            })
+        end
+    else
+        print('^1[REGISTER SPAWN EVENT] ' .. plate .. ' DB query EMPTY^7')
+    end
 
     exports['DERP-advanced-garages']:RegisterVehicleSpawn(
         plate, entity, coords, citizenid, result and result[1] or nil)
