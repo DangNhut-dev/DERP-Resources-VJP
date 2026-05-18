@@ -162,10 +162,22 @@ RegisterNetEvent('DERO_npcautofix:repairDone', function(npcId)
     GlobalState['DERO_npcautofix_busy_' .. npcId] = false
 end)
 
-RegisterNetEvent('DERO_npcautofix:resetServicing', function(vehNet, resetData)
-    local src = source
-    if not vehNet or not resetData then return end
+RegisterNetEvent('DERO_npcautofix:resetServicing', function(vehNet)
+    if not vehNet then return end
     local veh = NetworkGetEntityFromNetworkId(vehNet)
     if not DoesEntityExist(veh) then return end
+
+    local currentServicing = Entity(veh).state.servicingData
+    if not currentServicing or type(currentServicing) ~= 'table' then return end
+
+    local resetData = {}
+    for part, _ in pairs(currentServicing) do
+        resetData[part] = 100
+    end
+
     Entity(veh).state:set('servicingData', resetData, true)
+
+    -- Gọi qua export, không cần biết Framework của mechanic
+    local plate = GetVehicleNumberPlateText(veh):gsub('%s+', '')
+    exports['DERP-mechanic']:resetVehicleServicing(plate)
 end)

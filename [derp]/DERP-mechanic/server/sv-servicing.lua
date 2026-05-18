@@ -80,3 +80,27 @@ lib.callback.register("DERP-mechanic:server:get-servicing-history", function(sou
     mileageUnit = unit
   }
 end)
+
+exports("resetVehicleServicing", function(plate)
+    if not plate then return false end
+    plate = plate:gsub('%s+', '')
+
+    local result = MySQL.scalar.await(
+        "SELECT " .. Framework.VehProps .. " FROM " .. Framework.VehiclesTable .. " WHERE plate = ?",
+        { plate }
+    )
+    if not result then return false end
+
+    local props = json.decode(result) or {}
+    if not props.servicingData then return false end
+
+    for part, _ in pairs(props.servicingData) do
+        props.servicingData[part] = 100
+    end
+
+    MySQL.update.await(
+        "UPDATE " .. Framework.VehiclesTable .. " SET " .. Framework.VehProps .. " = ? WHERE plate = ?",
+        { json.encode(props), plate }
+    )
+    return true
+end)
