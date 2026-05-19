@@ -190,7 +190,7 @@ $(document).ready(function() {
         const currentLevel = currentDriverData.current_level;
         const totalExp = currentDriverData.total_exp;
 
-        const levelThresholds = [0, 1000, 2500, 4500, 7000, 10000, 13500, 17500, 22000, 25000];
+        const levelThresholds = [0, 400, 900, 1500, 2250, 3150, 4250, 5600, 7200, 9100];
         const currentThreshold = levelThresholds[currentLevel - 1] || 0;
         const nextThreshold = levelThresholds[currentLevel] || levelThresholds[levelThresholds.length - 1];
 

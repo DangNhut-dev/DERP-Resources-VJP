@@ -81,26 +81,15 @@ lib.callback.register("DERP-mechanic:server:get-servicing-history", function(sou
   }
 end)
 
-exports("resetVehicleServicing", function(plate)
-    if not plate then return false end
-    plate = plate:gsub('%s+', '')
+exports("resetVehicleServicing", function(vehicle, plate)
+    if not vehicle or not DoesEntityExist(vehicle) then return false end
 
-    local result = MySQL.scalar.await(
-        "SELECT " .. Framework.VehProps .. " FROM " .. Framework.VehiclesTable .. " WHERE plate = ?",
-        { plate }
-    )
-    if not result then return false end
+    local defaultServicingData = {
+        suspension = 100, tyres = 100, brakePads = 100,
+        engineOil = 100, clutch = 100, airFilter = 100,
+        sparkPlugs = 100, evMotor = 100, evBattery = 100, evCoolant = 100
+    }
 
-    local props = json.decode(result) or {}
-    if not props.servicingData then return false end
-
-    for part, _ in pairs(props.servicingData) do
-        props.servicingData[part] = 100
-    end
-
-    MySQL.update.await(
-        "UPDATE " .. Framework.VehiclesTable .. " SET " .. Framework.VehProps .. " = ? WHERE plate = ?",
-        { json.encode(props), plate }
-    )
-    return true
+    -- Dùng đúng hàm nội bộ → update statebag + cache + DB cùng lúc
+    return setVehicleStatebag(vehicle, "servicingData", defaultServicingData, true, plate)
 end)
