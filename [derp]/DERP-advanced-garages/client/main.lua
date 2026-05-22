@@ -534,12 +534,12 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
         for i = 0, 5 do lastDoorState[i] = false end
         for i = 0, 7 do lastWindowState[i] = true end
 
-        print(('[GARAGE-DEBUG] === SPAWN START plate=%s netId=%s ==='):format(checkPlate, netId))
-        print(('[GARAGE-DEBUG] statusData=%s'):format(json.encode(vehicleData.status or {})))
+        -- print(('[GARAGE-DEBUG] === SPAWN START plate=%s netId=%s ==='):format(checkPlate, netId))
+        -- print(('[GARAGE-DEBUG] statusData=%s'):format(json.encode(vehicleData.status or {})))
 
         while GetGameTimer() - startTime < 15000 do
             if not DoesEntityExist(checkVehicle) then
-                print('[GARAGE-DEBUG] Entity GONE')
+                -- print('[GARAGE-DEBUG] Entity GONE')
                 return
             end
 
@@ -548,8 +548,8 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
                 local gone = IsVehicleTyreBurst(checkVehicle, i, true)
                 local current = gone and 'GONE' or (burst and 'BURST' or false)
                 if current ~= lastTyreState[i] then
-                    print(('[GARAGE-DEBUG] T+%dms TYRE[%d] %s -> %s'):format(
-                        GetGameTimer() - startTime, i, tostring(lastTyreState[i]), tostring(current)))
+                    -- print(('[GARAGE-DEBUG] T+%dms TYRE[%d] %s -> %s'):format(
+                    --     GetGameTimer() - startTime, i, tostring(lastTyreState[i]), tostring(current)))
                     lastTyreState[i] = current
                 end
             end
@@ -557,8 +557,8 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
             for i = 0, 5 do
                 local broken = IsVehicleDoorDamaged(checkVehicle, i)
                 if broken ~= lastDoorState[i] then
-                    print(('[GARAGE-DEBUG] T+%dms DOOR[%d] -> broken=%s'):format(
-                        GetGameTimer() - startTime, i, tostring(broken)))
+                    -- print(('[GARAGE-DEBUG] T+%dms DOOR[%d] -> broken=%s'):format(
+                    --     GetGameTimer() - startTime, i, tostring(broken)))
                     lastDoorState[i] = broken
                 end
             end
@@ -566,8 +566,8 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
             for i = 0, 7 do
                 local intact = IsVehicleWindowIntact(checkVehicle, i)
                 if intact ~= lastWindowState[i] then
-                    print(('[GARAGE-DEBUG] T+%dms WINDOW[%d] intact=%s'):format(
-                        GetGameTimer() - startTime, i, tostring(intact)))
+                    -- print(('[GARAGE-DEBUG] T+%dms WINDOW[%d] intact=%s'):format(
+                    --     GetGameTimer() - startTime, i, tostring(intact)))
                     lastWindowState[i] = intact
                 end
             end
@@ -575,7 +575,7 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
             Wait(50)
         end
 
-        print(('[GARAGE-DEBUG] === END TRACE plate=%s ==='):format(checkPlate))
+        -- print(('[GARAGE-DEBUG] === END TRACE plate=%s ==='):format(checkPlate))
     end)
     -- ============ END DEBUG ============
 
