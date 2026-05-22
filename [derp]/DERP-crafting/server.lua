@@ -67,8 +67,17 @@ local function NormalizeGender(gender)
 end
 
 local function GetItemData(name)
+    if not name then return nil end
+
     local items = exports.ox_inventory:Items()
-    return items and items[name] or nil
+    if not items then return nil end
+
+    if items[name] then return items[name] end
+
+    local upper = string.upper(name)
+    if items[upper] then return items[upper] end
+
+    return nil
 end
 
 local function GetItemLabel(name, metadata)
@@ -80,15 +89,12 @@ local function GetItemLabel(name, metadata)
         if metadata.level ~= nil then
             extras[#extras + 1] = ('lv%s'):format(tostring(metadata.level))
         end
-
         if metadata.drawableId ~= nil then
             extras[#extras + 1] = ('d%s'):format(tostring(metadata.drawableId))
         end
-
         if metadata.textureId ~= nil then
             extras[#extras + 1] = ('t%s'):format(tostring(metadata.textureId))
         end
-
         local gender = NormalizeGender(metadata.gender)
         if gender then
             extras[#extras + 1] = gender
@@ -187,7 +193,7 @@ lib.callback.register('DERP-crafting:server:getPlayerInventory', function(source
     for _, item in pairs(items) do
         if item and item.name then
             if not inventory[item.name] then
-                local meta = exports.ox_inventory:Items()[item.name]
+                local meta = GetItemData(item.name)
                 inventory[item.name] = {
                     name = item.name,
                     label = meta and meta.label or item.name,
@@ -203,7 +209,7 @@ lib.callback.register('DERP-crafting:server:getPlayerInventory', function(source
         for _, recipe in pairs(Config.Benches[benchId].recipes) do
             for ingredientName in pairs(recipe.ingredients) do
                 if not inventory[ingredientName] then
-                    local meta = exports.ox_inventory:Items()[ingredientName]
+                    local meta = GetItemData(ingredientName)
                     inventory[ingredientName] = {
                         name = ingredientName,
                         label = meta and meta.label or ingredientName,
@@ -264,9 +270,8 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
         local required = baseAmount * quantity
         local count = exports.ox_inventory:GetItemCount(src, ingredient)
         if count < required then
-            local meta = exports.ox_inventory:Items()[ingredient]
-            local label = meta and meta.label or ingredient
-            Notify(src, 'Thieu nguyen lieu: ' .. label .. ' (can ' .. required .. ')', 'error')
+            local label = GetItemLabel(ingredient)
+            Notify(src, 'Thiếu nguyên liệu: ' .. label .. ' (cần ' .. required .. ')', 'error')
             return
         end
     end
@@ -288,7 +293,7 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
     local craftedItemText = FormatItem(outputItem, craftAmount, metadata, 'add')
 
     if success then
-        local label = recipe.customLabel or (exports.ox_inventory:Items()[outputItem] and exports.ox_inventory:Items()[outputItem].label or outputItem)
+        local label = recipe.customLabel or GetItemLabel(outputItem, metadata)
         Notify(src, 'Chế tạo thành công: ' .. label, 'success')
 
         AddActionLog(src, 'Chế tạo thành công', {

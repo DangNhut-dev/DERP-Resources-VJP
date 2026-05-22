@@ -101,8 +101,18 @@ Config.Benches = {
                 amount = 1,
                 allowQuantity = false,
                 ingredients = {
-                    ["cloth"] = 10,
-                    ["carbon"] = 25,
+                    ["cloth"] = 25,
+                    ["carbon"] = 15,
+                }
+            },
+            ["ammo-9"] = {
+                id = 1,
+                time = 500,
+                amount = 5,
+                allowQuantity = true,
+                ingredients = {
+                    ["refined_metal"] = 1,
+                    ["gunpowder"] = 3,
                 }
             },
         }
@@ -171,6 +181,36 @@ Config.Benches = {
                 allowQuantity = true,
                 ingredients = {
                     ["iron"] = 5,
+                }
+            },
+            ["advancedlockpick"] = {
+                id = 1,
+                time = 2000,
+                amount = 1,
+                allowQuantity = true,
+                ingredients = {
+                    ["iron"] = 5,
+                    ["refined_metal"] = 10,
+                }
+            },
+        }
+    },
+    ["craftingweapon"] = {
+        label = "Bàn Chế Tạo",
+        object = `prop_tool_bench02`,
+        coords = vector3(-438.01, 6340.08, 11.75),
+        heading = 122.79,
+
+        recipes = {
+            ["weapon_g2ctx"] = {
+                id = 1,
+                time = 15000,
+                amount = 1,
+                allowQuantity = false,
+                ingredients = {
+                    ["taurus_slide"] = 1,
+                    ["taurus_frame"] = 1,
+                    ["taurus_barrel"] = 1,
                 }
             },
         }
