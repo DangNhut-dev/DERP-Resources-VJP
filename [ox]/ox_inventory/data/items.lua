@@ -507,7 +507,7 @@ return {
 	['lootbox_nam_thuong_aokhoac'] = {
 		label   = 'Hòm Áo Thường',
 		description = 'Áo khoác mã thường, giành cho giới tính nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -517,7 +517,7 @@ return {
 	['lootbox_nam_thuong_quan'] = {
 		label   = 'Hòm Quần Thường',
 		description = 'Quần mã thường, giành cho giới tính nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -527,7 +527,7 @@ return {
 	['lootbox_nam_thuong_giay'] = {
 		label   = 'Hòm Giày Thường',
 		description = 'Giày mã thường, giành cho giới tính nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -537,7 +537,7 @@ return {
 	['lootbox_nu_thuong_aokhoac'] = {
 		label   = 'Hòm Áo Thường',
 		description = 'Áo khoác mã thường, giành cho giới tính nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -547,7 +547,7 @@ return {
 	['lootbox_nu_thuong_quan'] = {
 		label   = 'Hòm Quần Thường',
 		description = 'Quần mã thường, giành cho giới tính nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -557,7 +557,7 @@ return {
 	['lootbox_nu_thuong_giay'] = {
 		label   = 'Hòm Giày Thường',
 		description = 'Giày mã thường, giành cho giới tính nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -567,7 +567,7 @@ return {
 	['lootbox_nam_thuong_matna'] = {
 		label   = 'Hòm Mặt Nạ Thường',
 		description = 'Mặt nạ mã thường, giành cho giới tính nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -577,7 +577,7 @@ return {
 	['lootbox_nu_thuong_matna'] = {
 		label   = 'Hòm Mặt Nạ Thường',
 		description = 'Mặt nạ mã thường, giành cho giới tính nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -587,7 +587,7 @@ return {
 	['lootbox_nam_matna_s1'] = {
 		label   = 'Hòm Mặt Nạ Đợt 1',
 		description = 'Hòm mặt nạ hàng hiệu, giành cho nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -597,7 +597,7 @@ return {
 	['lootbox_nam_aokhoac_s1'] = {
 		label   = 'Hòm Áo Đợt 1',
 		description = 'Hòm áo khoác hàng hiệu, giành cho nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -607,7 +607,7 @@ return {
 	['lootbox_nam_quan_s1'] = {
 		label   = 'Hòm Quần Đợt 1',
 		description = 'Hòm quần hàng hiệu, giành cho nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -617,7 +617,7 @@ return {
 	['lootbox_nam_giay_s1'] = {
 		label   = 'Hòm Giày Đợt 1',
 		description = 'Hòm giày hàng hiệu, giành cho nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -627,7 +627,7 @@ return {
 	['lootbox_nam_balo_s1'] = {
 		label   = 'Hòm Mẫu Balo Đợt 1',
 		description = 'Hòm balo hàng hiệu, giành cho nam',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -637,7 +637,7 @@ return {
 	['lootbox_nu_aokhoac_s1'] = {
 		label   = 'Hòm Áo Khoác Đợt 1',
 		description = 'Hòm Áo Khoác hàng hiệu, giành cho nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -647,7 +647,7 @@ return {
 	['lootbox_nu_aotrong_s1'] = {
 		label   = 'Hòm Áo Trong Đợt 1',
 		description = 'Hòm Áo Trong hàng hiệu, giành cho nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -657,7 +657,7 @@ return {
 	['lootbox_nu_quan_s1'] = {
 		label   = 'Hòm Quần Đợt 1',
 		description = 'Hòm quần hàng hiệu, giành cho nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -667,7 +667,7 @@ return {
 	['lootbox_nu_giay_s1'] = {
 		label   = 'Hòm Giày Đợt 1',
 		description = 'Hòm giày hàng hiệu, giành cho nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -677,7 +677,7 @@ return {
 	['lootbox_nu_matna_s1'] = {
 		label   = 'Hòm Mặt Nạ Đợt 1',
 		description = 'Hòm mặt nạ hàng hiệu, giành cho nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'
@@ -687,7 +687,7 @@ return {
 	['lootbox_nu_balo_s1'] = {
 		label   = 'Hòm Mẫu Balo Đợt 1',
 		description = 'Hòm balo hàng hiệu, giành cho nữ',
-		weight  = 100,
+		weight  = 0,
 		consume = 0,
 		client  = {
 			event = 'derp-lootbox:useItem'

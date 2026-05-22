@@ -17,10 +17,12 @@ server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'server/main.lua',
     'server/streaming.lua',
+    -- 'server/debug_trace_sv.lua'
 }
 
 client_scripts {
     'client/main.lua',
+    -- 'client/debug_trace.lua'
 }
 
 ui_page 'html/index.html'

@@ -21,6 +21,50 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBX:GetPlayerData()
 end)
 
+local function SanitizeVehicleProperties(vehicle, props)
+    if not props or type(props) ~= 'table' then return props end
+
+    if type(props.windows) == 'table' then
+        local cleanWindows = {}
+        for _, wid in ipairs(props.windows) do
+            local n = tonumber(wid)
+            if n and n >= 0 and n <= 3 then
+                cleanWindows[#cleanWindows + 1] = n
+            end
+        end
+        props.windows = cleanWindows
+    end
+
+    if type(props.doors) == 'table' then
+        local cleanDoors = {}
+        for _, did in ipairs(props.doors) do
+            local n = tonumber(did)
+            if n and n >= 0 and n <= 5 then
+                if vehicle and DoesEntityExist(vehicle) and DoesVehicleHaveDoor(vehicle, n) then
+                    cleanDoors[#cleanDoors + 1] = n
+                elseif not vehicle then
+                    cleanDoors[#cleanDoors + 1] = n
+                end
+            end
+        end
+        props.doors = cleanDoors
+    end
+
+    if type(props.tyres) == 'table' then
+        local cleanTyres = {}
+        local wheelCount = vehicle and DoesEntityExist(vehicle) and GetVehicleNumberOfWheels(vehicle) or 8
+        for tid, state in pairs(props.tyres) do
+            local n = tonumber(tid)
+            if n and n >= 0 and n < wheelCount then
+                cleanTyres[n] = state
+            end
+        end
+        props.tyres = cleanTyres
+    end
+
+    return props
+end
+
 local function SafeSetVehicleProperties(vehicle, props, forcePlate)
     if not vehicle or not props then return false end
 
@@ -37,6 +81,8 @@ local function SafeSetVehicleProperties(vehicle, props, forcePlate)
         safeMods[k] = v
     end
     safeMods.plate = originalPlate
+
+    SanitizeVehicleProperties(vehicle, safeMods)
 
     local ok = pcall(function()
         lib.setVehicleProperties(vehicle, safeMods)
@@ -74,35 +120,82 @@ local function HasJobAccess(garage)
 end
 
 local function GetVehicleStatus(vehicle)
-    local status = {
-        doors = {},
-        windows = {},
-        tyres = {},
-        extras = {}
+    local status = { doors = {}, windows = {}, tyres = {}, extras = {} }
+
+    if not vehicle or not DoesEntityExist(vehicle) then return status end
+
+    local doorBoneMap = {
+        [0] = 'door_dside_f',
+        [1] = 'door_pside_f',
+        [2] = 'door_dside_r',
+        [3] = 'door_pside_r',
+        [4] = 'bonnet',
+        [5] = 'boot',
     }
 
-    for i = 0, 7 do
+    for i = 0, 5 do
         if DoesVehicleHaveDoor(vehicle, i) then
-            local isBroken = IsVehicleDoorDamaged(vehicle, i)
-            status.doors[tostring(i)] = {
-                open = GetVehicleDoorAngleRatio(vehicle, i) > 0.0,
-                broken = isBroken
-            }
+            local boneName = doorBoneMap[i]
+            local trulyBroken = false
+
+            if boneName then
+                local boneIdx = GetEntityBoneIndexByName(vehicle, boneName)
+                if boneIdx == -1 then
+                    trulyBroken = true
+                end
+            end
+
+            local open = GetVehicleDoorAngleRatio(vehicle, i) > 0.0
+
+            if trulyBroken or open then
+                status.doors[tostring(i)] = {
+                    open   = open,
+                    broken = trulyBroken
+                }
+            end
         end
     end
 
-    for i = 0, 7 do
-        local isIntact = IsVehicleWindowIntact(vehicle, i)
-        status.windows[tostring(i)] = not isIntact
+    local windowBoneMap = {
+        [0] = 'window_lf',
+        [1] = 'window_rf',
+        [2] = 'window_lr',
+        [3] = 'window_rr',
+    }
+
+    for i = 0, 3 do
+        if not IsVehicleWindowIntact(vehicle, i) then
+            local boneName = windowBoneMap[i]
+            if boneName then
+                local boneIdx = GetEntityBoneIndexByName(vehicle, boneName)
+                if boneIdx == -1 then
+                    status.windows[tostring(i)] = true
+                end
+            end
+        end
     end
 
-    for i = 0, 7 do
-        local burstState = IsVehicleTyreBurst(vehicle, i, false)
-        local completelyGone = IsVehicleTyreBurst(vehicle, i, true)
-        status.tyres[tostring(i)] = {
-            burst = burstState,
-            gone = completelyGone
-        }
+    local wheelCount = GetVehicleNumberOfWheels(vehicle)
+    local tyreIndexMap = {
+        [2] = {0, 4},
+        [4] = {0, 1, 4, 5},
+        [6] = {0, 1, 2, 3, 4, 5},
+    }
+    local tyreIndices = tyreIndexMap[wheelCount] or tyreIndexMap[4]
+    for _, i in ipairs(tyreIndices) do
+        local gone  = IsVehicleTyreBurst(vehicle, i, true)
+        local burst = IsVehicleTyreBurst(vehicle, i, false)
+
+        if gone then
+            local wheelHealth = GetVehicleWheelHealth(vehicle, i)
+            if wheelHealth and wheelHealth <= 0.0 then
+                status.tyres[tostring(i)] = { burst = false, gone = true }
+            elseif burst then
+                status.tyres[tostring(i)] = { burst = true, gone = false }
+            end
+        elseif burst then
+            status.tyres[tostring(i)] = { burst = true, gone = false }
+        end
     end
 
     for i = 0, 14 do
@@ -122,10 +215,10 @@ local function ApplyVehicleStatus(vehicle, status)
 
     if NetworkGetEntityIsNetworked(vehicle) then
         NetworkRequestControlOfEntity(vehicle)
-        local ctrlWait = 0
-        while not NetworkHasControlOfEntity(vehicle) and ctrlWait < 500 do
+        local w = 0
+        while not NetworkHasControlOfEntity(vehicle) and w < 500 do
             Wait(50)
-            ctrlWait = ctrlWait + 50
+            w = w + 50
             NetworkRequestControlOfEntity(vehicle)
         end
     end
@@ -135,37 +228,50 @@ local function ApplyVehicleStatus(vehicle, status)
     if statusData.doors then
         for doorId, doorData in pairs(statusData.doors) do
             local id = tonumber(doorId)
-            if doorData.broken then
-                SetVehicleDoorBroken(vehicle, id, true)
-            end
-            if doorData.open then
-                SetVehicleDoorOpen(vehicle, id, false, false)
+            if id and id >= 0 and id <= 5 and DoesVehicleHaveDoor(vehicle, id) then
+                if doorData.broken then SetVehicleDoorBroken(vehicle, id, true) end
+                if doorData.open   then SetVehicleDoorOpen(vehicle, id, false, false) end
             end
         end
     end
 
     if statusData.windows then
         for windowId, isBroken in pairs(statusData.windows) do
-            if isBroken then
-                SmashVehicleWindow(vehicle, tonumber(windowId))
+            local wid = tonumber(windowId)
+            -- guard: chỉ apply window 0-3, chặn data cũ corrupt từ DB (index 4-7)
+            if wid and wid >= 0 and wid <= 3 and isBroken then
+                SmashVehicleWindow(vehicle, wid)
             end
         end
     end
 
+    local wheelCount = GetVehicleNumberOfWheels(vehicle)
+    local tyreIndexMap = {
+        [2] = {[0]=true,[4]=true},
+        [4] = {[0]=true,[1]=true,[4]=true,[5]=true},
+        [6] = {[0]=true,[1]=true,[2]=true,[3]=true,[4]=true,[5]=true},
+    }
+    local validTyres = tyreIndexMap[wheelCount] or tyreIndexMap[4]
+
     if statusData.tyres then
         for tyreId, tyreData in pairs(statusData.tyres) do
             local tid = tonumber(tyreId)
-            if tyreData.gone then
-                SetVehicleTyreBurst(vehicle, tid, true, 1000.0)
-            elseif tyreData.burst then
-                SetVehicleTyreBurst(vehicle, tid, false, 990.0)
+            if tid and validTyres[tid] then
+                if tyreData.gone == true and tyreData.burst == false then
+                    SetVehicleTyreBurst(vehicle, tid, true, 1000.0)
+                elseif tyreData.burst == true then
+                    SetVehicleTyreBurst(vehicle, tid, false, 990.0)
+                end
             end
         end
     end
 
     if statusData.extras then
         for extraId, isOn in pairs(statusData.extras) do
-            SetVehicleExtra(vehicle, tonumber(extraId), not isOn)
+            local eid = tonumber(extraId)
+            if eid and DoesExtraExist(vehicle, eid) then
+                SetVehicleExtra(vehicle, eid, not isOn)
+            end
         end
     end
 end
@@ -415,6 +521,64 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
         return
     end
 
+    -- ============ DEBUG TRACE ============
+    CreateThread(function()
+        local startTime = GetGameTimer()
+        local checkVehicle = vehicle
+        local checkPlate = plate
+        local lastTyreState = {}
+        local lastDoorState = {}
+        local lastWindowState = {}
+
+        for i = 0, 5 do lastTyreState[i] = false end
+        for i = 0, 5 do lastDoorState[i] = false end
+        for i = 0, 7 do lastWindowState[i] = true end
+
+        -- print(('[GARAGE-DEBUG] === SPAWN START plate=%s netId=%s ==='):format(checkPlate, netId))
+        -- print(('[GARAGE-DEBUG] statusData=%s'):format(json.encode(vehicleData.status or {})))
+
+        while GetGameTimer() - startTime < 15000 do
+            if not DoesEntityExist(checkVehicle) then
+                -- print('[GARAGE-DEBUG] Entity GONE')
+                return
+            end
+
+            for i = 0, 5 do
+                local burst = IsVehicleTyreBurst(checkVehicle, i, false)
+                local gone = IsVehicleTyreBurst(checkVehicle, i, true)
+                local current = gone and 'GONE' or (burst and 'BURST' or false)
+                if current ~= lastTyreState[i] then
+                    -- print(('[GARAGE-DEBUG] T+%dms TYRE[%d] %s -> %s'):format(
+                    --     GetGameTimer() - startTime, i, tostring(lastTyreState[i]), tostring(current)))
+                    lastTyreState[i] = current
+                end
+            end
+
+            for i = 0, 5 do
+                local broken = IsVehicleDoorDamaged(checkVehicle, i)
+                if broken ~= lastDoorState[i] then
+                    -- print(('[GARAGE-DEBUG] T+%dms DOOR[%d] -> broken=%s'):format(
+                    --     GetGameTimer() - startTime, i, tostring(broken)))
+                    lastDoorState[i] = broken
+                end
+            end
+
+            for i = 0, 7 do
+                local intact = IsVehicleWindowIntact(checkVehicle, i)
+                if intact ~= lastWindowState[i] then
+                    -- print(('[GARAGE-DEBUG] T+%dms WINDOW[%d] intact=%s'):format(
+                    --     GetGameTimer() - startTime, i, tostring(intact)))
+                    lastWindowState[i] = intact
+                end
+            end
+
+            Wait(50)
+        end
+
+        -- print(('[GARAGE-DEBUG] === END TRACE plate=%s ==='):format(checkPlate))
+    end)
+    -- ============ END DEBUG ============
+
     spawnedVehicles[netId] = true
 
     -- Set statebag flag freshGarageSpawn TRƯỚC khi DERP-mechanic chạy onEnterVehicle
@@ -455,60 +619,41 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
         local startTime = GetGameTimer()
         local duration  = 8000
         local interval  = 50
-        local loggedSlot = {}
-        local reapplyCount = 0
-        local statusReapplyCount = 0
-
-        print(string.format('^2[WATCHDOG] START %s | target Engine=%.2f Body=%.2f Fuel=%.2f^7',
-            plate, targetEngine or -1, targetBody or -1, targetFuel or -1))
 
         while GetGameTimer() - startTime < duration do
-            if not DoesEntityExist(vehicle) then
-                print('^1[WATCHDOG] ' .. plate .. ' entity gone, stopping^7')
-                return
-            end
+            if not DoesEntityExist(vehicle) then return end
 
-            local elapsed = GetGameTimer() - startTime
             local needReapplyHealth = false
             local needReapplyStatus = false
 
-            if targetEngine then
-                local cur = GetVehicleEngineHealth(vehicle)
-                if math.abs(cur - targetEngine) > 1.0 then
-                    local slot = math.floor(elapsed / 200)
-                    if not loggedSlot[slot] then
-                        print(string.format('^3[WATCHDOG] @%dms %s ENGINE drift %.2f vs target %.2f^7',
-                            elapsed, plate, cur, targetEngine))
-                        loggedSlot[slot] = true
-                    end
-                    needReapplyHealth = true
-                end
+            if targetEngine and math.abs(GetVehicleEngineHealth(vehicle) - targetEngine) > 1.0 then
+                needReapplyHealth = true
             end
 
-            if targetBody then
-                local cur = GetVehicleBodyHealth(vehicle)
-                if math.abs(cur - targetBody) > 1.0 then
-                    needReapplyHealth = true
-                end
+            if targetBody and math.abs(GetVehicleBodyHealth(vehicle) - targetBody) > 1.0 then
+                needReapplyHealth = true
             end
 
-            -- Check status (lốp, kính, cửa) bị restore không
             if targetStatus and type(targetStatus) == 'table' then
                 if targetStatus.windows then
                     for windowId, shouldBeBroken in pairs(targetStatus.windows) do
                         local wid = tonumber(windowId)
-                        if shouldBeBroken and IsVehicleWindowIntact(vehicle, wid) then
+                        if wid and wid >= 0 and wid <= 3 and shouldBeBroken and IsVehicleWindowIntact(vehicle, wid) then
                             needReapplyStatus = true
                             break
                         end
                     end
                 end
+
                 if not needReapplyStatus and targetStatus.tyres then
+                    local wheelCount = GetVehicleNumberOfWheels(vehicle)
                     for tyreId, tyreData in pairs(targetStatus.tyres) do
                         local tid = tonumber(tyreId)
-                        if (tyreData.burst or tyreData.gone) and not IsVehicleTyreBurst(vehicle, tid, false) then
-                            needReapplyStatus = true
-                            break
+                        if tid and tid >= 0 and tid < wheelCount then
+                            if (tyreData.burst or tyreData.gone) and not IsVehicleTyreBurst(vehicle, tid, false) then
+                                needReapplyStatus = true
+                                break
+                            end
                         end
                     end
                 end
@@ -521,25 +666,15 @@ local function SpawnVehicle(vehicleData, spawnPoint, garageName)
                 if targetEngine then SetVehicleEngineHealth(vehicle, targetEngine) end
                 if targetBody   then SetVehicleBodyHealth(vehicle,   targetBody)   end
                 if targetFuel   then Entity(vehicle).state:set('fuel', targetFuel, true) end
-                reapplyCount = reapplyCount + 1
             end
 
             if needReapplyStatus then
                 ApplyVehicleStatus(vehicle, targetStatus)
-                statusReapplyCount = statusReapplyCount + 1
             end
 
             Wait(interval)
         end
 
-        -- Final state check
-        if DoesEntityExist(vehicle) then
-            print(string.format('^2[WATCHDOG] DONE %s | reapplies: health=%d status=%d | Final Engine=%.2f Body=%.2f^7',
-                plate, reapplyCount, statusReapplyCount,
-                GetVehicleEngineHealth(vehicle), GetVehicleBodyHealth(vehicle)))
-        end
-
-        -- Cleanup
         SetTimeout(2000, function()
             recentGarageSpawns[plate] = nil
         end)
@@ -817,6 +952,7 @@ RegisterNetEvent('DERP-advanced-garages:client:requestVehicleStatus', function(n
 
     local status = GetVehicleStatus(vehicle)
     local mods = lib.getVehicleProperties(vehicle)
+    mods = SanitizeVehicleProperties(vehicle, mods)
 
     local coords = GetEntityCoords(vehicle)
     local heading = GetEntityHeading(vehicle)
@@ -1153,6 +1289,7 @@ local function StoreVehicle(garageName)
     local netId = NetworkGetNetworkIdFromEntity(vehicle)
 
     local currentMods = lib.getVehicleProperties(vehicle)
+    currentMods = SanitizeVehicleProperties(vehicle, currentMods)
 
     local clientEngine = GetVehicleEngineHealth(vehicle)
     local clientBody   = GetVehicleBodyHealth(vehicle)

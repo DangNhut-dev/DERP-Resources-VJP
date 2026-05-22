@@ -279,10 +279,10 @@ lib.callback.register('DERP-advanced-garages:server:spawnVehicle', function(sour
         end)
     end
 
-    print('^2[SPAWN SERVER] ' .. plate .. ' netId=' .. netId
-        .. ' | Engine: ' .. tostring(vehicleData.engine)
-        .. ' | Body: ' .. tostring(vehicleData.body)
-        .. ' | Fuel: ' .. tostring(vehicleData.fuel) .. '^7')
+    -- print('^2[SPAWN SERVER] ' .. plate .. ' netId=' .. netId
+    --     .. ' | Engine: ' .. tostring(vehicleData.engine)
+    --     .. ' | Body: ' .. tostring(vehicleData.body)
+    --     .. ' | Fuel: ' .. tostring(vehicleData.fuel) .. '^7')
 
     return {
         success       = true,
@@ -378,9 +378,9 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
 
     local serverLockState = vehicleData.lockState or 2
 
-    print('^2[STORE DEBUG] Final SAVE to DB -> Fuel: ' .. tostring(serverFuel)
-        .. ' | Engine: ' .. tostring(serverEngine)
-        .. ' | Body: ' .. tostring(serverBody) .. '^7')
+    -- print('^2[STORE DEBUG] Final SAVE to DB -> Fuel: ' .. tostring(serverFuel)
+    --     .. ' | Engine: ' .. tostring(serverEngine)
+    --     .. ' | Body: ' .. tostring(serverBody) .. '^7')
 
     MySQL.update.await([[
         UPDATE player_vehicles
@@ -399,9 +399,9 @@ RegisterNetEvent('DERP-advanced-garages:server:storeVehicle', function(plate, ga
 
     local verify = MySQL.query.await('SELECT fuel, engine, body FROM player_vehicles WHERE plate = ? LIMIT 1', { plate })
     if verify and verify[1] then
-        print('^2[STORE DEBUG] DB after UPDATE -> Fuel: ' .. tostring(verify[1].fuel)
-            .. ' | Engine: ' .. tostring(verify[1].engine)
-            .. ' | Body: ' .. tostring(verify[1].body) .. '^7')
+        -- print('^2[STORE DEBUG] DB after UPDATE -> Fuel: ' .. tostring(verify[1].fuel)
+        --     .. ' | Engine: ' .. tostring(verify[1].engine)
+        --     .. ' | Body: ' .. tostring(verify[1].body) .. '^7')
     end
 
     if Config.Streaming and Config.Streaming.Enabled then
@@ -543,9 +543,9 @@ RegisterNetEvent('DERP-advanced-garages:server:registerSpawn', function(plate, n
     ]], { plate, citizenid })
 
     if result and result[1] then
-        print('^3[REGISTER SPAWN EVENT] ' .. plate .. ' DB query -> Fuel: ' .. tostring(result[1].fuel)
-            .. ' | Engine: ' .. tostring(result[1].engine)
-            .. ' | Body: ' .. tostring(result[1].body) .. '^7')
+        -- print('^3[REGISTER SPAWN EVENT] ' .. plate .. ' DB query -> Fuel: ' .. tostring(result[1].fuel)
+        --     .. ' | Engine: ' .. tostring(result[1].engine)
+        --     .. ' | Body: ' .. tostring(result[1].body) .. '^7')
 
         local dbEngine = result[1].engine
         local dbBody   = result[1].body
@@ -570,7 +570,7 @@ RegisterNetEvent('DERP-advanced-garages:server:registerSpawn', function(plate, n
             })
         end
     else
-        print('^1[REGISTER SPAWN EVENT] ' .. plate .. ' DB query EMPTY^7')
+        -- print('^1[REGISTER SPAWN EVENT] ' .. plate .. ' DB query EMPTY^7')
     end
 
     exports['DERP-advanced-garages']:RegisterVehicleSpawn(
@@ -697,20 +697,20 @@ lib.addCommand('garageinfo', {
     local coords    = GetEntityCoords(playerPed)
     local player    = QBX:GetPlayer(source)
 
-    print('^2[DERP-advanced-garages] Player coords: ' .. tostring(coords))
+    -- print('^2[DERP-advanced-garages] Player coords: ' .. tostring(coords))
     if player and player.PlayerData and player.PlayerData.job then
-        print('^2[DERP-advanced-garages] Player job: ' .. player.PlayerData.job.name)
+        -- print('^2[DERP-advanced-garages] Player job: ' .. player.PlayerData.job.name)
     end
 
     for name, garage in pairs(Config.Garages) do
         local hasAccess = HasJobAccess(player, name)
-        print('^3Garage: ^7' .. name .. ' ^3Type: ^7' .. garage.type .. ' ^3Access: ^7' .. tostring(hasAccess))
+        -- print('^3Garage: ^7' .. name .. ' ^3Type: ^7' .. garage.type .. ' ^3Access: ^7' .. tostring(hasAccess))
 
         if garage.storeZone then
-            print('^3  Store Zone Distance: ^7' .. #(coords - garage.storeZone.coords))
+            -- print('^3  Store Zone Distance: ^7' .. #(coords - garage.storeZone.coords))
         end
         if garage.npc then
-            print('^3  NPC Distance: ^7' .. #(coords - garage.npc.coords))
+            -- print('^3  NPC Distance: ^7' .. #(coords - garage.npc.coords))
         end
     end
 end)
@@ -722,7 +722,7 @@ lib.addCommand('garagesAdmin', {
     TriggerClientEvent('DERP-advanced-garages:client:openAdminUI', source)
 end)
 
-print('^2[DERP-advanced-garages] ^7Server script loaded successfully!')
+-- print('^2[DERP-advanced-garages] ^7Server script loaded successfully!')
 
 -- ============================================================
 -- WATER IMPOUND SYSTEM

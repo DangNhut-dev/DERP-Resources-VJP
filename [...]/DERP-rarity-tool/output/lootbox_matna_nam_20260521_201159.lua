@@ -1,0 +1,23 @@
+['lootbox_nam_matna_s2'] = {
+    label = 'Hòm Mặt Nạ Đợt 2 - Nam',
+    items = {
+        { name = 'matna_254_0_0' },
+        { name = 'matna_255_0_0' },
+        { name = 'matna_256_0_0' },
+        { name = 'matna_256_1_0' },
+        { name = 'matna_256_2_0' },
+        { name = 'matna_256_3_0' },
+        { name = 'matna_257_0_0' },
+        { name = 'matna_257_1_0' },
+        { name = 'matna_257_2_0' },
+        { name = 'matna_257_3_0' },
+        { name = 'matna_257_4_0' },
+        { name = 'matna_258_0_0' },
+        { name = 'matna_259_0_0' },
+        { name = 'matna_259_1_0' },
+        { name = 'matna_259_2_0' },
+        { name = 'matna_260_0_0' },
+        { name = 'matna_260_1_0' },
+        { name = 'matna_261_0_0' },
+    }
+},

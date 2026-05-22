@@ -26,9 +26,9 @@ CreateThread(function()
         end
 
         -- Tắt crouch khi đang aim
-        if aiming and LocalPlayer.state.crouch then
-            LocalPlayer.state:set('crouch', false, false)
-        end
+        -- if aiming and LocalPlayer.state.crouch then
+        --     LocalPlayer.state:set('crouch', false, false)
+        -- end
 
         if antiJumpSpam then
             if now - lastJump < jumpCooldown then
@@ -256,11 +256,11 @@ if Config.InVehicleFPSAim then
 end
 
 -- Chặn crouch bật lên khi đang aim
-AddStateBagChangeHandler('crouch', ('player:%s'):format(cache.serverId), function(_, _, value)
-    if value and IsControlPressed(0, 25) then
-        LocalPlayer.state:set('crouch', false, false)
-    end
-end)
+-- AddStateBagChangeHandler('crouch', ('player:%s'):format(cache.serverId), function(_, _, value)
+--     if value and IsControlPressed(0, 25) then
+--         LocalPlayer.state:set('crouch', false, false)
+--     end
+-- end)
 
 -- Open map keybind
 lib.addKeybind({

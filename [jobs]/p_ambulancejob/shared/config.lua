@@ -1968,10 +1968,10 @@ Config.Interactions = {
             distance = 3.0,
             onSelect = function(data, seat)
                 local entity = type(data) == 'number' and data or data.entity
-                if not entity or entity == 0 then print('[DEBUG] entity invalid') return end
+                if not entity or entity == 0 then return end
 
                 local seatPed = GetPedInVehicleSeat(entity, seat)
-                if not seatPed or seatPed == 0 or not IsPedAPlayer(seatPed) then print('[DEBUG] no valid ped in seat') return end
+                if not seatPed or seatPed == 0 or not IsPedAPlayer(seatPed) then return end
 
                 local targetId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(seatPed))
                 TriggerServerEvent('p_ambulancejob/server/interactions/takeIncapacitatedFromVehicle', {
@@ -1980,35 +1980,74 @@ Config.Interactions = {
                 })
             end,
             canInteract = function(entity, seat)
-                if Death.deathType ~= 'none' then return false end
-                if not entity or entity == 0 then return false end
- 
-                local lockStatus = GetVehicleDoorLockStatus(entity)
-                if lockStatus > 1 and lockStatus ~= 8 then return false end
- 
-                if seat == nil or seat < 0 then return false end
- 
-                local seatPed = GetPedInVehicleSeat(entity, seat)
-                if not seatPed or seatPed == 0 or not IsPedAPlayer(seatPed) then
+                print(string.format('[DEBUG] === canInteract called === seat=%s entity=%s', tostring(seat), tostring(entity)))
+
+                if Death.deathType ~= 'none' then
+                    print('[DEBUG] BLOCK: source in death state, Death.deathType=' .. tostring(Death.deathType))
                     return false
                 end
- 
+
+                if not entity or entity == 0 then
+                    print('[DEBUG] BLOCK: no entity')
+                    return false
+                end
+
+                if seat == nil then
+                    print('[DEBUG] BLOCK: seat is nil')
+                    return false
+                end
+
+                local seatPed = GetPedInVehicleSeat(entity, seat)
+                print(string.format('[DEBUG] seatPed=%s exists=%s isPlayer=%s isCachePed=%s',
+                    tostring(seatPed),
+                    tostring(DoesEntityExist(seatPed)),
+                    tostring(IsPedAPlayer(seatPed)),
+                    tostring(seatPed == cache.ped)
+                ))
+
+                if not seatPed or seatPed == 0 then
+                    print('[DEBUG] BLOCK: no seatPed')
+                    return false
+                end
+
+                if not IsPedAPlayer(seatPed) then
+                    print('[DEBUG] BLOCK: seatPed not a player')
+                    return false
+                end
+
+                if seatPed == cache.ped then
+                    print('[DEBUG] BLOCK: seatPed is self')
+                    return false
+                end
+
                 local targetId = GetPlayerServerId(NetworkGetPlayerIndexFromPed(seatPed))
-                if not targetId or targetId == 0 then return false end
- 
+                print(string.format('[DEBUG] targetId=%s', tostring(targetId)))
+
+                if not targetId or targetId == 0 then
+                    print('[DEBUG] BLOCK: invalid targetId')
+                    return false
+                end
+
                 local targetState = Player(targetId).state
- 
-                -- Death check: p_ambulancejob state bags
-                local isDead = targetState.isDead or targetState.dead or false
+                local isDead = targetState.isDead
+                local dead = targetState.dead
                 local deathType = targetState.deathType
-                local isInDeathState = isDead or (deathType and deathType ~= 'none')
- 
-                -- Cuff check: native + animation (works cross-client)
+
+                print(string.format('[DEBUG] targetState: isDead=%s dead=%s deathType=%s',
+                    tostring(isDead),
+                    tostring(dead),
+                    tostring(deathType)
+                ))
+
+                local isInDeathState = (isDead or dead or false) or (deathType and deathType ~= 'none')
+
                 local isCuffed = IsPedCuffed(seatPed)
-                    or IsEntityPlayingAnim(seatPed, 'mp_arresting', 'idle', 3)
-                    or IsEntityPlayingAnim(seatPed, 'mp_arrest_paired', 'crook_p2_back_right', 3)
- 
-                return (isInDeathState or isCuffed) or false
+                print(string.format('[DEBUG] isCuffed=%s isInDeathState=%s', tostring(isCuffed), tostring(isInDeathState)))
+
+                local result = isInDeathState or isCuffed
+                print(string.format('[DEBUG] FINAL RESULT = %s', tostring(result)))
+
+                return result
             end,
         },
     }
