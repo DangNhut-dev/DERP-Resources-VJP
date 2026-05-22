@@ -31,7 +31,7 @@ function getVehicleProperties(vehicle, withStatebags)
   local extras = {}
   for extraId = 1, 15 do
     if DoesExtraExist(vehicle, extraId) then
-      extras[tostring(extraId)] = IsVehicleExtraTurnedOn(vehicle, extraId) == 1
+      extras[tostring(extraId)] = IsVehicleExtraTurnedOn(vehicle, extraId)
     end
   end
 
@@ -58,13 +58,15 @@ function getVehicleProperties(vehicle, withStatebags)
   end
 
   local windowStatus = {}
-  for i = 0, 7 do
-    windowStatus[i] = IsVehicleWindowIntact(vehicle, i) == 1
+  for i = 0, 3 do
+      windowStatus[i] = IsVehicleWindowIntact(vehicle, i)
   end
 
   local doorStatus = {}
   for i = 0, 5 do
-    doorStatus[i] = IsVehicleDoorDamaged(vehicle, i) == 1
+      if DoesVehicleHaveDoor(vehicle, i) then
+          doorStatus[i] = IsVehicleDoorDamaged(vehicle, i)
+      end
   end
 
   local neons = {}
@@ -112,14 +114,16 @@ function getVehicleProperties(vehicle, withStatebags)
     end
   end
 
-  for windowId = 0, 7 do
-    windowsBroken[tostring(windowId)] = not IsVehicleWindowIntact(vehicle, windowId)
+  for windowId = 0, 3 do
+      windowsBroken[tostring(windowId)] = not IsVehicleWindowIntact(vehicle, windowId)
   end
 
   local numDoors = GetNumberOfVehicleDoors(vehicle)
   if numDoors and numDoors > 0 then
-    for doorsId = 0, numDoors do
-      doorsBroken[tostring(doorsId)] = IsVehicleDoorDamaged(vehicle, doorsId)
+    for doorsId = 0, numDoors - 1 do
+        if DoesVehicleHaveDoor(vehicle, doorsId) then
+            doorsBroken[tostring(doorsId)] = IsVehicleDoorDamaged(vehicle, doorsId)
+        end
     end
   end
 
@@ -266,14 +270,14 @@ function setVehicleProperties(vehicle, props, withStatebags)
   SetVehicleModKit(vehicle, 0)
 
   if props.windowsBroken ~= nil then
-    for k, v in pairs(props.windowsBroken) do
-      if v then
-        k = tonumber(k)
-        if k then
-          RemoveVehicleWindow(vehicle, k)
-        end
+      for k, v in pairs(props.windowsBroken) do
+          if v then
+              k = tonumber(k)
+              if k and k >= 0 and k <= 3 then
+                  RemoveVehicleWindow(vehicle, k)
+              end
+          end
       end
-    end
   end
 
   if props.doorsBroken ~= nil then
@@ -414,11 +418,12 @@ function setVehicleProperties(vehicle, props, withStatebags)
   end
 
   if props.windowStatus then
-    for windowIndex, smashWindow in pairs(props.windowStatus) do
-      if not smashWindow then
-        RemoveVehicleWindow(vehicle, windowIndex)
+      for windowIndex, smashWindow in pairs(props.windowStatus) do
+          local wid = type(windowIndex) == 'string' and tonumber(windowIndex) or windowIndex
+          if wid and wid >= 0 and wid <= 3 and not smashWindow then
+              RemoveVehicleWindow(vehicle, wid)
+          end
       end
-    end
   end
 
   if props.doorStatus then
@@ -437,21 +442,28 @@ function setVehicleProperties(vehicle, props, withStatebags)
   end
 
   if props.tireBurstState then
-    for wheelIndex, burstState in pairs(props.tireBurstState) do
-      if burstState then
-        if type(wheelIndex) == "string" then wheelIndex = tonumber(wheelIndex) or 0 end
-        SetVehicleTyreBurst(vehicle, wheelIndex, false, 1000.0)
+      local wheelCount = GetVehicleNumberOfWheels(vehicle)
+      local validIdx = { [0]=1,[1]=1,[4]=1,[5]=1,[2]=1,[3]=1 }
+      for wheelIndex, burstState in pairs(props.tireBurstState) do
+          if burstState then
+              if type(wheelIndex) == "string" then wheelIndex = tonumber(wheelIndex) or 0 end
+              if wheelIndex and wheelIndex >= 0 and wheelIndex < wheelCount then
+                  SetVehicleTyreBurst(vehicle, wheelIndex, false, 1000.0)
+              end
+          end
       end
-    end
   end
 
   if props.tireBurstCompletely then
-    for wheelIndex, burstState in pairs(props.tireBurstCompletely) do
-      if burstState then
-        if type(wheelIndex) == "string" then wheelIndex = tonumber(wheelIndex) or 0 end
-        SetVehicleTyreBurst(vehicle, wheelIndex, true, 1000.0)
+      local wheelCount = GetVehicleNumberOfWheels(vehicle)
+      for wheelIndex, burstState in pairs(props.tireBurstCompletely) do
+          if burstState then
+              if type(wheelIndex) == "string" then wheelIndex = tonumber(wheelIndex) or 0 end
+              if wheelIndex and wheelIndex >= 0 and wheelIndex < wheelCount then
+                  SetVehicleTyreBurst(vehicle, wheelIndex, true, 1000.0)
+              end
+          end
       end
-    end
   end
 
   if props.neonEnabled then

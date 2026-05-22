@@ -299,7 +299,7 @@ Citizen.CreateThread(function()
         })
       end
     elseif interactionName == "takeIncapacitatedFromVehicle" then
-      for seatIndex = 0, 6 do
+      for seatIndex = -1, 6 do
         local seatLabel = Interactions.seats[tostring(seatIndex)] or locale("additional_seat")
  
         table.insert(targets.vehicle, {
