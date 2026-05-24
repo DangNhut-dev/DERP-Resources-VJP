@@ -1,0 +1,20 @@
+/* Oswald */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+@font-face {
+    font-family: OswaldBold;
+    src: url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: OswaldMedium;
+    src: url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: OswaldLight;
+    src: url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+    font-weight: 300;
+}
