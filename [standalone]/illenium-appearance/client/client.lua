@@ -162,10 +162,10 @@ local function OpenClothingShop(isPedMenu)
     config.props = true
 
     if isPedMenu then
-        config.ped = true
-        config.headBlend = true
-        config.faceFeatures = true
-        config.headOverlays = true
+        config.ped = false
+        config.headBlend = false
+        config.faceFeatures = false
+        config.headOverlays = false
         config.tattoos = not Config.RCoreTattoosCompatibility and true
     end
     OpenShop(config, isPedMenu, "clothing")

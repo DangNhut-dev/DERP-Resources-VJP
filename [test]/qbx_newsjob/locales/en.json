@@ -1,0 +1,32 @@
+{
+    "error": {
+        "cant_spawn_vehicle": "Đã xảy ra lỗi khi triệu hồi phương tiện",
+        "no_access": "Bạn không có quyền sử dụng lệnh này."
+    },
+    "info": {
+        "weazle_overlay": "Weazel Overlay: [E]  \nFilm Overlay: [K]",
+        "weazel_news_vehicles": "Phương Tiện Weazel News",
+        "close_menu": "⬅ Đóng Menu",
+        "weazel_news_helicopters": "Trực Thăng Weazel News",
+        "store_vehicle": "[E] - Cất phương tiện",
+        "vehicles": "[E] - Phương tiện",
+        "store_helicopters": "[E] - Cất trực thăng",
+        "helicopters": "[E] - Trực thăng",
+        "enter": "[E] - Vào trong",
+        "go_outside": "[E] - Ra ngoài",
+        "roof_enter": "[E] - Lên sân thượng",
+        "roof_exit": "[E] - Xuống sân thượng",
+        "breaking_news": "TIN NÓNG",
+        "title_breaking_news": "Weazel Today - Tin Tức Nóng Độc Quyền",
+        "bottom_breaking_news": "Chúng tôi cập nhật TIN TỨC MỚI NHẤT trực tiếp",
+        "newscam": "Lấy camera tin tức",
+        "newsmic": "Lấy micro tin tức",
+        "newsbmic": "Lấy micro cần câu",
+        "news_plate": "WZNW",
+        "blip_name": "Weazel News",
+        "newscam_dialog_title": "Weazel News",
+        "newscam_input_msg": "Tiêu đề chính (dòng chữ lớn)",
+        "newscam_input_bottom": "Dòng phụ phía dưới (để trống = mặc định)",
+        "newscam_input_title": "Chữ chạy scroll (để trống = mặc định)"
+    }
+}

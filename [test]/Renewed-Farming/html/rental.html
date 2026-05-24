@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thuê Đất Trồng Trọt</title>
+    <link rel="stylesheet" href="rental.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="rental-app" class="hidden">
+        <div class="rental-container">
+            <div class="rental-header">
+                <div class="header-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                </div>
+                <h1>Thuê Đất Trồng Trọt</h1>
+                <p class="header-sub">Chọn mảnh đất và bắt đầu canh tác</p>
+                <button class="close-btn" id="close-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="rental-body">
+                <div class="plots-section">
+                    <div class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                        </svg>
+                        <span>Danh sách mảnh đất</span>
+                    </div>
+                    <div id="plots-list" class="plots-list"></div>
+                </div>
+
+                <div class="detail-section" id="detail-section">
+                    <div class="detail-empty" id="detail-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M8 12l2 2 4-4" />
+                        </svg>
+                        <p>Chọn một mảnh đất để xem chi tiết</p>
+                    </div>
+
+                    <div class="detail-content hidden" id="detail-content">
+                        <div class="detail-header">
+                            <h2 id="detail-name"></h2>
+                            <span class="detail-badge" id="detail-badge"></span>
+                        </div>
+
+                        <div class="detail-info" id="detail-renter-info">
+                            <div class="info-row">
+                                <span class="info-label">Người thuê</span>
+                                <span class="info-value" id="info-renter"></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Hết hạn</span>
+                                <span class="info-value" id="info-expires"></span>
+                            </div>
+                        </div>
+
+                        <div class="rent-form" id="rent-form">
+                            <div class="form-group">
+                                <label>Thời hạn thuê</label>
+                                <div class="duration-grid" id="duration-grid"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phương thức thanh toán</label>
+                                <div class="payment-options">
+                                    <button class="pay-btn active" data-pay="cash">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                        Tiền mặt
+                                    </button>
+                                    <button class="pay-btn" data-pay="bank">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M2 10h20M2 6h20M6 14h.01M10 14h.01" />
+                                            <rect x="1" y="4" width="22" height="16" rx="2" />
+                                        </svg>
+                                        Ngân hàng
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="price-display">
+                                <span>Tổng cộng</span>
+                                <span class="price-value" id="price-value">$0</span>
+                            </div>
+
+                            <button class="rent-submit-btn" id="rent-submit-btn" disabled>
+                                Thuê đất
+                            </button>
+                        </div>
+
+                        <div class="owner-info hidden" id="owner-info">
+                            <div class="owner-badge">Mảnh đất của bạn</div>
+                            <div class="info-row">
+                                <span class="info-label">Hết hạn</span>
+                                <span class="info-value" id="owner-expires"></span>
+                            </div>
+                            <div class="countdown" id="owner-countdown"></div>
+                            <button class="route-btn" id="route-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                <span id="route-btn-text">Chỉ vị trí</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rental-footer">
+                <div class="my-rental-info hidden" id="my-rental-bar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <span id="my-rental-text">Bạn đã thuê: --</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification hidden">
+        <span id="notification-text"></span>
+    </div>
+
+    <script src="rental.js"></script>
+</body>
+
+</html>

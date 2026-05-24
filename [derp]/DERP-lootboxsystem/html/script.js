@@ -1,10 +1,11 @@
 'use strict';
 
 // ---- State ----
-let spinActive   = false;
-let imagePath    = '';
-let clothPath    = '';
-let rarityColors = {};
+let spinActive    = false;
+let resultPending = false;
+let imagePath     = '';
+let clothPath     = '';
+let rarityColors  = {};
 
 // ---- DOM ----
 const overlay        = document.getElementById('overlay');
@@ -38,7 +39,6 @@ function startSpinAudio() {
     spinAudio.play().catch(() => {});
 }
 
-// Fade out volume over `ms` milliseconds then pause
 function stopSpinAudio(ms = 1200) {
     clearInterval(spinFadeTimer);
     const steps    = 30;
@@ -56,17 +56,13 @@ function stopSpinAudio(ms = 1200) {
     }, interval);
 }
 
-function playWin(rarity) {
-    // win sound handled by stopSpinAudio fade — no extra tone needed
-}
-
+function playWin(rarity) {}
 
 // ---- Helpers ----
 function getRarityColor(rarity) {
     return rarityColors[rarity] || '#ffffff';
 }
 
-// Trả về đúng image path theo type của item
 function getItemImagePath(item) {
     return (item.type === 'cloth' ? clothPath : imagePath) + item.name + '.png';
 }
@@ -115,6 +111,9 @@ function easeSpinNew(t) {
 // ---- Preview ----
 function showPreview(boxType, boxLabel, imgPath) {
     currentBoxType = boxType;
+    spinActive     = false;
+    resultPending  = false;
+
     previewBoxImg.src           = imgPath + boxType + '.png';
     previewBoxLabel.textContent = boxLabel;
 
@@ -137,7 +136,8 @@ function showPreview(boxType, boxLabel, imgPath) {
 // ---- Core Spin ----
 function startSpin(winningItem, items) {
     if (spinActive) return;
-    spinActive = true;
+    spinActive    = true;
+    resultPending = false;
 
     resultPanel.classList.remove('visible');
     resultPanel.classList.add('hidden');
@@ -148,7 +148,7 @@ function startSpin(winningItem, items) {
     const SLOT_W      = ITEM_W + GAP;
     const TOTAL_SLOTS = 60;
     const WIN_IDX     = 52;
-    const SPIN_MS     = 15500; // 500ms delay + 15500ms = 16s total
+    const SPIN_MS     = 15500;
 
     const reelItems = buildReelPool(items, TOTAL_SLOTS);
     reelItems[WIN_IDX] = winningItem;
@@ -181,7 +181,6 @@ function startSpin(winningItem, items) {
     }
 
     startSpinAudio();
-    // 500ms timeout trước khi bắt đầu quay
     setTimeout(() => {
         requestAnimationFrame(animate);
     }, 500);
@@ -206,7 +205,6 @@ function showResult(item) {
     resultImg.src = getItemImagePath(item);
     resultImg.alt = item.label;
 
-    // Ẩn label và rarity — chỉ hiện ảnh và khung
     resultName.textContent   = '';
     resultRarity.textContent = '';
 
@@ -219,6 +217,7 @@ function showResult(item) {
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             resultPanel.classList.add('visible');
+            resultPending = true;
         });
     });
 }
@@ -235,6 +234,9 @@ window.addEventListener('message', (e) => {
     }
 
     if (data.action === 'closeUI') {
+        spinActive    = false;
+        resultPending = false;
+
         const multiContainer = document.getElementById('multi-reel-container');
         multiContainer.innerHTML = '';
         multiContainer.classList.add('hidden');
@@ -298,7 +300,7 @@ const MULTI_GAP     = 6;
 const MULTI_SLOT_W  = MULTI_ITEM_W + MULTI_GAP;
 const MULTI_SLOTS   = 55;
 const MULTI_WIN_IDX = 47;
-const MULTI_BASE_MS = 10000; // reel đầu dừng ở giây 10
+const MULTI_BASE_MS = 10000;
 const MULTI_STEP_MS = 900;
 
 function buildMultiItemEl(item) {
@@ -326,6 +328,7 @@ let multiWinners   = [];
 function startMultiSpin(winners, items) {
     if (spinActive) return;
     spinActive     = true;
+    resultPending  = false;
     multiSpinCount = 0;
     multiWinners   = winners;
 
@@ -451,23 +454,65 @@ function onMultiReelStop(winner, rowIdx, totalRows) {
     }
 }
 
-btnClaim.addEventListener('click', () => {
-    if (!spinActive) return;
-    spinActive = false;
-
-    const isMulti = !document.getElementById('multi-reel-container').classList.contains('hidden');
+btnClaim.addEventListener('click', (e) => {
     const RESOURCE_NAME = window.location.hostname.replace('cfx-nui-', '');
-
+ 
+    fetch(`https://${RESOURCE_NAME}/debugResult`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            event: 'btnClaim_CLICKED',
+            resultPending: resultPending,
+            spinActive: spinActive,
+            panelVisible: resultPanel.classList.contains('visible'),
+            panelHidden: resultPanel.classList.contains('hidden')
+        })
+    });
+ 
+    if (!resultPending) {
+        fetch(`https://${RESOURCE_NAME}/debugResult`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event: 'btnClaim_BLOCKED_resultPending_false' })
+        });
+        return;
+    }
+    resultPending = false;
+    spinActive    = false;
+ 
+    const isMulti = !document.getElementById('multi-reel-container').classList.contains('hidden');
+ 
+    fetch(`https://${RESOURCE_NAME}/debugResult`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event: 'btnClaim_FETCHING', isMulti: isMulti })
+    });
+ 
     fetch(`https://${RESOURCE_NAME}/${isMulti ? 'spinDoneMulti' : 'spinDone'}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({})
     });
 });
+ 
+// THÊM body click listener để biết click chuột có vào DOM không:
+document.body.addEventListener('click', (e) => {
+    const RESOURCE_NAME = window.location.hostname.replace('cfx-nui-', '');
+    fetch(`https://${RESOURCE_NAME}/debugResult`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            event: 'body_click',
+            targetId: e.target.id || e.target.tagName,
+            x: e.clientX,
+            y: e.clientY
+        })
+    });
+}, true);
 
 document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (spinActive) return;
+    if (spinActive || resultPending) return;
 
     if (previewScreen.style.display !== 'none') {
         overlay.classList.add('hidden');

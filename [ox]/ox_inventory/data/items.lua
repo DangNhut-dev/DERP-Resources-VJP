@@ -504,6 +504,8 @@ return {
 	['balo_142_7_1'] = { label = 'Mẫu balo', weight = 0, stack = false, close = true },
 	['balo_142_8_1'] = { label = 'Mẫu balo', weight = 0, stack = false, close = true },
 
+	
+
 	['lootbox_nam_thuong_aokhoac'] = {
 		label   = 'Hòm Áo Thường',
 		description = 'Áo khoác mã thường, giành cho giới tính nam',
@@ -693,6 +695,152 @@ return {
 			event = 'derp-lootbox:useItem'
 		}
 	},
+
+	['lootbox_nam_aokhoac_s2'] = {
+		label   = 'Hòm Áo Khoác Đợt 2',
+		description = 'Hòm áo khoác hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_aokhoac_s2'] = {
+		label   = 'Hòm Áo Khoác Đợt 2',
+		description = 'Hòm áo khoác hàng hiệu, dành cho nữ',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_aotrong_s2'] = {
+		label   = 'Hòm Áo Trong Đợt 2',
+		description = 'Hòm áo trong hàng hiệu, dành cho nữ',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nam_balo_s2'] = {
+		label   = 'Hòm Ba Lô Đợt 2',
+		description = 'Hòm ba lô hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_balo_s2'] = {
+		label   = 'Hòm Ba Lô Đợt 2',
+		description = 'Hòm ba lô hàng hiệu, dành cho nữ',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_daychuyen_s2'] = {
+		label   = 'Hòm Dây Chuyền Đợt 2',
+		description = 'Hòm dây chuyền hàng hiệu',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nam_giay_s2'] = {
+		label   = 'Hòm Giày Đợt 2',
+		description = 'Hòm giày hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_giay_s2'] = {
+		label   = 'Hòm Giày Đợt 2',
+		description = 'Hòm giày hàng hiệu, dành cho nữ',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nam_matna_s2'] = {
+		label   = 'Hòm Mặt Nạ Đợt 2',
+		description = 'Hòm mặt nạ hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_matna_s2'] = {
+		label   = 'Hòm Mặt Nạ Đợt 2',
+		description = 'Hòm mặt nạ hàng hiệu, dành cho nữ',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nam_mu_s2'] = {
+		label   = 'Hòm Mũ Đợt 2',
+		description = 'Hòm mũ hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nam_nonfullface_s2'] = {
+		label   = 'Hòm Nón Fullface Đợt 2',
+		description = 'Hòm nón fullface hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nu_mu_s2'] = {
+		label   = 'Hòm Mũ Đợt 2',
+		description = 'Hòm mũ hàng hiệu, dành cho nữ',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+	['lootbox_nam_quan_s2'] = {
+		label   = 'Hòm Quần Đợt 2',
+		description = 'Hòm quần hàng hiệu, dành cho nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
+
+
+
+
+
+
 
 	['id_card'] = {
         label = 'CCID',

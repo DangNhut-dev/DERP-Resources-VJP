@@ -87,21 +87,27 @@ function OpenCraftingUI(benchId, benchData)
 
         local recipesWithLabels = {}
         for itemName, recipeData in pairs(benchData.recipes) do
-            -- Support customLabel/customImage for special recipes (balo)
             local label, image
 
             if recipeData.customLabel then
                 label = recipeData.customLabel
             else
-                local meta = exports.ox_inventory:Items()[recipeData.craftItem or itemName]
-                label = meta and meta.label or itemName
+                local lookupName = recipeData.craftItem or itemName
+                local items = exports.ox_inventory:Items()
+                local meta = items and (items[lookupName] or items[string.upper(lookupName)])
+                label = meta and meta.label or lookupName
             end
 
             if recipeData.customImage then
                 image = recipeData.customImage
             else
                 local lookupName = recipeData.craftItem or itemName
-                image = 'nui://ox_inventory/web/images/' .. lookupName .. '.png'
+                local items = exports.ox_inventory:Items()
+                local imageName = lookupName
+                if not items[lookupName] and items[string.upper(lookupName)] then
+                    imageName = string.upper(lookupName)
+                end
+                image = 'nui://ox_inventory/web/images/' .. imageName .. '.png'
             end
 
             recipesWithLabels[itemName] = {

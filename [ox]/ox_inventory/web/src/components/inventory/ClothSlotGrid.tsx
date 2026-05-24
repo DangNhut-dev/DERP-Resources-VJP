@@ -10,7 +10,6 @@ import { fetchNui } from '../../utils/fetchNui';
 import GloveModal from './GloveModal';
 import { getItemRarityColor } from '../../store/rarity';
 import { setSuppressItemNotification } from '../utils/ItemNotifications';
-import { useDrag, useDrop, useDragLayer } from 'react-dnd';
 
 const slotMap = (slots: ClothSlotDef[]): Record<number, ClothSlotDef> => {
   const map: Record<number, ClothSlotDef> = {};
@@ -199,6 +198,10 @@ const ClothSlotGrid: React.FC<ClothSlotGridProps> = ({ clothSlots, gloveOptions,
     []
   );
 
+  const handleOpenClothingMenu = () => {
+    fetchNui('openIlleniumClothing', {});
+  };
+
   const renderSlot = (slotNum: number, large?: boolean) => {
     const def = defs[slotNum];
     if (!def) return null;
@@ -219,42 +222,56 @@ const ClothSlotGrid: React.FC<ClothSlotGridProps> = ({ clothSlots, gloveOptions,
   };
 
   return (
-    <div ref={gridDrop} className="cloth-layout" style={{ pointerEvents: isBusy ? 'none' : 'auto' }}>
-      <div className="cloth-layout__col cloth-layout__col--side">
-        {LAYOUT.left.map((s) => renderSlot(s))}
-      </div>
-      <div className="cloth-layout__col cloth-layout__col--center">
-        <div className="cloth-layout__center-pair">
-          {renderSlot(1)}
-          {renderSlot(2)}
-        </div>
-        {renderSlot(3, true)}
-        {renderSlot(6, true)}
-      </div>
-      <div className="cloth-layout__col cloth-layout__col--side">
-        {LAYOUT.right.map((s) => renderSlot(s))}
-      </div>
-
-      {hasDecalAccess && (
-        <div className="cloth-layout__decal">
-          {renderSlot(DECAL_SLOT)}
+    <>
+      {!isFreemode && (
+        <div className="cloth-layout__change-outfit">
+          <button
+            type="button"
+            className="cloth-layout__change-outfit-btn"
+            onClick={handleOpenClothingMenu}
+            disabled={isBusy}
+          >
+            Thay Quần Áo
+          </button>
         </div>
       )}
+      <div ref={gridDrop} className="cloth-layout" style={{ pointerEvents: isBusy ? 'none' : 'auto' }}>
+        <div className="cloth-layout__col cloth-layout__col--side">
+          {LAYOUT.left.map((s) => renderSlot(s))}
+        </div>
+        <div className="cloth-layout__col cloth-layout__col--center">
+          <div className="cloth-layout__center-pair">
+            {renderSlot(1)}
+            {renderSlot(2)}
+          </div>
+          {renderSlot(3, true)}
+          {renderSlot(6, true)}
+        </div>
+        <div className="cloth-layout__col cloth-layout__col--side">
+          {LAYOUT.right.map((s) => renderSlot(s))}
+        </div>
 
-      {showGloveModal && isFreemode && (
-        <GloveModal
-          options={gloveOptions}
-          currentEquipped={clothSlots[5] || null}
-          onClose={() => setShowGloveModal(false)}
-          gender={(() => {
-            for (const slot of Object.values(clothSlots)) {
-              if (slot?.gender !== undefined) return slot.gender;
-            }
-            return 0;
-          })()}
-        />
-      )}
-    </div>
+        {hasDecalAccess && (
+          <div className="cloth-layout__decal">
+            {renderSlot(DECAL_SLOT)}
+          </div>
+        )}
+
+        {showGloveModal && isFreemode && (
+          <GloveModal
+            options={gloveOptions}
+            currentEquipped={clothSlots[5] || null}
+            onClose={() => setShowGloveModal(false)}
+            gender={(() => {
+              for (const slot of Object.values(clothSlots)) {
+                if (slot?.gender !== undefined) return slot.gender;
+              }
+              return 0;
+            })()}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

@@ -308,4 +308,15 @@ exports('reapplyClothSlots', function()
     ClothingClient.ApplyAllClothSlots(ped, currentClothSlots, gender)
 end)
 
+-- NUI callback: open illenium clothing menu (cho non-freemode model)
+RegisterNUICallback('openIlleniumClothing', function(_, cb)
+    cb('ok')
+    if ClothingClient.IsFreemodeModel(cache.ped) then return end
+
+    TriggerEvent('ox_inventory:closeInventory')
+    SetTimeout(300, function()
+        TriggerEvent('illenium-appearance:client:openClothingShop', true)
+    end)
+end)
+
 return ClothingClient

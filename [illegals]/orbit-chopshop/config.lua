@@ -10,14 +10,14 @@ Config.StartLoc = vector4(815.09, -495.18, 29.62, 296.17)
 Config.WheelItems = {
     [1] = {
         ["item"] = "carbon",
-        ["amount"] = math.random(1, 3)
+        ["amount"] = math.random(1, 4)
     },
 }
 
 Config.DoorItems = {
     [1] = {
         ["item"] = "carbon",
-        ["amount"] = math.random(2, 5)
+        ["amount"] = math.random(2, 6)
     },
 }
 

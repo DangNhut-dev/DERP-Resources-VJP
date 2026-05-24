@@ -70,8 +70,6 @@ local function SpawnNPC()
     })
 end
 
-CreateThread(SpawnNPC)
-
 AddEventHandler('onClientResourceStart', function(res)
     if res ~= GetCurrentResourceName() then return end
     SpawnNPC()

@@ -1605,6 +1605,36 @@ input[type='number']::-webkit-outer-spin-button {
   margin-top: 6px;
 }
 
+.cloth-layout__change-outfit {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.cloth-layout__change-outfit-btn {
+    padding: 8px 24px;
+    background: rgba(24, 24, 24, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s ease, border 0.2s ease;
+    text-transform: uppercase;
+    font-family: inherit;
+}
+
+.cloth-layout__change-outfit-btn:hover:not(:disabled) {
+    background: rgba(71, 71, 71, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.cloth-layout__change-outfit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 // ── Transitions ────────────────────────────────────────────────
 .transition-fade-enter       { opacity: 0; }
 .transition-fade-enter-active { opacity: 1; transition: opacity 180ms; }

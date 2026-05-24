@@ -204,12 +204,27 @@ Config.Companies.Services = {
     {
         job = "cardealer",
         name = "Baby Blue Cars",
-        icon = "https://cdn.discordapp.com/attachments/1416095232168038541/1423533726679171162/babybluecarslogo.png?ex=69cff0d8&is=69ce9f58&hm=11387a9f5fb909a77c9db7dee1642298564901e854c13694b1ab107697db55c3&",
+        icon = "https://cdn-icons-png.flaticon.com/512/6428/6428508.png",
         canCall = true,                 -- if true, players can call the company
         canMessage = true,              -- if true, players can message the company
         bossRanks = { "boss" }, -- ranks that can manage the company
         location = {
             name = "Baby Blue Cars",
+            coords = {
+                x = -68.46,
+                y = 75.27
+            }
+        }
+    },
+    {
+        job = "lsnews",
+        name = "LS NEWS",
+        icon = "https://cdn-icons-png.freepik.com/256/10290/10290263.png",
+        canCall = true,                 -- if true, players can call the company
+        canMessage = true,              -- if true, players can message the company
+        bossRanks = { "boss" }, -- ranks that can manage the company
+        location = {
+            name = "LS NEWS",
             coords = {
                 x = -68.46,
                 y = 75.27

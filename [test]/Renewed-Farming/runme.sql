@@ -1,0 +1,26 @@
+CREATE TABLE `farms` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`x` FLOAT NULL DEFAULT NULL,
+	`y` FLOAT NULL DEFAULT NULL,
+	`z` FLOAT NULL DEFAULT NULL,
+	`heading` FLOAT NULL DEFAULT NULL,
+	`spots` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_general_ci',
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `farm_rentals` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`plot_id` INT(11) NOT NULL,
+	`citizenid` VARCHAR(50) NOT NULL,
+	`char_name` VARCHAR(100) NOT NULL,
+	`rented_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`expires_at` DATETIME NOT NULL,
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE KEY `plot_id` (`plot_id`),
+	UNIQUE KEY `citizenid` (`citizenid`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;

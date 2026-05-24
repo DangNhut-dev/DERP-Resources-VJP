@@ -46,7 +46,7 @@ Config.JobData = {
 
 Config.Salary = {
     amount = 210,
-    moneyType = Config.Frameworks.ESX.enabled and 'bank' or ((Config.Frameworks.QB.enabled and 'bank') or (Config.Frameworks.QBOX.enabled and 'bank' or 'yourcustomtypeofmoney')),
+    moneyType = Config.Frameworks.ESX.enabled and 'cash' or ((Config.Frameworks.QB.enabled and 'cash') or (Config.Frameworks.QBOX.enabled and 'cash' or 'yourcustomtypeofmoney')),
     levelMultiplier = 1.5, -- salary multiplier for each level f.e. for each level +0.5% from salary
     jobFinishedXP = 75,
 }

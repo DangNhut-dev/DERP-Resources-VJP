@@ -270,4 +270,34 @@ return {
             },
         },
     },
+    ['lsnews'] = {
+        label = 'LS NEWS',
+        type = 'news',
+        defaultDuty = false,
+        offDutyPay = false,
+        grades = {
+            [0] = {
+                name = 'Thử Việc',
+                payment = 200
+            },
+            [1] = {
+                name = 'Phóng Viên',
+                payment = 200
+            },
+            [2] = {
+                name = 'Quản Lý',
+                payment = 200
+            },
+            [3] = {
+                name = 'Phó Giám Đốc',
+                payment = 200
+            },
+            [4] = {
+                name = 'Giám Đốc',
+                isboss = true,
+                bankAuth = true,
+                payment = 200
+            },
+        },
+    },
 }

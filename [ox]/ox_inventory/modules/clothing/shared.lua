@@ -27,7 +27,101 @@ local ClothingConfig = {
 
     -- ── Glove Selector Config ──────────────────────────────────
     gloveSelector = {
-        defaultCount = 16,
+        -- Default drawables per gender
+        defaultDrawables = {
+            male = {
+                { drawable = 0,  texture = 0 },
+                { drawable = 1,  texture = 0 },
+                { drawable = 2,  texture = 0 },
+                { drawable = 3,  texture = 0 },
+                { drawable = 4,  texture = 0 },
+                { drawable = 5,  texture = 0 },
+                { drawable = 6,  texture = 0 },
+                { drawable = 7,  texture = 0 },
+                { drawable = 8,  texture = 0 },
+                { drawable = 9,  texture = 0 },
+                { drawable = 10, texture = 0 },
+                { drawable = 11, texture = 0 },
+                { drawable = 12, texture = 0 },
+                { drawable = 13, texture = 0 },
+                { drawable = 14, texture = 0 },
+                { drawable = 15, texture = 0 },
+            },
+            female = {
+                { drawable = 0,   texture = 0 },
+                { drawable = 1,   texture = 0 },
+                { drawable = 2,   texture = 0 },
+                { drawable = 3,   texture = 0 },
+                { drawable = 4,   texture = 0 },
+                { drawable = 5,   texture = 0 },
+                { drawable = 6,   texture = 0 },
+                { drawable = 7,   texture = 0 },
+                { drawable = 8,   texture = 0 },
+                { drawable = 9,   texture = 0 },
+                { drawable = 10,  texture = 0 },
+                { drawable = 11,  texture = 0 },
+                { drawable = 12,  texture = 0 },
+                { drawable = 13,  texture = 0 },
+                { drawable = 14,  texture = 0 },
+                { drawable = 15,  texture = 0 },
+                { drawable = 248, texture = 0 },
+                { drawable = 248, texture = 1 },
+                { drawable = 248, texture = 2 },
+                { drawable = 248, texture = 3 },
+                { drawable = 248, texture = 4 },
+                { drawable = 248, texture = 5 },
+                { drawable = 248, texture = 6 },
+                { drawable = 249, texture = 0 },
+                { drawable = 249, texture = 1 },
+                { drawable = 249, texture = 2 },
+                { drawable = 249, texture = 3 },
+                { drawable = 249, texture = 4 },
+                { drawable = 249, texture = 5 },
+                { drawable = 249, texture = 6 },
+                { drawable = 250, texture = 0 },
+                { drawable = 250, texture = 1 },
+                { drawable = 250, texture = 2 },
+                { drawable = 250, texture = 3 },
+                { drawable = 250, texture = 4 },
+                { drawable = 250, texture = 5 },
+                { drawable = 250, texture = 6 },
+                { drawable = 251, texture = 0 },
+                { drawable = 251, texture = 1 },
+                { drawable = 251, texture = 2 },
+                { drawable = 251, texture = 3 },
+                { drawable = 251, texture = 4 },
+                { drawable = 251, texture = 5 },
+                { drawable = 251, texture = 6 },
+                { drawable = 252, texture = 0 },
+                { drawable = 252, texture = 1 },
+                { drawable = 252, texture = 2 },
+                { drawable = 252, texture = 3 },
+                { drawable = 252, texture = 4 },
+                { drawable = 252, texture = 5 },
+                { drawable = 252, texture = 6 },
+                { drawable = 253, texture = 0 },
+                { drawable = 253, texture = 1 },
+                { drawable = 253, texture = 2 },
+                { drawable = 253, texture = 3 },
+                { drawable = 253, texture = 4 },
+                { drawable = 253, texture = 5 },
+                { drawable = 253, texture = 6 },
+                { drawable = 254, texture = 0 },
+                { drawable = 254, texture = 1 },
+                { drawable = 254, texture = 2 },
+                { drawable = 254, texture = 3 },
+                { drawable = 254, texture = 4 },
+                { drawable = 254, texture = 5 },
+                { drawable = 254, texture = 6 },
+                { drawable = 255, texture = 0 },
+                { drawable = 255, texture = 1 },
+                { drawable = 255, texture = 2 },
+                { drawable = 255, texture = 3 },
+                { drawable = 255, texture = 4 },
+                { drawable = 255, texture = 5 },
+                { drawable = 255, texture = 6 },
+            },
+        },
 
         -- Extra drawables theo job, phân biệt gender
         jobExtras = {
@@ -99,10 +193,13 @@ end
 function ClothingConfig.GetGloveOptions(job, citizenId, gender)
     local options = {}
     local cfg = ClothingConfig.gloveSelector
-    local genderKey = gender == 0 and 'male' or 'female'
+    local genderKey = gender == 1 and 'female' or 'male'
 
-    for i = 0, cfg.defaultCount - 1 do
-        options[#options + 1] = { drawable = i, texture = 0 }
+    local defaults = cfg.defaultDrawables[genderKey]
+    if defaults then
+        for _, entry in ipairs(defaults) do
+            options[#options + 1] = { drawable = entry.drawable, texture = entry.texture }
+        end
     end
 
     if job and cfg.jobExtras[job] then
