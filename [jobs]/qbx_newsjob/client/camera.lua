@@ -14,8 +14,8 @@ local bmic_net
 local mic_net
 local cam_net
 local UI = {
-	x =  0.000 ,
-	y = -0.001 ,
+	x =  0.000,
+	y = -0.001,
 }
 local fov_max = 70.0
 local fov_min = 5.0
@@ -23,11 +23,10 @@ local zoomspeed = 10.0
 local speed_lr = 8.0
 local speed_ud = 8.0
 local camera = false
-local fov = (fov_max+fov_min)*0.5
+local fov = (fov_max + fov_min) * 0.5
 local new_z
 local movcamera
 local newscamera
-local isLoggedIn = LocalPlayer.state.isLoggedIn
 local customNews = nil
 
 local fontId
@@ -49,7 +48,6 @@ CreateThread(function()
     AddTextEntry('WN_TITLE',  "<FONT FACE='Akrobat-Regular'>~a~</FONT>")
 end)
 
---FUNCTIONS--
 local function HideHUDThisFrame()
 	HideHelpTextThisFrame()
 	HideHudAndRadarThisFrame()
@@ -74,43 +72,27 @@ local function CheckInputRotation(cam, zoomvalue)
 	local rightAxisY = GetDisabledControlNormal(0, 221)
 	local rotation = GetCamRot(cam, 2)
 	if rightAxisX ~= 0.0 or rightAxisY ~= 0.0 then
-		new_z = rotation.z + rightAxisX*-1.0*(speed_ud)*(zoomvalue+0.1)
-		local new_x = math.max(math.min(20.0, rotation.x + rightAxisY*-1.0*(speed_lr)*(zoomvalue+0.1)), -89.5)
+		new_z = rotation.z + rightAxisX * -1.0 * speed_ud * (zoomvalue + 0.1)
+		local new_x = math.max(math.min(20.0, rotation.x + rightAxisY * -1.0 * speed_lr * (zoomvalue + 0.1)), -89.5)
 		SetCamRot(cam, new_x, 0.0, new_z, 2)
 	end
 end
 
 local function HandleZoom(cam)
 	if not cache.vehicle then
-
-		if IsControlJustPressed(0,241) then
-			fov = math.max(fov - zoomspeed, fov_min)
-		end
-		if IsControlJustPressed(0,242) then
-			fov = math.min(fov + zoomspeed, fov_max)
-		end
-		local current_fov = GetCamFov(cam)
-		if math.abs(fov-current_fov) < 0.1 then
-			fov = current_fov
-		end
-		SetCamFov(cam, current_fov + (fov - current_fov)*0.05)
+		if IsControlJustPressed(0, 241) then fov = math.max(fov - zoomspeed, fov_min) end
+		if IsControlJustPressed(0, 242) then fov = math.min(fov + zoomspeed, fov_max) end
 	else
-		if IsControlJustPressed(0,17) then
-			fov = math.max(fov - zoomspeed, fov_min)
-		end
-		if IsControlJustPressed(0,16) then
-			fov = math.min(fov + zoomspeed, fov_max)
-		end
-		local current_fov = GetCamFov(cam)
-		if math.abs(fov-current_fov) < 0.1 then
-			fov = current_fov
-		end
-		SetCamFov(cam, current_fov + (fov - current_fov)*0.05)
+		if IsControlJustPressed(0, 17) then fov = math.max(fov - zoomspeed, fov_min) end
+		if IsControlJustPressed(0, 16) then fov = math.min(fov + zoomspeed, fov_max) end
 	end
+	local current_fov = GetCamFov(cam)
+	if math.abs(fov - current_fov) < 0.1 then fov = current_fov end
+	SetCamFov(cam, current_fov + (fov - current_fov) * 0.05)
 end
 
-local function drawRct(x,y,width,height,r,g,b,a)
-	DrawRect(x + width/2, y + height/2, width, height, r, g, b, a)
+local function drawRct(x, y, width, height, r, g, b, a)
+	DrawRect(x + width / 2, y + height / 2, width, height, r, g, b, a)
 end
 
 ---------------------------------------------------------------------------
@@ -142,8 +124,8 @@ RegisterNetEvent('qbx_newsjob:client:toggleCam', function()
         if not input or not input[1] or input[1] == '' then return end
         customNews = {
             msg    = input[1],
-            bottom = input[2] ~= '' and input[2] or locale('info.bottom_breaking_news'),
-            title  = input[3] ~= '' and input[3] or locale('info.breaking_news'),
+            bottom = (input[2] and input[2] ~= '') and input[2] or locale('info.bottom_breaking_news'),
+            title  = (input[3] and input[3] ~= '') and input[3] or locale('info.breaking_news'),
         }
 
         lib.requestModel(camModel, 5000)
@@ -167,25 +149,26 @@ RegisterNetEvent('qbx_newsjob:client:toggleCam', function()
         DeleteEntity(NetToObj(cam_net))
         cam_net = nil
         holdingCam = false
+        customNews = nil
     end
 end)
 
+-- FIX: Removed static isLoggedIn capture. Changed `return` to Wait to prevent permanent thread death.
 CreateThread(function()
 	while true do
-		if not isLoggedIn then return end
-		if QBX.PlayerData.job.name == 'lsnews' then
+		if not LocalPlayer.state.isLoggedIn then
+			Wait(1000)
+		elseif QBX.PlayerData.job.name == 'lsnews' then
 			if holdingCam then
 				lib.requestAnimDict(camanimDict, 5000)
-
 				if not IsEntityPlayingAnim(cache.ped, camanimDict, camanimName, 3) then
 					TaskPlayAnim(cache.ped, camanimDict, camanimName, 1.0, -1, -1, 50, 0, false, false, false)
 				end
-                RemoveAnimDict(camanimDict)
-
+				RemoveAnimDict(camanimDict)
 				DisablePlayerFiring(cache.playerId, true)
-				DisableControlAction(0,25, true)
+				DisableControlAction(0, 25, true)
 				DisableControlAction(0, 44, true)
-				DisableControlAction(0,37, true)
+				DisableControlAction(0, 37, true)
 				SetCurrentPedWeapon(cache.ped, `WEAPON_UNARMED`, true)
 				Wait(0)
 			else
@@ -201,67 +184,71 @@ end)
 -- Movie Cam --
 ---------------------------------------------------------------------------
 
+-- FIX: Removed static isLoggedIn capture. Changed `return` to Wait to prevent permanent thread death.
 CreateThread(function()
 	while true do
-		if not isLoggedIn then return end
-		if QBX.PlayerData.job.name == 'lsnews' then
+		if not LocalPlayer.state.isLoggedIn then
+			Wait(1000)
+		elseif QBX.PlayerData.job.name == 'lsnews' then
 			if holdingCam then
 				if filmKeyPressed then
-				filmKeyPressed = false
-				movcamera = true
-				lib.hideTextUI()
-				ExecuteCommand('togglehud')
-				SetTimecycleModifier('default')
-				SetTimecycleModifierStrength(0.3)
-				local scaleform = lib.requestScaleformMovie('security_camera', 5000)
-				if not scaleform then return end
-				while not HasScaleformMovieLoaded(scaleform) do
-					Wait(10)
-				end
-
-				local vehicle = cache.vehicle
-				local cam1 = CreateCam('DEFAULT_SCRIPTED_FLY_CAMERA', true)
-				AttachCamToEntity(cam1, cache.ped, 0.0, 0.0, 1.0, true)
-				SetCamRot(cam1, 2.0, 1.0, GetEntityHeading(cache.ped), 0)
-				SetCamFov(cam1, fov)
-				RenderScriptCams(true, false, 0, true, false)
-				PushScaleformMovieFunction(scaleform, 'security_camera')
-				PopScaleformMovieFunctionVoid()
-
-				while movcamera and not IsEntityDead(cache.ped) and cache.vehicle == vehicle do
-					if IsControlJustPressed(0, 177) then
-						PlaySoundFrontend(-1, 'SELECT', 'HUD_FRONTEND_DEFAULT_SOUNDSET', false)
+					filmKeyPressed = false
+					movcamera = true
+					lib.hideTextUI()
+					ExecuteCommand('togglehud')
+					SetTimecycleModifier('default')
+					SetTimecycleModifierStrength(0.3)
+					local scaleform = lib.requestScaleformMovie('security_camera', 5000)
+					if not scaleform then
 						movcamera = false
+						Wait(7)
+						goto continue
 					end
-					SetEntityRotation(cache.ped, 0, 0, new_z, 2, true)
-					local zoomvalue = (1.0 / (fov_max - fov_min)) * (fov - fov_min)
-					CheckInputRotation(cam1, zoomvalue)
-					HandleZoom(cam1)
-					HideHUDThisFrame()
-					drawRct(UI.x + 0.0, UI.y + 0.0,  1.0, 0.15, 0, 0, 0, 255)
-					DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
-					drawRct(UI.x + 0.0, UI.y + 0.85, 1.0, 0.16, 0, 0, 0, 255)
-					local camHeading = GetGameplayCamRelativeHeading()
-					local camPitch = GetGameplayCamRelativePitch()
-					if camPitch < -70.0 then camPitch = -70.0 elseif camPitch > 42.0 then camPitch = 42.0 end
-					camPitch = (camPitch + 70.0) / 112.0
-					if camHeading < -180.0 then camHeading = -180.0 elseif camHeading > 180.0 then camHeading = 180.0 end
-					camHeading = (camHeading + 180.0) / 360.0
-					SetTaskMoveNetworkSignalFloat(cache.ped, 'Pitch', camPitch)
-					SetTaskMoveNetworkSignalFloat(cache.ped, 'Heading', camHeading * -1.0 + 1.0)
-					Wait(1)
+					while not HasScaleformMovieLoaded(scaleform) do Wait(10) end
+
+					local vehicle = cache.vehicle
+					local cam1 = CreateCam('DEFAULT_SCRIPTED_FLY_CAMERA', true)
+					AttachCamToEntity(cam1, cache.ped, 0.0, 0.0, 1.0, true)
+					SetCamRot(cam1, 2.0, 1.0, GetEntityHeading(cache.ped), 0)
+					SetCamFov(cam1, fov)
+					RenderScriptCams(true, false, 0, true, false)
+					PushScaleformMovieFunction(scaleform, 'security_camera')
+					PopScaleformMovieFunctionVoid()
+
+					while movcamera and not IsEntityDead(cache.ped) and cache.vehicle == vehicle do
+						if IsControlJustPressed(0, 177) then
+							PlaySoundFrontend(-1, 'SELECT', 'HUD_FRONTEND_DEFAULT_SOUNDSET', false)
+							movcamera = false
+						end
+						SetEntityRotation(cache.ped, 0, 0, new_z, 2, true)
+						local zoomvalue = (1.0 / (fov_max - fov_min)) * (fov - fov_min)
+						CheckInputRotation(cam1, zoomvalue)
+						HandleZoom(cam1)
+						HideHUDThisFrame()
+						drawRct(UI.x + 0.0, UI.y + 0.0,  1.0, 0.15, 0, 0, 0, 255)
+						DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
+						drawRct(UI.x + 0.0, UI.y + 0.85, 1.0, 0.16, 0, 0, 0, 255)
+						local camHeading = GetGameplayCamRelativeHeading()
+						local camPitch = GetGameplayCamRelativePitch()
+						if camPitch < -70.0 then camPitch = -70.0 elseif camPitch > 42.0 then camPitch = 42.0 end
+						camPitch = (camPitch + 70.0) / 112.0
+						if camHeading < -180.0 then camHeading = -180.0 elseif camHeading > 180.0 then camHeading = 180.0 end
+						camHeading = (camHeading + 180.0) / 360.0
+						SetTaskMoveNetworkSignalFloat(cache.ped, 'Pitch', camPitch)
+						SetTaskMoveNetworkSignalFloat(cache.ped, 'Heading', camHeading * -1.0 + 1.0)
+						Wait(1)
+					end
+					movcamera = false
+					ExecuteCommand('togglehud')
+					if holdingCam then lib.showTextUI(locale('info.weazle_overlay')) end
+					ClearTimecycleModifier()
+					fov = (fov_max + fov_min) * 0.5
+					RenderScriptCams(false, false, 0, true, false)
+					SetScaleformMovieAsNoLongerNeeded(scaleform)
+					DestroyCam(cam1, false)
+					SetNightvision(false)
+					SetSeethrough(false)
 				end
-				movcamera = false
-				ExecuteCommand('togglehud')
-				lib.showTextUI(locale('info.weazle_overlay'))
-				ClearTimecycleModifier()
-				fov = (fov_max + fov_min) * 0.5
-				RenderScriptCams(false, false, 0, true, false)
-				SetScaleformMovieAsNoLongerNeeded(scaleform)
-				DestroyCam(cam1, false)
-				SetNightvision(false)
-				SetSeethrough(false)
-			end
 				Wait(7)
 			else
 				Wait(100)
@@ -269,6 +256,7 @@ CreateThread(function()
 		else
 			Wait(1000)
 		end
+		::continue::
 	end
 end)
 
@@ -276,35 +264,41 @@ end)
 -- News Cam --
 ---------------------------------------------------------------------------
 
+-- FIX: Removed static isLoggedIn capture. Changed `return` to Wait to prevent permanent thread death.
+-- FIX: Added missing SetScaleformMovieAsNoLongerNeeded(scaleform2).
+-- FIX: Added lib.showTextUI after exiting news cam (matching film cam behavior).
 CreateThread(function()
 	while true do
-		if not isLoggedIn then return end
-		if QBX.PlayerData.job.name == 'lsnews' then
+		if not LocalPlayer.state.isLoggedIn then
+			Wait(1000)
+		elseif QBX.PlayerData.job.name == 'lsnews' then
 			if holdingCam then
 				if IsControlJustReleased(1, 38) then
 					lib.hideTextUI()
 					newscamera = true
 					SetTimecycleModifier('default')
 					SetTimecycleModifierStrength(0.3)
-					local scaleform = lib.requestScaleformMovie('security_camera', 5000)
+					local scaleform  = lib.requestScaleformMovie('security_camera', 5000)
 					local scaleform2 = lib.requestScaleformMovie('breaking_news', 5000)
-					if not scaleform or not scaleform2 then return end
-					while not HasScaleformMovieLoaded(scaleform) do
-						Wait(10)
+					if not scaleform or not scaleform2 then
+						newscamera = false
+						Wait(7)
+						goto continue
 					end
-					while not HasScaleformMovieLoaded(scaleform2) do
-						Wait(10)
-					end
+					while not HasScaleformMovieLoaded(scaleform)  do Wait(10) end
+					while not HasScaleformMovieLoaded(scaleform2) do Wait(10) end
+
 					local vehicle = cache.vehicle
 					local cam2 = CreateCam('DEFAULT_SCRIPTED_FLY_CAMERA', true)
 					local msg    = customNews and customNews.msg    or locale('info.title_breaking_news')
 					local bottom = customNews and customNews.bottom or locale('info.bottom_breaking_news')
 					local title  = customNews and customNews.title  or locale('info.breaking_news')
-					AttachCamToEntity(cam2, cache.ped, 0.0,0.0,1.0, true)
-					SetCamRot(cam2, 2.0,1.0,GetEntityHeading(cache.ped), 0)
+					AttachCamToEntity(cam2, cache.ped, 0.0, 0.0, 1.0, true)
+					SetCamRot(cam2, 2.0, 1.0, GetEntityHeading(cache.ped), 0)
 					SetCamFov(cam2, fov)
 					RenderScriptCams(true, false, 0, true, false)
 					PushScaleformMovieFunction(scaleform, 'SET_CAM_LOGO')
+					PopScaleformMovieFunctionVoid()
 					PushScaleformMovieFunction(scaleform2, 'breaking_news')
 					PopScaleformMovieFunctionVoid()
 					BeginScaleformMovieMethod(scaleform2, 'SET_TEXT')
@@ -315,7 +309,6 @@ CreateThread(function()
 					AddTextComponentSubstringPlayerName(bottom)
 					EndTextCommandScaleformString()
 					EndScaleformMovieMethod()
-
 					BeginScaleformMovieMethod(scaleform2, 'SET_SCROLL_TEXT')
 					PushScaleformMovieFunctionParameterInt(0)
 					PushScaleformMovieFunctionParameterInt(0)
@@ -328,13 +321,13 @@ CreateThread(function()
 					PushScaleformMovieFunctionParameterInt(0)
 					EndScaleformMovieMethod()
 
-					while newscamera and not IsEntityDead(cache.ped) and (cache.vehicle == vehicle) do
+					while newscamera and not IsEntityDead(cache.ped) and cache.vehicle == vehicle do
 						if IsControlJustPressed(1, 177) then
 							PlaySoundFrontend(-1, 'SELECT', 'HUD_FRONTEND_DEFAULT_SOUNDSET', false)
 							newscamera = false
 						end
-						SetEntityRotation(cache.ped, 0, 0, new_z,2, true)
-						local zoomvalue = (1.0/(fov_max-fov_min))*(fov-fov_min)
+						SetEntityRotation(cache.ped, 0, 0, new_z, 2, true)
+						local zoomvalue = (1.0 / (fov_max - fov_min)) * (fov - fov_min)
 						CheckInputRotation(cam2, zoomvalue)
 						HandleZoom(cam2)
 						HideHUDThisFrame()
@@ -342,27 +335,21 @@ CreateThread(function()
 						DrawScaleformMovie(scaleform2, 0.5, 0.63, 1.0, 1.0, 255, 255, 255, 255, 0)
 						local camHeading = GetGameplayCamRelativeHeading()
 						local camPitch = GetGameplayCamRelativePitch()
-						if camPitch < -70.0 then
-							camPitch = -70.0
-						elseif camPitch > 42.0 then
-							camPitch = 42.0
-						end
+						if camPitch < -70.0 then camPitch = -70.0 elseif camPitch > 42.0 then camPitch = 42.0 end
 						camPitch = (camPitch + 70.0) / 112.0
-						if camHeading < -180.0 then
-							camHeading = -180.0
-						elseif camHeading > 180.0 then
-							camHeading = 180.0
-						end
+						if camHeading < -180.0 then camHeading = -180.0 elseif camHeading > 180.0 then camHeading = 180.0 end
 						camHeading = (camHeading + 180.0) / 360.0
 						SetTaskMoveNetworkSignalFloat(cache.ped, 'Pitch', camPitch)
 						SetTaskMoveNetworkSignalFloat(cache.ped, 'Heading', camHeading * -1.0 + 1.0)
 						Wait(1)
 					end
 					newscamera = false
+					if holdingCam then lib.showTextUI(locale('info.weazle_overlay')) end
 					ClearTimecycleModifier()
-					fov = (fov_max+fov_min)*0.5
+					fov = (fov_max + fov_min) * 0.5
 					RenderScriptCams(false, false, 0, true, false)
 					SetScaleformMovieAsNoLongerNeeded(scaleform)
+					SetScaleformMovieAsNoLongerNeeded(scaleform2)
 					DestroyCam(cam2, false)
 					SetNightvision(false)
 					SetSeethrough(false)
@@ -374,11 +361,12 @@ CreateThread(function()
 		else
 			Wait(1000)
 		end
+		::continue::
 	end
 end)
 
 ---------------------------------------------------------------------------
---B Mic --
+-- B Mic --
 ---------------------------------------------------------------------------
 
 RegisterNetEvent('qbx_newsjob:client:toggleBMic', function()
@@ -405,20 +393,22 @@ RegisterNetEvent('qbx_newsjob:client:toggleBMic', function()
     end
 end)
 
+-- FIX: Removed static isLoggedIn capture. Changed `return` to Wait to prevent permanent thread death.
 CreateThread(function()
 	while true do
-		if not isLoggedIn then return end
-		if QBX.PlayerData.job.name == 'lsnews' then
+		if not LocalPlayer.state.isLoggedIn then
+			Wait(1000)
+		elseif QBX.PlayerData.job.name == 'lsnews' then
 			if holdingBmic then
 				lib.requestAnimDict(bmicanimDict, 5000)
 				if not IsEntityPlayingAnim(cache.ped, bmicanimDict, bmicanimName, 3) then
 					TaskPlayAnim(cache.ped, bmicanimDict, bmicanimName, 1.0, -1, -1, 50, 0, false, false, false)
 				end
-                RemoveAnimDict(bmicanimDict)
+				RemoveAnimDict(bmicanimDict)
 				DisablePlayerFiring(cache.playerId, true)
-				DisableControlAction(0,25, true)
+				DisableControlAction(0, 25, true)
 				DisableControlAction(0, 44, true)
-				DisableControlAction(0,37, true)
+				DisableControlAction(0, 37, true)
 				SetCurrentPedWeapon(cache.ped, joaat('WEAPON_UNARMED'), true)
 				if IsPedInAnyVehicle(cache.ped, false) or QBX.PlayerData.metadata.ishandcuffed or holdingMic then
 					ClearPedSecondaryTask(cache.ped)
@@ -441,7 +431,6 @@ end)
 -- Events --
 ---------------------------------------------------------------------------
 
--- Activate camera
 RegisterNetEvent('camera:Activate', function()
 	camera = not camera
 end)
@@ -449,6 +438,7 @@ end)
 ---------------------------------------------------------------------------
 -- Toggling Mic --
 ---------------------------------------------------------------------------
+
 RegisterNetEvent('qbx_newsjob:client:toggleMic', function()
     if not holdingMic then
         lib.requestModel(micModel, 5000)

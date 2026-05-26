@@ -12,6 +12,8 @@ let priceFilter = 'none'
 let _buyItem = null
 let _sellItem = null
 
+const CLOTH_IMAGE_BASE = 'https://gta5root.top/fivem/items101/'
+
 // ==================== HELPERS ====================
 
 function sanitizeQty(val, min, max) {
@@ -28,6 +30,13 @@ function isValidQty(val) {
 
 function getOwnedCount(itemName) {
     return parseInt(playerInventory[itemName]) || 0
+}
+
+function getItemImageUrl(item) {
+    if (item && item.type === 'clothing') {
+        return `${CLOTH_IMAGE_BASE}${item.name}.png`
+    }
+    return `nui://ox_inventory/web/images/${item.name}.png`
 }
 
 // ==================== MESSAGE ==================
@@ -238,11 +247,12 @@ function renderCart() {
     for (const itemName of keys) {
         const { item, amount } = cart[itemName]
         const sub = item.buyPrice * amount
+        const imgUrl = getItemImageUrl(item)
 
         const el = document.createElement('div')
         el.className = 'cart-item'
         el.innerHTML = `
-            <img class="cart-item-img" src="nui://ox_inventory/web/images/${item.name}.png" onerror="this.style.display='none'">
+            <img class="cart-item-img" src="${imgUrl}" onerror="this.style.display='none'">
             <div class="cart-item-info">
                 <div class="cart-item-name">${item.label}</div>
                 <div class="cart-item-sub">${isBlackmarket ? sub.toLocaleString() + ' Tiền bẩn' : '$' + sub.toLocaleString()}</div>
@@ -382,7 +392,7 @@ function renderGrid() {
 
         const img = document.createElement('img')
         img.className = 'shop-card-img'
-        img.src = `nui://ox_inventory/web/images/${it.name}.png`
+        img.src = getItemImageUrl(it)
         img.onerror = () => { img.style.display = 'none' }
         imgWrap.appendChild(img)
 

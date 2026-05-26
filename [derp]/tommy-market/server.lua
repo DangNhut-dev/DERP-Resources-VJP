@@ -4,6 +4,112 @@ local buyCooldowns = {}
 local sellCooldowns = {}
 local COOLDOWN_MS = 500
 
+-- ── Clothing prefix whitelist ─────────────────────────────────
+local CLOTH_PREFIXES = {
+    mu = true, matna = true, aokhoac = true, aotrong = true,
+    tay = true, quan = true, giay = true, kinh = true,
+    khuyentai = true, daychuyen = true, balo = true,
+    giap = true, dongho = true, vongtay = true, huyhieu = true,
+}
+
+local function IsClothingItem(itemConf)
+    return itemConf and itemConf.type == 'clothing'
+end
+
+local function ParseClothingName(rawName)
+    if type(rawName) ~= 'string' then return nil end
+
+    local parts = {}
+    for part in rawName:gmatch('[^_]+') do
+        parts[#parts + 1] = part
+    end
+
+    if #parts < 4 then return nil end
+
+    local gender     = tonumber(parts[#parts])
+    local textureId  = tonumber(parts[#parts - 1])
+    local drawableId = tonumber(parts[#parts - 2])
+
+    if not gender or not textureId or not drawableId then return nil end
+    if gender < 0 or gender > 1 then return nil end
+    if drawableId < 0 or drawableId > 9999 then return nil end
+    if textureId < 0 or textureId > 255 then return nil end
+
+    local nameParts = {}
+    for i = 1, #parts - 3 do
+        nameParts[#nameParts + 1] = parts[i]
+    end
+    local itemName = table.concat(nameParts, '_')
+    if not itemName or itemName == '' then return nil end
+
+    if not CLOTH_PREFIXES[itemName] then return nil end
+
+    return itemName, drawableId, textureId, gender
+end
+
+local function AddShopItem(src, itemConf, amount)
+    if IsClothingItem(itemConf) then
+        local itemName, drawableId, textureId, gender = ParseClothingName(itemConf.name)
+        if not itemName then return false end
+
+        local metadata = {
+            drawableId = drawableId,
+            textureId  = textureId,
+            gender     = gender,
+        }
+
+        return exports.ox_inventory:AddItem(src, itemName, amount, metadata) and true or false
+    end
+
+    return exports.ox_inventory:AddItem(src, itemConf.name, amount) and true or false
+end
+
+local function RemoveShopItem(src, itemConf, amount)
+    if IsClothingItem(itemConf) then
+        local itemName, drawableId, textureId, gender = ParseClothingName(itemConf.name)
+        if not itemName then return false end
+
+        local metadata = {
+            drawableId = drawableId,
+            textureId  = textureId,
+            gender     = gender,
+        }
+
+        return exports.ox_inventory:RemoveItem(src, itemName, amount, metadata) and true or false
+    end
+
+    return exports.ox_inventory:RemoveItem(src, itemConf.name, amount) and true or false
+end
+
+local function CanCarryShopItem(src, itemConf, amount)
+    if IsClothingItem(itemConf) then
+        local itemName = ParseClothingName(itemConf.name)
+        if not itemName then return false end
+        return exports.ox_inventory:CanCarryItem(src, itemName, amount) == true
+    end
+
+    return exports.ox_inventory:CanCarryItem(src, itemConf.name, amount) == true
+end
+
+local function GetShopItemCount(src, itemConf)
+    if IsClothingItem(itemConf) then
+        local itemName, drawableId, textureId, gender = ParseClothingName(itemConf.name)
+        if not itemName then return 0 end
+        -- Đếm chính xác bằng metadata để phân biệt giữa các bộ clothing cùng base name
+        local items = exports.ox_inventory:Search(src, 'slots', itemName) or {}
+        local count = 0
+        for _, slot in ipairs(items) do
+            local meta = slot.metadata or {}
+            if meta.drawableId == drawableId and meta.textureId == textureId and meta.gender == gender then
+                count = count + (slot.count or 0)
+            end
+        end
+        return count
+    end
+
+    return exports.ox_inventory:Search(src, 'count', itemConf.name) or 0
+end
+
 -- local allEvents = {
 --     ["qb-npc-market:sellItem"] = false,
 --     ["qb-npc-market:checkout"] = false,
@@ -262,7 +368,7 @@ lib.callback.register('qb-npc-market:getMarketData', function(source, npcId)
 
     local playerInventory = {}
     for _, it in ipairs(npcData.items) do
-        playerInventory[it.name] = exports.ox_inventory:Search(source, 'count', it.name) or 0
+        playerInventory[it.name] = GetShopItemCount(source, it)
     end
 
     local oxItems = exports.ox_inventory:Items()
@@ -293,8 +399,21 @@ lib.callback.register('qb-npc-market:getMarketData', function(source, npcId)
             prev = previousPrices[npcData.id][it.name] or cur
             avg = math.floor((it.sellMin + it.sellMax) / 2)
         end
-        local itemData = oxItems[it.name]
-        local isUnique = itemData and itemData.stack == false or false
+
+        local isClothing = IsClothingItem(it)
+        local isUnique = false
+
+        if isClothing then
+            local realName = ParseClothingName(it.name)
+            if realName then
+                local itemData = oxItems[realName]
+                isUnique = itemData and itemData.stack == false or false
+            end
+        else
+            local itemData = oxItems[it.name]
+            isUnique = itemData and itemData.stack == false or false
+        end
+
         table.insert(data.items, {
             name = it.name,
             label = it.label,
@@ -303,7 +422,8 @@ lib.callback.register('qb-npc-market:getMarketData', function(source, npcId)
             avgPrice = avg,
             prevPrice = prev,
             grade = it.grade,
-            unique = isUnique
+            unique = isUnique,
+            type = it.type,
         })
     end
 
@@ -387,14 +507,24 @@ RegisterNetEvent('qb-npc-market:buyItem', function(npcId, itemName, amount)
         return
     end
 
+    local checkName = itemConf.name
+    if IsClothingItem(itemConf) then
+        local realName = ParseClothingName(itemConf.name)
+        if not realName then
+            notify(src, 'Item clothing sai format', 'error')
+            return
+        end
+        checkName = realName
+    end
+
     local oxItems = exports.ox_inventory:Items()
-    local itemData = oxItems[itemConf.name]
+    local itemData = oxItems[checkName]
     if itemData and itemData.stack == false and amount > 1 then
         notify(src, 'Item này chỉ có thể mua từng cái một', 'error')
         return
     end
 
-    if not exports.ox_inventory:CanCarryItem(src, itemConf.name, amount) then
+    if not CanCarryShopItem(src, itemConf, amount) then
         notify(src, 'Túi đã đầy, không thể mua', 'error')
         return
     end
@@ -418,9 +548,9 @@ RegisterNetEvent('qb-npc-market:buyItem', function(npcId, itemName, amount)
         end
     end
 
-    local currentAmount = exports.ox_inventory:Search(src, 'count', itemConf.name) or 0
+    local currentAmount = GetShopItemCount(src, itemConf)
 
-    if exports.ox_inventory:AddItem(src, itemConf.name, amount) then
+    if AddShopItem(src, itemConf, amount) then
         local currency = npcCfg.blackmarket and 'tiền bẩn' or '$'
         notify(src, ('Bạn đã mua %sx %s với giá %d %s'):format(amount, itemConf.label, total, currency), 'success')
         TriggerClientEvent('qb-npc-market:updateItemAmount', src, itemConf.name, currentAmount + amount)
@@ -509,13 +639,23 @@ RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
             return
         end
 
-        local itemData = oxItems[itemConf.name]
+        local checkName = itemConf.name
+        if IsClothingItem(itemConf) then
+            local realName = ParseClothingName(itemConf.name)
+            if not realName then
+                notify(src, 'Item clothing sai format: ' .. itemConf.label, 'error')
+                return
+            end
+            checkName = realName
+        end
+
+        local itemData = oxItems[checkName]
         if itemData and itemData.stack == false and amount > 1 then
             notify(src, 'Item ' .. itemConf.label .. ' chỉ mua được từng cái', 'error')
             return
         end
 
-        if not exports.ox_inventory:CanCarryItem(src, itemConf.name, amount) then
+        if not CanCarryShopItem(src, itemConf, amount) then
             notify(src, 'Túi đã đầy: ' .. itemConf.label, 'error')
             return
         end
@@ -542,13 +682,13 @@ RegisterNetEvent('qb-npc-market:checkout', function(npcId, items, paymentType)
 
     local added = {}
     for _, entry in ipairs(validatedItems) do
-        if exports.ox_inventory:AddItem(src, entry.conf.name, entry.amount) then
+        if AddShopItem(src, entry.conf, entry.amount) then
             added[#added + 1] = entry
-            local currentAmount = exports.ox_inventory:Search(src, 'count', entry.conf.name) or 0
+            local currentAmount = GetShopItemCount(src, entry.conf)
             TriggerClientEvent('qb-npc-market:updateItemAmount', src, entry.conf.name, currentAmount)
         else
             for _, addedEntry in ipairs(added) do
-                exports.ox_inventory:RemoveItem(src, addedEntry.conf.name, addedEntry.amount)
+                RemoveShopItem(src, addedEntry.conf, addedEntry.amount)
             end
             if paymentType == 'dirty' then
                 exports.ox_inventory:AddItem(src, 'black_money', total)

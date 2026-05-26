@@ -125,10 +125,10 @@ Config.Rewards = {
     { item = 'dirty_metal',             min = 2, max = 5, chance = 75 },
     { item = 'dirty_gunpowder',         min = 1, max = 3, chance = 100 },
     { item = 'carbon',                  min = 1, max = 3, chance = 50 },
-    { item = 'taurus_slide',            min = 1, max = 1, chance = 10 },
-    { item = 'taurus_frame',            min = 1, max = 1, chance = 8 },
-    { item = 'taurus_barrel',           min = 1, max = 1, chance = 6 },
-    { item = 'at_clip_extended_pistol2',min = 1, max = 1, chance = 2 },
+    { item = 'taurus_slide',            min = 1, max = 1, chance = 7 },
+    { item = 'taurus_frame',            min = 1, max = 1, chance = 5 },
+    { item = 'taurus_barrel',           min = 1, max = 1, chance = 3 },
+    { item = 'at_clip_extended_pistol2',min = 1, max = 1, chance = 1 },
 }
 
 Config.RefineryLocations = {

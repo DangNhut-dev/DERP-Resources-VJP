@@ -9,6 +9,11 @@ Config.xpPerLevel = 5000
 ---@field chance integer Percentage chance
 ---@field skillcheck SkillCheckDifficulity
 
+Config.autofishWhitelist = {
+    ['B78V943Y'] = true,
+    ['MDP6912M'] = true,
+}
+
 ---@type table<string, Fish>
 Config.fish = {
     ['anchovy']     = { minLevel = 1, price = { min = 25,   max = 50   }, chance = 35, skillcheck = { 'easy', 'medium' } },

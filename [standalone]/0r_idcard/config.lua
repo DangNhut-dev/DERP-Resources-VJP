@@ -249,6 +249,36 @@ Config = {
                 },
             }
         },
+        ["lsnews"] = {
+            job = "lsnews",
+            grades = {
+                [0] = {
+                    cardType = "one",
+                    textColor = "#FFFFFF",
+                    text = "LS News Card",
+                },
+                [1] = {
+                    cardType = "one",
+                    textColor = "#FFFFFF",
+                    text = "LS News Card",
+                },
+                [2] = {
+                    cardType = "two",
+                    textColor = "#FFFFFF",
+                    text = "LS News Card",
+                },
+                [3] = {
+                    cardType = "two",
+                    textColor = "#FFFFFF",
+                    text = "LS News Card",
+                },
+                [4] = {
+                    cardType = "three",
+                    textColor = "#FFFFFF",
+                    text = "LS News Card",
+                },
+            }
+        },
         ["justice"] = {
             job = "justice",
             grades = {

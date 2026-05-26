@@ -26,6 +26,23 @@ Config.MarketNPCs = {
         requiredJob = {
             ["ambulance"] = 2,
         }
+    },     
+    {
+        id = "newsitems", 
+        enabled = true,
+        label = "Dụng Cụ",
+        ped = `a_m_o_soucent_01`,
+        coords = vector4(-1056.97, -231.69, 44.02, 205.01),
+        type = "buy",
+        items = {
+            {name = "news_camera", label = "Máy Quay", buyPrice = 500, sellMin = nil, sellMax = nil},
+            {name = "news_mic", label = "Microphone", buyPrice = 500, sellMin = nil, sellMax = nil},
+            {name = "news_bmicrophone", label = "Microphone Cần Câu", buyPrice = 500, sellMin = nil, sellMax = nil},
+            {name = "job_card", label = "Thẻ Ngành", buyPrice = 500, sellMin = nil, sellMax = nil},
+        },
+        requiredJob = {
+            ["lsnews"] = 2,
+        }
     },  
     {
         id = "EmsItems", 
@@ -77,6 +94,8 @@ Config.MarketNPCs = {
             {name = "drone", label = "Drone", buyPrice = 200, sellMin = nil, sellMax = nil, grade = 4},
             {name = "empty_evidence_bag", label = "Túi Vật Chứng", buyPrice = 1, sellMin = nil, sellMax = nil, grade = 0},
             {name = "crimecamera", label = "Máy Ảnh", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0},
+            {name = "mu_256_5_0", label = "Mũ Bảo Hiểm", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0, type = 'clothing'},
+
         },
         requiredJob = {
             ["police"] = 0,
@@ -733,15 +752,21 @@ Config.MarketNPCs = {
         }
     },
     {
-        id = "gunshop2",
+        id = "logshopfemale",
         enabled = true,
-        label = "Cửa Hàng Súng Đạn",
-        ped = `a_m_m_salton_01`,
-        coords = vector4(348.62, -2735.64, 5.99, 12.29),
-        blackmarket = true,
+        label = "Cửa Hàng Quần Áo",
+        ped = `a_f_y_business_01`,
+        coords = vector4(201.27, -871.31, 30.71, 158.49),
         type = "buy",
         items = {
-            {name = "ammo-9", label = "9mm", buyPrice = 2, sellMin = nil, sellMax = nil},
+            {name = "quan_231_0_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_1_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_2_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_3_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_4_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_5_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_6_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "hat_item", label = "Keo Vuốt Tóc", buyPrice = 1000, sellMin = nil, sellMax = nil},
         }
     },
     {

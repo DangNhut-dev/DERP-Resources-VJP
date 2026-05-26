@@ -1,4 +1,15 @@
 return {
+	['hat_item'] = {
+		label   = 'Keo Vuốt Tóc',
+		weight  = 0,
+		stack   = false,
+		close   = true,
+		client  = {
+			export = 'chowhathair.useHatItem' 
+		},
+		description = "Làm gọn tóc để dễ mang mũ.",
+	},
+
 	['skinar15fullpurple'] = {
 		label = 'AR15 Full Purple',
 		description = '',

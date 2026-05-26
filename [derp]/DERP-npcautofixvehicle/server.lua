@@ -162,11 +162,11 @@ RegisterNetEvent('DERO_npcautofix:repairDone', function(npcId)
     GlobalState['DERO_npcautofix_busy_' .. npcId] = false
 end)
 
-RegisterNetEvent('DERO_npcautofix:resetServicing', function(vehNet)
-    if not vehNet then return end
-    local veh = NetworkGetEntityFromNetworkId(vehNet)
-    if not DoesEntityExist(veh) then return end
+-- RegisterNetEvent('DERO_npcautofix:resetServicing', function(vehNet)
+--     if not vehNet then return end
+--     local veh = NetworkGetEntityFromNetworkId(vehNet)
+--     if not DoesEntityExist(veh) then return end
 
-    local plate = GetVehicleNumberPlateText(veh):gsub('%s+', '')
-    exports['DERP-mechanic']:resetVehicleServicing(veh, plate)
-end)
+--     local plate = GetVehicleNumberPlateText(veh):gsub('%s+', '')
+--     exports['DERP-mechanic']:resetVehicleServicing(veh, plate)
+-- end)

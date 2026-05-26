@@ -21,8 +21,17 @@ local function setLocationBlip()
     EndTextCommandSetBlipName(blip)
 end
 
+local function applyVehicleStickers(veh)
+    if not config.vehicleStickers or not config.vehicleStickers.enabled then return end
+    SetVehicleModKit(veh, 0)
+    Wait(0)
+    for _, mod in ipairs(config.vehicleStickers.mods) do
+        SetVehicleMod(veh, mod.modType, mod.modIndex, false)
+    end
+end
+
 local function takeOutVehicle(vehType, coords)
-    local netId = lib.callback.await('qbx_newsjob:server:spawnVehicle', false, vehType, coords, locale('info.news_plate')..tostring(math.random(1000, 9999)), true)
+    local netId = lib.callback.await('qbx_newsjob:server:spawnVehicle', false, vehType, coords, locale('info.news_plate') .. tostring(math.random(1000, 9999)), true)
     local timeout = 100
     while not NetworkDoesEntityExistWithNetworkId(netId) and timeout > 0 do
         Wait(10)
@@ -33,11 +42,20 @@ local function takeOutVehicle(vehType, coords)
         exports.qbx_core:Notify(locale('error.cant_spawn_vehicle'), 'error')
         return
     end
+
+    -- Phai co network control truoc khi set mod
+    NetworkRequestControlOfEntity(veh)
+    local ctrlTimeout = 50
+    while not NetworkHasControlOfEntity(veh) and ctrlTimeout > 0 do
+        Wait(10)
+        ctrlTimeout = ctrlTimeout - 1
+    end
+
     local vehClass = GetVehicleClass(veh)
     if vehClass == 12 then
         SetVehicleLivery(veh, 2)
     end
-    SetVehicleFuelLevel(veh, 100.0)
+    applyVehicleStickers(veh)
     SetVehicleFuelLevel(veh, 100.0)
     TaskWarpPedIntoVehicle(cache.ped, veh, -1)
     SetVehicleEngineOn(veh, true, true, false)

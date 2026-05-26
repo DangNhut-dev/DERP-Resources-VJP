@@ -216,3 +216,27 @@ lib.callback.register('derp-fishing:itemUsed', function(bait, fish)
 
     return success
 end)
+
+lib.callback.register('derp-fishing:itemUsedAuto', function(zone)
+    local object = createRodObject()
+ 
+    lib.requestAnimDict('mini@tennis')
+    lib.requestAnimDict('amb@world_human_stand_fishing@idle_a')
+    setCanRagdoll(false)
+ 
+    -- Anim nem can
+    TaskPlayAnim(cache.ped, 'mini@tennis', 'forehand_ts_md_far', 3.0, 3.0, 1200, 16, 0, false, false, false)
+    Wait(1200)
+ 
+    -- Anim cho ca cat moi
+    TaskPlayAnim(cache.ped, 'amb@world_human_stand_fishing@idle_a', 'idle_c', 3.0, 3.0, -1, 11, 0, false, false, false)
+    Wait(math.random(zone.waitTime.min, zone.waitTime.max) * 1000)
+ 
+    -- Skip minigame - perfect
+    ClearPedTasks(cache.ped)
+    DeleteEntity(object)
+    setCanRagdoll(true)
+ 
+    return true
+end)
+ 
