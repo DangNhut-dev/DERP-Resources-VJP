@@ -22,7 +22,7 @@ Config.Locations = {
         logoImage = "police.png",
         locations = {
             {
-                coords = vec3(92.98, -397.77, 47.83), -- Main Police Station
+                coords = vec3(481.19, -981.43, 35.90), -- Main Police Station
                 width = 1.0,
                 length = 1.0,
                 heading = 0,
@@ -94,7 +94,7 @@ Config.Locations = {
 
 Config.ApplicationPoints = {
     ["police"] = {
-        coords = vec3(86.82, -402.27, 41.60),  -- Near the police station
+        coords = vec3(439.31, -987.95, 30.92),  -- Near the police station
         width = 1.5,
         length = 1.5,
         heading = 0,

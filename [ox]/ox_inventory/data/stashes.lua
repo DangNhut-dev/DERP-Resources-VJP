@@ -38,9 +38,9 @@ return {
 	},
 
 	{
-		coords = vec3(76.42, -410.43, 40.62),
+		coords = vec3(464.74, -993.05, 25.27),
 		target = {
-			loc = vec3(76.42, -410.43, 40.62),
+			loc = vec3(464.74, -993.05, 26.27),
 			length = 1.2,
 			width = 5.6,
 			heading = 0,
@@ -51,8 +51,8 @@ return {
 		name = 'Evidence',
 		label = 'Tủ Evidence',
 		owner = false,
-		slots = 500,
-		weight = 1000000,
+		slots = 5000,
+		weight = 10000000,
 		groups = {['police'] = 6}
 	},
 

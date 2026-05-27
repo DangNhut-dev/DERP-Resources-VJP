@@ -17,4 +17,15 @@ Config.NPCs = {
             { label = 'Xe Cẩu', model = 'towtruck', grade = 1 },
         },
     },
+    ['police'] = {
+        npc = {
+            model = 'mp_m_securoguard_01',
+            coords = vector4(449.37, -1014.79, 29.13, 179.53),
+        },
+        vehicleSpawn = vector4(439.24, -1021.07, 28.88, 91.47),
+        deletePoint = vector3(439.24, -1021.07, 28.88),
+        vehicles = {
+            { label = 'Xe Bọc Thép', model = 'bcat', grade = 7 },
+        },
+    },
 }

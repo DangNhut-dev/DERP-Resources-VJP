@@ -1075,7 +1075,7 @@ bcso = {
         label = 'Cảnh sát',
         npc = {
             model    = 's_m_y_cop_01',
-            coords   = vec4(79.84, -379.22, 41.62, 249.10),
+            coords   = vec4(486.86, -979.11, 26.09, 96.46),
             scenario = 'WORLD_HUMAN_STAND_IMPATIENT',
         },
         backpack = {

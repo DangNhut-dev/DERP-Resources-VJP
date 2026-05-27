@@ -16,7 +16,7 @@ return {
 
     locations = {
         duty = {
-            vec3(85.48, -409.17, 41.57),
+            vec3(439.75, -985.50, 30.92),
             -- vec3(1836.26, 3685.94, 34.16),
         },
         vehicle = {
@@ -33,8 +33,7 @@ return {
             -- vec3(-436.14, 5982.63, 31.34)
         },
         helicopter = {
-            vec4(72.90, -439.50, 53.03, 158.68),
-            vec4(86.89, -403.97, 55.71, 340.06),
+            vec4(466.98, -995.54, 48.18, 181.74),
         },
         armory = { -- Not currently used, use ox_inventory shops
             -- vec3(462.23, -981.12, 30.68),
@@ -43,12 +42,12 @@ return {
             -- vec3(78.99, -425.46, 41.62),
         },
         fingerprint = {
-            vec3(90.15, -420.24, 41.53),
+            -- vec3(90.15, -420.24, 41.53),
         },
         evidence = { -- Not currently used, use ox_inventory evidence system
         },
         stations = {
-            {label = 'Los Santos Police Department', coords = vec3(104.48, -391.91, 42.33)},
+            {label = 'Los Santos Police Department', coords = vec3(430.23, -987.50, 31.09)},
             {label = 'Sandy Shores Police Station', coords = vec3(1852.33, 3690.40, 38.93)},
             -- {label = 'Vinewood Police Station', coords = vec3(637.1, 1.6, 81.8)},
             -- {label = 'Vespucci Police Station', coords = vec3(-1092.6, -808.1, 19.3)},

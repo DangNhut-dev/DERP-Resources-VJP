@@ -36,12 +36,12 @@ Config = {
 
     HeadshotPed = {
         model = "s_m_y_cop_01",
-        coords = vector4(86.56, -402.92, 41.62, 335.86),
+        coords = vector4(440.01, -989.30, 31.09, 107.51),
     },
 
     FakeCardPed = {
         model = "s_m_y_cop_01",
-        coords = vector4(1471.7, 1140.5, 500.33, 269.26),
+        coords = vector4(453.06, -984.75, -123.10, 265.74),
     },
 
     BorrowWhitelist = {
