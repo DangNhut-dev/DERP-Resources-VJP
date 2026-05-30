@@ -1,8 +1,8 @@
 return {
 	{
-		coords = vec3(91.52, -406.70, 46.31),
+		coords = vec3(462.21, -984.21, 30.20),
 		target = {
-			loc = vec3(91.52, -406.70, 46.31),
+			loc = vec3(462.21, -984.21, 30.20),
 			length = 1.2,
 			width = 5.6,
 			heading = 0,
@@ -19,9 +19,9 @@ return {
 	},
 
 	{
-		coords = vec3(79.59, -389.10, 40.62),
+		coords = vec3(446.09, -996.83, 29.94),
 		target = {
-			loc = vec3(79.59, -389.10, 40.62),
+			loc = vec3(446.09, -996.83, 29.94),
 			length = 1.2,
 			width = 5.6,
 			heading = 0,
@@ -38,9 +38,9 @@ return {
 	},
 
 	{
-		coords = vec3(464.74, -993.05, 25.27),
+		coords = vec3(473.61, -990.69, 25.18),
 		target = {
-			loc = vec3(464.74, -993.05, 26.27),
+			loc = vec3(473.61, -990.69, 25.18),
 			length = 1.2,
 			width = 5.6,
 			heading = 0,

@@ -64,7 +64,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Dụng Cụ",
         ped = `s_m_y_cop_01`,
-        coords = vector4(466.97, -980.59, 26.09, 346.97),
+        coords = vector4(480.31, -996.71, 30.69, 90.40),
         type = "buy",
         items = {
             {name = "ifak", label = "ifak", buyPrice = 10, sellMin = nil, sellMax = nil, grade = 0},

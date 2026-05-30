@@ -17,7 +17,7 @@ Config = {
     UseDatabaseForDriverLicense = false, -- If true, player will need to have driver license item to drive a vehicle
     UseDatabaseForWeaponLicense = false, -- If true, player will need to have weapon license item to use a weapon
 
-    BoardHeader = "Dangerous Elite Roleplay", -- Header of the card
+    BoardHeader = "Dominion Entropy Roleplay", -- Header of the card
     TargetLoc = vector3(473.01, -1012.57, 26.27),
     MugShotCoords = vector3(402.84, -996.38, -100.0),
     MugShotHeading = 179.03,
@@ -36,7 +36,7 @@ Config = {
 
     HeadshotPed = {
         model = "s_m_y_cop_01",
-        coords = vector4(440.01, -989.30, 31.09, 107.51),
+        coords = vector4(442.71, -981.94, 30.69, 94.21),
     },
 
     FakeCardPed = {

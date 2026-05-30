@@ -6,16 +6,16 @@ Config.Dealers = {
         job = "police", -- Job yêu cầu (false = ai cũng mua được)
         npc = {
             model = "a_m_y_business_01",
-            coords = vec4(61.72, -374.64, 38.89, 229.40),
+            coords = vec4(459.27, -1007.94, 28.26, 90.03),
         },
-        spawnPoint = vec4(58.76, -370.96, 38.52, 67.74),
+        spawnPoint = vec4(455.14, -1018.27, 28.00, 90.99),
         vehicles = {
             { model = "npolvic", label = "Ford Crown Victoria", price = 1000, minGrade = 1 },
             { model = "clrgtaurus", label = "Ford Taurus", price = 1000, minGrade = 2 },
             { model = "npolmm", label = "Moto", price = 1000, minGrade = 3 },
+            { model = "npolexp", label = "Ford Explorer", price = 1000, minGrade = 3 },
             { model = "npolchal", label = "Dodge Challenger", price = 1000, minGrade = 4 },
             { model = "npolstang", label = "Ford Mustang", price = 1000, minGrade = 6 },
-            { model = "npolexp", label = "Ford Explorer", price = 1000, minGrade = 7 },
             { model = "npolvette", label = "Corvette C7", price = 1000, minGrade = 8 },
             { model = "npolchar", label = "Dodge Charger", price = 1000, minGrade = 9 },
         },

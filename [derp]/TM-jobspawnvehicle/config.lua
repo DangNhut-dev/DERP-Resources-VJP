@@ -20,10 +20,10 @@ Config.NPCs = {
     ['police'] = {
         npc = {
             model = 'mp_m_securoguard_01',
-            coords = vector4(449.37, -1014.79, 29.13, 179.53),
+            coords = vector4(453.18, -1027.78, 28.53, 8.56),
         },
-        vehicleSpawn = vector4(439.24, -1021.07, 28.88, 91.47),
-        deletePoint = vector3(439.24, -1021.07, 28.88),
+        vehicleSpawn = vector4(448.17, -1020.55, 28.16, 90.70),
+        deletePoint = vector3(448.17, -1020.55, 28.16),
         vehicles = {
             { label = 'Xe Bọc Thép', model = 'bcat', grade = 7 },
         },

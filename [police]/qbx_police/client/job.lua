@@ -521,6 +521,7 @@ CreateThread(function()
             debug = config.polyDebug,
             onEnter = function()
                 if QBX.PlayerData.job.type ~= 'leo' or not QBX.PlayerData.job.onduty then return end
+                if QBX.PlayerData.job.grade.level < 2 then return end
                 inHelicopter = true
                 inPrompt = true
                 uiPrompt('heli')

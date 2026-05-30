@@ -52,10 +52,12 @@ return {
             },
             [8] = {
                 name = 'Commander',
+                isboss = true,
                 payment = 4800
             },
             [9] = {
                 name = 'Deputy Chief',
+                isboss = true,
                 payment = 5000
             },
             [10] = {

@@ -95,5 +95,11 @@ CreateThread(function()
         view = 0,
         fine = 0,
     }
+    Config.Police.Permissions.police.unit = {
+        view = 0,
+        edit = 2,
+        create = 2,
+        delete = 2,
+    }
     print('[CONFIG OVERRIDE] case permissions forced to 0')
 end)

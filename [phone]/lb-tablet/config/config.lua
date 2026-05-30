@@ -627,9 +627,9 @@ Config.Police.Permissions = {
         },
         unit = {
             view = 0,
-            edit = 6,
-            create = 6,
-            delete = 6,
+            edit = 1,
+            create = 1,
+            delete = 1,
         },
         profile = {
             edit = 2,
@@ -651,8 +651,8 @@ Config.Police.Permissions = {
         },
         report = {
             create = 2,
-            edit = 6,
-            delete = 6,
+            edit = 2,
+            delete = 2,
             view = 0
         },
         case = {

@@ -27,7 +27,7 @@ Config.NPCs = {
     },
     {
         id            = 'police_full',
-        coords        = vec4(31.46, -349.66, 39.20, 161.43),
+        coords        = vec4(428.09, -972.97, 25.70, 190.96),
         model         = 's_m_y_cop_01',
         targetLabel   = 'Gọi Sửa Xe 250$',
         price         = 250,
@@ -35,7 +35,7 @@ Config.NPCs = {
         repairType    = 'full',
         allowedJobs   = { police = 0 },
         zone = {
-            coords = vec3(27.38, -350.80, 38.52),
+            coords = vec3(426.02, -976.19, 25.70),
             radius = 8.0,
         },
     },
