@@ -1,5 +1,18 @@
-
+print('[DEBUG] characters.lua loaded')
 Characters = {}
+
+local ServerStartToken = (function()
+    local t = os.time()
+    math.randomseed(t)
+    local s = ''
+    for i = 1, 16 do
+        s = s .. string.format('%x', math.random(0, 15))
+    end
+    return s .. '_' .. tostring(t)
+end)()
+
+GlobalState:set('DERP_ServerStartToken', ServerStartToken, false)
+
 Characters.ActiveUsers = {}
 Characters.Jobs = {}
 Characters.JobGrades = {}
@@ -106,11 +119,18 @@ Characters.Get = function(src)
             local skinResponse = MySQL.query.await("SELECT * FROM `playerskins` WHERE `citizenid` = '"..v.citizenid.."' AND active = 1")
             local responseCharData = json.decode(v.charinfo)
             local responseJobData = json.decode(v.job)
+            local id = tonumber(v.cid)
+
+            local rawMeta = v.metadata and json.decode(v.metadata) or {}
+            local inJail = rawMeta.injail and rawMeta.injail > 0 or false
+            local tokenValid = v.derp_last_token ~= nil and v.derp_last_token == ServerStartToken
+
             local characterData = {
-                sex = tonumber(response[1].gender) == 0 and 'm' or 'f',
+                sex = tonumber(v.gender) == 0 and 'm' or 'f',
                 skin = Characters.ConvertSkin(v.citizenid),
                 model = skinResponse[1] and tonumber(skinResponse[1].model) or false,
                 position = json.decode(v.position),
+                allowLastLocation = tokenValid and not inJail,
                 firstname = responseCharData.firstname,
                 lastname = responseCharData.lastname,
                 job = {
@@ -189,11 +209,17 @@ Characters.GetFirst = function(src)
         local skinResponse = MySQL.query.await("SELECT * FROM `playerskins` WHERE `citizenid` = '"..response[1].citizenid.."' AND active = 1")
         local responseCharData = json.decode(response[1].charinfo)
         local responseJobData = json.decode(response[1].job)
+
+        local rawMeta = response[1].metadata and json.decode(response[1].metadata) or {}
+        local inJail = rawMeta.injail and rawMeta.injail > 0 or false
+        local tokenValid = response[1].derp_last_token ~= nil and response[1].derp_last_token == ServerStartToken
+
         local characterData = {
             sex = tonumber(response[1].gender) == 0 and 'm' or 'f',
             skin = Characters.ConvertSkin(response[1].citizenid),
             model = skinResponse[1] and tonumber(skinResponse[1].model) or false,
             position = json.decode(response[1].position),
+            allowLastLocation = tokenValid and not inJail,
             firstname = responseCharData.firstname,
             lastname = responseCharData.lastname,
             job = {
@@ -262,11 +288,17 @@ Characters.GetNum = function(src, num)
         local skinResponse = MySQL.query.await("SELECT * FROM `playerskins` WHERE `citizenid` = '"..response[1].citizenid.."' AND active = 1")
         local responseCharData = json.decode(response[1].charinfo)
         local responseJobData = json.decode(response[1].job)
+
+        local rawMeta = response[1].metadata and json.decode(response[1].metadata) or {}
+        local inJail = rawMeta.injail and rawMeta.injail > 0 or false
+        local tokenValid = response[1].derp_last_token ~= nil and response[1].derp_last_token == ServerStartToken
+
         local characterData = {
             sex = tonumber(response[1].gender) == 0 and 'm' or 'f',
             skin = Characters.ConvertSkin(response[1].citizenid),
             model = skinResponse[1] and tonumber(skinResponse[1].model) or false,
             position = json.decode(response[1].position),
+            allowLastLocation = tokenValid and not inJail,
             firstname = responseCharData.firstname,
             lastname = responseCharData.lastname,
             job = {
@@ -983,6 +1015,10 @@ end)
 if FrameworkSelected == 'QBCore' then
     MySQL.ready(function()
         MySQL.query.await('CREATE TABLE IF NOT EXISTS `derp-multicharacter_slots` (`identifier` varchar(255) NOT NULL, `amount` int(1) NOT NULL, PRIMARY KEY (`identifier`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;')
+        MySQL.query.await([[
+            ALTER TABLE `players`
+            ADD COLUMN IF NOT EXISTS `derp_last_token` varchar(64) DEFAULT NULL
+        ]])
         if GetResourceState('qb-houses') == 'started' then
             local housesList = MySQL.query.await('SELECT * FROM houselocations', {})
             Characters.QBHouses = {}
@@ -996,6 +1032,7 @@ if FrameworkSelected == 'QBCore' then
             end
         end
     end)
+
     function loadHouseData(src) -- function to load data to other resources for QBCore
         local HouseGarages = {}
         local Houses = {}
@@ -1060,4 +1097,26 @@ MySQL.ready(function()
             }
         end
     end
+end)
+
+AddEventHandler('playerDropped', function(reason)
+    local src = source
+    local activeUser = Characters.ActiveUsers[tostring(src)]
+    -- print('[DEBUG DROP] src=' .. tostring(src) .. ' activeUser=' .. tostring(activeUser ~= nil))
+    if not activeUser then return end
+
+    if FrameworkSelected == 'QBCore' then
+        local result = MySQL.update.await(
+            'UPDATE `players` SET `derp_last_token` = ? WHERE `license` = ? AND `cid` = ?',
+            { ServerStartToken, activeUser.identifier, activeUser.id }
+        )
+        -- print('[DEBUG DROP] rows affected = ' .. tostring(result))
+    end
+
+    if GetResourceState('qs-housing') == 'started' then
+        Migrate.QSHousing(activeUser)
+    end
+
+    Wait(100)
+    Characters.ActiveUsers[tostring(src)] = nil
 end)

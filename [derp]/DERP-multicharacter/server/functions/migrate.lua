@@ -19,11 +19,11 @@ Migrate.QSHousing = function(charData)
     end
 end
 
-AddEventHandler('onPlayerDropped', function()
-    if not Characters.ActiveUsers[tostring(source)] then return end
-    if GetResourceState('qs-housing') == 'started' then
-        Migrate.QSHousing(Characters.ActiveUsers[tostring(source)])
-    end
-    Wait(100)
-    Characters.ActiveUsers[tostring(source)] = nil
-end)
+-- AddEventHandler('onPlayerDropped', function()
+--     if not Characters.ActiveUsers[tostring(source)] then return end
+--     if GetResourceState('qs-housing') == 'started' then
+--         Migrate.QSHousing(Characters.ActiveUsers[tostring(source)])
+--     end
+--     Wait(100)
+--     Characters.ActiveUsers[tostring(source)] = nil
+-- end)

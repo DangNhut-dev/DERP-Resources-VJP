@@ -1,10 +1,3 @@
---[[
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║ 🔓 DECRYPTED & FIXED BY RIP_BYTECODE 🔓                       ║
-    ║    💀 R.I.P ESCROW • discord.gg/buwp9gDp6v • 2024 💀          ║
-    ╚═══════════════════════════════════════════════════════════════╝
-]]--
-
 Buckets = {}
 Buckets.LoggedOffPlayer = function(src)
     debugPrint('Player ['..src..'] ('..GetPlayerName(src)..') is in Multicharacter bucket.')

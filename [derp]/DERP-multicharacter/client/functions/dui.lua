@@ -1,10 +1,3 @@
---[[
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║ 🔓 DECRYPTED & FIXED BY RIP_BYTECODE 🔓                       ║
-    ║    💀 R.I.P ESCROW • discord.gg/buwp9gDp6v • 2024 💀          ║
-    ╚═══════════════════════════════════════════════════════════════╝
-]]--
-
 -- Cleanup DUI on resource stop
 AddEventHandler("onResourceStop", function(resourceName)
     if resourceName == GetCurrentResourceName() then

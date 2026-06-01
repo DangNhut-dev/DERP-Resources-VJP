@@ -1,55 +1,58 @@
-WorkerBeforeInitiliazation = function()
-    -- CODE THAT IS EXECUTED BEFORE MULTICHARACTER BEGINNS
-end
+WorkerBeforeInitiliazation = function() end
+WorkerAfterInitialization = function() end
+WorkerBeforePlayerSelection = function() end
+WorkerAfterPlayerSelection = function() end
+WorkerAfterPlayerSwapCharacter = function() end
+WorkerBeforeLocationsInitialization = function() end
+WorkerAfterLocationsAreInitialized = function() end
+WorkerBeforeLocationsUnload = function() end
+WorkerAfterLocationsUnload = function() end
+WorkerAfterSettingsInitiated = function() end
+WorkerAfterSettingsUnloaded = function() end
+WorkerGetUserStorage = function(data) end
+WorkerUpdatedUserStorage = function(setting, data) end
+HandleHud = function(hideHud) end
 
-WorkerAfterInitialization = function()
-    -- CODE THAT IS EXECUTED AFTER MULTICHARACTER INITIALIZE
-end
+CreateThread(function()
+    Wait(0)
 
-WorkerBeforePlayerSelection = function()
-    --CODE THAT IS EXECUTED BEFORE THE FOLLOWING FUNCTION
-end
+    -- patch Locations.Data.last
+    setmetatable(Locations.Data, {
+        __newindex = function(t, k, v)
+            if k == 'last' then
+                local currentChar = Entity.Vars.currentCharacter
+                local allowLast = currentChar and currentChar.allowLastLocation
 
-WorkerAfterPlayerSelection = function()
-    -- CODE THAT IS EXECUTED AFTER PLAYER SELECTS HIS CHARACTER
-end
+                if not allowLast then
+                    for _, loc in pairs(Config.Locations) do
+                        rawset(t, k, {
+                            coords = loc.coords,
+                            type = loc.type or 'default',
+                            label = loc.label or 'Default'
+                        })
+                        return
+                    end
+                end
+            end
+            rawset(t, k, v)
+        end
+    })
 
-WorkerAfterPlayerSwapCharacter = function()
-    -- CODE THAT IS EXECUTED AFTER MULTICHARACTER IS INITIALIZED
-end
-
-WorkerBeforeLocationsInitialization = function()
-    -- CODE THAT IS EXECUTED BEFORE LOCATIONS ARE INITIALIZED
-end
-
-WorkerAfterLocationsAreInitialized = function()
-    -- CODE THAT IS EXECUTED AFTER LOCATIONS ARE INITIALIZED
-end
-
-WorkerBeforeLocationsUnload = function()
-    -- CODE THAT IS EXECUTED BEFORE LOCATIONS IS DISABLED
-end
-
-WorkerAfterLocationsUnload = function()
-    -- CODE THAT IS EXECUTED AFTER LOCATIONS IS DISABLED
-end
-
-WorkerAfterSettingsInitiated = function()
-    -- CODE THAT IS EXECUTED AFTER SETTINGS IS INITIATED
-end
-
-WorkerAfterSettingsUnloaded = function()
-    -- CODE THAT IS EXECUTED AFTER SETTINGS IS UNLOADED
-end
-
-WorkerGetUserStorage = function(data)
-    -- GETS USERS STORAGE
-end
-
-WorkerUpdatedUserStorage = function(setting, data)
-    -- TRIGGERED WHEN USER WILL UPDATE SETTINGS
-end
-
-HandleHud = function(hideHud)
-    -- CODE TO HIDE/ENABLE YOUR HUD
-end
+    local _OriginalEntityInit = Entity.Init
+    Entity.Init = function(character)
+        -- print('[DEBUG] allowLastLocation = ' .. tostring(character and character.allowLastLocation))
+        -- print('[DEBUG] derp_last_token in character = ' .. tostring(character and character.derp_last_token))
+        if character and not character.allowLastLocation then
+            for _, loc in pairs(Config.Locations) do
+                character.position = {
+                    x = loc.coords.x,
+                    y = loc.coords.y,
+                    z = loc.coords.z,
+                    heading = 0.0
+                }
+                break
+            end
+        end
+        _OriginalEntityInit(character)
+    end
+end)
