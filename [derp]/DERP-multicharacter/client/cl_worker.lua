@@ -40,9 +40,7 @@ CreateThread(function()
 
     local _OriginalEntityInit = Entity.Init
     Entity.Init = function(character)
-        -- print('[DEBUG] allowLastLocation = ' .. tostring(character and character.allowLastLocation))
-        -- print('[DEBUG] derp_last_token in character = ' .. tostring(character and character.derp_last_token))
-        if character and not character.allowLastLocation then
+        if character and not character.allowLastLocation and not character.isInJail then
             for _, loc in pairs(Config.Locations) do
                 character.position = {
                     x = loc.coords.x,
@@ -53,6 +51,18 @@ CreateThread(function()
                 break
             end
         end
+
+        if character and character.isInJail then
+            SendNUIMessage({
+                type = "SET_SPAWN_LOCATION_VISIBILITY",
+                state = false
+            })
+            SendNUIMessage({
+                type = "OVERRIDE_LOCATIONS_STATE",
+                state = true
+            })
+        end
+
         _OriginalEntityInit(character)
     end
 end)

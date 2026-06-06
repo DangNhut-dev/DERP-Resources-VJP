@@ -277,13 +277,13 @@ lib.addCommand('autofish', {
             local zone = Config.fishingZones[currentZone and currentZone.index] or Config.outside
             player:removeItem(bait.name, 1)
 
-            if not exports.ox_inventory:CanCarryItem(source, fishName, 1) then
-                player:addItem(bait.name, 1)
-                autoFishing[source] = false
-                busy[source] = nil
-                TriggerClientEvent('derp-fishing:showNotification', source, 'Túi đồ đầy, dừng tự động.', 'error')
-                break
-            end
+            -- if not exports.ox_inventory:CanCarryItem(source, fishName, 1) then
+            --     player:addItem(bait.name, 1)
+            --     autoFishing[source] = false
+            --     busy[source] = nil
+            --     TriggerClientEvent('derp-fishing:showNotification', source, 'Túi đồ đầy, dừng tự động.', 'error')
+            --     break
+            -- end
 
             local success = lib.callback.await('derp-fishing:itemUsedAuto', source, zone)
 

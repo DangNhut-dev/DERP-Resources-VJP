@@ -37,6 +37,28 @@ return {
             },
         },
     },
+    ['yamaguchi'] = {
+        label = 'Yamaguchi Gumi', 
+        grades = {
+            [0] = {
+                name = 'Phàm Nhân Vượt Ải' 
+            },
+            [1] = {
+                name = 'Luyện Khí Ngư Đồ'
+            },
+            [2] = {
+                name = 'Luyện Khí Đạo Tổ' 
+            },
+            [3] = {
+                name = 'Nguyên Anh Ngư Tôn' 
+            },
+            [4] = {
+                name = 'Thái Thượng Tông Chủ' ,
+                isboss = true,
+                bankAuth = true
+            },
+        },
+    },
     -- ['ballas'] = {
     --     label = 'Ballas',
     --     grades = {

@@ -114,13 +114,13 @@ Config.StarterLootbox = {
         { item = 'lootbox_nam_thuong_aokhoac', amount = 1 },
         { item = 'lootbox_nam_thuong_quan',     amount = 1 },
         { item = 'lootbox_nam_thuong_giay',     amount = 1 },
-        { item = 'balo', amount = 1, metadata = { drawableId = 1, textureId = 0, gender = 0, level = 0 } },
+        -- { item = 'balo', amount = 1, metadata = { drawableId = 1, textureId = 0, gender = 0, level = 0 } },
     },
     female = {
         { item = 'lootbox_nu_thuong_aokhoac', amount = 1 },
         { item = 'lootbox_nu_thuong_quan',     amount = 1 },
         { item = 'lootbox_nu_thuong_giay',     amount = 1 },
-        { item = 'balo', amount = 1, metadata = { drawableId = 1, textureId = 0, gender = 1, level = 0 } },
+        -- { item = 'balo', amount = 1, metadata = { drawableId = 1, textureId = 0, gender = 1, level = 0 } },
     },
 }
 

@@ -38,7 +38,7 @@ Config.fish = {
 Config.fishingRods = {
     { name = 'basic_rod', price = 100, minLevel = 1, breakChance = 25 },
     { name = 'graphite_rod', price = 1000, minLevel = 4, breakChance = 10 },
-    { name = 'titanium_rod', price = 10000, minLevel = 7, breakChance = 1 },
+    { name = 'titanium_rod', price = 5000, minLevel = 7, breakChance = 1 },
 }
 
 ---@class FishingBait
@@ -50,7 +50,7 @@ Config.fishingRods = {
 ---@type FishingBait[]
 Config.baits = {
     { name = 'worms', price = 1, minLevel = 1, waitDivisor = 1.0 },
-    { name = 'artificial_bait', price = 3, minLevel = 2, waitDivisor = 3.0 },
+    { name = 'artificial_bait', price = 3, minLevel = 2, waitDivisor = 5.0 },
 }
 
 ---@class FishingZone

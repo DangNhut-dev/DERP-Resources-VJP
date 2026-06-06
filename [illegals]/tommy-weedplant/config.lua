@@ -13,8 +13,8 @@ Config.SeedTypes = {
         label = 'Hạt Cần Sa Indica',
         
         -- Thời gian phát triển (ms)
-        -- growthTime = 14400000, -- 2 phút
-        growthTime = 9000000,
+        growthTime = 14400000, -- 2 phút
+        -- growthTime = 9000000,
         -- growthTime = 1000,
         
         -- Thời gian héo sau khi sẵn sàng thu hoạch (ms)
@@ -31,8 +31,8 @@ Config.SeedTypes = {
         -- Sản phẩm thu hoạch
         harvestItem = 'indica_bud',
         harvestAmount = {
-            base = 2, -- Số lượng cơ bản
-            withUVLight = 5, -- Số lượng khi có đèn UV
+            base = 5, -- Số lượng cơ bản
+            withUVLight = 10, -- Số lượng khi có đèn UV
         },
         
         -- Yêu cầu nước
@@ -48,8 +48,8 @@ Config.SeedTypes = {
     
     ['cannabis_seed_sativa'] = {
         name = 'Sativa',
-        label = 'Hạt Cần Sa Sativa',
-        growthTime = 9000000, 
+        label = 'Hạt Cần Sa Sativa',        
+        growthTime = 14400000,
         witherTime = 900000,
         props = {
             stage1 = 'nui_props_weed_stage1b',
@@ -59,8 +59,8 @@ Config.SeedTypes = {
         },
         harvestItem = 'sativa_bud',
         harvestAmount = {
-            base = 2,
-            withUVLight = 5,
+            base = 5,
+            withUVLight = 10,
         },
         waterRequirement = {
             enabled = true,
@@ -83,8 +83,8 @@ Config.SeedTypes = {
         },
         harvestItem = 'hybrid_bud',
         harvestAmount = {
-            base = 2,
-            withUVLight = 5,
+            base = 5,
+            withUVLight = 10,
         },
         waterRequirement = {
             enabled = true,

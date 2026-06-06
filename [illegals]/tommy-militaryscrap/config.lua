@@ -6,7 +6,7 @@ Config.PoliceJobs = { 'police', 'sheriff', 'bcso' }
 Config.LockpickItem = 'lockpick'
 Config.AdvancedLockpickItem = 'advancedlockpick'
 Config.LockpickBreakChance = 30
-Config.AdvancedLockpickDurabilityLoss = 5
+Config.AdvancedLockpickDurabilityLoss = 2
 
 Config.CrateInteractDistance = 2.0
 Config.RefineryInteractDistance = 2.5

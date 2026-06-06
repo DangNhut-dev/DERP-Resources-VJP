@@ -1097,6 +1097,11 @@ bcso = {
                                 female = { drawable = 628, texture = 1 },
                             },
                             {
+                                name   = 'aotrong',
+                                male   = { drawable = 227, texture = 0 },
+                                female = { drawable = 259, texture = 0 },
+                            },
+                            {
                                 name   = 'quan',
                                 male   = { drawable = 232, texture = 1 },
                                 female = { drawable = 230, texture = 1 },
@@ -1231,6 +1236,31 @@ bcso = {
                                 name   = 'matna',
                                 male   = { drawable = 121, texture = 0 },
                                 female = { drawable = 121, texture = 0 },
+                            },
+                            -- {
+                            --     name   = 'daychuyen',
+                            --     male   = { drawable = 193, texture = 0 },
+                            --     female = { drawable = 162, texture = 0 },
+                            -- },
+                        },
+                    },
+                    {
+                        label = 'Đồng phục Tuyên Thệ',
+                        items = {
+                            {
+                                name   = 'aokhoac',
+                                male   = { drawable = 583, texture = 1 },
+                                female = { drawable = 629, texture = 1 },
+                            },
+                            {
+                                name   = 'quan',
+                                male   = { drawable = 232, texture = 1 },
+                                female = { drawable = 230, texture = 1 },
+                            },
+                            {
+                                name   = 'giay',
+                                male   = { drawable = 54, texture = 0 },
+                                female = { drawable = 55, texture = 0 },
                             },
                             -- {
                             --     name   = 'daychuyen',
@@ -1713,11 +1743,6 @@ bcso = {
                         label = 'Đồng phục Lieutenant (Tay dài)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 578, texture = 1 },
                                 female = { drawable = 625, texture = 1 },
@@ -1763,11 +1788,6 @@ bcso = {
                         label = 'Đồng phục Lieutenant (Tay ngắn)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 577, texture = 1 },
                                 female = { drawable = 624, texture = 1 },
@@ -1812,11 +1832,6 @@ bcso = {
                     {
                         label = 'Đồng phục Lieutenant (Áo khoác)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 579, texture = 1 },
@@ -1867,11 +1882,6 @@ bcso = {
                         label = 'Đồng phục Captain (Tay dài)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 578, texture = 2 },
                                 female = { drawable = 625, texture = 2 },
@@ -1917,11 +1927,6 @@ bcso = {
                         label = 'Đồng phục Captain (Tay ngắn)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 577, texture = 2 },
                                 female = { drawable = 624, texture = 2 },
@@ -1966,11 +1971,6 @@ bcso = {
                     {
                         label = 'Đồng phục Captain (Áo khoác)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 579, texture = 1 },
@@ -2021,11 +2021,6 @@ bcso = {
                         label = 'Đồng phục Commander (Tay dài)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 578, texture = 3 },
                                 female = { drawable = 625, texture = 3 },
@@ -2070,11 +2065,6 @@ bcso = {
                     {
                         label = 'Đồng phục Commander (Tay ngắn)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 577, texture = 3 },
@@ -2121,11 +2111,6 @@ bcso = {
                         label = 'Đồng phục Commander (Áo khoác)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 581, texture = 1 },
                                 female = { drawable = 627, texture = 1 },
@@ -2169,11 +2154,6 @@ bcso = {
                      {
                         label = 'Đồng phục Deputy Chief (Tay dài)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 578, texture = 4 },
@@ -2220,11 +2200,6 @@ bcso = {
                         label = 'Đồng phục Deputy Chief (Tay ngắn)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 577, texture = 4 },
                                 female = { drawable = 624, texture = 4 },
@@ -2270,11 +2245,6 @@ bcso = {
                         label = 'Đồng phục Deputy Chief (Áo khoác)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 581, texture = 1 },
                                 female = { drawable = 627, texture = 1 },
@@ -2318,11 +2288,6 @@ bcso = {
                     {
                         label = 'Đồng phục Assistant Chief (Tay dài)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 578, texture = 5 },
@@ -2369,11 +2334,6 @@ bcso = {
                         label = 'Đồng phục Assistant Chief (Tay ngắn)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 577, texture = 5 },
                                 female = { drawable = 624, texture = 5 },
@@ -2419,11 +2379,6 @@ bcso = {
                         label = 'Đồng phục Assistant Chief (Áo khoác)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 581, texture = 1 },
                                 female = { drawable = 627, texture = 1 },
@@ -2467,11 +2422,6 @@ bcso = {
                     {
                         label = 'Đồng phục Chief of Police (Tay dài)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 578, texture = 6 },
@@ -2518,11 +2468,6 @@ bcso = {
                         label = 'Đồng phục Chief of Police (Tay ngắn)',
                         items = {
                             {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
-                            {
                                 name   = 'aokhoac',
                                 male   = { drawable = 577, texture = 6 },
                                 female = { drawable = 624, texture = 6 },
@@ -2567,11 +2512,6 @@ bcso = {
                     {
                         label = 'Đồng phục Chief of Police (Áo khoác)',
                         items = {
-                            {
-                                name   = 'mu',
-                                male   = { drawable = 222, texture = 0 },
-                                female = { drawable = 221, texture = 0 },
-                            },
                             {
                                 name   = 'aokhoac',
                                 male   = { drawable = 581, texture = 1 },

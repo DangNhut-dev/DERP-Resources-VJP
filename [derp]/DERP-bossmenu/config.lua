@@ -17,9 +17,33 @@ Config.ApplicationAcceptGrade = {
 
 -- Management access locations
 Config.Locations = {
+    ["yamaguchi"] = {
+        label = "Bàn Boss",
+        logoImage = "police.png",
+        type = "gang",
+        locations = {
+            {
+                coords = vec3(-661.61, -893.83, 16.84), -- Main Police Station
+                width = 1.0,
+                length = 1.0,
+                heading = 0,
+                minZ = 30.0,
+                maxZ = 31.0,
+            },
+            -- {
+            --     coords = vector3(1853.82, 3689.82, 34.27), -- Sandy Shores Sheriff
+            --     width = 1.0,
+            --     length = 1.0,
+            --     heading = 0,
+            --     minZ = 34.0,
+            --     maxZ = 35.0,
+            -- }
+        }
+    },
     ["police"] = {
         label = "Police Department",
         logoImage = "police.png",
+        type = "job",
         locations = {
             {
                 coords = vec3(461.36, -986.18, 30.66), -- Main Police Station
@@ -42,6 +66,7 @@ Config.Locations = {
     ["ambulance"] = {
         label = "EMS",
         logoImage = "ems.png",
+        type = "job",
         locations = {
             {
                 coords = vector3(-485.13, -1003.51, 33.49), -- Main Hospital
@@ -64,6 +89,7 @@ Config.Locations = {
     ["mechanic"] = {
         label = "Sửa Xe",
         logoImage = "mechanic.png",
+        type = "job",
         locations = {
             {
                 coords = vector3(-350.63, -126.93, 42.98), -- Mechanic Shop
@@ -78,6 +104,7 @@ Config.Locations = {
     ["cardealer"] = {
         label = "Cardealer",
         logoImage = "cardealer.png",
+        type = "job",
         locations = {
             {
                 coords = vector3(-53.52, 76.32, 75.41), -- Mechanic Shop

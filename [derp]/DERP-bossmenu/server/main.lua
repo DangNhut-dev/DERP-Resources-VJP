@@ -78,274 +78,214 @@ function InitializeActivityTracking()
     end)
 end
 
--- Get job data
-QBCore.Functions.CreateCallback('DERP-bossmenu:server:GetJobData', function(source, cb, jobName)
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:GetJobData', function(source, cb, jobName, entityType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    
-    if not Player or Player.PlayerData.job.name ~= jobName then
+    entityType = entityType or "job" -- THÊM
+
+    if not Player then cb(false) return end
+
+    -- THÊM: kiểm tra theo loại
+    local playerEntity = entityType == "gang" and Player.PlayerData.gang or Player.PlayerData.job
+    if not playerEntity or playerEntity.name ~= jobName then
         cb(false)
         return
     end
-    
-    -- Check permissions - either boss or has specific permissions
-    local hasBossAccess = Player.PlayerData.job.isboss
+
+    local hasBossAccess = playerEntity.isboss
     local permissions = nil
-    
+
     if not hasBossAccess then
-        -- Get permissions from database
         local result = MySQL.Sync.fetchSingle('SELECT permissions FROM job_employee_permissions WHERE citizenid = @citizenid AND job = @job', {
             ['@citizenid'] = Player.PlayerData.citizenid,
             ['@job'] = jobName
         })
-        
+
         if result and result.permissions then
             permissions = json.decode(result.permissions)
-            
-            -- Check if any permission is granted
             local hasAnyPermission = false
             for _, permValue in pairs(permissions) do
-                if permValue then
-                    hasAnyPermission = true
-                    break
-                end
+                if permValue then hasAnyPermission = true break end
             end
-            
-            if not hasAnyPermission then
-                cb(false)
-                return
-            end
+            if not hasAnyPermission then cb(false) return end
         else
             cb(false)
             return
         end
     end
-    
-    local jobLabel = QBCore.Shared.Jobs[jobName].label
-    local jobGrades = QBCore.Shared.Jobs[jobName].grades
-    
-    -- First, collect all online players with this job to ensure immediate updates
+
+    -- THÊM: lấy shared data theo loại
+    local sharedEntity = entityType == "gang"
+        and QBCore.Shared.Gangs[jobName]
+        or  QBCore.Shared.Jobs[jobName]
+
+    if not sharedEntity then cb(false) return end
+
+    local jobLabel  = sharedEntity.label
+    local jobGrades = sharedEntity.grades
+
+    -- THÊM: query column đúng (job hoặc gang)
+    local columnName = entityType == "gang" and "gang" or "job"
+
     local onlineEmployeesList = {}
     local players = QBCore.Functions.GetQBPlayers()
-    
-    -- Track online players with this job first
     for _, p in pairs(players) do
-        if p.PlayerData.job.name == jobName then
+        local pEntity = entityType == "gang" and p.PlayerData.gang or p.PlayerData.job
+        if pEntity and pEntity.name == jobName then
             onlineEmployeesList[p.PlayerData.citizenid] = true
         end
     end
-    
-    -- Get database records for all employees of this job
-    MySQL.Async.fetchAll('SELECT citizenid, name, job, charinfo, last_updated FROM players WHERE JSON_EXTRACT(job, "$.name") = @jobName', {
-        ['@jobName'] = jobName
-    }, function(employees)
+
+    local query = string.format(
+        'SELECT citizenid, name, %s, charinfo, last_updated FROM players WHERE JSON_EXTRACT(%s, "$.name") = @entityName',
+        columnName, columnName
+    )
+
+    MySQL.Async.fetchAll(query, { ['@entityName'] = jobName }, function(employees)
         local employeeData = {}
         local processedCitizenIds = {}
-        
-        -- Process employees from database
+
         for _, employee in pairs(employees) do
-            local jobInfo = json.decode(employee.job)
-            local gradeLevel = jobInfo.grade.level
-            local gradeName = jobInfo.grade.name
-            
-            -- Parse charinfo if it exists
+            local entityInfo = json.decode(employee[columnName])
+            local gradeLevel = entityInfo.grade.level
+            local gradeName  = entityInfo.grade.name
+
             local firstName = "Unknown"
-            local lastName = "Unknown"
-            local fullName = employee.name -- Fallback to Steam name
-            
+            local lastName  = "Unknown"
+            local fullName  = employee.name
+
             if employee.charinfo then
                 local charInfo = json.decode(employee.charinfo)
                 if charInfo then
                     firstName = charInfo.firstname or "Unknown"
-                    lastName = charInfo.lastname or "Unknown"
-                    fullName = firstName .. ' ' .. lastName
+                    lastName  = charInfo.lastname  or "Unknown"
+                    fullName  = firstName .. ' ' .. lastName
                 end
             end
-            
-            -- Check if player is online
+
             local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(employee.citizenid)
             local isOnline = targetPlayer ~= nil
             local location = "Offline"
             local playTime = 0
-            
+
             if isOnline then
                 location = "Online"
-                
-                -- If player is online, we can get their character info directly
                 if targetPlayer.PlayerData.charinfo then
                     firstName = targetPlayer.PlayerData.charinfo.firstname or firstName
-                    lastName = targetPlayer.PlayerData.charinfo.lastname or lastName
-                    fullName = firstName .. ' ' .. lastName
+                    lastName  = targetPlayer.PlayerData.charinfo.lastname  or lastName
+                    fullName  = firstName .. ' ' .. lastName
                 end
-                
-                -- Calculate playtime from PlayerJoinTimes first
+
                 if PlayerJoinTimes[employee.citizenid] then
                     local sessionTime = math.floor((os.time() - PlayerJoinTimes[employee.citizenid].time) / 60)
-                    
-                    -- Get accumulated time from database - use synchronous version
-                    local dbPlaytime = MySQL.Sync.fetchScalar('SELECT total_minutes FROM job_playtime WHERE citizenid = ? AND job = ?', 
-                        {employee.citizenid, jobName})
-                    
-                    local totalPlaytime = (dbPlaytime or 0) + sessionTime
-                    
-                    -- Log calculation
-                    
-                    for i, emp in ipairs(employeeData) do
-                        if emp.citizenid == employee.citizenid then
-                            emp.playTime = totalPlaytime
-                            break
-                        end
-                    end
-                    
-                    -- Use total time
-                    playTime = totalPlaytime
-                else 
-                    -- If no record in PlayerJoinTimes, use metadata
+                    local dbPlaytime  = MySQL.Sync.fetchScalar(
+                        'SELECT total_minutes FROM job_playtime WHERE citizenid = ? AND job = ?',
+                        {employee.citizenid, jobName}
+                    )
+                    playTime = (dbPlaytime or 0) + sessionTime
+                else
                     local joinTime = targetPlayer.PlayerData.metadata.joinTime or os.time()
                     playTime = math.floor((os.time() - joinTime) / 60)
-                    
-                    -- Create new tracking record
-                    PlayerJoinTimes[employee.citizenid] = {
-                        time = joinTime,
-                        job = jobName
-                    }
-                    
+                    PlayerJoinTimes[employee.citizenid] = { time = joinTime, job = jobName }
                 end
             else
-                -- For offline players, get playtime from database only
-                local dbPlaytime = MySQL.Sync.fetchScalar('SELECT total_minutes FROM job_playtime WHERE citizenid = ? AND job = ?', 
-                    {employee.citizenid, jobName})
-                
-                if dbPlaytime then
-                    for i, emp in ipairs(employeeData) do
-                        if emp.citizenid == employee.citizenid then
-                            emp.playTime = dbPlaytime
-                            break
-                        end
-                    end
-                    
-                    playTime = dbPlaytime
-                    
-                end
+                local dbPlaytime = MySQL.Sync.fetchScalar(
+                    'SELECT total_minutes FROM job_playtime WHERE citizenid = ? AND job = ?',
+                    {employee.citizenid, jobName}
+                )
+                playTime = dbPlaytime or 0
             end
-            
-            -- Management flag
-            local isManagement = jobInfo.isboss or false
-            
+
+            local isManagement = entityInfo.isboss or false
+
             employeeData[#employeeData+1] = {
-                citizenid = employee.citizenid,
-                name = fullName, -- Use the full name instead of Steam name
-                grade = gradeLevel,
-                gradeName = gradeName,
-                isOnline = isOnline,
-                isManagement = isManagement,
-                location = location,
-                playTime = playTime,
+                citizenid   = employee.citizenid,
+                name        = fullName,
+                grade       = gradeLevel,
+                gradeName   = gradeName,
+                isOnline    = isOnline,
+                isManagement= isManagement,
+                location    = location,
+                playTime    = playTime,
                 lastUpdated = employee.last_updated
             }
-            
-            -- Mark this citizen ID as processed
             processedCitizenIds[employee.citizenid] = true
         end
-        
-        -- Check for any online players with this job who aren't in the database results yet
-        -- This handles newly assigned jobs before database updates
+
+        -- Online nhưng chưa trong DB (vừa được assign)
         for _, p in pairs(players) do
-            if p.PlayerData.job.name == jobName and not processedCitizenIds[p.PlayerData.citizenid] then
-                -- This player has the job but wasn't in our database results - likely just assigned
-                local firstName = "Unknown"
-                local lastName = "Unknown"
-                
-                if p.PlayerData.charinfo then
-                    firstName = p.PlayerData.charinfo.firstname or "Unknown"
-                    lastName = p.PlayerData.charinfo.lastname or "Unknown"
-                end
-                
-                local fullName = firstName .. ' ' .. lastName
-                local playTime = 0
-                
-                -- Check for join time tracking
+            local pEntity = entityType == "gang" and p.PlayerData.gang or p.PlayerData.job
+            if pEntity and pEntity.name == jobName and not processedCitizenIds[p.PlayerData.citizenid] then
+                local firstName = p.PlayerData.charinfo and p.PlayerData.charinfo.firstname or "Unknown"
+                local lastName  = p.PlayerData.charinfo and p.PlayerData.charinfo.lastname  or "Unknown"
+                local playTime  = 0
+
                 if PlayerJoinTimes[p.PlayerData.citizenid] then
                     local sessionTime = math.floor((os.time() - PlayerJoinTimes[p.PlayerData.citizenid].time) / 60)
-                    local dbPlaytime = MySQL.Sync.fetchScalar('SELECT total_minutes FROM job_playtime WHERE citizenid = ? AND job = ?', 
-                        {p.PlayerData.citizenid, jobName}) or 0
-                    
+                    local dbPlaytime  = MySQL.Sync.fetchScalar(
+                        'SELECT total_minutes FROM job_playtime WHERE citizenid = ? AND job = ?',
+                        {p.PlayerData.citizenid, jobName}
+                    ) or 0
                     playTime = dbPlaytime + sessionTime
                 else
-                    -- Initialize tracking
-                    PlayerJoinTimes[p.PlayerData.citizenid] = {
-                        time = os.time(),
-                        job = jobName
-                    }
+                    PlayerJoinTimes[p.PlayerData.citizenid] = { time = os.time(), job = jobName }
                 end
-                -- newly found employee to our list
+
                 employeeData[#employeeData+1] = {
-                    citizenid = p.PlayerData.citizenid,
-                    name = fullName,
-                    grade = tonumber(p.PlayerData.job.grade.level),
-                    gradeName = p.PlayerData.job.grade.name,
-                    isOnline = true,
-                    isManagement = p.PlayerData.job.isboss or false,
-                    location = "Online",
-                    playTime = playTime,
-                    lastUpdated = os.date()
-                }  
+                    citizenid    = p.PlayerData.citizenid,
+                    name         = firstName .. ' ' .. lastName,
+                    grade        = tonumber(pEntity.grade.level),
+                    gradeName    = pEntity.grade.name,
+                    isOnline     = true,
+                    isManagement = pEntity.isboss or false,
+                    location     = "Online",
+                    playTime     = playTime,
+                    lastUpdated  = os.date()
+                }
             end
         end
-            
-        -- Count online employees for activity tracking
+
         local onlineCount = 0
-        for _, employee in pairs(employeeData) do
-            if employee.isOnline then
-                onlineCount = onlineCount + 1
-            end
+        for _, e in pairs(employeeData) do
+            if e.isOnline then onlineCount = onlineCount + 1 end
         end
-        
-        -- Create activity data from monitored data
+
         local activityData = {}
         for i = 0, 23 do
-            local hour = i
-            local count = ActivityData[jobName] and ActivityData[jobName][hour] or 0
             activityData[#activityData+1] = {
-                hour = hour,
-                count = count
+                hour  = i,
+                count = ActivityData[jobName] and ActivityData[jobName][i] or 0
             }
         end
-        
-        -- Weekly playtime summary (mock calculation)
+
         local weeklyPlaytime = 0
         local onlineEmployees = 0
-        
-        for _, employee in pairs(employeeData) do
-            if employee.isOnline then
-                weeklyPlaytime = weeklyPlaytime + employee.playTime
+        for _, e in pairs(employeeData) do
+            if e.isOnline then
+                weeklyPlaytime  = weeklyPlaytime + e.playTime
                 onlineEmployees = onlineEmployees + 1
             end
         end
-        
-        -- Calculate average working hours
-        local averagePlaytime = onlineEmployees > 0 and math.floor(weeklyPlaytime / onlineEmployees) or 0
-        
-        -- Build final data structure
+
         local jobData = {
-            jobName = jobName,
-            jobLabel = jobLabel,
-            employees = employeeData,
-            onlineCount = onlineCount,
+            jobName        = jobName,
+            jobLabel       = jobLabel,
+            entityType     = entityType, -- THÊM
+            employees      = employeeData,
+            onlineCount    = onlineCount,
             totalEmployees = #employeeData,
-            activityData = activityData,
-            grades = jobGrades,
+            activityData   = activityData,
+            grades         = jobGrades,
             weeklyPlaytime = weeklyPlaytime,
-            averagePlaytime = averagePlaytime,
-            permissions = permissions  -- Add permissions to the response
+            averagePlaytime= onlineEmployees > 0 and math.floor(weeklyPlaytime / onlineEmployees) or 0,
+            permissions    = permissions
         }
-        
-        -- Save refresh data for player
+
         if not RefreshTimers[src] then
             StartRefreshTimer(src, jobName)
         end
-        societyData = GetSocietyData(jobName)
-        jobData.societyData = societyData
+
+        jobData.societyData = GetSocietyData(jobName)
         cb(jobData)
     end)
 end)
@@ -404,93 +344,64 @@ QBCore.Functions.CreateCallback('DERP-bossmenu:server:GetSettings', function(sou
     end)
 end)
 
-RegisterNetEvent('DERP-bossmenu:server:UpdateEmployee', function(citizenid, jobName, grade)
+RegisterNetEvent('DERP-bossmenu:server:UpdateEmployee', function(citizenid, jobName, grade, entityType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
+    entityType = entityType or "job" -- THÊM
 
-    if not Player or Player.PlayerData.job.name ~= jobName then
-        TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
-        return
-    end
+    if not Player then return end
 
-    if not Player.PlayerData.job.isboss then
-        TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
+    -- THÊM: check theo loại
+    local playerEntity = entityType == "gang" and Player.PlayerData.gang or Player.PlayerData.job
+    if not playerEntity or playerEntity.name ~= jobName or not playerEntity.isboss then
+        TriggerClientEvent('QBCore:Notify', src, "You don't have permission", "error")
         return
     end
 
     grade = tonumber(grade)
 
-    if not QBCore.Shared.Jobs[jobName] or not QBCore.Shared.Jobs[jobName].grades[grade] then
-        TriggerClientEvent('QBCore:Notify', src, "Invalid job grade", "error")
+    -- THÊM: shared data theo loại
+    local sharedEntity = entityType == "gang" and QBCore.Shared.Gangs[jobName] or QBCore.Shared.Jobs[jobName]
+    if not sharedEntity or not sharedEntity.grades[grade] then
+        TriggerClientEvent('QBCore:Notify', src, "Invalid grade", "error")
         return
     end
 
-    MySQL.Async.fetchSingle('SELECT 1 FROM players WHERE citizenid = @citizenid', {
-        ['@citizenid'] = citizenid
-    }, function(result)
-        if not result then
-            TriggerClientEvent('QBCore:Notify', src, "Player not found", "error")
-            return
-        end
+    local columnName = entityType == "gang" and "gang" or "job"
 
-        -- KHÔNG có thêm check grade ở đây nữa
-
-        local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(citizenid)
-        if targetPlayer then
-            local targetCurrentJob = targetPlayer.PlayerData.job.name
-
-            if targetCurrentJob == jobName then
-                targetPlayer.Functions.SetJobDuty(true)
-                targetPlayer.Functions.SetJob(jobName, grade)
-                TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your rank has been updated to " .. QBCore.Shared.Jobs[jobName].grades[grade].name, "success")
-                TriggerClientEvent('QBCore:Notify', src, "Employee rank updated successfully", "success")
-                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Rank Update', 'green', string.format('%s (%s) updated %s (%s) to rank %s in job %s',
-                    GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(targetPlayer.PlayerData.source), citizenid, grade, jobName))
-            else
-                targetPlayer.Functions.SetJob(jobName, grade)
-                TriggerClientEvent('DERP-bossmenu:client:JobChanged', -1, jobName)
-                TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "Your job has been changed to " .. QBCore.Shared.Jobs[jobName].label, "success")
-                TriggerClientEvent('QBCore:Notify', src, "Employee successfully transferred to this job", "success")
-                TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Job Change', 'green', string.format('%s (%s) changed %s (%s) job from %s to %s at rank %s',
-                    GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(targetPlayer.PlayerData.source), citizenid, targetCurrentJob, jobName, grade))
-            end
+    local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(citizenid)
+    if targetPlayer then
+        if entityType == "gang" then
+            targetPlayer.Functions.SetGang(jobName, grade)
         else
-            MySQL.Async.fetchSingle('SELECT job FROM players WHERE citizenid = @citizenid', {
-                ['@citizenid'] = citizenid
-            }, function(jobResult)
-                if not jobResult or not jobResult.job then
-                    TriggerClientEvent('QBCore:Notify', src, "Error updating employee", "error")
-                    return
-                end
-
-                local currentJob = json.decode(jobResult.job)
-                local jobInfo = {
-                    name    = jobName,
-                    label   = QBCore.Shared.Jobs[jobName].label,
-                    payment = QBCore.Shared.Jobs[jobName].grades[grade].payment,
-                    onduty  = true,
-                    grade   = {
-                        level = grade,
-                        name  = QBCore.Shared.Jobs[jobName].grades[grade].name
-                    },
-                    isboss  = QBCore.Shared.Jobs[jobName].grades[grade].isboss or false
-                }
-
-                MySQL.Async.execute('UPDATE players SET job = @job WHERE citizenid = @citizenid', {
-                    ['@citizenid'] = citizenid,
-                    ['@job'] = json.encode(jobInfo)
-                }, function(rowsChanged)
-                    if rowsChanged > 0 then
-                        TriggerClientEvent('QBCore:Notify', src, currentJob.name == jobName and "Employee rank updated successfully" or "Employee successfully transferred to this job", "success")
-                        TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Offline Employee Update', 'green', string.format('%s (%s) updated %s job from %s to %s at rank %s',
-                            GetPlayerName(src), Player.PlayerData.citizenid, citizenid, currentJob.name, jobName, grade))
-                    else
-                        TriggerClientEvent('QBCore:Notify', src, "Update failed", "error")
-                    end
-                end)
-            end)
+            targetPlayer.Functions.SetJob(jobName, grade)
         end
-    end)
+        TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source,
+            "Your rank has been updated to " .. sharedEntity.grades[grade].name, "success")
+        TriggerClientEvent('QBCore:Notify', src, "Updated successfully", "success")
+    else
+        -- Offline player — update DB
+        local entityInfo = {
+            name    = jobName,
+            label   = sharedEntity.label,
+            payment = sharedEntity.grades[grade].payment or 0,
+            onduty  = true,
+            grade   = { level = grade, name = sharedEntity.grades[grade].name },
+            isboss  = sharedEntity.grades[grade].isboss or false
+        }
+
+        local query = string.format('UPDATE players SET %s = @data WHERE citizenid = @citizenid', columnName)
+        MySQL.Async.execute(query, {
+            ['@data']      = json.encode(entityInfo),
+            ['@citizenid'] = citizenid
+        }, function(rowsChanged)
+            if rowsChanged > 0 then
+                TriggerClientEvent('QBCore:Notify', src, "Updated successfully", "success")
+            else
+                TriggerClientEvent('QBCore:Notify', src, "Update failed", "error")
+            end
+        end)
+    end
 end)
 
 RegisterNetEvent('DERP-bossmenu:server:HireEmployee', function(targetId, jobName, grade)
@@ -529,77 +440,50 @@ RegisterNetEvent('DERP-bossmenu:server:HireEmployee', function(targetId, jobName
         GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(Target.PlayerData.source), Target.PlayerData.citizenid, jobName, grade))
 end)
 
--- Remove employee from job
-RegisterNetEvent('DERP-bossmenu:server:RemoveEmployee', function(citizenid, jobName)
+RegisterNetEvent('DERP-bossmenu:server:RemoveEmployee', function(citizenid, jobName, entityType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    
-    if not Player or Player.PlayerData.job.name ~= jobName then
-        TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
+    entityType = entityType or "job"
+
+    if not Player then return end
+
+    local playerEntity = entityType == "gang" and Player.PlayerData.gang or Player.PlayerData.job
+    if not playerEntity or playerEntity.name ~= jobName or not playerEntity.isboss then
+        TriggerClientEvent('QBCore:Notify', src, "You don't have permission", "error")
         return
     end
-    
-    -- Check if player has boss permissions
-    if not Player.PlayerData.job.isboss then
-        TriggerClientEvent('QBCore:Notify', src, "You don't have permission for this action", "error")
-        return
-    end
-    
-    -- Check if employee exists and belongs to this job
-    MySQL.Async.fetchSingle('SELECT job FROM players WHERE citizenid = @citizenid', {
-        ['@citizenid'] = citizenid
-    }, function(result)
-        if not result or not result.job then
-            TriggerClientEvent('QBCore:Notify', src, "Player not found", "error")
-            return
-        end
-        
-        local currentJob = json.decode(result.job)
-        if currentJob.name ~= jobName then
-            TriggerClientEvent('QBCore:Notify', src, "This player doesn't work for this job", "error")
-            return
-        end
-        
-        -- Set default job for online player
-        local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(citizenid)
-        if targetPlayer then
-            targetPlayer.Functions.SetJob("unemployed", 0)
-            TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source, "You have been fired from your job", "error")
-            TriggerClientEvent('QBCore:Notify', src, "Employee removed successfully", "success")
-            
-            -- Log entry
-            TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Fired', 'red', string.format('%s (%s) fired %s (%s) from job %s', 
-                GetPlayerName(src), Player.PlayerData.citizenid, GetPlayerName(targetPlayer.PlayerData.source), citizenid, jobName))
+
+    local columnName = entityType == "gang" and "gang" or "job"
+
+    local targetPlayer = QBCore.Functions.GetPlayerByCitizenId(citizenid)
+    if targetPlayer then
+        if entityType == "gang" then
+            targetPlayer.Functions.SetGang("none", 0)
         else
-            local jobInfo = {
-                name = "unemployed",
-                label = "Unemployed",
-                payment = 10,
-                onduty = true,
-                grade = {
-                    level = 0,
-                    name = "Unemployed"
-                },
-                isboss = false
-            }
-            
-            MySQL.Async.execute('UPDATE players SET job = @job WHERE citizenid = @citizenid', {
-                ['@citizenid'] = citizenid,
-                ['@job'] = json.encode(jobInfo)
-            }, function(rowsChanged)
-                if rowsChanged > 0 then
-                    TriggerClientEvent('QBCore:Notify', src, "Employee removed successfully", "success")
-                    
-                    -- Log entry
-                    TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Offline Employee Fired', 'red', string.format('%s (%s) fired %s from job %s', 
-                        GetPlayerName(src), Player.PlayerData.citizenid, citizenid, jobName))
-                        TriggerClientEvent('DERP-bossmenu:client:JobChanged', -1, jobName)
-                else
-                    TriggerClientEvent('QBCore:Notify', src, "Removal failed", "error")
-                end
-            end)
+            targetPlayer.Functions.SetJob("unemployed", 0)
         end
-    end)
+        TriggerClientEvent('QBCore:Notify', targetPlayer.PlayerData.source,
+            entityType == "gang" and "You have been removed from the gang" or "You have been fired from your job", "error")
+        TriggerClientEvent('QBCore:Notify', src, "Employee removed successfully", "success")
+    else
+        -- Offline: update DB
+        local defaultInfo = entityType == "gang"
+            and { name = "none", label = "None", grade = { level = 0, name = "None" }, isboss = false }
+            or  { name = "unemployed", label = "Unemployed", payment = 10, onduty = true,
+                  grade = { level = 0, name = "Unemployed" }, isboss = false }
+
+        local query = string.format('UPDATE players SET %s = @data WHERE citizenid = @citizenid', columnName)
+        MySQL.Async.execute(query, {
+            ['@data']      = json.encode(defaultInfo),
+            ['@citizenid'] = citizenid
+        }, function(rowsChanged)
+            if rowsChanged > 0 then
+                TriggerClientEvent('QBCore:Notify', src, "Employee removed successfully", "success")
+            else
+                TriggerClientEvent('QBCore:Notify', src, "Removal failed", "error")
+            end
+        end)
+    end
 end)
 
 -- Save user settings
@@ -1389,9 +1273,12 @@ QBCore.Commands.Add('resetapplicationstatus', 'Reset a player\'s application sta
     end)
 end, 'admin')
 
--- Save changes directly to the jobs.lua file
-function CompletelyRebuildJobDefinition(jobName, newGrades)
-    local filePath = GetResourcePath("qb-core").."/shared/jobs.lua"
+function CompletelyRebuildJobDefinition(jobName, newGrades, entityType)
+    entityType = entityType or "job"
+
+    local filePath = entityType == "gang"
+        and GetResourcePath("qb-core").."/shared/gangs.lua"
+        or  GetResourcePath("qb-core").."/shared/jobs.lua"
     local backupPath = filePath .. ".backup"
     
     local originalFile = io.open(filePath, "r")
@@ -1560,22 +1447,8 @@ function CompletelyRebuildJobDefinition(jobName, newGrades)
     return true, newMapping
 end
 
-function SaveJobGradeChangesToFile(jobName, grades)
-    local success, mapping = CompletelyRebuildJobDefinition(jobName, grades)
-    
-    if success and mapping then
-        local hasChanges = false
-        for old, new in pairs(mapping) do
-            if old ~= new then
-                hasChanges = true
-                break
-            end
-        end
-        
-        if hasChanges then
-        end
-    end
-    
+function SaveJobGradeChangesToFile(jobName, grades, entityType)
+    local success, mapping = CompletelyRebuildJobDefinition(jobName, grades, entityType)
     return success
 end
 
@@ -1736,74 +1609,95 @@ QBCore.Functions.CreateCallback('DERP-bossmenu:server:UpdateEmployeePermissions'
     end)
 end)
 
-QBCore.Functions.CreateCallback('DERP-bossmenu:server:HireNewEmployee', function(source, cb, targetId, jobName, grade)
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:HireNewEmployee', function(source, cb, targetId, jobName, grade, entityType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local Target = QBCore.Functions.GetPlayer(tonumber(targetId))
+    entityType = entityType or "job" -- THÊM
 
     if not Player or not Target then
         cb({ success = false, message = "Player not found" })
         return
     end
 
-    if Player.PlayerData.job.name ~= jobName or not Player.PlayerData.job.isboss then
+    local playerEntity = entityType == "gang" and Player.PlayerData.gang or Player.PlayerData.job
+    if not playerEntity or playerEntity.name ~= jobName or not playerEntity.isboss then
         cb({ success = false, message = "No permission" })
         return
     end
 
     grade = tonumber(grade)
+    local sharedEntity = entityType == "gang" and QBCore.Shared.Gangs[jobName] or QBCore.Shared.Jobs[jobName]
 
-    if not QBCore.Shared.Jobs[jobName] or not QBCore.Shared.Jobs[jobName].grades[grade] then
-        cb({ success = false, message = "Invalid job grade" })
+    if not sharedEntity or not sharedEntity.grades[grade] then
+        cb({ success = false, message = "Invalid grade" })
         return
     end
 
-    Target.Functions.SetJob(jobName, grade)
+    -- THÊM: set job hoặc gang
+    if entityType == "gang" then
+        Target.Functions.SetGang(jobName, grade)
+    else
+        Target.Functions.SetJob(jobName, grade)
+    end
 
-    TriggerClientEvent('QBCore:Notify', Target.PlayerData.source, "You've been hired: " .. QBCore.Shared.Jobs[jobName].label, "success")
-    TriggerEvent('qb-log:server:CreateLog', 'jobmanagement', 'Employee Hire', 'green', string.format('%s hired %s for job %s rank %s',
-        Player.PlayerData.citizenid, Target.PlayerData.citizenid, jobName, grade))
+    TriggerClientEvent('QBCore:Notify', Target.PlayerData.source,
+        "You've been added to: " .. sharedEntity.label, "success")
 
     cb({ success = true })
 end)
 
 
-QBCore.Functions.CreateCallback('DERP-bossmenu:server:HasJobAccess', function(source, cb, jobName)
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:HasJobAccess', function(source, cb, jobName, entityType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    
-    if not Player or Player.PlayerData.job.name ~= jobName then
-        cb(false)
-        return
+    entityType = entityType or "job"
+
+    -- print("^3[DERP-DEBUG] HasJobAccess called^7 | jobName: " .. tostring(jobName) .. " | entityType: " .. tostring(entityType))
+
+    if not Player then
+        -- print("^1[DERP-DEBUG] Player not found^7")
+        cb(false) return
     end
-    
-    -- If player is a boss, they have access
-    if Player.PlayerData.job.isboss then
-        cb(true)
-        return
+
+    -- print("^3[DERP-DEBUG] PlayerData.job.name: ^7" .. tostring(Player.PlayerData.job and Player.PlayerData.job.name or "NIL"))
+    -- print("^3[DERP-DEBUG] PlayerData.gang: ^7" .. tostring(Player.PlayerData.gang and Player.PlayerData.gang.name or "NIL"))
+
+    local playerEntity = entityType == "gang" and Player.PlayerData.gang or Player.PlayerData.job
+
+    if not playerEntity then
+        -- print("^1[DERP-DEBUG] playerEntity is NIL^7")
+        cb(false) return
     end
-    
-    -- Check if player has any permissions for this job
+
+    -- print("^3[DERP-DEBUG] playerEntity.name: ^7" .. tostring(playerEntity.name) .. " | isboss: " .. tostring(playerEntity.isboss))
+
+    if playerEntity.name ~= jobName then
+        -- print("^1[DERP-DEBUG] Name mismatch: ^7'" .. tostring(playerEntity.name) .. "' ~= '" .. tostring(jobName) .. "'")
+        cb(false) return
+    end
+
+    if playerEntity.isboss then
+        -- print("^2[DERP-DEBUG] Player is boss, access granted^7")
+        cb(true) return
+    end
+
+    -- print("^3[DERP-DEBUG] Not boss, checking DB permissions...^7")
     MySQL.Async.fetchAll('SELECT permissions FROM job_employee_permissions WHERE citizenid = @citizenid AND job = @job', {
         ['@citizenid'] = Player.PlayerData.citizenid,
         ['@job'] = jobName
     }, function(result)
         if result and result[1] and result[1].permissions then
             local permissions = json.decode(result[1].permissions)
-            
-            -- Check if any permission is granted
-            local hasAnyPermission = false
-            for _, permValue in pairs(permissions) do
-                if permValue then
-                    hasAnyPermission = true
-                    break
+            for _, v in pairs(permissions) do
+                if v then
+                    -- print("^2[DERP-DEBUG] Has permission via DB^7")
+                    cb(true) return
                 end
             end
-            
-            cb(hasAnyPermission)
-        else
-            cb(false)
         end
+        -- print("^1[DERP-DEBUG] No permissions found in DB^7")
+        cb(false)
     end)
 end)
 
@@ -1996,38 +1890,144 @@ QBCore.Functions.CreateCallback('DERP-bossmenu:server:GetPlaytimeData', function
     end)
 end)
 
-QBCore.Functions.CreateCallback('DERP-bossmenu:server:GetJobGrades', function(source, cb, jobName)
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:GetJobGrades', function(source, cb, jobName, entityType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    
-    if not Player or Player.PlayerData.job.name ~= jobName then
+    entityType = entityType or "job"
+
+    if not Player then cb(false) return end
+
+    local playerEntity = entityType == "gang" and Player.PlayerData.gang or Player.PlayerData.job
+    if not playerEntity or playerEntity.name ~= jobName then
         cb(false)
         return
     end
-    
-    if not Player.PlayerData.job.isboss then
+
+    -- SỬA: dùng playerEntity.isboss thay vì Player.PlayerData.job.isboss
+    if not playerEntity.isboss then
         local result = MySQL.Sync.fetchSingle('SELECT permissions FROM job_employee_permissions WHERE citizenid = @citizenid AND job = @job', {
             ['@citizenid'] = Player.PlayerData.citizenid,
             ['@job'] = jobName
         })
-        
+
         local hasPermission = false
         if result and result.permissions then
             local permissions = json.decode(result.permissions)
-            if permissions.grades then
-                hasPermission = true
-            end
+            if permissions.grades then hasPermission = true end
         end
-        
-        if not hasPermission then
-            cb(false)
-            return
-        end
+
+        if not hasPermission then cb(false) return end
     end
-    
-    if QBCore.Shared.Jobs[jobName] and QBCore.Shared.Jobs[jobName].grades then
-        cb(QBCore.Shared.Jobs[jobName].grades)
+
+    local sharedEntity = entityType == "gang"
+        and QBCore.Shared.Gangs[jobName]
+        or  QBCore.Shared.Jobs[jobName]
+
+    if sharedEntity and sharedEntity.grades then
+        cb(sharedEntity.grades)
     else
         cb(false)
+    end
+end)
+
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:UpdateJobGrade', function(source, cb, jobName, gradeLevel, gradeName, gradePayment, gradeIsBoss, entityType)
+    entityType = entityType or "job"
+
+    local sharedEntity = entityType == "gang"
+        and QBCore.Shared.Gangs[jobName]
+        or  QBCore.Shared.Jobs[jobName]
+
+    if not sharedEntity then
+        cb({success = false, message = "Invalid entity"})
+        return
+    end
+
+    gradeLevel = tonumber(gradeLevel)
+    if not sharedEntity.grades[gradeLevel] then
+        cb({success = false, message = "Grade not found"})
+        return
+    end
+
+    sharedEntity.grades[gradeLevel].name    = gradeName
+    sharedEntity.grades[gradeLevel].payment = tonumber(gradePayment)
+    sharedEntity.grades[gradeLevel].isboss  = gradeIsBoss or false
+
+    local success = SaveJobGradeChangesToFile(jobName, sharedEntity.grades, entityType)
+
+    if success then
+        TriggerClientEvent('QBCore:Client:OnSharedUpdate', -1,
+            entityType == "gang" and 'Gangs' or 'Jobs', jobName, 'grades', sharedEntity.grades)
+        cb({success = true})
+    else
+        cb({success = false, message = "Failed to save"})
+    end
+end)
+
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:AddJobGrade', function(source, cb, jobName, gradeName, gradePayment, gradeIsBoss, entityType)
+    entityType = entityType or "job"
+
+    local sharedEntity = entityType == "gang"
+        and QBCore.Shared.Gangs[jobName]
+        or  QBCore.Shared.Jobs[jobName]
+
+    if not sharedEntity then
+        cb({success = false, message = "Invalid entity"})
+        return
+    end
+
+    local maxLevel = -1
+    for level, _ in pairs(sharedEntity.grades) do
+        local numLevel = tonumber(level)
+        if numLevel and numLevel > maxLevel then
+            maxLevel = numLevel
+        end
+    end
+
+    local newLevel = maxLevel + 1
+    sharedEntity.grades[newLevel] = {
+        name    = gradeName,
+        payment = tonumber(gradePayment),
+        isboss  = gradeIsBoss or false
+    }
+
+    local success = SaveJobGradeChangesToFile(jobName, sharedEntity.grades, entityType)
+
+    if success then
+        TriggerClientEvent('QBCore:Client:OnSharedUpdate', -1,
+            entityType == "gang" and 'Gangs' or 'Jobs', jobName, 'grades', sharedEntity.grades)
+        cb({success = true, newLevel = newLevel})
+    else
+        cb({success = false, message = "Failed to save"})
+    end
+end)
+
+QBCore.Functions.CreateCallback('DERP-bossmenu:server:DeleteJobGrade', function(source, cb, jobName, gradeLevel, entityType)
+    entityType = entityType or "job"
+
+    local sharedEntity = entityType == "gang"
+        and QBCore.Shared.Gangs[jobName]
+        or  QBCore.Shared.Jobs[jobName]
+
+    if not sharedEntity then
+        cb({success = false, message = "Invalid entity"})
+        return
+    end
+
+    gradeLevel = tonumber(gradeLevel)
+    if not sharedEntity.grades[gradeLevel] then
+        cb({success = false, message = "Grade not found"})
+        return
+    end
+
+    sharedEntity.grades[gradeLevel] = nil
+
+    local success = SaveJobGradeChangesToFile(jobName, sharedEntity.grades, entityType)
+
+    if success then
+        TriggerClientEvent('QBCore:Client:OnSharedUpdate', -1,
+            entityType == "gang" and 'Gangs' or 'Jobs', jobName, 'grades', sharedEntity.grades)
+        cb({success = true})
+    else
+        cb({success = false, message = "Failed to save"})
     end
 end)

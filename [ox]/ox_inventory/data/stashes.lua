@@ -150,4 +150,42 @@ return {
 		weight = 500000,
 		groups = {['dealer'] = 1}
 	},
+
+	{
+		coords = vec3(-665.43, -901.95, 16.97),
+		target = {
+			loc = vec3(-665.43, -901.95, 16.97),
+			length = 0.6,
+			width = 1.8,
+			heading = 340,
+			minZ = 43.34,
+			maxZ = 44.74,
+			label = 'Mở Tủ'
+		},
+		name = 'yumastash',
+		label = 'Tủ Kho',
+		owner = false,
+		slots = 180,
+		weight = 800000,
+		groups = {['yamaguchi'] = 1}
+	},
+
+	{
+		coords = vec3(-665.45, -891.62, 16.97),
+		target = {
+			loc = vec3(-665.45, -891.62, 16.97),
+			length = 0.6,
+			width = 1.8,
+			heading = 340,
+			minZ = 43.34,
+			maxZ = 44.74,
+			label = 'Mở Tủ'
+		},
+		name = 'yumabossstash',
+		label = 'Tủ Kho',
+		owner = false,
+		slots = 20,
+		weight = 200000,
+		groups = {['yamaguchi'] = 4}
+	},
 }

@@ -235,9 +235,7 @@ end)
 
 RegisterServerEvent("boombox:server:placeBoombox", function(data)
     local playerId = source
-    if not data then
-        return
-    end
+    if not data then return end
     local entity = NetworkGetEntityFromNetworkId(data.netId)
     if not DoesEntityExist(entity) then
         return madCore.debug("entity does not exist")
@@ -251,9 +249,7 @@ RegisterServerEvent("boombox:server:placeBoombox", function(data)
     if boomboxCfg.shouldRemoveItem then
         if not isStandalone then
             if not Player.hasItem(data.bType, 1) then
-                if DoesEntityExist(entity) then
-                    DeleteEntity(entity)
-                end
+                if DoesEntityExist(entity) then DeleteEntity(entity) end
                 return Player.notification(madCore.getPhrase("dont_have_boombox"))
             end
             Player.removeItem(data.bType, 1)
@@ -283,14 +279,6 @@ RegisterServerEvent("boombox:server:placeBoombox", function(data)
     local entityCoords = (data.coords and vector3(data.coords.x + 0.0, data.coords.y + 0.0, data.coords.z + 0.0)) or GetEntityCoords(entity)
     local entityHeading = data.heading or GetEntityHeading(entity)
     RmBoomboxPersistence.save(boomboxId, Player.identifier, data.bType, entityCoords, entityHeading, {})
-    Entity(entity).state:set("updateBoombox", {
-        data = boomboxes[boomboxId],
-        boomboxId = boomboxId
-    }, true)
-    if not playerBoomboxCounts[playerId] then
-        playerBoomboxCounts[playerId] = 0
-    end
-    playerBoomboxCounts[playerId] = playerBoomboxCounts[playerId] + 1
     Entity(entity).state:set("updateBoombox", {
         data = boomboxes[boomboxId],
         boomboxId = boomboxId

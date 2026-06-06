@@ -6,7 +6,7 @@ local allowAutoOpen = false -- Extra safeguard flag
 local currentPermissions = nil
 local DEBUG_MODE = true
 local LAST_DEBUG = ""
-
+local currentEntityType = "job"
 
 -- Debug function
 local function DebugPrint(msg)
@@ -35,6 +35,27 @@ RegisterNetEvent('DERP-bossmenu:client:JobChanged', function(jobName)
                 })
             end
         end, jobName)
+    end
+end)
+
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+    PlayerData.gang = GangInfo
+    
+    if menuOpen then
+        if PlayerData.gang.isboss then
+            QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetJobData', function(gangData)
+                if gangData then
+                    SendNUIMessage({
+                        action = "refreshData",
+                        jobData = gangData
+                    })
+                end
+            end, PlayerData.gang.name, "gang")
+        else
+            SetNuiFocus(false, false)
+            SendNUIMessage({ action = "closeUI" })
+            menuOpen = false
+        end
     end
 end)
 
@@ -232,14 +253,14 @@ function CreateJobTargetPoints()
     
     for jobName, jobData in pairs(Config.Locations) do
         local jobLabel = jobData.label
-        
+        local entityType = jobData.type or "job" -- THÊM
+
         for locationIndex, location in ipairs(jobData.locations) do
             local zoneName = "jobmanagement_"..jobName
-            
             if locationIndex > 1 then
                 zoneName = zoneName.."_"..locationIndex
             end
-            
+
             if Config.TargetSystem == "qb-target" then
                 exports['qb-target']:AddBoxZone(zoneName, location.coords, location.length, location.width, {
                     name = zoneName,
@@ -251,21 +272,19 @@ function CreateJobTargetPoints()
                     options = {
                         {
                             type = "client",
-                            event = "DERP-bossmenu:client:TriggerOpenManager", 
-                            icon = "fas fa-briefcase",
+                            event = "DERP-bossmenu:client:TriggerOpenManager",
+                            icon = entityType == "gang" and "fas fa-skull" or "fas fa-briefcase",
                             label = "Quản Lý " .. jobLabel,
-                            job = jobName,
                             canInteract = function()
-                                if PlayerData.job and PlayerData.job.name == jobName then
-                                    if PlayerData.job.isboss then
-                                        return true
-                                    else
-                                        return true
-                                    end
+                                -- THÊM: phân biệt gang vs job
+                                if entityType == "gang" then
+                                    return PlayerData.gang and PlayerData.gang.name == jobName
+                                else
+                                    return PlayerData.job and PlayerData.job.name == jobName
                                 end
-                                return false
                             end,
-                            jobData = jobName
+                            jobData = jobName,
+                            entityType = entityType 
                         },
                     },
                     distance = 2.0
@@ -279,20 +298,21 @@ function CreateJobTargetPoints()
                     options = {
                         {
                             name = zoneName,
-                            icon = "fas fa-briefcase",
+                            icon = entityType == "gang" and "fas fa-skull" or "fas fa-briefcase",
                             label = "Quản Lý " .. jobLabel,
                             onSelect = function()
-                                TriggerEvent("DERP-bossmenu:client:TriggerOpenManager", {jobData = jobName})
+                                TriggerEvent("DERP-bossmenu:client:TriggerOpenManager", {
+                                    jobData = jobName,
+                                    entityType = entityType 
+                                })
                             end,
                             canInteract = function()
-                                if PlayerData.job and PlayerData.job.name == jobName then
-                                    if PlayerData.job.isboss then
-                                        return true
-                                    else
-                                        return true
-                                    end
+                                -- THÊM: phân biệt gang vs job
+                                if entityType == "gang" then
+                                    return PlayerData.gang and PlayerData.gang.name == jobName
+                                else
+                                    return PlayerData.job and PlayerData.job.name == jobName
                                 end
-                                return false
                             end,
                             distance = 2.0
                         }
@@ -303,45 +323,57 @@ function CreateJobTargetPoints()
     end
 end
 
-
 RegisterNetEvent('DERP-bossmenu:client:TriggerOpenManager', function(data)
+    -- print("^3[DERP-DEBUG] TriggerOpenManager called^7")
+    -- print("^3[DERP-DEBUG] data.jobData: ^7" .. tostring(data and data.jobData or "NIL"))
+    -- print("^3[DERP-DEBUG] data.entityType: ^7" .. tostring(data and data.entityType or "NIL"))
+    -- print("^3[DERP-DEBUG] PlayerData.job: ^7" .. tostring(PlayerData.job and PlayerData.job.name or "NIL"))
+    -- print("^3[DERP-DEBUG] PlayerData.gang: ^7" .. tostring(PlayerData.gang and PlayerData.gang.name or "NIL"))
+
     TriggerServerEvent('DERP-bossmenu:server:RequestRefreshJobData')
-    
+
     if not data or not data.jobData then
+        -- print("^1[DERP-DEBUG] data or jobData is nil^7")
         return
     end
-    
-    -- Prevent double-opening
     if menuOpen then
+        -- print("^1[DERP-DEBUG] Menu already open^7")
         return
     end
-    
+
     local jobName = data.jobData
-    
-    -- Multiple validation checks
+    local entityType = data.entityType or "job"
+
+    -- print("^3[DERP-DEBUG] jobName: ^7" .. jobName .. " | entityType: " .. entityType)
+
     if not isLoggedIn then
+        -- print("^1[DERP-DEBUG] Player not logged in^7")
         return
     end
-    
-    if not PlayerData.job then
-        return
-    end
-    
-    if PlayerData.job.name ~= jobName then
-        QBCore.Functions.Notify("You are not part of this job", "error")
-        return
-    end
-    
-    -- Check if boss or has permissions
-    QBCore.Functions.TriggerCallback('DERP-bossmenu:server:HasJobAccess', function(hasAccess) 
-        if not hasAccess then
-            QBCore.Functions.Notify("You don't have permission to manage this job", "error")
+
+    if entityType == "gang" then
+        if not PlayerData.gang or PlayerData.gang.name ~= jobName then
+            -- print("^1[DERP-DEBUG] Gang mismatch: ^7" .. tostring(PlayerData.gang and PlayerData.gang.name or "NIL") .. " ~= " .. jobName)
+            QBCore.Functions.Notify("You are not part of this gang", "error")
             return
         end
-        
-        -- Proceed with opening the manager
-        OpenJobManager(jobName)
-    end, jobName)
+    else
+        if not PlayerData.job or PlayerData.job.name ~= jobName then
+            -- print("^1[DERP-DEBUG] Job mismatch: ^7" .. tostring(PlayerData.job and PlayerData.job.name or "NIL") .. " ~= " .. jobName)
+            QBCore.Functions.Notify("You are not part of this job", "error")
+            return
+        end
+    end
+
+    -- print("^3[DERP-DEBUG] Calling HasJobAccess...^7")
+    QBCore.Functions.TriggerCallback('DERP-bossmenu:server:HasJobAccess', function(hasAccess)
+        -- print("^3[DERP-DEBUG] HasJobAccess returned: ^7" .. tostring(hasAccess))
+        if not hasAccess then
+            QBCore.Functions.Notify("You don't have permission to manage this", "error")
+            return
+        end
+        OpenJobManager(jobName, entityType)
+    end, jobName, entityType)
 end)
 
 -- Register the NUI callback for updateEmployeePermissions
@@ -396,89 +428,94 @@ RegisterNetEvent('DERP-bossmenu:client:RefreshPermissions', function(permissions
         end, PlayerData.citizenid, PlayerData.job.name)
     end
 end)
--- Separated function to handle the actual opening
-function OpenJobManager(jobName)
+
+function OpenJobManager(jobName, entityType)
+    entityType = entityType or "job" 
+    currentEntityType = entityType
     if menuOpen then return end
-    
+
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetJobData', function(jobData)
         if not jobData then
-            QBCore.Functions.Notify("Unable to load job data", "error")
+            QBCore.Functions.Notify("Unable to load data", "error")
             return
-        end        
-        -- Store received permissions
+        end
+
         currentPermissions = jobData.permissions
 
-        local jobConfig = Config.Locations[jobName]
-        if jobConfig then
-            jobData.logoImage = jobConfig.logoImage
-            if jobConfig.jobLabel then
-                jobData.jobLabel = jobConfig.jobLabel
-            elseif jobConfig.label then
-                jobData.jobLabel = jobConfig.label
-            end
+        local entityConfig = Config.Locations[jobName]
+        if entityConfig then
+            jobData.logoImage = entityConfig.logoImage
+            jobData.jobLabel = entityConfig.label
         end
-            
-        -- Ensure jobLabel exists
+
+        -- THÊM: fallback label từ Shared
         if not jobData.jobLabel or jobData.jobLabel == "" then
-            jobData.jobLabel = QBCore.Shared.Jobs[jobName].label or jobName
-        end
-        
-        QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetSettings', function(settings)
-            if not settings then
-                return
+            if entityType == "gang" then
+                jobData.jobLabel = QBCore.Shared.Gangs[jobName] and QBCore.Shared.Gangs[jobName].label or jobName
+            else
+                jobData.jobLabel = QBCore.Shared.Jobs[jobName] and QBCore.Shared.Jobs[jobName].label or jobName
             end
+        end
+
+        QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetSettings', function(settings)
+            if not settings then return end
+
             QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetSocietyData', function(societyData)
-                if not societyData then
-                end                
                 menuOpen = true
-                
                 SetNuiFocus(true, true)
                 SendNUIMessage({
                     action = "openUI",
                     jobData = jobData,
                     jobName = jobName,
-                    playerJob = PlayerData.job,
+                    entityType = entityType, -- THÊM: để UI biết là gang hay job
+                    playerJob = entityType == "gang" and PlayerData.gang or PlayerData.job,
                     settings = settings,
                     societyData = societyData,
                     permissions = currentPermissions
                 })
             end, jobName)
         end)
-    end, jobName)
+    end, jobName, entityType) -- THÊM entityType
 end
-
 
 RegisterNUICallback('checkPermission', function(data, cb)
     local permissionType = data.permissionType
     
+    -- Check job boss
     if PlayerData.job and PlayerData.job.isboss then
         cb(true)
         return
     end
     
-    -- If we have stored permissions, check them
+    -- THÊM: Check gang boss
+    if PlayerData.gang and PlayerData.gang.isboss then
+        cb(true)
+        return
+    end
+    
     if currentPermissions and currentPermissions[permissionType] then
         cb(true)
         return
     end
     
-    -- Default deny if no permissions found
     cb(false)
 end)
 
 -- Function to check permissions before certain actions
 function HasPermission(permissionType)
-    -- If player is a boss, they have all permissions
     if PlayerData.job and PlayerData.job.isboss then
         return true
     end
     
-    -- If we have stored permissions, check them
+    -- THÊM: Check gang boss
+    if PlayerData.gang and PlayerData.gang.isboss then
+        return true
+    end
+    
     if currentPermissions and currentPermissions[permissionType] then
         return true
     end
     
-    -- Default deny if no permissions found
     return false
 end
 
@@ -557,12 +594,14 @@ RegisterNetEvent('DERP-bossmenu:client:FireEmployeeConfirmed', function(data)
 end)
 
 RegisterNUICallback('updateEmployee', function(data, cb)
-    TriggerServerEvent('DERP-bossmenu:server:UpdateEmployee', data.citizenid, PlayerData.job.name, data.grade)
+    local entityName = currentEntityType == "gang" and PlayerData.gang.name or PlayerData.job.name
+    TriggerServerEvent('DERP-bossmenu:server:UpdateEmployee', data.citizenid, entityName, data.grade, currentEntityType)
     cb('ok')
 end)
 
 RegisterNUICallback('removeEmployee', function(data, cb)
-    TriggerServerEvent('DERP-bossmenu:server:RemoveEmployee', data.citizenid, PlayerData.job.name)
+    local entityName = currentEntityType == "gang" and PlayerData.gang.name or PlayerData.job.name
+    TriggerServerEvent('DERP-bossmenu:server:RemoveEmployee', data.citizenid, entityName, currentEntityType)
     cb('ok')
 end)
 
@@ -573,13 +612,14 @@ end)
 
 -- Refresh data
 RegisterNUICallback('refreshData', function(_, cb)
+    local entityName = currentEntityType == "gang" and PlayerData.gang.name or PlayerData.job.name
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetJobData', function(jobData)
         if jobData then
             cb(jobData)
         else
             cb(false)
         end
-    end, PlayerData.job.name)
+    end, entityName, currentEntityType) 
 end)
 
 -- Extra safeguard for resource start/stop
@@ -723,39 +763,40 @@ RegisterNUICallback('getPlaytimeData', function(data, cb)
     end, data.jobName)
 end)
 
-
 RegisterNUICallback('hireEmployee', function(data, cb)
     if not data.targetId or not data.jobName or not data.grade then
         cb({ success = false, message = "Missing required data" })
         return
     end
     
-    -- Convert to numbers if needed
     local targetId = tonumber(data.targetId)
     local grade = data.grade
     
-    -- Trigger server event
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:HireNewEmployee', function(result)
         cb(result)
-    end, targetId, data.jobName, grade)
+    end, targetId, data.jobName, grade, currentEntityType) -- THÊM currentEntityType
 end)
 
 RegisterNUICallback('checkPermission', function(data, cb)
     local permissionType = data.permissionType
     
-    -- If player is a boss, they have all permissions
+    -- Check job boss
     if PlayerData.job and PlayerData.job.isboss then
         cb(true)
         return
     end
     
-    -- If we have stored permissions, check them
+    -- THÊM: Check gang boss
+    if PlayerData.gang and PlayerData.gang.isboss then
+        cb(true)
+        return
+    end
+    
     if currentPermissions and currentPermissions[permissionType] then
         cb(true)
         return
     end
     
-    -- Default deny if no permissions found
     cb(false)
 end)
 
@@ -765,10 +806,10 @@ RegisterNUICallback('updateJobGrade', function(data, cb)
         cb({success = false, message = "Missing required data"})
         return
     end
-    
+
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:UpdateJobGrade', function(result)
         cb(result)
-    end, data.jobName, data.gradeLevel, data.gradeName, data.gradePayment, data.gradeIsBoss)
+    end, data.jobName, data.gradeLevel, data.gradeName, data.gradePayment, data.gradeIsBoss, data.entityType or "job") -- THÊM
 end)
 
 RegisterNUICallback('addJobGrade', function(data, cb)
@@ -776,10 +817,10 @@ RegisterNUICallback('addJobGrade', function(data, cb)
         cb({success = false, message = "Missing required data"})
         return
     end
-    
+
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:AddJobGrade', function(result)
         cb(result)
-    end, data.jobName, data.gradeName, data.gradePayment, data.gradeIsBoss)
+    end, data.jobName, data.gradeName, data.gradePayment, data.gradeIsBoss, data.entityType or "job") -- THÊM
 end)
 
 RegisterNUICallback('deleteJobGrade', function(data, cb)
@@ -787,10 +828,10 @@ RegisterNUICallback('deleteJobGrade', function(data, cb)
         cb({success = false, message = "Missing required data"})
         return
     end
-    
+
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:DeleteJobGrade', function(result)
         cb(result)
-    end, data.jobName, data.gradeLevel)
+    end, data.jobName, data.gradeLevel, data.entityType or "job") -- THÊM
 end)
 
 RegisterNUICallback('getJobGrades', function(data, cb)
@@ -798,12 +839,12 @@ RegisterNUICallback('getJobGrades', function(data, cb)
         cb(false)
         return
     end
-        
+
     QBCore.Functions.TriggerCallback('DERP-bossmenu:server:GetJobGrades', function(gradesData)
         if gradesData then
             cb(gradesData)
         else
             cb(false)
         end
-    end, data.jobName)
+    end, data.jobName, data.entityType or "job") -- THÊM entityType
 end)

@@ -96,7 +96,9 @@ Config.MarketNPCs = {
             {name = "empty_evidence_bag", label = "Túi Vật Chứng", buyPrice = 1, sellMin = nil, sellMax = nil, grade = 0},
             {name = "crimecamera", label = "Máy Ảnh", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0},
             {name = "contract", label = "Giấy Chuyển Nhượng Xe", buyPrice = 20000, sellMin = nil, sellMax = nil, grade = 2},
-            {name = "mu_256_5_0", label = "Mũ Bảo Hiểm", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0, type = 'clothing'},
+            {name = "mu_255_1_0", label = "Mũ Bảo Hiểm (Nam)", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0, type = 'clothing'},
+            {name = "mu_71_9_1", label = "Mũ Bảo Hiểm (Nữ)", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0, type = 'clothing'},
+            {name = "mu_254_1_0", label = "Mũ (Nam)", buyPrice = 100, sellMin = nil, sellMax = nil, grade = 0, type = 'clothing'},
 
         },
         requiredJob = {
@@ -799,8 +801,8 @@ Config.MarketNPCs = {
         blackmarket = true,
         type = "buy",
         items = {
-            {name = "nutrient_solution", label = "Nước Dinh Dưỡng", buyPrice = 1, sellMin = nil, sellMax = nil},
-            {name = "fertilizer", label = "Phân Bón", buyPrice = 1, sellMin = nil, sellMax = nil},
+            {name = "nutrient_solution", label = "Nước Dinh Dưỡng", buyPrice = 5, sellMin = nil, sellMax = nil},
+            {name = "fertilizer", label = "Phân Bón", buyPrice = 5, sellMin = nil, sellMax = nil},
         }
     },
     {

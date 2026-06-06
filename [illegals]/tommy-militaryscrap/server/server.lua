@@ -197,13 +197,19 @@ lib.callback.register('tommy-militaryscrap:server:startLockpick', function(sourc
         return false
     end
 
-    local has = hasLockpick(src)
+    local has, lockType, advSlot, advDur = hasLockpick(src)
     if not has then
         notify(src, 'Lỗi', 'Bạn không có dụng cụ cạy khóa', 'error')
         return false
     end
 
-    crateStates[crateId] = { player = src, started = os.time() }
+    crateStates[crateId] = {
+        player = src,
+        started = os.time(),
+        lockType = lockType,
+        advSlot = advSlot,
+        advDur = advDur
+    }
     return true
 end)
 
@@ -212,20 +218,18 @@ RegisterNetEvent('tommy-militaryscrap:server:lockpickFailed', function(crateId)
     local state = crateStates[crateId]
     if not state or state.player ~= src then return end
 
-    local _, lockType, advSlot, advDur = hasLockpick(src)
-
-    if lockType == 'normal' then
+    if state.lockType == 'normal' then
         if math.random(1, 100) <= Config.LockpickBreakChance then
             exports.ox_inventory:RemoveItem(src, Config.LockpickItem, 1)
             notify(src, 'Hỏng dụng cụ', 'Lockpick đã bị gãy', 'error')
         end
-    elseif lockType == 'advanced' then
-        local newDur = (advDur or 100) - Config.AdvancedLockpickDurabilityLoss
+    elseif state.lockType == 'advanced' and state.advSlot then
+        local newDur = (state.advDur or 100) - Config.AdvancedLockpickDurabilityLoss
         if newDur <= 0 then
-            exports.ox_inventory:RemoveItem(src, Config.AdvancedLockpickItem, 1, nil, advSlot)
+            exports.ox_inventory:RemoveItem(src, Config.AdvancedLockpickItem, 1, nil, state.advSlot)
             notify(src, 'Hỏng dụng cụ', 'Dụng cụ bẻ khóa đã hỏng hoàn toàn', 'error')
         else
-            exports.ox_inventory:SetMetadata(src, advSlot, { durability = newDur })
+            exports.ox_inventory:SetMetadata(src, state.advSlot, { durability = newDur })
         end
     end
 
@@ -237,16 +241,13 @@ RegisterNetEvent('tommy-militaryscrap:server:lockpickSuccess', function(crateId)
     local state = crateStates[crateId]
     if not state or state.player ~= src then return end
 
-    local _, lockType, advSlot, advDur = hasLockpick(src)
-    state.lockType = lockType or 'unknown'
-
-    if lockType == 'advanced' then
-        local newDur = (advDur or 100) - Config.AdvancedLockpickDurabilityLoss
+    if state.lockType == 'advanced' and state.advSlot then
+        local newDur = (state.advDur or 100) - Config.AdvancedLockpickDurabilityLoss
         if newDur <= 0 then
-            exports.ox_inventory:RemoveItem(src, Config.AdvancedLockpickItem, 1, nil, advSlot)
+            exports.ox_inventory:RemoveItem(src, Config.AdvancedLockpickItem, 1, nil, state.advSlot)
             notify(src, 'Hỏng dụng cụ', 'Dụng cụ bẻ khóa đã hỏng hoàn toàn', 'error')
         else
-            exports.ox_inventory:SetMetadata(src, advSlot, { durability = newDur })
+            exports.ox_inventory:SetMetadata(src, state.advSlot, { durability = newDur })
         end
     end
 end)

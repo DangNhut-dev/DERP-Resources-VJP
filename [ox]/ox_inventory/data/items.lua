@@ -2726,7 +2726,7 @@ return {
 	},
 	['cloth'] = {
 		label = 'Vải Bông',
-		weight = 1000,
+		weight = 200,
 		stack = true,
 		close = true,
 		description = 'Vải cao cấp.',

@@ -125,12 +125,15 @@ Characters.Get = function(src)
             local inJail = rawMeta.injail and rawMeta.injail > 0 or false
             local tokenValid = v.derp_last_token ~= nil and v.derp_last_token == ServerStartToken
 
+            local jailCoords = { x = 1770.96, y = 2554.06, z = 45.56, heading = 221.13 }
+
             local characterData = {
                 sex = tonumber(v.gender) == 0 and 'm' or 'f',
                 skin = Characters.ConvertSkin(v.citizenid),
-                model = skinResponse[1] and tonumber(skinResponse[1].model) or false,
-                position = json.decode(v.position),
+                model = skinResponse[1] and skinResponse[1].model or false,
+                position = inJail and jailCoords or json.decode(v.position),
                 allowLastLocation = tokenValid and not inJail,
+                isInJail = inJail,
                 firstname = responseCharData.firstname,
                 lastname = responseCharData.lastname,
                 job = {
@@ -214,12 +217,15 @@ Characters.GetFirst = function(src)
         local inJail = rawMeta.injail and rawMeta.injail > 0 or false
         local tokenValid = response[1].derp_last_token ~= nil and response[1].derp_last_token == ServerStartToken
 
+        local jailCoords = { x = 1770.96, y = 2554.06, z = 45.56, heading = 221.13 }
+
         local characterData = {
             sex = tonumber(response[1].gender) == 0 and 'm' or 'f',
             skin = Characters.ConvertSkin(response[1].citizenid),
-            model = skinResponse[1] and tonumber(skinResponse[1].model) or false,
-            position = json.decode(response[1].position),
+            model = skinResponse[1] and skinResponse[1].model or false,
+            position = inJail and jailCoords or json.decode(response[1].position),
             allowLastLocation = tokenValid and not inJail,
+            isInJail = inJail,
             firstname = responseCharData.firstname,
             lastname = responseCharData.lastname,
             job = {
@@ -293,12 +299,15 @@ Characters.GetNum = function(src, num)
         local inJail = rawMeta.injail and rawMeta.injail > 0 or false
         local tokenValid = response[1].derp_last_token ~= nil and response[1].derp_last_token == ServerStartToken
 
+        local jailCoords = { x = 1770.96, y = 2554.06, z = 45.56, heading = 221.13 }
+
         local characterData = {
             sex = tonumber(response[1].gender) == 0 and 'm' or 'f',
             skin = Characters.ConvertSkin(response[1].citizenid),
-            model = skinResponse[1] and tonumber(skinResponse[1].model) or false,
-            position = json.decode(response[1].position),
+            model = skinResponse[1] and skinResponse[1].model or false,
+            position = inJail and jailCoords or json.decode(response[1].position),
             allowLastLocation = tokenValid and not inJail,
+            isInJail = inJail,
             firstname = responseCharData.firstname,
             lastname = responseCharData.lastname,
             job = {

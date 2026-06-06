@@ -74,17 +74,14 @@ RegisterNUICallback("selectedCharacter", function(data)
         if FrameworkSelected == "QBCore" or FrameworkSelected == "QBX" then
             Citizen.CreateThread(function()
                 Wait(2000)
-                
-                local ped = PlayerPedId()
+
                 local currentCharacter = Entity.Vars.currentCharacter
-                
-                if not currentCharacter or not currentCharacter.skin then
-                    return
-                end
-                
+                if not currentCharacter then return end
+
+                local skinModel = currentCharacter.model
                 local skinData = currentCharacter.skin
-                local skinModel = skinData.model
-                if skinModel and skinModel ~= 0 then
+
+                if skinModel and skinModel ~= 0 and skinModel ~= false then
                     local modelHash = type(skinModel) == 'string' and joaat(skinModel) or skinModel
                     RequestModel(modelHash)
                     while not HasModelLoaded(modelHash) do
@@ -93,21 +90,12 @@ RegisterNUICallback("selectedCharacter", function(data)
                     SetPlayerModel(PlayerId(), modelHash)
                     SetModelAsNoLongerNeeded(modelHash)
                     Wait(500)
-                elseif not IsPedModel(ped, `mp_m_freemode_01`) and not IsPedModel(ped, `mp_f_freemode_01`) then
-                    local isMale = currentCharacter.sex == "m" or currentCharacter.gender == 0
-                    local model = isMale and `mp_m_freemode_01` or `mp_f_freemode_01`
-                    RequestModel(model)
-                    while not HasModelLoaded(model) do
-                        Wait(10)
-                    end
-                    SetPlayerModel(PlayerId(), model)
-                    SetModelAsNoLongerNeeded(model)
-                    SetPedDefaultComponentVariation(PlayerPedId())
-                    Wait(500)
                 end
-                
-                Wait(500)
-                exports['illenium-appearance']:setPedAppearance(PlayerPedId(), skinData)
+
+                if skinData then
+                    Wait(500)
+                    exports['illenium-appearance']:setPedAppearance(PlayerPedId(), skinData)
+                end
             end)
         end
 

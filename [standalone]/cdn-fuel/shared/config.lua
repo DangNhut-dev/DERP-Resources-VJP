@@ -170,6 +170,9 @@ Config.ElectricVehicles = { -- List of Electric Vehicles in the Base Game.
     ["khamelion"] = {
         isElectric = true,
     },
+    ["vf9"] = {
+        isElectric = true,
+    },
 }
 Config.ElectricSprite = 620 -- This is for when the player is in an electric charger, the blips with change to this sprite. (Sprite with a car with a bolt going through it: 620)
 Config.ElectricChargerModel = true -- If you wish, you can set this to false to add your own props, or use a ymap for the props instead.

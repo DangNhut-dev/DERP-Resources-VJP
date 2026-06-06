@@ -70,11 +70,11 @@ Config = {
     Exersices = {
         -- Only use these [Stamina / Running / Driving / Strength / Swimming / Shooting] to the skill value.
         ['running'] = {label = "Chạy bộ", anim = "running", time = 30, skill = 'Running'},
-        ['pushups'] = {label = "Hít đất", anim = "pushups", time = 30, skill = 'Strength'},
+        ['pushups'] = {label = "Hít đất", anim = "pushups", time = 30, skill = 'Stamina'},
         ['situps'] = {label = "Gập bụng", anim = "situps", time = 30, skill = 'Stamina'},
-        ['weightlifting'] = {label = "Nâng tạ", anim = "world_human_muscle_free_weights", time = 30, skill = 'Strength'},
+        ['weightlifting'] = {label = "Nâng tạ", anim = "world_human_muscle_free_weights", time = 30, skill = 'Stamina'},
         ['yoga'] = {label = "Yoga", anim = "world_human_yoga", time = 30, skill = 'Stamina'},
-        ['pullup'] = {label = "Hít xà", anim = "prop_human_muscle_chin_ups", time = 30, skill = 'Strength'},
+        ['pullup'] = {label = "Hít xà", anim = "prop_human_muscle_chin_ups", time = 30, skill = 'Stamina'},
         -- You can add more...
     },
     

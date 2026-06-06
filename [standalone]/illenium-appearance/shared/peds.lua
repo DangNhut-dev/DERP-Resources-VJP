@@ -2,6 +2,12 @@ Config.Peds = {
     pedConfig = {
         {
             peds = {
+                "derp_tuan",
+                "pw_akira",
+                "derp_binh",
+                "pw_moree",
+                "Bstore_Free2",
+                "derp_5",
                 "ryuji",
                 "derp_patrick1",
                 "pw_moretio",

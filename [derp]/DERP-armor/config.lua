@@ -3,8 +3,8 @@ Config = {}
 Config.ArmorPlates = {
     criminal = {
         item = "armor_plate1",
-        armorIncrease = 25,
-        maxArmor = 50,
+        armorIncrease = 35,
+        maxArmor = 70,
         useTime = 5000,
         jobs = nil
     },

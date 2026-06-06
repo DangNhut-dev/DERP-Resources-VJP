@@ -2429,17 +2429,14 @@ function refreshJobGrades() {
     
     fetch(`https://${GetParentResourceName()}/getJobGrades`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            jobName: currentJobData.jobName
+            jobName: currentJobData.jobName,
+            entityType: currentJobData.entityType || 'job'  // THÊM
         })
     })
     .then(resp => {
-        if (!resp.ok) {
-            throw new Error(`Server responded with status: ${resp.status}`);
-        }
+        if (!resp.ok) throw new Error(`Server responded with status: ${resp.status}`);
         return resp.json();
     })
     .then(gradesData => {
@@ -2447,16 +2444,10 @@ function refreshJobGrades() {
             console.error("No job grades data received from server");
             return;
         }
-        
         currentJobGrades = gradesData;
-        
-        try {
-            updateGradesTable();
-        } catch (e) {
-        }
+        try { updateGradesTable(); } catch (e) {}
     })
-    .catch(err => {
-    });
+    .catch(err => { console.error("Error loading grades:", err); });
 }
 
 // Refresh job data
@@ -3004,21 +2995,16 @@ function checkPermission(permissionType, callback) {
 }
 
 function OpenJobManager(jobName) {
-    if (!jobName) {
-        console.error("No job name provided to OpenJobManager");
-        return;
-    }
-    
+    if (!jobName) return;
     
     currentJobGrades = {};
     
     fetch(`https://${GetParentResourceName()}/getJobGrades`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            jobName: jobName
+            jobName: jobName,
+            entityType: currentJobData.entityType || 'job'  // THÊM
         })
     })
     .then(response => response.json())
@@ -3026,9 +3012,8 @@ function OpenJobManager(jobName) {
         if (data) {
             currentJobGrades = data;
             updateGradesTable();
-            
         } else {
-            console.error("Failed to load job grades - no data returned");  
+            console.error("Failed to load job grades - no data returned");
             const gradesTable = document.getElementById('grades-table');
             if (gradesTable) {
                 gradesTable.innerHTML = '<tr><td colspan="5" class="empty-table">Failed to load job grades</td></tr>';
@@ -3038,11 +3023,6 @@ function OpenJobManager(jobName) {
     .catch(error => {
         console.error("Error loading job grades:", error);
         showNotification("Error loading job grades", "error");
-        
-        const gradesTable = document.getElementById('grades-table');
-        if (gradesTable) {
-            gradesTable.innerHTML = '<tr><td colspan="5" class="empty-table">Error: Failed to load job grades</td></tr>';
-        }
     });
 }
 

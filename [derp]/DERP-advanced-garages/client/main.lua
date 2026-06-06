@@ -92,6 +92,14 @@ local function SafeSetVehicleProperties(vehicle, props, forcePlate)
         SetVehicleNumberPlateText(vehicle, originalPlate)
     end
 
+    if props and props.fuelLevel and DoesEntityExist(vehicle) then
+        if GetResourceState('cdn-fuel') == 'started' then
+            exports['cdn-fuel']:SetFuel(vehicle, props.fuelLevel + 0.0)
+        else
+            DecorSetFloat(vehicle, '_FUEL_LEVEL', props.fuelLevel + 0.0)
+        end
+    end
+
     return ok
 end
 
@@ -917,6 +925,14 @@ RegisterNetEvent('derp:applyVehicleState', function(netId, data)
 
     if data.fuel then
         Entity(vehicle).state:set('fuel', data.fuel + 0.0, true)
+    end
+
+    if data.fuel then
+        if GetResourceState('cdn-fuel') == 'started' then
+            exports['cdn-fuel']:SetFuel(vehicle, data.fuel + 0.0)
+        else
+            DecorSetFloat(vehicle, '_FUEL_LEVEL', data.fuel + 0.0)
+        end
     end
 
     if data.status then

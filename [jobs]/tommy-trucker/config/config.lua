@@ -70,7 +70,7 @@ Config.Orders = {
         reward = 380,
         exp = 3,
         cooldown = 180,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 2,
@@ -83,7 +83,7 @@ Config.Orders = {
         reward = 400,
         exp = 4,
         cooldown = 200,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 3,
@@ -96,7 +96,7 @@ Config.Orders = {
         reward = 420,
         exp = 4,
         cooldown = 220,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 4,
@@ -109,7 +109,7 @@ Config.Orders = {
         reward = 440,
         exp = 5,
         cooldown = 240,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 5,
@@ -122,7 +122,7 @@ Config.Orders = {
         reward = 460,
         exp = 5,
         cooldown = 260,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 2
@@ -137,7 +137,7 @@ Config.Orders = {
         reward = 570,
         exp = 5,
         cooldown = 280,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 7,
@@ -150,7 +150,7 @@ Config.Orders = {
         reward = 640,
         exp = 6,
         cooldown = 300,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 8,
@@ -163,7 +163,7 @@ Config.Orders = {
         reward = 610,
         exp = 5,
         cooldown = 290,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 9,
@@ -176,7 +176,7 @@ Config.Orders = {
         reward = 580,
         exp = 4,
         cooldown = 260,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 3
@@ -191,7 +191,7 @@ Config.Orders = {
         reward = 590,
         exp = 7,
         cooldown = 360,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 11,
@@ -204,7 +204,7 @@ Config.Orders = {
         reward = 610,
         exp = 7,
         cooldown = 370,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 12,
@@ -217,7 +217,7 @@ Config.Orders = {
         reward = 630,
         exp = 8,
         cooldown = 380,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 13,
@@ -230,7 +230,7 @@ Config.Orders = {
         reward = 570,
         exp = 5,
         cooldown = 320,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 14,
@@ -243,7 +243,7 @@ Config.Orders = {
         reward = 650,
         exp = 6,
         cooldown = 340,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 15,
@@ -256,7 +256,7 @@ Config.Orders = {
         reward = 670,
         exp = 6,
         cooldown = 350,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 4
@@ -271,7 +271,7 @@ Config.Orders = {
         reward = 760,
         exp = 6,
         cooldown = 400,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 17,
@@ -284,7 +284,7 @@ Config.Orders = {
         reward = 800,
         exp = 7,
         cooldown = 420,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 18,
@@ -297,7 +297,7 @@ Config.Orders = {
         reward = 890,
         exp = 9,
         cooldown = 460,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 19,
@@ -310,7 +310,7 @@ Config.Orders = {
         reward = 850,
         exp = 8,
         cooldown = 440,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 20,
@@ -323,7 +323,7 @@ Config.Orders = {
         reward = 830,
         exp = 7,
         cooldown = 430,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 21,
@@ -336,7 +336,7 @@ Config.Orders = {
         reward = 870,
         exp = 8,
         cooldown = 450,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 5
@@ -351,7 +351,7 @@ Config.Orders = {
         reward = 1040,
         exp = 9,
         cooldown = 500,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 23,
@@ -364,7 +364,7 @@ Config.Orders = {
         reward = 1020,
         exp = 8,
         cooldown = 480,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 24,
@@ -377,7 +377,7 @@ Config.Orders = {
         reward = 1080,
         exp = 9,
         cooldown = 520,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 25,
@@ -390,7 +390,7 @@ Config.Orders = {
         reward = 970,
         exp = 6,
         cooldown = 440,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 26,
@@ -403,7 +403,7 @@ Config.Orders = {
         reward = 950,
         exp = 6,
         cooldown = 420,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 27,
@@ -416,7 +416,7 @@ Config.Orders = {
         reward = 930,
         exp = 5,
         cooldown = 400,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 6
@@ -431,7 +431,7 @@ Config.Orders = {
         reward = 1320,
         exp = 10,
         cooldown = 560,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 29,
@@ -444,7 +444,7 @@ Config.Orders = {
         reward = 1360,
         exp = 9,
         cooldown = 540,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 30,
@@ -457,7 +457,7 @@ Config.Orders = {
         reward = 1280,
         exp = 9,
         cooldown = 520,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 7
@@ -472,7 +472,7 @@ Config.Orders = {
         reward = 1350,
         exp = 9,
         cooldown = 380,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 32,
@@ -485,7 +485,7 @@ Config.Orders = {
         reward = 1300,
         exp = 8,
         cooldown = 360,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 33,
@@ -498,7 +498,7 @@ Config.Orders = {
         reward = 1250,
         exp = 8,
         cooldown = 340,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 8
@@ -513,7 +513,7 @@ Config.Orders = {
         reward = 1600,
         exp = 10,
         cooldown = 400,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 35,
@@ -526,7 +526,7 @@ Config.Orders = {
         reward = 1550,
         exp = 9,
         cooldown = 380,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 36,
@@ -539,7 +539,7 @@ Config.Orders = {
         reward = 1500,
         exp = 9,
         cooldown = 360,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 9
@@ -554,7 +554,7 @@ Config.Orders = {
         reward = 1950,
         exp = 10,
         cooldown = 420,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 38,
@@ -567,7 +567,7 @@ Config.Orders = {
         reward = 1900,
         exp = 10,
         cooldown = 400,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- LEVEL 10
@@ -582,7 +582,7 @@ Config.Orders = {
         reward = 2350,
         exp = 11,
         cooldown = 440,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     {
         id = 40,
@@ -595,7 +595,7 @@ Config.Orders = {
         reward = 2400,
         exp = 11,
         cooldown = 460,
-        items = { {item = 'lockpick', chance = 25}, {item = 'circuit', chance = 15} }
+        items = { {item = 'lockpick', chance = 15}, {item = 'circuit', chance = 25} }
     },
     
     -- ILLEGAL JOBS

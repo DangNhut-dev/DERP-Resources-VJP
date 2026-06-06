@@ -835,12 +835,12 @@ function RegisterVehicleSpawn(plate, entity, coords, owner, dbRecord)
     local netId = NetworkGetNetworkIdFromEntity(entity)
     if not netId or netId == 0 then return end
 
-    print('^5[REG SPAWN DEBUG] === ' .. plate .. ' ===^7')
-    print('^5[REG SPAWN DEBUG] dbRecord -> Fuel: ' .. tostring(dbRecord and dbRecord.fuel)
-        .. ' | Engine: ' .. tostring(dbRecord and dbRecord.engine)
-        .. ' | Body: ' .. tostring(dbRecord and dbRecord.body) .. '^7')
-    print('^5[REG SPAWN DEBUG] Server-read entity -> Engine: ' .. tostring(GetVehicleEngineHealth(entity))
-        .. ' | Body: ' .. tostring(GetVehicleBodyHealth(entity)) .. '^7')
+    -- print('^5[REG SPAWN DEBUG] === ' .. plate .. ' ===^7')
+    -- print('^5[REG SPAWN DEBUG] dbRecord -> Fuel: ' .. tostring(dbRecord and dbRecord.fuel)
+    --     .. ' | Engine: ' .. tostring(dbRecord and dbRecord.engine)
+    --     .. ' | Body: ' .. tostring(dbRecord and dbRecord.body) .. '^7')
+    -- print('^5[REG SPAWN DEBUG] Server-read entity -> Engine: ' .. tostring(GetVehicleEngineHealth(entity))
+    --     .. ' | Body: ' .. tostring(GetVehicleBodyHealth(entity)) .. '^7')
 
     if type(coords) == "table" then
         coords = vector4(coords.x, coords.y, coords.z, coords.w or 0.0)
@@ -894,9 +894,9 @@ function RegisterVehicleSpawn(plate, entity, coords, owner, dbRecord)
 
     MarkVehicleDirty(plate)
 
-    print('^5[REG SPAWN DEBUG] Stored in TrackedVehicles -> Fuel: ' .. tostring(fuel)
-        .. ' | Engine: ' .. tostring(engine)
-        .. ' | Body: ' .. tostring(body) .. '^7')
+    -- print('^5[REG SPAWN DEBUG] Stored in TrackedVehicles -> Fuel: ' .. tostring(fuel)
+    --     .. ' | Engine: ' .. tostring(engine)
+    --     .. ' | Body: ' .. tostring(body) .. '^7')
 
     if owner then GiveVehicleKeysToOwner(owner, plate, entity, false) end
 
