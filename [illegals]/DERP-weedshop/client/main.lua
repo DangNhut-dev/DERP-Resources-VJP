@@ -40,7 +40,7 @@ RegisterNetEvent('derp-weedshop:client:tryDeliver', function(orderId)
 
     -- Progress bar 20s giao hang
     local success = lib.progressBar({
-        duration = 20000,
+        duration = 45000,
         label = 'Đang giao hàng...',
         useWhileDead = false,
         canCancel = true,
