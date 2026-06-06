@@ -66,7 +66,7 @@ RegisterNetEvent('derp-lootbox:startUI', function(data)
 end)
 
 RegisterNetEvent('derp-lootbox:afterClaim', function(hasMore)
-    print('[DERP-DEBUG-CLIENT] afterClaim received, hasMore = ' .. tostring(hasMore))
+    -- print('[DERP-DEBUG-CLIENT] afterClaim received, hasMore = ' .. tostring(hasMore))
     if hasMore then
         SendNUIMessage({
             action    = 'showPreview',
@@ -84,12 +84,12 @@ end)
 
 RegisterNUICallback('spinDone', function(_, cb)
     cb('ok')
-    print('[DERP-DEBUG-CLIENT] spinDone NUI callback fired')
+    -- print('[DERP-DEBUG-CLIENT] spinDone NUI callback fired')
     if GetResourceState('svc_runtime') == 'started' then
-        print('[DERP-DEBUG-CLIENT] using svc_runtime')
+        -- print('[DERP-DEBUG-CLIENT] using svc_runtime')
         exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:claimReward')
     else
-        print('[DERP-DEBUG-CLIENT] using TriggerServerEvent direct')
+        -- print('[DERP-DEBUG-CLIENT] using TriggerServerEvent direct')
         TriggerServerEvent('derp-lootbox:claimReward')
     end
 end)
@@ -124,12 +124,12 @@ end)
 
 RegisterNUICallback('spinDoneMulti', function(_, cb)
     cb('ok')
-    print('[DERP-DEBUG-CLIENT] spinDoneMulti NUI callback fired')
+    -- print('[DERP-DEBUG-CLIENT] spinDoneMulti NUI callback fired')
     if GetResourceState('svc_runtime') == 'started' then
-        print('[DERP-DEBUG-CLIENT] using svc_runtime')
+        -- print('[DERP-DEBUG-CLIENT] using svc_runtime')
         exports['svc_runtime']:ExecuteServerEvent('derp-lootbox:claimRewardMulti')
     else
-        print('[DERP-DEBUG-CLIENT] using TriggerServerEvent direct')
+        -- print('[DERP-DEBUG-CLIENT] using TriggerServerEvent direct')
         TriggerServerEvent('derp-lootbox:claimRewardMulti')
     end
 end)

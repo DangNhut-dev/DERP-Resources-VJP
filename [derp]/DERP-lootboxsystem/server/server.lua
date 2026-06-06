@@ -442,26 +442,26 @@ end)
 
 RegisterNetEvent('derp-lootbox:claimReward', function()
     local source = source
-    print('[DERP-DEBUG-SERVER] [1] claimReward received from src=' .. tostring(source))
+    -- print('[DERP-DEBUG-SERVER] [1] claimReward received from src=' .. tostring(source))
 
     if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
         if not exports[fiveguard_resource]:VerifyToken(source) then
-            print('[DERP-DEBUG-SERVER] [BLOCKED] fiveguard VerifyToken')
+            -- print('[DERP-DEBUG-SERVER] [BLOCKED] fiveguard VerifyToken')
             return
         end
     end
 
     local reward = pendingRewards[source]
-    print('[DERP-DEBUG-SERVER] [2] pendingRewards = ' .. tostring(reward ~= nil))
+    -- print('[DERP-DEBUG-SERVER] [2] pendingRewards = ' .. tostring(reward ~= nil))
     if not reward then return end
 
-    print('[DERP-DEBUG-SERVER] [3] reward.name = ' .. tostring(reward.name))
-    print('[DERP-DEBUG-SERVER] [3] reward.boxType = ' .. tostring(reward.boxType))
-    print('[DERP-DEBUG-SERVER] [3] reward.expiresAt = ' .. tostring(reward.expiresAt))
-    print('[DERP-DEBUG-SERVER] [3] os.time() = ' .. tostring(os.time()))
+    -- print('[DERP-DEBUG-SERVER] [3] reward.name = ' .. tostring(reward.name))
+    -- print('[DERP-DEBUG-SERVER] [3] reward.boxType = ' .. tostring(reward.boxType))
+    -- print('[DERP-DEBUG-SERVER] [3] reward.expiresAt = ' .. tostring(reward.expiresAt))
+    -- print('[DERP-DEBUG-SERVER] [3] os.time() = ' .. tostring(os.time()))
 
     if os.time() > reward.expiresAt then
-        print('[DERP-DEBUG-SERVER] [BLOCKED] expired')
+        -- print('[DERP-DEBUG-SERVER] [BLOCKED] expired')
         pendingRewards[source] = nil
         return
     end
@@ -477,14 +477,14 @@ RegisterNetEvent('derp-lootbox:claimReward', function()
         if valid then break end
     end
 
-    print('[DERP-DEBUG-SERVER] [4] valid = ' .. tostring(valid))
+    -- print('[DERP-DEBUG-SERVER] [4] valid = ' .. tostring(valid))
     if not valid then
         pendingRewards[source] = nil
         return
     end
 
     local rewarded, rewardItem = giveReward(source, wonItemName, reward.boxType)
-    print('[DERP-DEBUG-SERVER] [5] giveReward rewarded = ' .. tostring(rewarded))
+    -- print('[DERP-DEBUG-SERVER] [5] giveReward rewarded = ' .. tostring(rewarded))
 
     if rewarded and rewardItem then
         DERP_LogAction(source, 'Nhận thưởng lootbox', {
@@ -498,9 +498,9 @@ RegisterNetEvent('derp-lootbox:claimReward', function()
 
     local remaining = exports.ox_inventory:GetItem(source, boxType, nil, false)
     local hasMore   = remaining ~= nil and (remaining.count or 0) > 0
-    print('[DERP-DEBUG-SERVER] [6] hasMore = ' .. tostring(hasMore) .. ', sending afterClaim')
+    -- print('[DERP-DEBUG-SERVER] [6] hasMore = ' .. tostring(hasMore) .. ', sending afterClaim')
     TriggerClientEvent('derp-lootbox:afterClaim', source, hasMore)
-    print('[DERP-DEBUG-SERVER] [7] DONE')
+    -- print('[DERP-DEBUG-SERVER] [7] DONE')
 end)
 
 local pendingMultiRewards = {}
@@ -590,12 +590,12 @@ end)
 
 RegisterNetEvent('derp-lootbox:claimRewardMulti', function()
     local source = source
-    print('[DERP-DEBUG-SERVER] claimRewardMulti received from src=' .. tostring(source))
-    print('[DERP-DEBUG-SERVER] pendingMultiRewards[src] = ' .. tostring(pendingMultiRewards[source] ~= nil))
+    -- print('[DERP-DEBUG-SERVER] claimRewardMulti received from src=' .. tostring(source))
+    -- print('[DERP-DEBUG-SERVER] pendingMultiRewards[src] = ' .. tostring(pendingMultiRewards[source] ~= nil))
  
     if fiveguard_resource ~= "" and GetResourceState(fiveguard_resource) == 'started' then
         if not exports[fiveguard_resource]:VerifyToken(source) then
-            print('[DERP-DEBUG-SERVER] BLOCKED by fiveguard VerifyToken')
+            -- print('[DERP-DEBUG-SERVER] BLOCKED by fiveguard VerifyToken')
             return
         end
     end
