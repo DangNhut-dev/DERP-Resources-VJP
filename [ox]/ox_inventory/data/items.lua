@@ -1,4 +1,12 @@
 return {
+
+	['ticket'] = {
+		label = 'Vé Đổi Thưởng',
+		description = '',
+		weight = 0,
+		stack = true,
+	},
+
 	['hat_item'] = {
 		label   = 'Keo Vuốt Tóc',
 		weight  = 0,

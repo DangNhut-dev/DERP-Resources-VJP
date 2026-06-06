@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Ticket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@700;900&family=Exo+2:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" class="hidden">
+    <div class="overlay">
+        <div class="container">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                        <span class="header-title">VÉ & CỬA HÀNG</span>
+                        <span class="header-sub">Đổi quần áo · Mua bằng vé</span>
+                    </div>
+                    <div class="tab-group">
+                        <button class="tab-btn active" data-tab="exchange">ĐỔI VÉ</button>
+                        <button class="tab-btn" data-tab="shop">CỬA HÀNG</button>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div class="ticket-badge">
+                        <span class="ticket-badge-icon">🎫</span>
+                        <span class="ticket-badge-count" id="ticket-badge-count">0</span>
+                        <span class="ticket-badge-label">VÉ</span>
+                    </div>
+                    <button id="btn-close">✕</button>
+                </div>
+            </div>
+
+            <!-- Tab: Exchange -->
+            <div id="tab-exchange" class="tab-panel active">
+                <div class="panel-left">
+                    <div class="section-label">
+                        KHO ĐỒ
+                        <span id="sel-count" class="badge">0 đã chọn</span>
+                    </div>
+                    <div id="item-grid" class="item-grid scrollable"></div>
+                </div>
+
+                <!-- CENTER -->
+                <div class="panel-center">
+                    <div class="exchange-arrow">
+                        <div class="arrow-icon">→</div>
+                        <div class="exchange-label">ĐỔI</div>
+                    </div>
+                    <button id="btn-exchange" disabled>XÁC NHẬN</button>
+                    <div class="hint-text" id="hint-text">Chọn ít nhất 1 món</div>
+                </div>
+
+                <!-- RIGHT: ticket preview -->
+                <div class="panel-right">
+                    <div class="section-label" style="justify-content:center;">KẾT QUẢ</div>
+                    <div class="ticket-stage">
+                        <div class="ticket-card" id="ticket-card">
+                            <div class="ticket-placeholder" id="ticket-placeholder">?</div>
+                            <img id="ticket-img" src="" alt="ticket" style="display:none;">
+                        </div>
+                        <div class="ticket-amount" id="ticket-amount">— VÉ</div>
+                        <div class="ticket-breakdown" id="ticket-breakdown"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Shop -->
+            <div id="tab-shop" class="tab-panel">
+                <div class="shop-left">
+                    <div class="shop-filters">
+                        <span class="section-label" style="margin-right:4px;">LỌC</span>
+                        <button class="filter-btn" data-filter="sort" data-val="asc">GIÁ THẤP</button>
+                        <button class="filter-btn" data-filter="sort" data-val="desc">GIÁ CAO</button>
+                        <button class="filter-btn" data-filter="gender" data-val="0">NAM</button>
+                        <button class="filter-btn" data-filter="gender" data-val="1">NỮ</button>
+                    </div>
+                    <div id="shop-list" class="shop-list"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
