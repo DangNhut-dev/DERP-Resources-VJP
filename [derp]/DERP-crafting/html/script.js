@@ -1,22 +1,43 @@
-const IMG_BASE = 'nui://ox_inventory/web/images/';
+const IMG_BASE     = 'nui://ox_inventory/web/images/';
 const IMG_FALLBACK = IMG_BASE + 'placeholder.png';
 
-let currentRecipes   = {};
-let currentInventory = {};
-let selectedRecipe   = null;
-let craftingInterval = null;
-let isCrafting       = false;
+let currentRecipes    = {};
+let currentInventory  = {};
+let selectedRecipe    = null;
+let craftingInterval  = null;
+let isCrafting        = false;
+let playerLevel       = 1;
+let playerExp         = 0;
+let currentLevelExp   = 0;
+let nextLevelExp      = null;
 
 // ── Messages from client ──
 
 window.addEventListener('message', function(event) {
     const data = event.data;
     switch (data.action) {
-        case 'openCrafting':   openCrafting(data);                                                    break;
-        case 'updateInventory': updateInventory(data.inventory);                                      break;
-        case 'startCrafting':  startCraftingProgress(data.itemName, data.itemLabel, data.craftTime, data.quantity); break;
-        case 'stopCrafting':   stopCraftingProgress();                                                break;
-        case 'forceClosed':    stopCraftingProgress(); closeCrafting();                               break;
+        case 'openCrafting':
+            openCrafting(data);
+            break;
+        case 'updateInventory':
+            updateInventory(data);
+            break;
+        case 'startCrafting':
+            startCraftingProgress(data.itemName, data.itemLabel, data.craftTime, data.quantity);
+            break;
+        case 'stopCrafting':
+            stopCraftingProgress();
+            break;
+        case 'forceClosed':
+            stopCraftingProgress();
+            closeCrafting();
+            break;
+        case 'expGained':
+            handleExpGained(data);
+            break;
+        case 'refreshRecipes':
+            refreshRecipes(data);
+            break;
     }
 });
 
@@ -26,11 +47,6 @@ function imgSrc(name) {
     return IMG_BASE + name + '.png';
 }
 
-function imgTag(name, alt) {
-    return '<img src="' + imgSrc(name) + '" onerror="this.src=\'' + IMG_FALLBACK + '\'" alt="' + (alt || name) + '">';
-}
-
-// Recipe image: dung customImage neu co, fallback ve ox_inventory images
 function recipeImgTag(recipe) {
     var src = recipe.image || imgSrc(recipe.itemName || '');
     return '<img src="' + src + '" onerror="this.src=\'' + IMG_FALLBACK + '\'" alt="' + (recipe.label || '') + '">';
@@ -50,6 +66,10 @@ function openCrafting(data) {
     currentInventory = data.inventory;
     selectedRecipe   = null;
     isCrafting       = false;
+    playerLevel      = data.playerLevel      || 1;
+    playerExp        = data.playerExp        || 0;
+    currentLevelExp  = data.currentLevelExp  || 0;
+    nextLevelExp     = data.nextLevelExp      || null;
 
     $('#bench-title').text(data.benchLabel.toUpperCase());
     $('#crafting-container').removeClass('hidden');
@@ -95,6 +115,11 @@ function renderRecipes() {
         selectedRecipe = itemName;
         showRecipeDetails(itemName, currentRecipes[itemName], checkCanCraft(currentRecipes[itemName]));
     });
+
+    // Giữ lại selected nếu recipe vẫn còn tồn tại sau re-render
+    if (selectedRecipe && currentRecipes[selectedRecipe]) {
+        $('.recipe-item[data-item="' + selectedRecipe + '"]').addClass('active');
+    }
 }
 
 // ── Recipe details ──
@@ -111,8 +136,8 @@ function showRecipeDetails(itemName, recipe, canCraft) {
     let ingredientsHtml = '';
     for (const [ingName, baseAmount] of Object.entries(recipe.ingredients)) {
         const playerAmount = currentInventory[ingName]?.amount || 0;
-        const ingLabel     = currentInventory[ingName]?.label || ingName;
-        const ingImage     = currentInventory[ingName]?.image || imgSrc(ingName);
+        const ingLabel     = currentInventory[ingName]?.label  || ingName;
+        const ingImage     = currentInventory[ingName]?.image  || imgSrc(ingName);
         const hasEnough    = playerAmount >= baseAmount;
 
         ingredientsHtml +=
@@ -162,13 +187,60 @@ function clearDetails() {
     );
 }
 
-// ── Inventory update ──
+// ── Inventory + level update ──
 
-function updateInventory(inventory) {
-    currentInventory = inventory;
+function updateInventory(data) {
+    const prevLevel  = playerLevel;
+    currentInventory = data.inventory;
+
+    if (data.playerLevel  !== undefined) playerLevel     = data.playerLevel;
+    if (data.playerExp    !== undefined) playerExp       = data.playerExp;
+    if (data.currentLevelExp !== undefined) currentLevelExp = data.currentLevelExp;
+    if (data.nextLevelExp !== undefined) nextLevelExp    = data.nextLevelExp;
+
+    // Nếu level thay đổi thì recipes từ server đã được filter lại qua updateInventory
+    // Nhưng currentRecipes client không có recipes mới vì server chỉ gửi recipes đủ level lúc openCrafting
+    // → Nếu level up thì cần re-open để lấy recipes mới từ server
+    // Trường hợp này được handle qua expGained flow bên dưới
+
     renderRecipes();
     if (selectedRecipe && currentRecipes[selectedRecipe]) {
         showRecipeDetails(selectedRecipe, currentRecipes[selectedRecipe], checkCanCraft(currentRecipes[selectedRecipe]));
+    }
+}
+
+// ── EXP gained handler ──
+
+function handleExpGained(data) {
+    playerExp       = data.newExp;
+    playerLevel     = data.newLevel;
+    currentLevelExp = data.currentLevelExp || 0;
+    nextLevelExp    = data.nextLevelExp    || null;
+
+    if (data.leveledUp) {
+        // Gửi về client.lua để lấy lại toàn bộ recipes unlock theo level mới
+        $.post('https://DERP-crafting/requestInventoryRefresh', JSON.stringify({}));
+    }
+}
+
+// ── Refresh toàn bộ recipes + inventory sau level up ──
+
+function refreshRecipes(data) {
+    currentRecipes   = data.recipes;
+    currentInventory = data.inventory;
+    playerLevel      = data.playerLevel      || playerLevel;
+    playerExp        = data.playerExp        || playerExp;
+    currentLevelExp  = data.currentLevelExp  || 0;
+    nextLevelExp     = data.nextLevelExp      || null;
+
+    renderRecipes();
+
+    // Nếu selected recipe vẫn còn tồn tại sau unlock thì giữ lại detail
+    if (selectedRecipe && currentRecipes[selectedRecipe]) {
+        showRecipeDetails(selectedRecipe, currentRecipes[selectedRecipe], checkCanCraft(currentRecipes[selectedRecipe]));
+    } else {
+        selectedRecipe = null;
+        clearDetails();
     }
 }
 

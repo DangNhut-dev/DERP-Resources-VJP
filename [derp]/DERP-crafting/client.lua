@@ -1,9 +1,9 @@
-local spawnedBenches  = {}
-local currentBench    = nil
+local spawnedBenches   = {}
+local currentBench     = nil
 local currentBenchData = nil
 local isCraftingUIOpen = false
 local isCraftingInProgress = false
-local craftCancelled  = false
+local craftCancelled   = false
 
 local function IsInventoryOpen()
     return LocalPlayer.state.inv_open == true
@@ -11,6 +11,24 @@ end
 
 local function Notify(msg, ntype)
     lib.notify({ description = msg, type = ntype or 'inform' })
+end
+
+-- Trả về level tương ứng với exp (mirror logic server)
+local function GetLevelFromExp(exp)
+    exp = tonumber(exp) or 0
+    local currentLevel = 1
+    local maxLevel = 1
+    for lvl in pairs(Config.Levels) do
+        if lvl > maxLevel then maxLevel = lvl end
+    end
+    for lvl = maxLevel, 1, -1 do
+        local required = Config.Levels[lvl]
+        if required and exp >= required then
+            currentLevel = lvl
+            break
+        end
+    end
+    return currentLevel
 end
 
 -- Spawn benches + ox_target
@@ -24,9 +42,9 @@ CreateThread(function()
 
         exports.ox_target:addLocalEntity(obj, {
             {
-                name    = benchId,
-                label   = benchData.label,
-                icon    = 'fas fa-tools',
+                name     = benchId,
+                label    = benchData.label,
+                icon     = 'fas fa-tools',
                 distance = 2.5,
                 onSelect = function()
                     TriggerEvent('DERP-crafting:client:openBench', { benchId = benchId })
@@ -74,7 +92,8 @@ function OpenCraftingUI(benchId, benchData)
         return
     end
 
-    lib.callback('DERP-crafting:server:getPlayerInventory', false, function(inventory)
+    -- inventory, playerLevel, playerExp
+    lib.callback('DERP-crafting:server:getPlayerInventory', false, function(inventory, playerLevel, playerExp)
         if IsInventoryOpen() then
             Notify('Vui long dong inventory truoc!', 'error')
             currentBench     = nil
@@ -85,47 +104,65 @@ function OpenCraftingUI(benchId, benchData)
         isCraftingUIOpen = true
         SetNuiFocus(true, true)
 
+        local oxItems = exports.ox_inventory:Items()
+
         local recipesWithLabels = {}
         for itemName, recipeData in pairs(benchData.recipes) do
-            local label, image
+            -- Ẩn hoàn toàn nếu chưa đủ level
+            local requiredLevel = tonumber(recipeData.requiredLevel) or 1
+            if playerLevel >= requiredLevel then
+                local label, image
 
-            if recipeData.customLabel then
-                label = recipeData.customLabel
-            else
-                local lookupName = recipeData.craftItem or itemName
-                local items = exports.ox_inventory:Items()
-                local meta = items and (items[lookupName] or items[string.upper(lookupName)])
-                label = meta and meta.label or lookupName
-            end
-
-            if recipeData.customImage then
-                image = recipeData.customImage
-            else
-                local lookupName = recipeData.craftItem or itemName
-                local items = exports.ox_inventory:Items()
-                local imageName = lookupName
-                if not items[lookupName] and items[string.upper(lookupName)] then
-                    imageName = string.upper(lookupName)
+                if recipeData.customLabel then
+                    label = recipeData.customLabel
+                else
+                    local lookupName = recipeData.craftItem or itemName
+                    local meta = oxItems and (oxItems[lookupName] or oxItems[string.upper(lookupName)])
+                    label = meta and meta.label or lookupName
                 end
-                image = 'nui://ox_inventory/web/images/' .. imageName .. '.png'
-            end
 
-            recipesWithLabels[itemName] = {
-                id            = recipeData.id,
-                time          = recipeData.time,
-                amount        = recipeData.amount,
-                allowQuantity = recipeData.allowQuantity,
-                ingredients   = recipeData.ingredients,
-                label         = label,
-                image         = image,
-            }
+                if recipeData.customImage then
+                    image = recipeData.customImage
+                else
+                    local lookupName = recipeData.craftItem or itemName
+                    local imageName  = lookupName
+                    if oxItems and not oxItems[lookupName] and oxItems[string.upper(lookupName)] then
+                        imageName = string.upper(lookupName)
+                    end
+                    image = 'nui://ox_inventory/web/images/' .. imageName .. '.png'
+                end
+
+                recipesWithLabels[itemName] = {
+                    id            = recipeData.id,
+                    time          = recipeData.time,
+                    amount        = recipeData.amount,
+                    allowQuantity = recipeData.allowQuantity,
+                    ingredients   = recipeData.ingredients,
+                    label         = label,
+                    image         = image,
+                    expReward     = recipeData.expReward or 0,
+                    requiredLevel = requiredLevel,
+                }
+            end
         end
 
+        -- Tính exp cần cho level tiếp theo
+        local maxLevel = 1
+        for lvl in pairs(Config.Levels) do
+            if lvl > maxLevel then maxLevel = lvl end
+        end
+        local nextLevelExp = playerLevel < maxLevel and Config.Levels[playerLevel + 1] or nil
+        local currentLevelExp = Config.Levels[playerLevel] or 0
+
         SendNUIMessage({
-            action     = 'openCrafting',
-            benchLabel = benchData.label,
-            recipes    = recipesWithLabels,
-            inventory  = inventory,
+            action        = 'openCrafting',
+            benchLabel    = benchData.label,
+            recipes       = recipesWithLabels,
+            inventory     = inventory,
+            playerLevel   = playerLevel,
+            playerExp     = playerExp,
+            currentLevelExp = currentLevelExp,
+            nextLevelExp  = nextLevelExp,
         })
 
         CreateThread(function()
@@ -177,11 +214,14 @@ RegisterNUICallback('craftItem', function(data, cb)
 
     cb('ok')
 
-    craftCancelled      = false
+    craftCancelled       = false
     isCraftingInProgress = true
 
     local totalTime = recipe.time * quantity
-    local itemLabel = recipe.customLabel or (exports.ox_inventory:Items()[recipe.craftItem or data.itemName] and exports.ox_inventory:Items()[recipe.craftItem or data.itemName].label or data.itemName)
+    local oxItems   = exports.ox_inventory:Items()
+    local itemLabel = recipe.customLabel
+        or (oxItems[recipe.craftItem or data.itemName] and oxItems[recipe.craftItem or data.itemName].label)
+        or data.itemName
 
     SendNUIMessage({
         action    = 'startCrafting',
@@ -223,14 +263,124 @@ RegisterNUICallback('craftItem', function(data, cb)
     craftCancelled       = false
 end)
 
--- Update inventory
+RegisterNUICallback('requestInventoryRefresh', function(_, cb)
+    cb('ok')
+    if not (currentBench and isCraftingUIOpen) then return end
+
+    lib.callback('DERP-crafting:server:getPlayerInventory', false, function(inventory, newPlayerLevel, newPlayerExp)
+        if not isCraftingUIOpen then return end
+
+        local benchData = Config.Benches[currentBench]
+        if not benchData then return end
+
+        local oxItems = exports.ox_inventory:Items()
+
+        local recipesWithLabels = {}
+        for itemName, recipeData in pairs(benchData.recipes) do
+            local requiredLevel = tonumber(recipeData.requiredLevel) or 1
+            if newPlayerLevel >= requiredLevel then
+                local label, image
+
+                if recipeData.customLabel then
+                    label = recipeData.customLabel
+                else
+                    local lookupName = recipeData.craftItem or itemName
+                    local meta = oxItems and (oxItems[lookupName] or oxItems[string.upper(lookupName)])
+                    label = meta and meta.label or lookupName
+                end
+
+                if recipeData.customImage then
+                    image = recipeData.customImage
+                else
+                    local lookupName = recipeData.craftItem or itemName
+                    local imageName  = lookupName
+                    if oxItems and not oxItems[lookupName] and oxItems[string.upper(lookupName)] then
+                        imageName = string.upper(lookupName)
+                    end
+                    image = 'nui://ox_inventory/web/images/' .. imageName .. '.png'
+                end
+
+                recipesWithLabels[itemName] = {
+                    id            = recipeData.id,
+                    time          = recipeData.time,
+                    amount        = recipeData.amount,
+                    allowQuantity = recipeData.allowQuantity,
+                    ingredients   = recipeData.ingredients,
+                    label         = label,
+                    image         = image,
+                    expReward     = recipeData.expReward or 0,
+                    requiredLevel = requiredLevel,
+                }
+            end
+        end
+
+        local maxLevel = 1
+        for lvl in pairs(Config.Levels) do
+            if lvl > maxLevel then maxLevel = lvl end
+        end
+        local nextLevelExp    = newPlayerLevel < maxLevel and Config.Levels[newPlayerLevel + 1] or nil
+        local currentLevelExp = Config.Levels[newPlayerLevel] or 0
+
+        SendNUIMessage({
+            action          = 'refreshRecipes',
+            recipes         = recipesWithLabels,
+            inventory       = inventory,
+            playerLevel     = newPlayerLevel,
+            playerExp       = newPlayerExp,
+            currentLevelExp = currentLevelExp,
+            nextLevelExp    = nextLevelExp,
+        })
+    end, currentBench)
+end)
+
+-- Update inventory sau khi craft
 RegisterNetEvent('DERP-crafting:client:updateInventory')
 AddEventHandler('DERP-crafting:client:updateInventory', function()
     if not (currentBench and isCraftingUIOpen) then return end
 
-    lib.callback('DERP-crafting:server:getPlayerInventory', false, function(inventory)
-        SendNUIMessage({ action = 'updateInventory', inventory = inventory })
+    lib.callback('DERP-crafting:server:getPlayerInventory', false, function(inventory, playerLevel, playerExp)
+        if not isCraftingUIOpen then return end
+
+        local maxLevel = 1
+        for lvl in pairs(Config.Levels) do
+            if lvl > maxLevel then maxLevel = lvl end
+        end
+        local nextLevelExp    = playerLevel < maxLevel and Config.Levels[playerLevel + 1] or nil
+        local currentLevelExp = Config.Levels[playerLevel] or 0
+
+        SendNUIMessage({
+            action          = 'updateInventory',
+            inventory       = inventory,
+            playerLevel     = playerLevel,
+            playerExp       = playerExp,
+            currentLevelExp = currentLevelExp,
+            nextLevelExp    = nextLevelExp,
+        })
     end, currentBench)
+end)
+
+-- Nhận EXP gain từ server sau khi craft thành công
+RegisterNetEvent('DERP-crafting:client:expGained')
+AddEventHandler('DERP-crafting:client:expGained', function(expData)
+    if not isCraftingUIOpen then return end
+
+    local maxLevel = 1
+    for lvl in pairs(Config.Levels) do
+        if lvl > maxLevel then maxLevel = lvl end
+    end
+    local nextLevelExp    = expData.newLevel < maxLevel and Config.Levels[expData.newLevel + 1] or nil
+    local currentLevelExp = Config.Levels[expData.newLevel] or 0
+
+    SendNUIMessage({
+        action          = 'expGained',
+        expGain         = expData.expGain,
+        newExp          = expData.newExp,
+        newLevel        = expData.newLevel,
+        leveledUp       = expData.leveledUp,
+        oldLevel        = expData.oldLevel,
+        currentLevelExp = currentLevelExp,
+        nextLevelExp    = nextLevelExp,
+    })
 end)
 
 -- Cleanup

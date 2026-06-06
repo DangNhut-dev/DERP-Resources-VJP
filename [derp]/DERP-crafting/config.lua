@@ -1,5 +1,19 @@
 Config = {}
 
+-- EXP cần để đạt level tương ứng
+Config.Levels = {
+    [1] = 0,
+    [2] = 5,
+    [3] = 300,
+    [4] = 600,
+    [5] = 1000,
+    [6] = 1500,
+    [7] = 2100,
+    [8] = 2800,
+    [9] = 3600,
+    [10] = 4500,
+}
+
 Config.Benches = {
     ["balocrafting"] = {
         label = "Bàn Chế Tạo",
@@ -13,6 +27,8 @@ Config.Benches = {
                 time = 2000,
                 amount = 1,
                 allowQuantity = true,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["cotton"] = 5,
                 }
@@ -22,6 +38,8 @@ Config.Benches = {
                 time = 10000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["hide_3star"] = 15,
                     ["cloth"] = 30,
@@ -41,6 +59,8 @@ Config.Benches = {
                 time = 10000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["hide_3star"] = 15,
                     ["cloth"] = 30,
@@ -69,6 +89,8 @@ Config.Benches = {
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 2,
+                expReward = 20,
                 ingredients = {
                     ["aluminum"] = 10,
                     ["copper"] = 5,
@@ -76,10 +98,12 @@ Config.Benches = {
                 }
             },
             ["hack_laptop"] = {
-                id = 1,
+                id = 2,
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 4,
+                expReward = 40,
                 ingredients = {
                     ["iron"] = 15,
                     ["copper"] = 10,
@@ -100,16 +124,20 @@ Config.Benches = {
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 3,
+                expReward = 30,
                 ingredients = {
                     ["cloth"] = 25,
                     ["carbon"] = 15,
                 }
             },
             ["ammo-9"] = {
-                id = 1,
+                id = 2,
                 time = 500,
                 amount = 5,
                 allowQuantity = true,
+                requiredLevel = 1,
+                expReward = 2,
                 ingredients = {
                     ["refined_metal"] = 1,
                     ["gunpowder"] = 3,
@@ -129,6 +157,8 @@ Config.Benches = {
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 2,
+                expReward = 25,
                 ingredients = {
                     ["finishwood"] = 25,
                     ["iron"] = 25,
@@ -140,6 +170,8 @@ Config.Benches = {
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 4,
+                expReward = 35,
                 ingredients = {
                     ["finishwood"] = 25,
                     ["iron"] = 25,
@@ -160,6 +192,8 @@ Config.Benches = {
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
+                requiredLevel = 2,
+                expReward = 15,
                 ingredients = {
                     ["glass"] = 1,
                     ["metalscrap"] = 2,
@@ -179,56 +213,22 @@ Config.Benches = {
                 time = 2000,
                 amount = 1,
                 allowQuantity = true,
+                requiredLevel = 1,
+                expReward = 8,
                 ingredients = {
                     ["iron"] = 5,
                 }
             },
             ["advancedlockpick"] = {
-                id = 1,
+                id = 2,
                 time = 2000,
                 amount = 1,
                 allowQuantity = true,
+                requiredLevel = 3,
+                expReward = 20,
                 ingredients = {
                     ["iron"] = 5,
                     ["refined_metal"] = 10,
-                }
-            },
-        }
-    },
-    ["craftingweapon"] = {
-        label = "Bàn Chế Tạo",
-        object = `prop_tool_bench02`,
-        coords = vector3(-438.01, 6340.08, 11.75),
-        heading = 122.79,
-
-        recipes = {
-            ["weapon_g2ctx"] = {
-                id = 1,
-                time = 15000,
-                amount = 1,
-                allowQuantity = false,
-                ingredients = {
-                    ["taurus_slide"] = 1,
-                    ["taurus_frame"] = 1,
-                    ["taurus_barrel"] = 1,
-                }
-            },
-        }
-    },
-    ["washingmoney"] = {
-        label = "Rửa Tiền",
-        object = `v_ind_cs_hammer`,
-        coords = vector3(1400.00, 1155.06, 108.28),
-        heading = 218.87,
-
-        recipes = {
-            ["cash"] = {
-                id = 1,
-                time = 1000,
-                amount = 150,
-                allowQuantity = true,
-                ingredients = {
-                    ["black_money"] = 1,
                 }
             },
         }
@@ -246,144 +246,155 @@ Config.Benches = {
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["steel"] = 6,
                     ["aluminum"] = 6,
                     ["plastic"] = 3,
                 }
             },
-
             ["duct_tape"] = {
                 id = 2,
                 time = 1500,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["rubber"] = 4,
                     ["plastic"] = 3,
                 }
             },
-
             ["engine_oil"] = {
                 id = 4,
                 time = 2500,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["plastic"] = 4,
                     ["rubber"] = 2,
                 }
             },
-
             ["tyre_replacement"] = {
                 id = 5,
                 time = 3500,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["rubber"] = 2,
                     ["steel"] = 1,
                 }
             },
-
             ["clutch_replacement"] = {
                 id = 6,
                 time = 3500,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["steel"] = 5,
                     ["copper"] = 2,
                     ["plastic"] = 3,
                 }
             },
-
             ["air_filter"] = {
                 id = 7,
                 time = 2500,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["plastic"] = 3,
-                    ["cloth"] = 1, -- nếu có
+                    ["cloth"] = 1,
                 }
             },
-
             ["spark_plug"] = {
                 id = 8,
                 time = 2000,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["copper"] = 4,
                     ["iron"] = 2,
                 }
             },
-
             ["suspension_parts"] = {
                 id = 9,
                 time = 4000,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["steel"] = 6,
                     ["rubber"] = 4,
                 }
             },
-
             ["brakepad_replacement"] = {
                 id = 10,
                 time = 3000,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["steel"] = 4,
                     ["rubber"] = 4,
                 }
             },
-
-            -- ================= EV PARTS (HI-END) =================
-
             ["ev_motor"] = {
                 id = 11,
                 time = 6000,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["copper"] = 12,
                     ["steel"] = 6,
                     ["aluminum"] = 8,
                 }
             },
-
             ["ev_battery"] = {
                 id = 12,
                 time = 6500,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["copper"] = 10,
                     ["aluminum"] = 10,
                     ["plastic"] = 5,
                 }
             },
-
             ["ev_coolant"] = {
                 id = 13,
                 time = 4000,
                 amount = 1,
                 quality = nil,
                 allowQuantity = false,
+                requiredLevel = 1,
+                expReward = 0,
                 ingredients = {
                     ["plastic"] = 6,
                     ["aluminum"] = 4,
@@ -392,7 +403,6 @@ Config.Benches = {
         },
         jobs = {
             ["mechanic"] = 2,
-                
         },
     },
 
