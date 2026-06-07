@@ -16,13 +16,8 @@ CreateThread(function()
         Wait(0)
         local ped = cache.ped
         local now = GetGameTimer()
-        local aiming = IsControlPressed(0, 25)
-
-        if disableCrouch then
-            DisableControlAction(0, 36, true)
-            if GetPedStealthMovement(ped) then
-                SetPedStealthMovement(ped, false, 0)
-            end
+        if GetPedStealthMovement(ped) then
+            SetPedStealthMovement(ped, false, 0)
         end
 
         -- Tắt crouch khi đang aim
@@ -65,9 +60,9 @@ CreateThread(function()
         end
 
         -- Roll prevention: chặn nhảy khi đang aim ngoài xe
-        if not cache.vehicle and aiming then
-            DisableControlAction(0, 22, true)
-        end
+        -- if not cache.vehicle and aiming then
+        --     DisableControlAction(0, 22, true)
+        -- end
     end
 end)
 
