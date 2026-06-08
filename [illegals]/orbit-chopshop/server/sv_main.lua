@@ -434,28 +434,28 @@ end
 RegisterNetEvent('orbit-chopshop:server:callCops', function(type, bank, streetLabel, coords, vehicleModel, plate)
     if GetResourceState('lb-tablet') ~= 'started' then return end
 
-    exports['lb-tablet']:AddDispatch({
-        priority = 'high',
-        code = '10-35',
-        title = 'Trộm Xe Đi Rã',
-        description = 'Phát hiện hành vi trộm xe tại ' .. (streetLabel or 'không xác định'),
-        location = {
-            label = streetLabel or 'Không xác định',
-            coords = coords and vec2(coords.x, coords.y) or nil,
-        },
-        time = 120,
-        job = 'police',
-        fields = {
-            { icon = 'fas fa-car', label = 'Biển số', value = plate or 'Không rõ' },
-            { icon = 'fas fa-map-marker-alt', label = 'Vị trí', value = streetLabel or 'Không rõ' },
-        },
-        blip = {
-            sprite = 227,
-            color = 1,
-            size = 1.5,
-            label = 'Trộm Xe - ' .. (plate or ''),
-        },
-    })
+    -- exports['lb-tablet']:AddDispatch({
+    --     priority = 'high',
+    --     code = '10-35',
+    --     title = 'Trộm Xe Đi Rã',
+    --     description = 'Phát hiện hành vi trộm xe tại ' .. (streetLabel or 'không xác định'),
+    --     location = {
+    --         label = streetLabel or 'Không xác định',
+    --         coords = coords and vec2(coords.x, coords.y) or nil,
+    --     },
+    --     time = 120,
+    --     job = 'police',
+    --     fields = {
+    --         { icon = 'fas fa-car', label = 'Biển số', value = plate or 'Không rõ' },
+    --         { icon = 'fas fa-map-marker-alt', label = 'Vị trí', value = streetLabel or 'Không rõ' },
+    --     },
+    --     blip = {
+    --         sprite = 227,
+    --         color = 1,
+    --         size = 1.5,
+    --         label = 'Trộm Xe - ' .. (plate or ''),
+    --     },
+    -- })
 end)
 
 RegisterNetEvent("orbit-chopshop:server:rewardplayer", GiveReward)
