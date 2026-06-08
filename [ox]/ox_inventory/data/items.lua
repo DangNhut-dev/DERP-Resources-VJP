@@ -3352,1784 +3352,1784 @@ return {
 		}
 	},
 
-
-			-- Bait
+-- Bait
 			["bread"] = {
-				label = "Bread",
+				label = "Bánh Mì",
 				weight = 10,
-				stack = true, -- assuming 'unique' is false means it should be stackable
+				stack = true,
 				close = true,
-				description = "Bread",
+				description = "Bánh Mì",
 				client = {
 					image = "bread.png",
 				}
 			},
 			
 			["earthworm"] = {
-				label = "Earthworm",
+				label = "Giun Đất",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Earthworm",
+				description = "Giun Đất",
 				client = {
 					image = "earthworm.png",
 				}
 			},
 			
 			["dough"] = {
-				label = "Dough",
+				label = "Bột Mì",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Dough",
+				description = "Bột Mì",
 				client = {
 					image = "dough.png",
 				}
 			},
 			
 			["grub"] = {
-				label = "Grub",
+				label = "Ấu Trùng",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Grub",
+				description = "Ấu Trùng",
 				client = {
 					image = "grub.png",
 				}
 			},
 			
 			["caddis_fly"] = {
-				label = "Caddis Fly",
+				label = "Ruồi Caddis",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Caddis Fly",
+				description = "Ruồi Caddis",
 				client = {
 					image = "caddis_fly.png",
 				}
 			},
 			
 			["cheese"] = {
-				label = "Cheese",
+				label = "Phô Mai",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Cheese",
+				description = "Phô Mai",
 				client = {
 					image = "cheese.png",
 				}
 			},
 			
 			["fly"] = {
-				label = "Fly",
+				label = "Ruồi",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Fly",
+				description = "Ruồi",
 				client = {
 					image = "fly.png",
 				}
 			},
 			
 			["dragonfly"] = {
-				label = "Dragonfly",
+				label = "Chuồn Chuồn",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Dragonfly",
+				description = "Chuồn Chuồn",
 				client = {
 					image = "dragonfly.png",
 				}
 			},
 			
 			["grasshoper"] = {
-				label = "Grasshoper",
+				label = "Châu Chấu",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Grasshoper",
+				description = "Châu Chấu",
 				client = {
 					image = "grasshoper.png",
 				}
 			},
 			
 			["shrimp"] = {
-				label = "Shrimp",
+				label = "Tôm",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Shrimp",
+				description = "Tôm",
 				client = {
 					image = "shrimp.png",
 				}
 			},
 			
 			["leech"] = {
-				label = "Leech",
+				label = "Con Đỉa",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Leech",
+				description = "Con Đỉa",
 				client = {
 					image = "leech.png",
 				}
 			},
 			
 			["snail"] = {
-				label = "Snail",
+				label = "Ốc Sên",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Snail",
+				description = "Ốc Sên",
 				client = {
 					image = "snail.png",
 				}
 			},
 			
 			["liver"] = {
-				label = "Liver",
+				label = "Gan",
 				weight = 10,
 				stack = true,
 				close = true,
-				description = "Liver",
+				description = "Gan",
 				client = {
 					image = "liver.png",
 				}
 			},
 			-- Lines
 			["express_fishing_super_line"] = {
-				label = "Express Super Line 0.1mm",
+				label = "Dây Express Super 0.1mm",
 				weight = 70,
-				stack = true, -- assuming 'unique' is false means it should be stackable
+				stack = true,
 				close = true,
-				description = "Express Super Line 0.1mm",
+				description = "Dây Express Super 0.1mm",
 				client = {
 					image = "express_fishing_super_line.png",
 				}
 			},
 			
 			["syberia_indiana_green"] = {
-				label = "Indiana Green 0.14mm",
+				label = "Dây Indiana Xanh 0.14mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Indiana Green 0.14mm",
+				description = "Dây Indiana Xanh 0.14mm",
 				client = {
 					image = "syberia_indiana_green.png",
 				}
 			},
 			
 			["syberia_indiana_white"] = {
-				label = "Indiana White 0.18mm",
+				label = "Dây Indiana Trắng 0.18mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Indiana White 0.18mm",
+				description = "Dây Indiana Trắng 0.18mm",
 				client = {
 					image = "syberia_indiana_white.png",
 				}
 			},
 			
 			["simmons_mono_original"] = {
-				label = "Simmons Original 0.25mm",
+				label = "Dây Simmons Original 0.25mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Simmons Original 0.25mm",
+				description = "Dây Simmons Original 0.25mm",
 				client = {
 					image = "simmons_mono_original.png",
 				}
 			},
 			
 			["simmons_mono_ss"] = {
-				label = "Simmons SS 0.28mm",
+				label = "Dây Simmons SS 0.28mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Simmons SS 0.28mm",
+				description = "Dây Simmons SS 0.28mm",
 				client = {
 					image = "simmons_mono_ss.png",
 				}
 			},
 			
 			["syberia_indiana_green_2"] = {
-				label = "Indiana Green 0.32mm",
+				label = "Dây Indiana Xanh 0.32mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Indiana Green 0.32mm",
+				description = "Dây Indiana Xanh 0.32mm",
 				client = {
 					image = "syberia_indiana_green_2.png",
 				}
 			},
 			
 			["syberia_indiana_white_2"] = {
-				label = "Indiana White 0.36mm",
+				label = "Dây Indiana Trắng 0.36mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Indiana White 0.36mm",
+				description = "Dây Indiana Trắng 0.36mm",
 				client = {
 					image = "syberia_indiana_white_2.png",
 				}
 			},
 			
 			["snake_power_line_clr"] = {
-				label = "Snake Power Line 0.41mm",
+				label = "Dây Snake Power 0.41mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Snake Power Line 0.41mm",
+				description = "Dây Snake Power 0.41mm",
 				client = {
 					image = "snake_power_line_clr.png",
 				}
 			},
 			
 			["simmons_mono_original_2"] = {
-				label = "Simmons Original 0.48mm",
+				label = "Dây Simmons Original 0.48mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Simmons Original 0.48mm",
+				description = "Dây Simmons Original 0.48mm",
 				client = {
 					image = "simmons_mono_original_2.png",
 				}
 			},
 			
 			["simmons_mono_ss_2"] = {
-				label = "Simmons SS 0.52mm",
+				label = "Dây Simmons SS 0.52mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Simmons SS 0.52mm",
+				description = "Dây Simmons SS 0.52mm",
 				client = {
 					image = "simmons_mono_ss_2.png",
 				}
 			},
 			
 			["snake_power_line_clr_2"] = {
-				label = "Snake Power Line 0.65mm",
+				label = "Dây Snake Power 0.65mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "Snake Power Line 0.65mm",
+				description = "Dây Snake Power 0.65mm",
 				client = {
 					image = "snake_power_line_clr_2.png",
 				}
 			},
 			
 			["solid_hipower_nylon"] = {
-				label = "HiPower Nylon 0.8mm",
+				label = "Dây HiPower Nylon 0.8mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "HiPower Nylon 0.8mm",
+				description = "Dây HiPower Nylon 0.8mm",
 				client = {
 					image = "solid_hipower_nylon.png",
 				}
 			},
 			
 			["solid_hipower_nylon_lime"] = {
-				label = "HiPower Nylon L 0.85mm",
+				label = "Dây HiPower Nylon Vàng Chanh 0.85mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "HiPower Nylon L 0.85mm",
+				description = "Dây HiPower Nylon Vàng Chanh 0.85mm",
 				client = {
 					image = "solid_hipower_nylon_lime.png",
 				}
 			},
 			
 			["solid_hipower_nylon_orange"] = {
-				label = "HiPower Nylon O 0.9mm",
+				label = "Dây HiPower Nylon Cam 0.9mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "HiPower Nylon O 0.9mm",
+				description = "Dây HiPower Nylon Cam 0.9mm",
 				client = {
 					image = "solid_hipower_nylon_orange.png",
 				}
 			},
 			
 			["solid_hipower_nylon_2"] = {
-				label = "HiPower Nylon 1.05mm",
+				label = "Dây HiPower Nylon 1.05mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "HiPower Nylon 1.05mm",
+				description = "Dây HiPower Nylon 1.05mm",
 				client = {
 					image = "solid_hipower_nylon_2.png",
 				}
 			},
 			
 			["solid_hipower_nylon_lime_2"] = {
-				label = "HiPower Nylon L 1.15mm",
+				label = "Dây HiPower Nylon Vàng Chanh 1.15mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "HiPower Nylon L 1.15mm",
+				description = "Dây HiPower Nylon Vàng Chanh 1.15mm",
 				client = {
 					image = "solid_hipower_nylon_lime_2.png",
 				}
 			},
 			
 			["solid_hipower_nylon_orange_2"] = {
-				label = "HiPower Nylon O 1.25mm",
+				label = "Dây HiPower Nylon Cam 1.25mm",
 				weight = 70,
 				stack = true,
 				close = true,
-				description = "HiPower Nylon O 1.25mm",
+				description = "Dây HiPower Nylon Cam 1.25mm",
 				client = {
 					image = "solid_hipower_nylon_orange_2.png",
 				}
 			},
 			-- Rods
 			["ufe_telerod_370"] = {
-				label = "UFE Telerod 370",
+				label = "Cần UFE Telerod 370",
 				weight = 150,
-				stack = false, -- assuming 'unique' is false means it should be stackable
+				stack = false,
 				close = true,
-				description = "UFE Telerod 370",
+				description = "Cần UFE Telerod 370",
 				client = {
 					image = "ufe_telerod_370.png",
 				}
 			},
 			
 			["carptack_feeder_master_250"] = {
-				label = "Carptack Feeder Master 250",
+				label = "Cần Carptack Feeder Master 250",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Carptack Feeder Master 250",
+				description = "Cần Carptack Feeder Master 250",
 				client = {
 					image = "carptack_feeder_master_250.png",
 				}
 			},
 			
 			["sakura_tsubarea_tsa_552_xul"] = {
-				label = "Sakura Tsubarea TSA 552 XUL",
+				label = "Cần Sakura Tsubarea TSA 552 XUL",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Tsubarea TSA 552 XUL",
+				description = "Cần Sakura Tsubarea TSA 552 XUL",
 				client = {
 					image = "sakura_tsubarea_tsa_552_xul.png",
 				}
 			},
 			
 			["carpex_hybid_carp_270"] = {
-				label = "Carpex Hybid Carp 270",
+				label = "Cần Carpex Hybid Carp 270",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Carpex Hybid Carp 270",
+				description = "Cần Carpex Hybid Carp 270",
 				client = {
 					image = "carpex_hybid_carp_270.png",
 				}
 			},
 			
 			["ufe_float_x5_300"] = {
-				label = "UFE Float X5 300",
+				label = "Cần UFE Float X5 300",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "UFE Float X5 300",
+				description = "Cần UFE Float X5 300",
 				client = {
 					image = "ufe_float_x5_300.png",
 				}
 			},
 			
 			["predatek_fast_perch_210"] = {
-				label = "Predatek Fast Perch 210",
+				label = "Cần Predatek Fast Perch 210",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Predatek Fast Perch 210",
+				description = "Cần Predatek Fast Perch 210",
 				client = {
 					image = "predatek_fast_perch_210.png",
 				}
 			},
 			
 			["sakura_ionizer_bass_insb_701_ml"] = {
-				label = "Sakura Ionizer Bass INSB 701",
+				label = "Cần Sakura Ionizer Bass INSB 701",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Ionizer Bass INSB 701",
+				description = "Cần Sakura Ionizer Bass INSB 701",
 				client = {
 					image = "sakura_ionizer_bass_insb_701_ml.png",
 				}
 			},
 			
 			["sakura_redbird_rds_602_l"] = {
-				label = "Sakura Redbird RDS 602 L",
+				label = "Cần Sakura Redbird RDS 602 L",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Redbird RDS 602 L",
+				description = "Cần Sakura Redbird RDS 602 L",
 				client = {
 					image = "sakura_redbird_rds_602_l.png",
 				}
 			},
 			
 			["carpex_cobalt_carp_360"] = {
-				label = "Carpex Cobalt Carp 360",
+				label = "Cần Carpex Cobalt Carp 360",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Carpex Cobalt Carp 360",
+				description = "Cần Carpex Cobalt Carp 360",
 				client = {
 					image = "carpex_cobalt_carp_360.png",
 				}
 			},
 			
 			["sakura_salt_sniper_salss_611_mj1"] = {
-				label = "Sakura Salt Sniper SALSS 611",
+				label = "Cần Sakura Salt Sniper SALSS 611",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Salt Sniper SALSS 611",
+				description = "Cần Sakura Salt Sniper SALSS 611",
 				client = {
 					image = "sakura_salt_sniper_salss_611_mj1.png",
 				}
 			},
 			
 			["sakura_speciz_spes_light_602_zander"] = {
-				label = "Sakura Speciz Spes Light 602",
+				label = "Cần Sakura Speciz Spes Light 602",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Speciz Spes Light 602",
+				description = "Cần Sakura Speciz Spes Light 602",
 				client = {
 					image = "sakura_speciz_spes_light_602_zander.png",
 				}
 			},
 			
 			["sakura_redbird_rds_662"] = {
-				label = "Sakura Redbird RDS 662",
+				label = "Cần Sakura Redbird RDS 662",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Redbird RDS 662",
+				description = "Cần Sakura Redbird RDS 662",
 				client = {
 					image = "sakura_redbird_rds_662.png",
 				}
 			},
 			
 			["sakura_salt_sniper_salss_902_h"] = {
-				label = "Sakura Salt Sniper SALSS 902",
+				label = "Cần Sakura Salt Sniper SALSS 902",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Salt Sniper SALSS 902",
+				description = "Cần Sakura Salt Sniper SALSS 902",
 				client = {
 					image = "sakura_salt_sniper_salss_902_h.png",
 				}
 			},
 			
 			["predatek_seahunter_230"] = {
-				label = "Predatek Seahunter 230",
+				label = "Cần Predatek Seahunter 230",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Predatek Seahunter 230",
+				description = "Cần Predatek Seahunter 230",
 				client = {
 					image = "predatek_seahunter_230.png",
 				}
 			},
 			
 			["sakura_shukan_shuc_661_lj"] = {
-				label = "Sakura Shukan Shuc 661 LJ",
+				label = "Cần Sakura Shukan Shuc 661 LJ",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Sakura Shukan Shuc 661 LJ",
+				description = "Cần Sakura Shukan Shuc 661 LJ",
 				client = {
 					image = "sakura_shukan_shuc_661_lj.png",
 				}
 			},
 			
 			["ufe_powercatch_270"] = {
-				label = "UFE Powercatch 270",
+				label = "Cần UFE Powercatch 270",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "UFE Powercatch 270",
+				description = "Cần UFE Powercatch 270",
 				client = {
 					image = "ufe_powercatch_270.png",
 				}
 			},
 			
 			["predatek_pilk_200"] = {
-				label = "Predatek Pilk 200",
+				label = "Cần Predatek Pilk 200",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Predatek Pilk 200",
+				description = "Cần Predatek Pilk 200",
 				client = {
 					image = "predatek_pilk_200.png",
 				}
 			},
 			
 			["robinson_carbonic_nordic_pilk_300"] = {
-				label = "Robinson Carbonic Nordic Pilk",
+				label = "Cần Robinson Carbonic Nordic Pilk",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Robinson Carbonic Nordic Pilk",
+				description = "Cần Robinson Carbonic Nordic Pilk",
 				client = {
 					image = "robinson_carbonic_nordic_pilk_300.png",
 				}
 			},
 			
 			["carptack_bottom_cast_360"] = {
-				label = "Carptack Bottom Cast 360",
+				label = "Cần Carptack Bottom Cast 360",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Carptack Bottom Cast 360",
+				description = "Cần Carptack Bottom Cast 360",
 				client = {
 					image = "carptack_bottom_cast_360.png",
 				}
 			},
 			
 			["seax_salfighter_170"] = {
-				label = "Seax Salfighter 170",
+				label = "Cần Seax Salfighter 170",
 				weight = 150,
 				stack = false,
 				close = true,
-				description = "Seax Salfighter 170",
+				description = "Cần Seax Salfighter 170",
 				client = {
 					image = "seax_salfighter_170.png",
 				}
 			},
 			-- Reels
 			["ufe_canta_1000"] = {
-				label = "UFE Canta 1000",
+				label = "Máy Câu UFE Canta 1000",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Canta 1000",
+				description = "Máy Câu UFE Canta 1000",
 				client = {
 					image = "ufe_canta_1000.png",
 				}
 			},
 			
 			["ufe_barracuda_2000bt"] = {
-				label = "UFE Barracuda 2000BT",
+				label = "Máy Câu UFE Barracuda 2000BT",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Barracuda 2000BT",
+				description = "Máy Câu UFE Barracuda 2000BT",
 				client = {
 					image = "ufe_barracuda_2000bt.png",
 				}
 			},
 			
 			["sakura_alpax_4508"] = {
-				label = "Sakura Alpax 4508",
+				label = "Máy Câu Sakura Alpax 4508",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "Sakura Alpax 4508",
+				description = "Máy Câu Sakura Alpax 4508",
 				client = {
 					image = "sakura_alpax_4508.png",
 				}
 			},
 			
 			["sakura_alpax_8508"] = {
-				label = "Sakura Alpax 8508",
+				label = "Máy Câu Sakura Alpax 8508",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "Sakura Alpax 8508",
+				description = "Máy Câu Sakura Alpax 8508",
 				client = {
 					image = "sakura_alpax_8508.png",
 				}
 			},
 			
 			["ufe_belona_4000"] = {
-				label = "UFE Belona 4000",
+				label = "Máy Câu UFE Belona 4000",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Belona 4000",
+				description = "Máy Câu UFE Belona 4000",
 				client = {
 					image = "ufe_belona_4000.png",
 				}
 			},
 			
 			["ufe_bigspin_8000b"] = {
-				label = "UFE Bigspin 8000B",
+				label = "Máy Câu UFE Bigspin 8000B",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Bigspin 8000B",
+				description = "Máy Câu UFE Bigspin 8000B",
 				client = {
 					image = "ufe_bigspin_8000b.png",
 				}
 			},
 			
 			["ufe_batara_8000g"] = {
-				label = "UFE Batara 8000G",
+				label = "Máy Câu UFE Batara 8000G",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Batara 8000G",
+				description = "Máy Câu UFE Batara 8000G",
 				client = {
 					image = "ufe_batara_8000g.png",
 				}
 			},
 			
 			["ufe_batara_1000r"] = {
-				label = "UFE Batara 1000R",
+				label = "Máy Câu UFE Batara 1000R",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Batara 1000R",
+				description = "Máy Câu UFE Batara 1000R",
 				client = {
 					image = "ufe_batara_1000r.png",
 				}
 			},
 			
 			["robinson_big_runner_807qd"] = {
-				label = "Robinson Big Runner 807QD",
+				label = "Máy Câu Robinson Big Runner 807QD",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "Robinson Big Runner 807QD",
+				description = "Máy Câu Robinson Big Runner 807QD",
 				client = {
 					image = "robinson_big_runner_807qd.png",
 				}
 			},
 			
 			["spooler_catchpro_4000fd"] = {
-				label = "Spooler Catchpro 4000FD",
+				label = "Máy Câu Spooler Catchpro 4000FD",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "Spooler Catchpro 4000FD",
+				description = "Máy Câu Spooler Catchpro 4000FD",
 				client = {
 					image = "spooler_catchpro_4000fd.png",
 				}
 			},
 			
 			["ufe_opensea_8000_x"] = {
-				label = "UFE Opensea 8000-X",
+				label = "Máy Câu UFE Opensea 8000-X",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "UFE Opensea 8000-X",
+				description = "Máy Câu UFE Opensea 8000-X",
 				client = {
 					image = "ufe_opensea_8000-x.png",
 				}
 			},
 			
 			["spooler_catchpro_8000fd"] = {
-				label = "Spooler Catchpro 8000FD",
+				label = "Máy Câu Spooler Catchpro 8000FD",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "Spooler Catchpro 8000FD",
+				description = "Máy Câu Spooler Catchpro 8000FD",
 				client = {
 					image = "spooler_catchpro_8000fd.png",
 				}
 			},
 			
 			["spooler_catchpro_14000fd"] = {
-				label = "Spooler Catchpro 14000FD",
+				label = "Máy Câu Spooler Catchpro 14000FD",
 				weight = 100,
 				stack = false,
 				close = true,
-				description = "Spooler Catchpro 14000FD",
+				description = "Máy Câu Spooler Catchpro 14000FD",
 				client = {
 					image = "spooler_catchpro_14000fd.png",
 				}
 			},
 			-- Hooks
 			["ufa_bait_hook"] = {
-				label = "UFA Bait",
+				label = "Lưỡi Câu UFA Bait",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Bait",
+				description = "Lưỡi Câu UFA Bait",
 				client = {
 					image = "ufa_bait_hook.png",
 				}
 			},
 			
 			["ufa_sproat_hook"] = {
-				label = "UFA Sproat",
+				label = "Lưỡi Câu UFA Sproat",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Sproat",
+				description = "Lưỡi Câu UFA Sproat",
 				client = {
 					image = "ufa_sproat_hook.png",
 				}
 			},
 			
 			["captack_claw_xl_hook"] = {
-				label = "Captack Claw XL",
+				label = "Lưỡi Câu Captack Claw XL",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "Captack Claw XL",
+				description = "Lưỡi Câu Captack Claw XL",
 				client = {
 					image = "captack_claw_xl_hook.png",
 				}
 			},
 			
 			["ufa_sproat_g_hook"] = {
-				label = "UFA Sproat-G",
+				label = "Lưỡi Câu UFA Sproat-G",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Sproat-G",
+				description = "Lưỡi Câu UFA Sproat-G",
 				client = {
 					image = "ufa_sproat_g_hook.png",
 				}
 			},
 			
 			["carptack_carp_ss_hook"] = {
-				label = "Carptack Carp S&S",
+				label = "Lưỡi Câu Carptack Carp S&S",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "Carptack Carp S&S",
+				description = "Lưỡi Câu Carptack Carp S&S",
 				client = {
 					image = "carptack_carp_ss_hook.png",
 				}
 			},
 			
 			["ufa_wide_gap_bl_hook"] = {
-				label = "UFA Wide Gap BL",
+				label = "Lưỡi Câu UFA Wide Gap BL",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Wide Gap BL",
+				description = "Lưỡi Câu UFA Wide Gap BL",
 				client = {
 					image = "ufa_wide_gap_bl_hook.png",
 				}
 			},
 			
 			["ufa_aberdeen_hook"] = {
-				label = "UFA Aberdeen",
+				label = "Lưỡi Câu UFA Aberdeen",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Aberdeen",
+				description = "Lưỡi Câu UFA Aberdeen",
 				client = {
 					image = "ufa_aberdeen_hook.png",
 				}
 			},
 			
 			["ufa_octopus_bl_hook"] = {
-				label = "UFA Octopus BL",
+				label = "Lưỡi Câu UFA Octopus BL",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Octopus BL",
+				description = "Lưỡi Câu UFA Octopus BL",
 				client = {
 					image = "ufa_octopus_bl_hook.png",
 				}
 			},
 			
 			["ufa_livebait_hook"] = {
-				label = "UFA Livebait",
+				label = "Lưỡi Câu UFA Livebait",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Livebait",
+				description = "Lưỡi Câu UFA Livebait",
 				client = {
 					image = "ufa_livebait_hook.png",
 				}
 			},
 			
 			["carptack_micro_barb_hook"] = {
-				label = "Carptack Micro Barb",
+				label = "Lưỡi Câu Carptack Micro Barb",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "Carptack Micro Barb",
+				description = "Lưỡi Câu Carptack Micro Barb",
 				client = {
 					image = "carptack_micro_barb_hook.png",
 				}
 			},
 			
 			["carptack_carp_hook"] = {
-				label = "Carptack Carp",
+				label = "Lưỡi Câu Carptack Carp",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "Carptack Carp",
+				description = "Lưỡi Câu Carptack Carp",
 				client = {
 					image = "carptack_carp_hook.png",
 				}
 			},
 			
 			["ufa_fusion_bl_hook"] = {
-				label = "UFA Fusion BL",
+				label = "Lưỡi Câu UFA Fusion BL",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "UFA Fusion BL",
+				description = "Lưỡi Câu UFA Fusion BL",
 				client = {
 					image = "ufa_fusion_bl_hook.png",
 				}
 			},
 			
 			["predatek_octopus_hook"] = {
-				label = "Predatek Octopus",
+				label = "Lưỡi Câu Predatek Octopus",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "Predatek Octopus",
+				description = "Lưỡi Câu Predatek Octopus",
 				client = {
 					image = "predatek_octopus_hook.png",
 				}
 			},
 			
 			["predatek_fusion_hook"] = {
-				label = "Predatek Fusion",
+				label = "Lưỡi Câu Predatek Fusion",
 				weight = 40,
 				stack = true,
 				close = true,
-				description = "Predatek Fusion",
+				description = "Lưỡi Câu Predatek Fusion",
 				client = {
 					image = "predatek_fusion_hook.png",
 				}
 			},
 			-- Scuba Shit
 			["scuba"] = {
-				label = "Scuba gear",
+				label = "Đồ Lặn Scuba",
 				weight = 300,
 				stack = false,
 				close = true,
-				description = "Scuba gear",
+				description = "Đồ Lặn Scuba",
 				client = {
 					image = "scuba.png",
 				}
 			},
 			-- Fish
-			
 			["alligator_gar"] = {
-				label = "Alligator Gar",
-				weight = 550,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An alligator gar fish.",
+				label = "Cá Sấu Mỹ",
+				weight = 550,
+				stack = true,
+				close = true,
+				description = "Cá Sấu Mỹ.",
 				client = {
 					image = "alligator_gar.png",
 				}
 			},
 			
 			["amur_pike"] = {
-				label = "Amur Pike",
-				weight = 750,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An Amur Pike fish.",
+				label = "Cá Chó Amur",
+				weight = 750,
+				stack = true,
+				close = true,
+				description = "Cá Chó Amur.",
 				client = {
 					image = "amur_pike.png",
 				}
 			},
 			
 			["atlantic_cod"] = {
-				label = "Atlantic Cod",
-				weight = 300,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An Atlantic Cod fish.",
+				label = "Cá Tuyết Đại Tây Dương",
+				weight = 300,
+				stack = true,
+				close = true,
+				description = "Cá Tuyết Đại Tây Dương.",
 				client = {
 					image = "atlantic_cod.png",
 				}
 			},
 			
 			["fishing_gear"] = {
-				label = "Fishing Gear",
-				weight = 30,  -- Dropped a 0 from the weight
-				stack = false,  -- Made non-stackable (unique item)
-				close = true,  -- Equivalent to shouldClose
-				description = "Essential gear for fishing.",
+				label = "Đồ Nghề Câu Cá",
+				weight = 30,
+				stack = false,
+				close = true,
+				description = "Đồ nghề thiết yếu để câu cá.",
 				client = {
 					image = "fishing_gear.png",
 				}
 			},
 			
 			["aquarium_pass"] = {
-				label = "Aquarium Pass",
-				weight = 30,  -- Dropped a 0 from the weight
-				stack = false,  -- Made non-stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "Pass for entry to the aquarium.",
+				label = "Vé Vào Thủy Cung",
+				weight = 30,
+				stack = false,
+				close = true,
+				description = "Vé vào cửa thủy cung.",
 				client = {
 					image = "aquarium_pass.png",
 				}
 			},
 			
 			["research_kit"] = {
-				label = "Research Kit",
-				weight = 30,  -- Dropped a 0 from the weight
-				stack = false,  -- Made non-stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A kit useful for conducting field research.",
+				label = "Bộ Dụng Cụ Nghiên Cứu",
+				weight = 30,
+				stack = false,
+				close = true,
+				description = "Bộ dụng cụ dùng để nghiên cứu thực địa.",
 				client = {
 					image = "research_kit.png",
 				}
 			},
+
 			["special_boots"] = {
-				label = "Special Boots",
-				weight = 30,  -- Dropped a 0 from the weight
-				stack = false,  -- Made non-stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "Specially designed boots for rugged terrain.",
+				label = "Giày Đặc Biệt",
+				weight = 30,
+				stack = false,
+				close = true,
+				description = "Giày được thiết kế đặc biệt cho địa hình hiểm trở.",
 				client = {
 					image = "special_boots.png",
 				}
 			},
 			
 			["museum_ticket"] = {
-				label = "Museum Ticket",
-				weight = 30,  -- Dropped a 0 from the weight
-				stack = false,  -- Made non-stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "Ticket for entry to the museum.",
+				label = "Vé Vào Bảo Tàng",
+				weight = 30,
+				stack = false,
+				close = true,
+				description = "Vé vào cửa bảo tàng.",
 				client = {
 					image = "museum_ticket.png",
 				}
 			},
 			
 			["atlantic_salmon"] = {
-				label = "Atlantic Salmon",
-				weight = 500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An Atlantic Salmon fish.",
+				label = "Cá Hồi Đại Tây Dương",
+				weight = 500,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Đại Tây Dương.",
 				client = {
 					image = "atlantic_salmon.png",
 				}
 			},
 			
 			["barbel"] = {
-				label = "Barbel",
-				weight = 600,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Barbel fish.",
+				label = "Cá Râu",
+				weight = 600,
+				stack = true,
+				close = true,
+				description = "Cá Râu.",
 				client = {
 					image = "barbel.png",
 				}
 			},
 			
 			["beluga_sturgeon"] = {
-				label = "Beluga Sturgeon",
-				weight = 264,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Beluga Sturgeon fish.",
+				label = "Cá Tầm Beluga",
+				weight = 264,
+				stack = true,
+				close = true,
+				description = "Cá Tầm Beluga.",
 				client = {
 					image = "beluga_sturgeon.png",
 				}
 			},
 			
 			["black_grayling"] = {
-				label = "Black Grayling",
-				weight = 120,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Black Grayling fish.",
+				label = "Cá Hồi Đen",
+				weight = 120,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Đen.",
 				client = {
 					image = "black_grayling.png",
 				}
 			},
 			
 			["blacktip_reef_shark"] = {
-				label = "Blacktip Reef Shark",
-				weight = 1500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Blacktip Reef Shark.",
+				label = "Cá Mập Vây Đen",
+				weight = 1500,
+				stack = true,
+				close = true,
+				description = "Cá Mập Vây Đen.",
 				client = {
 					image = "blacktip_reef_shark.png",
 				}
 			},
 			
 			["blue_marlin"] = {
-				label = "Blue Marlin",
-				weight = 200,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Blue Marlin fish.",
+				label = "Cá Cờ Xanh",
+				weight = 200,
+				stack = true,
+				close = true,
+				description = "Cá Cờ Xanh.",
 				client = {
 					image = "blue_marlin.png",
 				}
 			},
 			
 			["bluefin_tuna"] = {
-				label = "Bluefin Tuna",
-				weight = 270,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Bluefin Tuna fish.",
+				label = "Cá Ngừ Vây Xanh",
+				weight = 270,
+				stack = true,
+				close = true,
+				description = "Cá Ngừ Vây Xanh.",
 				client = {
 					image = "bluefin_tuna.png",
 				}
 			},
 			
 			["bluegill"] = {
-				label = "Bluegill",
-				weight = 120,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Bluegill fish.",
+				label = "Cá Mang Xanh",
+				weight = 120,
+				stack = true,
+				close = true,
+				description = "Cá Mang Xanh.",
 				client = {
 					image = "bluegill.png",
 				}
 			},
 			
 			["brook_trout"] = {
-				label = "Brook Trout",
-				weight = 700,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Brook Trout fish.",
+				label = "Cá Hồi Suối",
+				weight = 700,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Suối.",
 				client = {
 					image = "brook_trout.png",
 				}
 			},
 			
 			["brown_trout"] = {
-				label = "Brown Trout",
-				weight = 230,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Brown Trout fish.",
+				label = "Cá Hồi Nâu",
+				weight = 230,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Nâu.",
 				client = {
 					image = "brown_trout.png",
 				}
 			},
 			
 			["bull_trout"] = {
-				label = "Bull Trout",
-				weight = 200,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Bull Trout fish.",
+				label = "Cá Hồi Bò",
+				weight = 200,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Bò.",
 				client = {
 					image = "bull_trout.png",
 				}
 			},
 			
 			["chub"] = {
-				label = "Chub",
-				weight = 150,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Chub fish.",
+				label = "Cá Chép Trắng",
+				weight = 150,
+				stack = true,
+				close = true,
+				description = "Cá Chép Trắng.",
 				client = {
 					image = "chub.png",
 				}
 			},
 			
 			["chum_salmon"] = {
-				label = "Chum Salmon",
-				weight = 600,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Chum Salmon fish.",
+				label = "Cá Hồi Chum",
+				weight = 600,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Chum.",
 				client = {
 					image = "chum_salmon.png",
 				}
 			},
 			
 			["coho_salmon"] = {
-				label = "Coho Salmon",
-				weight = 500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Coho Salmon fish.",
+				label = "Cá Hồi Coho",
+				weight = 500,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Coho.",
 				client = {
 					image = "coho_salmon.png",
 				}
 			},
 			
 			["common_bleak"] = {
-				label = "Common Bleak",
-				weight = 10,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Common Bleak fish.",
+				label = "Cá Liếp",
+				weight = 10,
+				stack = true,
+				close = true,
+				description = "Cá Liếp.",
 				client = {
 					image = "common_bleak.png",
 				}
 			},
 			
 			["common_bream"] = {
-				label = "Common Bream",
-				weight = 400,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Common Bream fish.",
+				label = "Cá Chép Bạc",
+				weight = 400,
+				stack = true,
+				close = true,
+				description = "Cá Chép Bạc.",
 				client = {
 					image = "common_bream.png",
 				}
 			},
 			
 			["common_carp"] = {
-				label = "Common Carp",
-				weight = 700,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Common Carp fish.",
+				label = "Cá Chép Thường",
+				weight = 700,
+				stack = true,
+				close = true,
+				description = "Cá Chép Thường.",
 				client = {
 					image = "common_carp.png",
 				}
 			},
+
 			["crucian_carp"] = {
-				label = "Crucian Carp",
-				weight = 140,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Crucian Carp fish.",
+				label = "Cá Diếc",
+				weight = 140,
+				stack = true,
+				close = true,
+				description = "Cá Diếc.",
 				client = {
 					image = "crucian_carp.png",
 				}
 			},
 			
 			["european_bass"] = {
-				label = "European Bass",
-				weight = 250,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A European Bass fish.",
+				label = "Cá Vược Châu Âu",
+				weight = 250,
+				stack = true,
+				close = true,
+				description = "Cá Vược Châu Âu.",
 				client = {
 					image = "european_bass.png",
 				}
 			},
 			
 			["european_eel"] = {
-				label = "European Eel",
-				weight = 300,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A European Eel fish.",
+				label = "Cá Chình Châu Âu",
+				weight = 300,
+				stack = true,
+				close = true,
+				description = "Cá Chình Châu Âu.",
 				client = {
 					image = "european_eel.png",
 				}
 			},
 			
 			["european_flounder"] = {
-				label = "European Flounder",
-				weight = 170,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A European Flounder fish.",
+				label = "Cá Bơn Châu Âu",
+				weight = 170,
+				stack = true,
+				close = true,
+				description = "Cá Bơn Châu Âu.",
 				client = {
 					image = "european_flounder.png",
 				}
 			},
 			
 			["european_perch"] = {
-				label = "European Perch",
-				weight = 500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A European Perch fish.",
+				label = "Cá Rô Châu Âu",
+				weight = 500,
+				stack = true,
+				close = true,
+				description = "Cá Rô Châu Âu.",
 				client = {
 					image = "european_perch.png",
 				}
 			},
 			
 			["european_sea_sturgeon"] = {
-				label = "European Sea Sturgeon",
-				weight = 2000,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A European Sea Sturgeon.",
+				label = "Cá Tầm Biển Châu Âu",
+				weight = 2000,
+				stack = true,
+				close = true,
+				description = "Cá Tầm Biển Châu Âu.",
 				client = {
 					image = "european_sea_sturgeon.png",
 				}
 			},
 			
 			["electric_eel"] = {
-				label = "Electric Eel",
-				weight = 1500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An Electric Eel.",
+				label = "Cá Chình Điện",
+				weight = 1500,
+				stack = true,
+				close = true,
+				description = "Cá Chình Điện.",
 				client = {
 					image = "electric_eel.png",
 				}
 			},
 			
 			["garfish"] = {
-				label = "Garfish",
-				weight = 50,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Garfish.",
+				label = "Cá Nhím",
+				weight = 50,
+				stack = true,
+				close = true,
+				description = "Cá Nhím.",
 				client = {
 					image = "garfish.png",
 				}
 			},
 			
 			["giant_freshwater_stingray"] = {
-				label = "Giant Freshwater Stingray",
-				weight = 350,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Giant Freshwater Stingray.",
+				label = "Cá Đuối Nước Ngọt Khổng Lồ",
+				weight = 350,
+				stack = true,
+				close = true,
+				description = "Cá Đuối Nước Ngọt Khổng Lồ.",
 				client = {
 					image = "giant_freshwater_stingray.png",
 				}
 			},
 			
 			["giant_grouper"] = {
-				label = "Giant Grouper",
-				weight = 260,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Giant Grouper fish.",
+				label = "Cá Mú Khổng Lồ",
+				weight = 260,
+				stack = true,
+				close = true,
+				description = "Cá Mú Khổng Lồ.",
 				client = {
 					image = "giant_grouper.png",
 				}
 			},
 			
 			["giant_squid"] = {
-				label = "Giant Squid",
-				weight = 2000,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Giant Squid.",
+				label = "Mực Khổng Lồ",
+				weight = 2000,
+				stack = true,
+				close = true,
+				description = "Mực Khổng Lồ.",
 				client = {
 					image = "giant_squid.png",
 				}
 			},
 			
 			["giant_trevally"] = {
-				label = "Giant Trevally",
-				weight = 200,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Giant Trevally fish.",
+				label = "Cá Khế Khổng Lồ",
+				weight = 200,
+				stack = true,
+				close = true,
+				description = "Cá Khế Khổng Lồ.",
 				client = {
 					image = "giant_trevally.png",
 				}
 			},
 			
 			["golden_trout"] = {
-				label = "Golden Trout",
-				weight = 40,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Golden Trout fish.",
+				label = "Cá Hồi Vàng",
+				weight = 40,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Vàng.",
 				client = {
 					image = "golden_trout.png",
 				}
 			},
 			
 			["grass_carp"] = {
-				label = "Grass Carp",
-				weight = 120,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Grass Carp fish.",
+				label = "Cá Trắm Cỏ",
+				weight = 120,
+				stack = true,
+				close = true,
+				description = "Cá Trắm Cỏ.",
 				client = {
 					image = "grass_carp.png",
 				}
 			},
 			
 			["grass_pickerel"] = {
-				label = "Grass Pickerel",
-				weight = 90,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Grass Pickerel fish.",
+				label = "Cá Chó Cỏ",
+				weight = 90,
+				stack = true,
+				close = true,
+				description = "Cá Chó Cỏ.",
 				client = {
 					image = "grass_pickerel.png",
 				}
 			},
 			
 			["grayling"] = {
-				label = "Grayling",
-				weight = 80,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Grayling fish.",
+				label = "Cá Hồi Xám",
+				weight = 80,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Xám.",
 				client = {
 					image = "grayling.png",
 				}
 			},
 			
 			["great_barracuda"] = {
-				label = "Great Barracuda",
-				weight = 900,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Great Barracuda fish.",
+				label = "Cá Nhồng Lớn",
+				weight = 900,
+				stack = true,
+				close = true,
+				description = "Cá Nhồng Lớn.",
 				client = {
 					image = "great_barracuda.png",
 				}
 			},
 			
 			["grey_snapper"] = {
-				label = "Grey Snapper",
-				weight = 400,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Grey Snapper fish.",
+				label = "Cá Hồng Xám",
+				weight = 400,
+				stack = true,
+				close = true,
+				description = "Cá Hồng Xám.",
 				client = {
 					image = "grey_snapper.png",
 				}
 			},
 			
 			["huchen"] = {
-				label = "Huchen",
-				weight = 1500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Huchen fish.",
+				label = "Cá Hồi Sông Danube",
+				weight = 1500,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Sông Danube.",
 				client = {
 					image = "huchen.png",
 				}
 			},
 			
 			["ide"] = {
-				label = "Ide",
-				weight = 100,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An Ide fish.",
+				label = "Cá Chép Vàng",
+				weight = 100,
+				stack = true,
+				close = true,
+				description = "Cá Chép Vàng.",
 				client = {
 					image = "ide.png",
 				}
 			},
 			
 			["indian_threadfish"] = {
-				label = "Indian Threadfish",
-				weight = 250,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "An Indian Threadfish.",
+				label = "Cá Chỉ Vàng Ấn Độ",
+				weight = 250,
+				stack = true,
+				close = true,
+				description = "Cá Chỉ Vàng Ấn Độ.",
 				client = {
 					image = "indian_threadfish.png",
 				}
 			},
 			
 			["lake_sturgeon"] = {
-				label = "Lake Sturgeon",
-				weight = 1600,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Lake Sturgeon fish.",
+				label = "Cá Tầm Hồ",
+				weight = 1600,
+				stack = true,
+				close = true,
+				description = "Cá Tầm Hồ.",
 				client = {
 					image = "lake_sturgeon.png",
 				}
 			},
 			
 			["largemouth_bass"] = {
-				label = "Largemouth Bass",
-				weight = 100,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Largemouth Bass fish.",
+				label = "Cá Vược Miệng Lớn",
+				weight = 100,
+				stack = true,
+				close = true,
+				description = "Cá Vược Miệng Lớn.",
 				client = {
 					image = "largemouth_bass.png",
 				}
 			},
 			
 			["mahi_mahi"] = {
-				label = "Mahi-Mahi",
-				weight = 1000,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Mahi-Mahi fish.",
+				label = "Cá Nục Vây Vàng",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Cá Nục Vây Vàng.",
 				client = {
 					image = "mahi_mahi.png",
 				}
 			},
 			
 			["malabar_grouper"] = {
-				label = "Malabar Grouper",
-				weight = 1500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Malabar Grouper fish.",
+				label = "Cá Mú Malabar",
+				weight = 1500,
+				stack = true,
+				close = true,
+				description = "Cá Mú Malabar.",
 				client = {
 					image = "malabar_grouper.png",
 				}
 			},
 			
 			["mirror_carp"] = {
-				label = "Mirror Carp",
-				weight = 700,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Mirror Carp fish.",
+				label = "Cá Chép Gương",
+				weight = 700,
+				stack = true,
+				close = true,
+				description = "Cá Chép Gương.",
 				client = {
 					image = "mirror_carp.png",
 				}
 			},
 			
 			["northern_pike"] = {
-				label = "Northern Pike",
-				weight = 500,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Northern Pike fish.",
+				label = "Cá Chó Phương Bắc",
+				weight = 500,
+				stack = true,
+				close = true,
+				description = "Cá Chó Phương Bắc.",
 				client = {
 					image = "northern_pike.png",
 				}
 			},
 			
 			["pink_river_dolphin"] = {
-				label = "Pink River Dolphin",
-				weight = 1550,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Pink River Dolphin.",
+				label = "Cá Heo Sông Hồng",
+				weight = 1550,
+				stack = true,
+				close = true,
+				description = "Cá Heo Sông Hồng.",
 				client = {
 					image = "pink_river_dolphin.png",
 				}
 			},
 			
 			["pink_salmon"] = {
-				label = "Pink Salmon",
-				weight = 200,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Pink Salmon fish.",
+				label = "Cá Hồi Hồng",
+				weight = 200,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Hồng.",
 				client = {
 					image = "pink_salmon.png",
 				}
 			},
 			
 			["prussian_carp"] = {
-				label = "Prussian Carp",
-				weight = 90,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Prussian Carp fish.",
+				label = "Cá Chép Phổ",
+				weight = 90,
+				stack = true,
+				close = true,
+				description = "Cá Chép Phổ.",
 				client = {
 					image = "prussian_carp.png",
 				}
 			},
 			
 			["pufferfish"] = {
-				label = "Pufferfish",
-				weight = 150,  -- Dropped a 0 from the weight
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Pufferfish.",
+				label = "Cá Nóc",
+				weight = 150,
+				stack = true,
+				close = true,
+				description = "Cá Nóc.",
 				client = {
 					image = "pufferfish.png",
 				}
 			},
 			
 			["pumpkinseed"] = {
-				label = "Pumpkinseed",
-				weight = 40,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Pumpkinseed fish.",
+				label = "Cá Bí Ngô",
+				weight = 40,
+				stack = true,
+				close = true,
+				description = "Cá Bí Ngô.",
 				client = {
 					image = "pumpkinseed.png",
 				}
 			},
 			
 			["rainbow_trout"] = {
-				label = "Rainbow Trout",
-				weight = 100,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Rainbow Trout fish.",
+				label = "Cá Hồi Cầu Vồng",
+				weight = 100,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Cầu Vồng.",
 				client = {
 					image = "rainbow_trout.png",
 				}
 			},
 			
 			["red_lionfish"] = {
-				label = "Red Lionfish",
-				weight = 100,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Red Lionfish.",
+				label = "Cá Mao Tiên Đỏ",
+				weight = 100,
+				stack = true,
+				close = true,
+				description = "Cá Mao Tiên Đỏ.",
 				client = {
 					image = "red_lionfish.png",
 				}
 			},
 			
 			["redeye_piranha"] = {
-				label = "Redeye Piranha",
-				weight = 120,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Redeye Piranha.",
+				label = "Cá Piranha Mắt Đỏ",
+				weight = 120,
+				stack = true,
+				close = true,
+				description = "Cá Piranha Mắt Đỏ.",
 				client = {
 					image = "redeye_piranha.png",
 				}
 			},
 			
 			["redfin_pickerel"] = {
-				label = "Redfin Pickerel",
-				weight = 40,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Redfin Pickerel fish.",
+				label = "Cá Chó Vây Đỏ",
+				weight = 40,
+				stack = true,
+				close = true,
+				description = "Cá Chó Vây Đỏ.",
 				client = {
 					image = "redfin_pickerel.png",
 				}
 			},
 			
 			["roach"] = {
-				label = "Roach",
-				weight = 50,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Roach fish.",
+				label = "Cá Roach",
+				weight = 50,
+				stack = true,
+				close = true,
+				description = "Cá Roach.",
 				client = {
 					image = "roach.png",
 				}
 			},
 			
 			["sea_trout"] = {
-				label = "Sea Trout",
-				weight = 200,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Sea Trout fish.",
+				label = "Cá Hồi Biển",
+				weight = 200,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Biển.",
 				client = {
 					image = "sea_trout.png",
 				}
 			},
 			
 			["silver_carp"] = {
-				label = "Silver Carp",
-				weight = 1000,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Silver Carp fish.",
+				label = "Cá Trắm Bạc",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Cá Trắm Bạc.",
 				client = {
 					image = "silver_carp.png",
 				}
 			},
 			
 			["skeleton"] = {
-				label = "Skeleton",
-				weight = 10,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Skeleton.",
+				label = "Bộ Xương",
+				weight = 10,
+				stack = true,
+				close = true,
+				description = "Bộ Xương.",
 				client = {
 					image = "skeleton.png",
 				}
 			},
 			
 			["smallmouth_bass"] = {
-				label = "Smallmouth Bass",
-				weight = 150,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Smallmouth Bass fish.",
+				label = "Cá Vược Miệng Nhỏ",
+				weight = 150,
+				stack = true,
+				close = true,
+				description = "Cá Vược Miệng Nhỏ.",
 				client = {
 					image = "smallmouth_bass.png",
 				}
 			},
 			
 			["sockeye_salmon"] = {
-				label = "Sockeye Salmon",
-				weight = 300,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Sockeye Salmon fish.",
+				label = "Cá Hồi Đỏ",
+				weight = 300,
+				stack = true,
+				close = true,
+				description = "Cá Hồi Đỏ.",
 				client = {
 					image = "sockeye_salmon.png",
 				}
 			},
 			
 			["south_sea_pearl_oyster"] = {
-				label = "South Sea Pearl Oyster",
-				weight = 10,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A South Sea Pearl Oyster.",
+				label = "Hàu Ngọc Trai Nam Hải",
+				weight = 10,
+				stack = true,
+				close = true,
+				description = "Hàu Ngọc Trai Nam Hải.",
 				client = {
 					image = "south_sea_pearl_oyster.png",
 				}
 			},
 			
 			["tench"] = {
-				label = "Tench",
-				weight = 250,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Tench fish.",
+				label = "Cá Chép Xanh",
+				weight = 250,
+				stack = true,
+				close = true,
+				description = "Cá Chép Xanh.",
 				client = {
 					image = "tench.png",
 				}
 			},
 			
 			["tiger_shark"] = {
-				label = "Tiger Shark",
-				weight = 5500,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Tiger Shark.",
+				label = "Cá Mập Hổ",
+				weight = 5500,
+				stack = true,
+				close = true,
+				description = "Cá Mập Hổ.",
 				client = {
 					image = "tiger_shark.png",
 				}
 			},
 			
 			["wels_catfish"] = {
-				label = "Wels Catfish",
-				weight = 400,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Wels Catfish fish.",
+				label = "Cá Trê Khổng Lồ",
+				weight = 400,
+				stack = true,
+				close = true,
+				description = "Cá Trê Khổng Lồ.",
 				client = {
 					image = "wels_catfish.png",
 				}
 			},
 			
 			["white_sturgeon"] = {
-				label = "White Sturgeon",
-				weight = 800,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A White Sturgeon fish.",
+				label = "Cá Tầm Trắng",
+				weight = 800,
+				stack = true,
+				close = true,
+				description = "Cá Tầm Trắng.",
 				client = {
 					image = "white_sturgeon.png",
 				}
 			},
 			
 			["yellow_perch"] = {
-				label = "Yellow Perch",
-				weight = 40,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Yellow Perch fish.",
+				label = "Cá Rô Vàng",
+				weight = 40,
+				stack = true,
+				close = true,
+				description = "Cá Rô Vàng.",
 				client = {
 					image = "yellow_perch.png",
 				}
 			},
 			
 			["yellowfin_tuna"] = {
-				label = "Yellowfin Tuna",
-				weight = 900,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Yellowfin Tuna fish.",
+				label = "Cá Ngừ Vây Vàng",
+				weight = 900,
+				stack = true,
+				close = true,
+				description = "Cá Ngừ Vây Vàng.",
 				client = {
 					image = "yellowfin_tuna.png",
 				}
 			},
 			
 			["yellowtail_barracuda"] = {
-				label = "Yellowtail Barracuda",
-				weight = 110,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Yellowtail Barracuda.",
+				label = "Cá Nhồng Đuôi Vàng",
+				weight = 110,
+				stack = true,
+				close = true,
+				description = "Cá Nhồng Đuôi Vàng.",
 				client = {
 					image = "yellowtail_barracuda.png",
 				}
 			},
 			
 			["zander"] = {
-				label = "Zander",
-				weight = 200,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A Zander fish.",
+				label = "Cá Măng",
+				weight = 200,
+				stack = true,
+				close = true,
+				description = "Cá Măng.",
 				client = {
 					image = "zander.png",
 				}
 			},
 			
 			["paddlefish"] = {
-				label = "Paddle Fish",
-				weight = 1000,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A rare and illegal Paddle Fish.",
+				label = "Cá Mái Chèo",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Cá Mái Chèo hiếm và bị cấm.",
 				client = {
 					image = "paddlefish.png",
 				}
 			},
 			
 			["sawfish"] = {
-				label = "Saw Fish",
-				weight = 1000,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A rare and illegal Saw Fish.",
+				label = "Cá Cưa",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Cá Cưa hiếm và bị cấm.",
 				client = {
 					image = "sawfish.png",
 				}
 			},
 			
 			["eel"] = {
-				label = "Eel",
-				weight = 1000,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A rare and illegal Eel.",
+				label = "Cá Chình",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Cá Chình hiếm và bị cấm.",
 				client = {
 					image = "eel.png",
 				}
 			},
 			
 			["hammerheadshark"] = {
-				label = "Hammer Head Shark",
-				weight = 2500,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A rare and illegal Hammer Head Shark.",
+				label = "Cá Mập Đầu Búa",
+				weight = 2500,
+				stack = true,
+				close = true,
+				description = "Cá Mập Đầu Búa hiếm và bị cấm.",
 				client = {
 					image = "hammerheadshark.png",
 				}
 			},
 			
 			["seaturtle"] = {
-				label = "Sea Turtle",
-				weight = 2500,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A rare and illegal Sea Turtle.",
+				label = "Rùa Biển",
+				weight = 2500,
+				stack = true,
+				close = true,
+				description = "Rùa Biển hiếm và bị cấm.",
 				client = {
 					image = "seaturtle.png",
 				}
 			},
 			
 			["leopardshark"] = {
-				label = "Leopard Shark",
-				weight = 2500,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A rare and illegal Leopard Shark.",
+				label = "Cá Mập Báo",
+				weight = 2500,
+				stack = true,
+				close = true,
+				description = "Cá Mập Báo hiếm và bị cấm.",
 				client = {
 					image = "leopardshark.png",
 				}
 			},
 			
 			["blueshark"] = {
-				label = "Blue Shark",
-				weight = 4000,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A legendary and illegal Blue Shark.",
+				label = "Cá Mập Xanh",
+				weight = 4000,
+				stack = true,
+				close = true,
+				description = "Cá Mập Xanh huyền thoại và bị cấm.",
 				client = {
 					image = "blueshark.png",
 				}
 			},
 			
 			["greatwhiteshark"] = {
-				label = "Great White Shark",
-				weight = 10000,  -- Converted weight to OxInventory format
-				stack = true,  -- Made stackable
-				close = true,  -- Equivalent to shouldClose
-				description = "A mythic and illegal Great White Shark.",
+				label = "Cá Mập Trắng Lớn",
+				weight = 10000,
+				stack = true,
+				close = true,
+				description = "Cá Mập Trắng Lớn thần thoại và bị cấm.",
 				client = {
 					image = "greatwhiteshark.png",
 				}
@@ -5137,101 +5137,110 @@ return {
 			
 			-- Diving Items
 			["ancient_artifact"] = {
-				label = "Ancient Artifact",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "An Ancient Artifact!",
+				label = "Cổ Vật Cổ Đại",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một cổ vật cổ đại!",
 				client = {
 					image = "ancient_artifact.png",
 				}
 			},
+
 			["antique_compass"] = {
-				label = "Antique Compass",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "An Antique Compass.",
+				label = "La Bàn Cổ",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một chiếc la bàn cổ.",
 				client = {
 					image = "antique_compass.png",
 				}
 			},
+
 			["enchanted_jewel"] = {
-				label = "Enchanted Jewel",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "An Enchanted Jewel.",
+				label = "Đá Quý Phong Ấn",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một viên đá quý được phong ấn.",
 				client = {
 					image = "enchanted_jewel.png",
 				}
 			},
+
 			["luxury_watch"] = {
-				label = "Luxury Watch",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "An Expensive Watch.",
+				label = "Đồng Hồ Xa Xỉ",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một chiếc đồng hồ đắt tiền.",
 				client = {
 					image = "luxury_watch.png",
 				}
 			},
+
 			["meteorite_ore"] = {
-				label = "Meteorite Ore",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "Meteorite Ore.",
+				label = "Quặng Thiên Thạch",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Quặng thiên thạch.",
 				client = {
 					image = "meteorite_ore.png",
 				}
 			},
+
 			["mystic_crystal"] = {
-				label = "Mystic Crystal",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "A Mystic Crystal.",
+				label = "Pha Lê Huyền Bí",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một viên pha lê huyền bí.",
 				client = {
 					image = "mystic_crystal.png",
 				}
 			},
+
 			["phantom_amulet"] = {
-				label = "Phantom Amulet",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "A Phantom Amulet.",
+				label = "Bùa Hộ Mệnh Bóng Ma",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một chiếc bùa hộ mệnh bóng ma.",
 				client = {
 					image = "phantom_amulet.png",
 				}
 			},
+
 			["precious_pearls"] = {
-				label = "Precious Pearls",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "Handfull of Precious Pearls.",
+				label = "Ngọc Trai Quý",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một nắm ngọc trai quý giá.",
 				client = {
 					image = "precious_pearls.png",
 				}
 			},
+
 			["rare_spices"] = {
-				label = "Rare Spices",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "Collection of Rare Spices.",
+				label = "Gia Vị Quý Hiếm",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Bộ sưu tập gia vị quý hiếm.",
 				client = {
 					image = "rare_spices.png",
 				}
 			},
+
 			["spy_gadget"] = {
-				label = "Spy Gadget",
-				weight = 1000,  
-				stack = true,  
-				close = true,  
-				description = "A Spy Gadget.",
+				label = "Thiết Bị Điệp Viên",
+				weight = 1000,
+				stack = true,
+				close = true,
+				description = "Một thiết bị điệp viên bí ẩn.",
 				client = {
 					image = "spy_gadget.png",
 				}
