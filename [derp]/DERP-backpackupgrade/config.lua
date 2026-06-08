@@ -1,8 +1,8 @@
 Config = {}
 
--- Model và vị trí prop nâng cấp (đặt đúng tọa độ server của bạn)
-Config.PropModel  = 'prop_sewing_machine'
-Config.PropCoords = vector4(194.81, -876.99, 31.27, 66.88)
+-- Model và vị trí ped nâng cấp (đặt đúng tọa độ server của bạn)
+Config.PedModel  = 'a_m_y_business_02'
+Config.PedCoords = vector4(127.12, -1029.31, 29.40, 162.65)
 
 -- Điểm cộng theo rarity của item nguyên liệu
 Config.RarityPoints = {

@@ -500,7 +500,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Tạp Hóa",
         ped = `a_m_m_fatlatin_01`,
-        coords = vector4(188.81, -889.07, 30.71, 248.16),
+        coords = vector4(136.70, -1095.07, 29.38, 177.20),
         type = "both",
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
@@ -760,7 +760,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Cửa Hàng Quần Áo",
         ped = `a_f_y_business_01`,
-        coords = vector4(201.27, -871.31, 30.71, 158.49),
+        coords = vector4(129.78, -1038.58, 29.40, 337.87),
         type = "buy",
         items = {
             {name = "quan_231_0_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},

@@ -2,7 +2,7 @@ Config = {}
 
 Config.NPC = {
     model = 's_m_m_highsec_01',
-    coords = vector4(193.88, -877.75, 29.71, 256.43),
+    coords = vector4(124.42, -1031.16, 28.40, 246.56),
     scenario = 'WORLD_HUMAN_CLIPBOARD',
 }
 

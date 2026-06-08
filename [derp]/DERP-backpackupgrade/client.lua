@@ -1,43 +1,47 @@
-local upgradeProp = nil
-local isUIOpen    = false
+local upgradePed = nil
+local isUIOpen   = false
 
--- Xóa toàn bộ object cùng model gần coords trước khi spawn mới
-local function ClearOldProps()
-    local model  = joaat(Config.PropModel)
-    local coords = vec3(Config.PropCoords.x, Config.PropCoords.y, Config.PropCoords.z)
-    local objs   = GetGamePool('CObject')
+-- Xóa toàn bộ ped cùng model gần coords trước khi spawn mới
+local function ClearOldPeds()
+    local model  = joaat(Config.PedModel)
+    local coords = vec3(Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z)
+    local peds   = GetGamePool('CPed')
 
-    for _, obj in ipairs(objs) do
-        if GetEntityModel(obj) == model then
-            local dist = #(GetEntityCoords(obj) - coords)
-            if dist < 5.0 and DoesEntityExist(obj) and not IsEntityAttached(obj) then
-                SetEntityAsMissionEntity(obj, true, true)
-                DeleteObject(obj)
+    for _, ped in ipairs(peds) do
+        if GetEntityModel(ped) == model then
+            local dist = #(GetEntityCoords(ped) - coords)
+            if dist < 5.0 and DoesEntityExist(ped) and not IsEntityAttached(ped) then
+                SetEntityAsMissionEntity(ped, true, true)
+                DeletePed(ped)
             end
         end
     end
 end
 
--- Spawn prop tại coords và đăng ký ox_target lên entity đó
-local function SpawnProp()
-    ClearOldProps()
+-- Spawn ped tại coords và đăng ký ox_target lên entity đó
+local function SpawnPed()
+    ClearOldPeds()
 
-    local model = joaat(Config.PropModel)
+    local model = joaat(Config.PedModel)
     lib.requestModel(model)
 
-    upgradeProp = CreateObject(
+    upgradePed = CreatePed(
+        4,
         model,
-        Config.PropCoords.x,
-        Config.PropCoords.y,
-        Config.PropCoords.z - 1,
-        false, false, false
+        Config.PedCoords.x,
+        Config.PedCoords.y,
+        Config.PedCoords.z - 1,
+        Config.PedCoords.w,
+        false, false
     )
-    SetEntityHeading(upgradeProp, Config.PropCoords.w)
-    FreezeEntityPosition(upgradeProp, true)
-    SetEntityAsMissionEntity(upgradeProp, true, true)
+    FreezeEntityPosition(upgradePed, true)
+    SetEntityInvincible(upgradePed, true)
+    SetBlockingOfNonTemporaryEvents(upgradePed, true)
+    SetPedCanRagdoll(upgradePed, false)
+    SetEntityAsMissionEntity(upgradePed, true, true)
     SetModelAsNoLongerNeeded(model)
 
-    exports.ox_target:addLocalEntity(upgradeProp, {
+    exports.ox_target:addLocalEntity(upgradePed, {
         {
             name     = 'backpack_upgrade_open',
             label    = 'Nâng cấp balo',
@@ -60,20 +64,18 @@ local function SpawnProp()
     })
 end
 
-CreateThread(SpawnProp)
-
 AddEventHandler('onClientResourceStart', function(res)
     if res ~= GetCurrentResourceName() then return end
-    SpawnProp()
+    SpawnPed()
 end)
 
 AddEventHandler('onClientResourceStop', function(res)
     if res ~= GetCurrentResourceName() then return end
-    if upgradeProp and DoesEntityExist(upgradeProp) then
-        exports.ox_target:removeLocalEntity(upgradeProp)
-        SetEntityAsMissionEntity(upgradeProp, true, true)
-        DeleteObject(upgradeProp)
-        upgradeProp = nil
+    if upgradePed and DoesEntityExist(upgradePed) then
+        exports.ox_target:removeLocalEntity(upgradePed)
+        SetEntityAsMissionEntity(upgradePed, true, true)
+        DeletePed(upgradePed)
+        upgradePed = nil
     end
     if isUIOpen then
         SetNuiFocus(false, false)
