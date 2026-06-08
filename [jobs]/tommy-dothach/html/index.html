@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đổ Thạch</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@600;700&display=swap');
+
+  :root {
+    --gold:        #c9a84c;
+    --gold-light:  #e0c47a;
+    --gold-dim:    #8a6e2e;
+    --bg-deep:     #0d1a1a;
+    --bg-panel:    #122020;
+    --bg-card:     #1a2e2e;
+    --bg-hover:    #223a3a;
+    --border:      #2a4040;
+    --border-gold: #3d6060;
+    --text-main:   #d4e8e8;
+    --text-muted:  #8ab0b0;
+    --text-dim:    #5a8080;
+    --red:         #b05050;
+    --green:       #4a8c5c;
+    --blue:        #4a7a9c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+  }
+
+  #app {
+    display: none;
+    pointer-events: all;
+    width: 980px;
+    height: 660px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-gold);
+    position: relative;
+    box-shadow: 0 0 80px rgba(0,0,0,0.9), inset 0 0 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+    animation: panelIn 0.3s ease forwards;
+    flex-direction: column;
+  }
+
+  @keyframes panelIn {
+    from { opacity: 0; transform: scale(0.96) translateY(8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  #app::before, #app::after {
+    content: '';
+    position: absolute;
+    width: 40px; height: 40px;
+    border-color: var(--gold-dim);
+    border-style: solid;
+    z-index: 10;
+    pointer-events: none;
+  }
+  #app::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  #app::after  { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9;
+  }
+
+  #close-btn {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 30px; height: 30px;
+    background: none;
+    border: 1px solid var(--border-gold);
+    color: var(--gold-dim);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 20;
+    transition: all 0.2s;
+  }
+  #close-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  .panel-header {
+    height: 58px;
+    border-bottom: 1px solid var(--border-gold);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .panel-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+  }
+  .panel-header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-left: 14px;
+  }
+  .header-line {
+    position: absolute;
+    bottom: -1px; left: 24px;
+    width: 140px; height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .panel-body {
+    display: flex;
+    height: calc(660px - 58px);
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 210px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 18px 0;
+    background: rgba(0,0,0,0.2);
+    flex-shrink: 0;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0 20px 14px;
+  }
+  .nav-item {
+    padding: 13px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { background: var(--bg-hover); }
+  .nav-item.active {
+    background: rgba(201,168,76,0.07);
+    border-left-color: var(--gold);
+  }
+  .nav-item .nav-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .nav-item .nav-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+  .nav-item.active .nav-text { color: var(--gold-light); font-weight: 600; }
+  .nav-item:hover .nav-text { color: var(--text-main); }
+
+  .sidebar-npc {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .npc-quote {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .npc-name {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-gold) transparent;
+  }
+  .content::-webkit-scrollbar { width: 4px; }
+  .content::-webkit-scrollbar-track { background: transparent; }
+  .content::-webkit-scrollbar-thumb { background: var(--border-gold); border-radius: 2px; }
+
+  .tab-content { display: none; animation: fadeIn 0.22s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--gold);
+    margin-bottom: 5px;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+
+  .flow-steps {
+    display: flex;
+    align-items: center;
+    margin: 16px 0 20px;
+  }
+  .flow-step {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .flow-step .step-icon { font-size: 22px; margin-bottom: 5px; }
+  .flow-step .step-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .flow-step .step-desc { font-size: 12px; color: var(--text-muted); }
+  .flow-arrow { color: var(--gold-dim); font-size: 16px; padding: 0 6px; flex-shrink: 0; }
+
+  .info-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .info-pill {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .info-pill .pill-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    display: block;
+  }
+  .info-pill .pill-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .intro-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .intro-block::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+  }
+  .intro-block h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 7px;
+  }
+  .intro-block p {
+    font-size: 14px;
+    color: var(--text-main);
+    line-height: 1.7;
+  }
+
+  .subsection-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .grind-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .grind-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    transition: border-color 0.2s;
+  }
+  .grind-card:hover { border-color: var(--border-gold); }
+  .grind-card .card-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .grind-card .card-img {
+    width: 38px; height: 38px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+  .grind-card .card-img-fallback {
+    width: 38px; height: 38px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .grind-card .card-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .grind-card .card-sub { font-size: 12px; color: var(--text-muted); font-style: italic; }
+  .grind-card p { font-size: 13px; color: var(--text-main); line-height: 1.65; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border: 1px solid;
+  }
+  .tag-buff    { border-color: var(--green); color: var(--green); }
+  .tag-nerf    { border-color: var(--red);   color: var(--red); }
+  .tag-neutral { border-color: var(--text-dim); color: var(--text-dim); }
+
+  .purity-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .purity-table th {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+  }
+  .purity-table td {
+    font-size: 13px;
+    color: var(--text-main);
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.45;
+  }
+  .purity-table tr:last-child td { border-bottom: none; }
+  .purity-table tr:hover td { background: var(--bg-hover); }
+  .purity-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+  .purity-bar-fill { height: 100%; border-radius: 2px; background: var(--gold); }
+
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .catalog-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 14px 8px 12px;
+    text-align: center;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .catalog-card:hover {
+    border-color: var(--border-gold);
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .rarity-dot {
+    position: absolute;
+    top: 9px; right: 9px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+  .rarity-common   { background: var(--text-muted); }
+  .rarity-uncommon { background: var(--green); }
+  .rarity-rare     { background: var(--blue); }
+  .rarity-epic     { background: #9b59b6; }
+  .rarity-legend   { background: var(--gold); box-shadow: 0 0 6px rgba(201,168,76,0.6); }
+
+  .catalog-card .item-img {
+    width: 54px; height: 54px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    margin: 0 auto 9px;
+    display: block;
+  }
+  .catalog-card .item-img-fallback {
+    width: 54px; height: 54px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 9px;
+  }
+  .catalog-card .item-name {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 4px;
+  }
+  .catalog-card .item-rarity {
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 500;
+  }
+  .r-common   { color: var(--text-muted); }
+  .r-uncommon { color: var(--green); }
+  .r-rare     { color: var(--blue); }
+  .r-epic     { color: #b07fd4; }
+  .r-legend   { color: #e05050; }
+  .catalog-card .item-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 5px;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  .tip-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tip-item:last-child { border-bottom: none; }
+  .tip-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--border-gold);
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 36px;
+    text-align: right;
+    padding-top: 2px;
+  }
+  .tip-body h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+  .tip-body p {
+    font-size: 14px;
+    color: var(--text-main);
+    line-height: 1.7;
+  }
+  .tip-body .highlight { color: var(--gold); font-style: italic; font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="noise"></div>
+  <button id="close-btn">&#x2715;</button>
+
+  <div class="panel-header">
+    <h1>Đổ Thạch</h1>
+    <!-- <span class="subtitle">Bí kíp của lão thương nhân</span> -->
+    <div class="header-line"></div>
+  </div>
+
+  <div class="panel-body">
+    <div class="sidebar">
+      <div class="sidebar-label">Mục lục</div>
+
+      <div class="nav-item active" data-tab="intro">
+        <div class="nav-text">Giới Thiệu<br>Hệ Thống</div>
+      </div>
+      <div class="nav-item" data-tab="grind">
+        <div class="nav-text">Hướng Dẫn<br>Kiểm Định Đá</div>
+      </div>
+      <div class="nav-item" data-tab="catalog">
+        <div class="nav-text">Danh Sách<br>Đá Quý</div>
+      </div>
+      <div class="nav-item" data-tab="tips">
+        <div class="nav-text">Tips Người<br>Mới</div>
+      </div>
+
+      <div class="sidebar-npc">
+        <div class="npc-quote" id="npc-quote"></div>
+        <!-- <div class="npc-name" id="npc-name"></div> -->
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="tab-content active" id="tab-intro">
+        <div class="section-title" id="intro-title"></div>
+        <div class="section-desc" id="intro-desc"></div>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <span class="step-label" id="flow1-label"></span>
+            <div class="step-desc" id="flow1-desc"></div>
+          </div>
+          <div class="flow-arrow">&#x203A;</div>
+          <div class="flow-step">
+            <span class="step-label" id="flow2-label"></span>
+            <div class="step-desc" id="flow2-desc"></div>
+          </div>
+          <div class="flow-arrow">&#x203A;</div>
+          <div class="flow-step">
+            <span class="step-label" id="flow3-label"></span>
+            <div class="step-desc" id="flow3-desc"></div>
+          </div>
+          <div class="flow-arrow">&#x203A;</div>
+          <div class="flow-step">
+            <span class="step-label" id="flow4-label"></span>
+            <div class="step-desc" id="flow4-desc"></div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-pill">
+            <span class="pill-val">2</span>
+            <span class="pill-label" id="pill1"></span>
+          </div>
+          <div class="info-pill">
+            <span class="pill-val">6</span>
+            <span class="pill-label" id="pill2"></span>
+          </div>
+          <div class="info-pill">
+            <span class="pill-val">4</span>
+            <span class="pill-label" id="pill3"></span>
+          </div>
+          <div class="info-pill">
+            <span class="pill-val">4</span>
+            <span class="pill-label" id="pill4"></span>
+          </div>
+        </div>
+
+        <div class="intro-block">
+          <h3 id="ib1-title"></h3>
+          <p id="ib1-body"></p>
+        </div>
+        <div class="intro-block">
+          <h3 id="ib2-title"></h3>
+          <p id="ib2-body"></p>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-grind">
+        <div class="section-title" id="grind-title"></div>
+        <div class="section-desc" id="grind-desc"></div>
+
+        <div class="subsection-title" id="grind-sub1"></div>
+        <div class="grind-grid">
+          <div class="grind-card">
+            <div class="card-header">
+              <div id="img-stone_white" class="card-img-fallback">&#x1FAA8;</div>
+              <div>
+                <div class="card-name" id="color1-name"></div>
+              </div>
+            </div>
+            <p id="color1-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-nerf" id="color1-t1"></span>
+              <span class="tag tag-nerf" id="color1-t2"></span>
+            </div>
+          </div>
+          <div class="grind-card">
+            <div class="card-header">
+              <div id="img-stone_lightblue" class="card-img-fallback">&#x1FAA8;</div>
+              <div>
+                <div class="card-name" id="color2-name"></div>
+              </div>
+            </div>
+            <p id="color2-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-neutral" id="color2-t1"></span>
+              <span class="tag tag-buff" id="color2-t2"></span>
+            </div>
+          </div>
+          <div class="grind-card">
+            <div class="card-header">
+              <div id="img-stone_green" class="card-img-fallback">&#x1FAA8;</div>
+              <div>
+                <div class="card-name" id="color3-name"></div>
+              </div>
+            </div>
+            <p id="color3-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-buff" id="color3-t1"></span>
+              <span class="tag tag-buff" id="color3-t2"></span>
+            </div>
+          </div>
+          <div class="grind-card">
+            <div class="card-header">
+              <div id="img-stone_darkgreen" class="card-img-fallback">&#x1FAA8;</div>
+              <div>
+                <div class="card-name" id="color4-name"></div>
+              </div>
+            </div>
+            <p id="color4-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-buff" id="color4-t1"></span>
+              <span class="tag tag-buff" id="color4-t2"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection-title" id="grind-sub2"></div>
+        <div class="grind-grid">
+          <div class="grind-card">
+            <div class="card-header">
+              <div class="card-img-fallback">〰</div>
+              <div><div class="card-name" id="vein1-name"></div><div class="card-sub" id="vein1-sub"></div></div>
+            </div>
+            <p id="vein1-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-nerf" id="vein1-t1"></span>
+              <span class="tag tag-nerf" id="vein1-t2"></span>
+            </div>
+          </div>
+          <div class="grind-card">
+            <div class="card-header">
+              <div class="card-img-fallback">〰</div>
+              <div><div class="card-name" id="vein2-name"></div><div class="card-sub" id="vein2-sub"></div></div>
+            </div>
+            <p id="vein2-desc"></p>
+            <div class="tag-row"><span class="tag tag-neutral" id="vein2-t1"></span></div>
+          </div>
+          <div class="grind-card">
+            <div class="card-header">
+              <div class="card-img-fallback">〰</div>
+              <div><div class="card-name" id="vein3-name"></div><div class="card-sub" id="vein3-sub"></div></div>
+            </div>
+            <p id="vein3-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-buff" id="vein3-t1"></span>
+              <span class="tag tag-buff" id="vein3-t2"></span>
+            </div>
+          </div>
+          <div class="grind-card">
+            <div class="card-header">
+              <div class="card-img-fallback">〰</div>
+              <div><div class="card-name" id="vein4-name"></div><div class="card-sub" id="vein4-sub"></div></div>
+            </div>
+            <p id="vein4-desc"></p>
+            <div class="tag-row">
+              <span class="tag tag-buff" id="vein4-t1"></span>
+              <span class="tag tag-buff" id="vein4-t2"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection-title" id="grind-sub3"></div>
+        <table class="purity-table">
+          <thead>
+            <tr>
+              <th id="pt-h1"></th>
+              <th id="pt-h2"></th>
+              <th id="pt-h3"></th>
+            </tr>
+          </thead>
+          <tbody id="purity-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="tab-content" id="tab-catalog">
+        <div class="section-title" id="cat-title"></div>
+        <div class="section-desc" id="cat-desc"></div>
+
+        <div class="subsection-title" id="cat-sub1"></div>
+        <div class="catalog-grid" id="cat-raw-grid"></div>
+
+        <div class="subsection-title" id="cat-sub2"></div>
+        <div class="catalog-grid" id="cat-jade-grid"></div>
+      </div>
+
+      <div class="tab-content" id="tab-tips">
+        <div class="section-title" id="tips-title"></div>
+        <div class="section-desc" id="tips-desc"></div>
+        <div id="tips-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+var imgBase = 'https://cfx-nui-ox_inventory/web/images/';
+
+var T = {
+  npcQuote: 'Đá quý không chịu để lộ bản thân... cho đến khi người biết cách nhìn.',
+  npcName: '— Thương Nhân Đổ Thạch',
+
+  introTitle: 'Hệ Thống Đổ Thạch',
+  introDesc: 'Nghệ thuật khai thác phỉ thúy ẩn chứa trong những tầng đá thô.',
+  flow1Label: 'Đá Thô', flow1Desc: 'Thu thập',
+  flow2Label: 'Kiểm Định Lần 1', flow2Desc: 'Lộ màu + vân',
+  flow3Label: 'Kiểm Định Lần 2', flow3Desc: 'Nếu chưa ưng ý kết quả',
+  flow4Label: 'Cắt Đá', flow4Desc: 'Nhận phỉ thúy',
+  pill1: 'Lần kiểm định tối đa',
+  pill2: 'Cấp tinh khiết',
+  pill3: 'Loại màu đá',
+  pill4: 'Loại vân đá',
+  ib1Title: 'Màu sắc nói lên điều gì?',
+  ib1Body: 'Màu đá lộ ra sau lần kiểm định đầu tiên — và cố định mãi mãi. <b style="color:#c8c4b8">Trắng Đục</b> là điềm xấu, dân trong nghề ít ai mừng khi thấy. <b style="color:#5aaa6a">Lục Đậm</b> thì ngược lại — hiếm gặp, nhưng gặp là biết bên trong có chuyện.',
+  ib2Title: 'Vân đá — bí mật trên bề mặt',
+  ib2Body: 'Người thợ lành nghề chỉ cần nhìn vân là đoán được phần nào số phận viên đá. Vân <b style="color:#8a8070">Thô</b> là lòng đá đã tổn thương. Vân <b style="color:#7ab0c8">Kính</b> trong như nước — thứ hiếm nhất, và ai gặp cũng biết đó là dấu hiệu của điều tốt đẹp.',
+
+  grindTitle: 'Hướng Dẫn Kiểm Định Đá',
+  grindDesc: 'Hiểu màu và vân để tối ưu cơ hội nhận phỉ thúy tốt.',
+  grindSub1: 'Màu Sắc Đá',
+  grindSub2: 'Vân Đá',
+  grindSub3: 'Tinh Khiết',
+
+  color1Name: 'Trắng Đục',
+  color1Desc: 'Màu phổ biến nhất. Đá kém sắc, lòng đục mờ — dân trong nghề gọi là "đá chết". Cơ hội tìm được phỉ thúy đáng giá rất mong manh.',
+  color1T1: 'Hay ra phế liệu', color1T2: 'Hiếm khi có giá trị',
+  color2Name: 'Xanh Nhạt',
+  color2Desc: 'Màu trung dung, không phụ lòng người — cũng không làm ai giàu nhanh. Phỉ thúy lộ ra theo đúng bản chất viên đá, không hơn không kém.',
+  color2T1: 'Khó đoán trước', color2T2: 'Đôi khi có bất ngờ',
+  color3Name: 'Xanh Lục',
+  color3Desc: 'Màu của lộc. Đá mang sắc lục thường giấu trong mình những mạch phỉ thúy tươi — người kinh nghiệm thấy màu này là mắt đã sáng lên.',
+  color3T1: 'Ít ra phế liệu', color3T2: 'Hay xuất hiện hàng tốt',
+  color4Name: 'Lục Đậm',
+  color4Desc: 'Màu của bậc thầy. Sắc lục đậm đặc như nhựa cây cổ thụ — hiếm gặp, nhưng một khi đã gặp, trong lòng nó thường là phỉ thúy phẩm cao.',
+  color4T1: 'Rất ít phế liệu', color4T2: 'Cơ hội ra hàng quý cao',
+
+  vein1Name: 'Thô', vein1Sub: 'Vân xấu nhất',
+  vein1Desc: 'Vân thô ráp, kết cấu vỡ vụn — dấu hiệu đá đã trải qua nhiều va đập, lòng đá bị tổn thương nặng. Đừng kỳ vọng nhiều.',
+  vein1T1: 'Lòng đá đã vỡ', vein1T2: 'Phỉ thúy khó hình thành',
+  vein2Name: 'Mịn', vein2Sub: 'Vân trung bình',
+  vein2Desc: 'Vân đều, không có dấu hiệu gì đặc biệt. Đá bình thường — cắt ra thế nào là tùy trời, tùy tinh khiết bên trong.',
+  vein2T1: 'Hoàn toàn may rủi',
+  vein3Name: 'Trong', vein3Sub: 'Vân tốt',
+  vein3Desc: 'Vân có độ trong nhất định, ánh sáng lọt qua được một phần — dấu hiệu bên trong đá còn nguyên vẹn, chưa bị phong hóa. Đáng để cắt thử.',
+  vein3T1: 'Lòng đá còn tốt', vein3T2: 'Hay có phỉ thúy khá',
+  vein4Name: 'Kính', vein4Sub: 'Vân tốt nhất',
+  vein4Desc: 'Vân trong như thủy tinh, nhìn vào gần như thấy được lòng đá — cực hiếm. Dân Đổ Thạch lâu năm gặp vân Kính là cầm chắc dao cắt ngay.',
+  vein4T1: 'Lòng đá hoàn hảo', vein4T2: 'Rất dễ ra phỉ thúy quý',
+
+  ptH1: 'Cấp độ', ptH2: 'Mô tả', ptH3: 'Chất lượng phần trăm',
+  purity: [
+    { label: 'Kém',       color: '#6a7a7a', desc: 'Đá rỗng ruột — gần như chắc chắn chỉ ra phế liệu',          pct: 5  },
+    { label: 'Thấp',      color: '#8a9090', desc: 'Lòng đá nghèo nàn, may mắn lắm mới có phỉ thúy thường',     pct: 15 },
+    { label: 'Khá',       color: '#a09870', desc: 'Đá có chất, cơ hội tìm được phỉ thúy đàng hoàng',           pct: 35 },
+    { label: 'Tốt',       color: '#b8a860', desc: 'Lòng đá phong phú — phỉ thúy cấp cao bắt đầu xuất hiện',    pct: 55 },
+    { label: 'Rất tốt',   color: '#c8b858', desc: 'Đá quý đích thực, phỉ thúy phẩm cao là chủ yếu',            pct: 75 },
+    { label: 'Tuyệt hảo', color: '#c9a84c', desc: 'Cực phẩm — Đế Vương Lục nằm đâu đó trong viên đá này',      pct: 95 },
+  ],
+
+  catTitle: 'Danh Sách Đá Quý',
+  catDesc: 'Tất cả phỉ thúy có thể thu được từ hệ thống Đổ Thạch.',
+  catSub1: 'Đá Thô',
+  catSub2: 'Phỉ Thúy Đá Cắt',
+
+  rawStones: [
+    { id: 'stone',           name: 'Đá Thô',        rarity: 'common',   rarityLabel: 'Nguyên liệu',     desc: 'Đá thô chưa qua xử lý, cần kiểm định để lộ màu' },
+    { id: 'stone_white',     name: 'Đá Trắng Đục',  rarity: 'common',   rarityLabel: 'Phổ biến',        desc: 'Đá thô có vân trắng đục' },
+    { id: 'stone_lightblue', name: 'Đá Xanh Nhạt',  rarity: 'uncommon', rarityLabel: 'Không phổ biến',  desc: 'Đá thô có vân xanh nhạt' },
+    { id: 'stone_green',     name: 'Đá Xanh Lục',   rarity: 'rare',     rarityLabel: 'Hiếm',            desc: 'Đá thô có vân xanh lục' },
+    { id: 'stone_darkgreen', name: 'Đá Lục Đậm',    rarity: 'epic',     rarityLabel: 'Quý hiếm',        desc: 'Đá thô có vân xanh đậm' },
+  ],
+  jadeStones: [
+    { id: 'jade_waste',               name: 'Đá Cuội',                   rarity: 'common',   rarityLabel: 'Phế liệu',       desc: 'Không chứa phỉ thúy có giá trị' },
+    { id: 'jade_dau_chung',           name: 'Phỉ Thúy Đậu Chủng',       rarity: 'common',   rarityLabel: 'Phổ biến',       desc: 'Loại phổ biến nhất, kết cấu hạt rõ' },
+    { id: 'jade_nhu_chung',           name: 'Phỉ Thúy Nhu Chủng',       rarity: 'uncommon', rarityLabel: 'Không phổ biến', desc: 'Độ mịn tốt, màu sắc hài hòa' },
+    { id: 'jade_bang_chung',          name: 'Phỉ Thúy Băng Chủng',      rarity: 'rare',     rarityLabel: 'Hiếm',           desc: 'Trong trẻo như băng, được giới sưu tầm ưa chuộng' },
+    { id: 'jade_cao_bang',            name: 'Phỉ Thúy Cao Băng',        rarity: 'rare',     rarityLabel: 'Hiếm cao',       desc: 'Biến thể cao cấp của Băng Chủng, độ trong vượt trội' },
+    { id: 'jade_thuy_tinh',           name: 'Phỉ Thúy Thủy Tinh Chủng', rarity: 'epic',     rarityLabel: 'Quý hiếm',       desc: 'Cực hiếm, độ trong suốt gần như pha lê' },
+    { id: 'jade_de_vuong_luc',        name: 'Phỉ Thúy Đế Vương Lục',    rarity: 'legend',   rarityLabel: 'Huyền thoại',    desc: 'Tuyệt phẩm mang sắc lục đậm đặc trưng, giá trị rất cao' },
+    { id: 'jade_de_vuong_luc_legend', name: 'Đế Vương Lục Thần Phẩm',   rarity: 'legend',   rarityLabel: 'Thần phẩm',      desc: 'Báu vật cực hiếm trong giới Đổ Thạch, gần như không thể tìm thấy' },
+  ],
+
+  tipsTitle: 'Tips Người Mới',
+  tipsDesc: 'Kinh nghiệm từ nhiều thợ thầy trong nghề.',
+  tips: [
+    { h: 'Đừng cắt với đá kém chất', p: 'Nếu sau lần kiểm định đầu ra <b style="color:#c9a84c">Trắng Đục + Vân Thô + Tinh khiết Kém</b>, hãy dùng lần kiểm định thứ hai để kiểm tra kĩ độ tinh khiết trước khi cắt. Tinh khiết sẽ lộ ra rõ, cơ hội đánh liều vẫn tốt hơn cắt ngay.' },
+    { h: 'Lục Đậm + Kính là tổ hợp mơ ước', p: 'Khi kiểm định ra được <b style="color:#c9a84c">Đá Lục Đậm với Vân Kính</b>, đây là tổ hợp cực đẹp để ra <b style="color:#c9a84c">Đế Vương Lục Thần Phẩm</b>. Ưu tiên giữ lại và cắt ở tinh khiết cao nhất có thể để tối đa hóa cơ hội.' },
+    { h: 'Kiểm định lần 2 là con dao hai lưỡi', p: 'Kiểm định lại thêm 1 lần nữa <b style="color:#c9a84c">có thể nâng hoặc giảm độ tinh khiết</b>. Nếu đang có <b style="color:#c9a84c">Tuyệt hảo</b>, cân nhắc kỹ trước khi kiểm định lần 2.' },
+    { h: 'Màu đá cố định sau lần kiểm định đầu', p: 'Sau khi kiểm định lần đầu, <b style="color:#c9a84c">màu sắc không thể thay đổi</b> dù kiểm định thêm bao nhiêu lần. Chỉ có lộ rõ về độ tinh khiết. Hãy xem màu như số phận của viên đá đó.' },
+    { h: 'Đá Cuội không phải thất bại', p: '<b style="color:#c9a84c">Phế liệu (Đá Cuội)</b> vẫn có thể bán hoặc dùng cho mục đích khác. Đừng nản lòng khi ra phế liệu — đó là bản chất của nghề Đổ Thạch, nơi may mắn và kiên nhẫn quyết định tất cả.' },
+  ],
+};
+
+function setText(id, html) {
+  var el = document.getElementById(id);
+  if (el) el.innerHTML = html;
+}
+
+function buildUI() {
+  setText('npc-quote', '"' + T.npcQuote + '"');
+  setText('npc-name', T.npcName);
+
+  setText('intro-title', T.introTitle);
+  setText('intro-desc', T.introDesc);
+  setText('flow1-label', T.flow1Label); setText('flow1-desc', T.flow1Desc);
+  setText('flow2-label', T.flow2Label); setText('flow2-desc', T.flow2Desc);
+  setText('flow3-label', T.flow3Label); setText('flow3-desc', T.flow3Desc);
+  setText('flow4-label', T.flow4Label); setText('flow4-desc', T.flow4Desc);
+  setText('pill1', T.pill1); setText('pill2', T.pill2);
+  setText('pill3', T.pill3); setText('pill4', T.pill4);
+  setText('ib1-title', T.ib1Title); setText('ib1-body', T.ib1Body);
+  setText('ib2-title', T.ib2Title); setText('ib2-body', T.ib2Body);
+
+  setText('grind-title', T.grindTitle); setText('grind-desc', T.grindDesc);
+  setText('grind-sub1', T.grindSub1); setText('grind-sub2', T.grindSub2); setText('grind-sub3', T.grindSub3);
+  setText('color1-name', T.color1Name); setText('color1-desc', T.color1Desc); setText('color1-t1', T.color1T1); setText('color1-t2', T.color1T2);
+  setText('color2-name', T.color2Name); setText('color2-desc', T.color2Desc); setText('color2-t1', T.color2T1); setText('color2-t2', T.color2T2);
+  setText('color3-name', T.color3Name); setText('color3-desc', T.color3Desc); setText('color3-t1', T.color3T1); setText('color3-t2', T.color3T2);
+  setText('color4-name', T.color4Name); setText('color4-desc', T.color4Desc); setText('color4-t1', T.color4T1); setText('color4-t2', T.color4T2);
+  setText('vein1-name', T.vein1Name); setText('vein1-sub', T.vein1Sub); setText('vein1-desc', T.vein1Desc); setText('vein1-t1', T.vein1T1); setText('vein1-t2', T.vein1T2);
+  setText('vein2-name', T.vein2Name); setText('vein2-sub', T.vein2Sub); setText('vein2-desc', T.vein2Desc); setText('vein2-t1', T.vein2T1);
+  setText('vein3-name', T.vein3Name); setText('vein3-sub', T.vein3Sub); setText('vein3-desc', T.vein3Desc); setText('vein3-t1', T.vein3T1); setText('vein3-t2', T.vein3T2);
+  setText('vein4-name', T.vein4Name); setText('vein4-sub', T.vein4Sub); setText('vein4-desc', T.vein4Desc); setText('vein4-t1', T.vein4T1); setText('vein4-t2', T.vein4T2);
+  setText('pt-h1', T.ptH1); setText('pt-h2', T.ptH2); setText('pt-h3', T.ptH3);
+
+  var tbody = document.getElementById('purity-tbody');
+  T.purity.forEach(function(p) {
+    tbody.innerHTML += '<tr><td style="color:' + p.color + ';font-weight:700">' + p.label + '</td><td style="color:var(--text-muted)">' + p.desc + '</td><td><div class="purity-bar"><div class="purity-bar-fill" style="width:' + p.pct + '%"></div></div></td></tr>';
+  });
+
+  setText('cat-title', T.catTitle); setText('cat-desc', T.catDesc);
+  setText('cat-sub1', T.catSub1); setText('cat-sub2', T.catSub2);
+
+  var rarityDotClass = { common: 'rarity-common', uncommon: 'rarity-uncommon', rare: 'rarity-rare', epic: 'rarity-epic', legend: 'rarity-legend' };
+  var rarityTextClass = { common: 'r-common', uncommon: 'r-uncommon', rare: 'r-rare', epic: 'r-epic', legend: 'r-legend' };
+
+  function buildCatalogCard(item) {
+    return '<div class="catalog-card">' +
+      '<div class="rarity-dot ' + rarityDotClass[item.rarity] + '"></div>' +
+      '<div id="cimg-' + item.id + '" class="item-img-fallback">&#x1FAA8;</div>' +
+      '<div class="item-name ' + rarityTextClass[item.rarity] + '">' + item.name + '</div>' +
+      '<div class="item-rarity ' + rarityTextClass[item.rarity] + '">' + item.rarityLabel + '</div>' +
+      '<div class="item-desc">' + item.desc + '</div>' +
+      '</div>';
+  }
+
+  var rawGrid = document.getElementById('cat-raw-grid');
+  T.rawStones.forEach(function(s) { rawGrid.innerHTML += buildCatalogCard(s); });
+  var jadeGrid = document.getElementById('cat-jade-grid');
+  T.jadeStones.forEach(function(s) { jadeGrid.innerHTML += buildCatalogCard(s); });
+
+  setText('tips-title', T.tipsTitle); setText('tips-desc', T.tipsDesc);
+  var tipsList = document.getElementById('tips-list');
+  T.tips.forEach(function(t, i) {
+    var num = (i + 1 < 10 ? '0' : '') + (i + 1);
+    tipsList.innerHTML += '<div class="tip-item"><div class="tip-num">' + num + '</div><div class="tip-body"><h4>' + t.h + '</h4><p>' + t.p + '</p></div></div>';
+  });
+}
+
+var itemImgIds = [
+  'stone','stone_white','stone_lightblue','stone_green','stone_darkgreen',
+  'jade_waste','jade_dau_chung','jade_nhu_chung','jade_bang_chung',
+  'jade_cao_bang','jade_thuy_tinh','jade_de_vuong_luc','jade_de_vuong_luc_legend'
+];
+
+function loadImages() {
+  itemImgIds.forEach(function(id) {
+    ['img-' + id, 'cimg-' + id].forEach(function(elId) {
+      var el = document.getElementById(elId);
+      if (!el) return;
+      var img = new Image();
+      img.onload = function() {
+        var isCard = el.className.indexOf('card-img') !== -1;
+        el.outerHTML = '<img id="' + elId + '" class="' + (isCard ? 'card-img' : 'item-img') + '" src="' + imgBase + id + '.png" alt="' + id + '">';
+      };
+      img.src = imgBase + id + '.png';
+    });
+  });
+}
+
+document.querySelectorAll('.nav-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+    item.classList.add('active');
+    var tab = document.getElementById('tab-' + item.dataset.tab);
+    if (tab) tab.classList.add('active');
+  });
+});
+
+document.getElementById('close-btn').addEventListener('click', closePanel);
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePanel(); });
+
+function openPanel() {
+  var app = document.getElementById('app');
+  app.style.display = 'flex';
+  loadImages();
+}
+
+function closePanel() {
+  document.getElementById('app').style.display = 'none';
+  fetch('https://tommy-dothach/closeGuide', { method: 'POST', body: JSON.stringify({}) });
+}
+
+window.addEventListener('message', function(e) {
+  if (e.data.action === 'openGuide') openPanel();
+});
+
+buildUI();
+</script>
+</body>
+</html>

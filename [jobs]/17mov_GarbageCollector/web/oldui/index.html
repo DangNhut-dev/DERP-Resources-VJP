@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <link rel="stylesheet" href="oldui/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="counter">Tiến Độ: <span style="color:var(--layoutColor)">0%</span></div>
+
+    <div class="WorkMenu">
+        <div class="container">
+            <div class="containerTittle">SẢNH DỌN RÁC NHIỀU NGƯỜI</div>
+            <div class="containerInside">
+                <div class="flex">
+                    <div class="partyChild childHost" id="0" plyId="0" onclick="Kick()"><div class="partyHost"><i class="fa-regular fa-user"></i></div></div>
+                </div>
+
+                <div class="partyContainer">
+                    <div class="partyChild" onclick="Invite()"><div class="freeSlot"><i class="fa-solid fa-user-plus"></i></div></div>
+                    <div class="partyChild" onclick="Invite()"><div class="freeSlot"><i class="fa-solid fa-user-plus"></i></div></div>
+                    <div class="partyChild" onclick="Invite()"><div class="freeSlot"><i class="fa-solid fa-user-plus"></i></div></div>
+                </div>
+
+                <div class="flex2">
+                    <div class="button" onclick="startJob()">Bắt Đầu Làm Việc</div>
+                    <div class="button" onclick="cloakroom()" id="Cloakroom">Phòng Thay Đồ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cloakroomMenu">
+        <div class="container">
+            <div class="containerTittle">Phòng Thay Đồ</div>
+            <div class="containerInside">
+                <div class="flex2">
+                    <div onclick="workClothes()" class="button" style="margin-top: 1vh;"><i class="fa-solid fa-business-time"></i> <div>Đồ Làm Việc</div></div>
+                    <div onclick="citizenClothes()" class="button"><i class="fa-solid fa-user-tie"></i><div>Đồ Thường Dân</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="closestPlayers">
+        <div class="container">
+            <div class="containerTittle">NGƯỜI CHƠI GẦN ĐÂY</div>
+            <div class="containerInside">
+                <div class="flex2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="inviteBox">
+        <div class="container">
+            <div class="containerInside">
+                Bạn Đã Nhận Được Lời Mời Tham Gia Nhóm Từ
+                <div class="flex">
+                    <div class="partyHost"><i class="fa-regular fa-user"></i><span id="inviteUser"></span></div>
+                </div>
+
+                <div class="flex3">
+                    <div class="button2" onclick="reactRequest(true)">Chấp Nhận</div>
+                    <div class="button2"onclick="reactRequest(false)">Từ Chối</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="warningBox">
+        <div class="container">
+            <div class="containerInside">
+                Bạn Đang Không Ở Trong Xe Của Công Ty. Bạn Có Thể Kết Thúc Công Việc Nhưng Sẽ Bị Phạt Và Không Được Trả Lương.
+                <div class="flex3">
+                    <div class="button2" onclick="reactWarning(true)">Chấp Nhận</div>
+                    <div class="button2"onclick="reactWarning(false)">Từ Chối</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tutorial">
+        <div class="container">
+            <div class="containerInside">
+                <label>Công Việc Này Là Thu Gom Rác Trong Thành Phố. Bạn Có Thể Nhặt Bất Kỳ Túi Rác Nào Nằm Trên Mặt Đất. Sau Khi Nhặt Được Túi Rác, Hãy Bỏ Vào Xe Dọn Rác. Bạn Có Thể Kết Thúc Công Việc Bất Cứ Lúc Nào, Khi Muốn Kết Thúc Chỉ Cần Quay Về Trạm Và Đỗ Xe. Tiền Công Phụ Thuộc Vào Số Túi Rác Thu Gom. Một Số Túi Rác Có Thể Không Đồng Bộ Giữa Các Người Chơi.</label>
+                <div class="flex" style="margin-top: 1vh;">
+                    <div class="button2" onclick="CloseTutorial()">Xác Nhận</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="oldui/script.js"></script>
+</html>

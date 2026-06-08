@@ -1,0 +1,1 @@
+LicenseKey = 'JAMES-7U5W3-2KDT6-S64WR-AX86E'

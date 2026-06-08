@@ -1,0 +1,681 @@
+/*=============================*/
+/*======= FISHING AREA ========*/
+/*=============================*/
+
+#fishing-ui-container {
+	
+	height: 120px;
+	width: 120px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+}
+
+.fishing_hooking_container, .fishing_hooking_bar_container {
+	
+	position: relative;
+	text-align: center;
+
+}
+
+.tension_bar {
+
+	width: 5px; 
+	height: 100%;
+	z-index: 10;
+	margin: 0 auto;
+
+}
+
+.tension_bar {
+	width: 100%;
+}
+
+#fishing-tension-bar {
+
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(180deg, #AEFF7C 0%, #FFB800 43.74%, #FF2E00 100%);
+	box-shadow: 0 37px 10px 0 rgba(0, 0, 0, .25);
+	border-radius: 0 0 100px 100px;
+	z-index: 10;
+	transition: height .25s, background-color .25s;
+
+}
+
+#fishing-hooking-shrinker-bar {
+	transition: width 0.1s;
+}
+
+.fishing_hooking_container {
+
+	z-index: 10;
+	
+}
+
+#reelingBar {
+	width: 100%;
+	height: 20px;
+	margin-top: 10px;
+	display: flex;
+}
+
+#reeling {
+	
+	width: 0%; 
+	height: 100%;
+
+}
+
+.fishing_controls_container {
+
+	position: absolute;
+	right: 35px;
+	bottom: 35px; 
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 9px 5px 16px 5px;
+	border-radius: 10px;
+	border-top: 1px solid rgba(149, 149, 149, .1);
+	border-left: 1px solid rgba(149, 149, 149, .1);
+	background: linear-gradient(120deg, rgb(0 0 0 / 15%) -15.78%, rgb(0 0 0 / 25%) 100%);
+
+}
+
+#instructions {
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center; 
+	width: 100%;
+	height: 100%;
+
+}
+
+#instructions h1 {
+
+	font-size: 7px;
+	font-weight: 400;
+	text-align: center;
+	letter-spacing: 3.01px;
+	margin-bottom: 11px;
+
+}
+
+#mouse, #esc {
+
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 0 20px;
+
+}
+
+#mouse p, #esc p {
+
+	font-size: 15px;
+	font-weight: 700;
+	height: min-content;
+	margin: 0;
+
+}
+
+#mouse-pic img, #esc-pic img {
+
+	width: 40px;
+	height: 40px;
+
+}
+
+.actions_box {
+
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 9px;
+
+}
+
+.actions_box .middle_border {
+
+	width: 100%;
+	height: 1px;
+	border-radius: 10px;
+	background: rgba(255, 255, 255, .05);
+
+}
+
+/* ---------------------- NOVO ---------------------- */
+
+.fishing_hooking_container {
+
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: 50%;
+	left: calc(50% + 78px);
+	transform: translate(-50%, -50%);
+		
+}
+
+.icon_circle {
+
+	position: relative;
+	width: 93px;
+	height: 93px;
+	min-width: 93px;
+	min-height: 93px;
+	background-color: var(--color-black);
+	border-radius: 50%;
+	padding: 3px;
+	z-index: 10;
+	
+}
+
+.inner_border {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	border-width: .5px;
+	border-style: solid;
+	border-color: var(--color-white);
+
+}
+
+.inner_border.circle {
+
+	border-radius: 50%;
+	
+}
+
+.fishing_hooking_container .text_box {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 156px;
+	height: 46px;
+	background-color: var(--color-black);
+	padding: 3px;
+	z-index: 1;
+
+}
+
+.fishing_hooking_container .inner_border.rectangle {
+
+	border-left-color: transparent;
+	
+}
+
+.fishing_hooking_container .text_box span {
+
+	font-size: 11px;
+	font-weight: 600;
+	text-align: center;
+	letter-spacing: .55px;
+	line-height: 13px;
+	max-width: 95px;
+
+}
+
+.tp_box {
+
+	position: relative;
+	left: -8px;
+
+}
+
+.fishing_hooking_bar_container {
+
+	position: absolute;
+	bottom: -10px;
+	left: 3px;
+	display: flex;
+	width: 98%;
+	height: 5px;
+	gap: 5px;
+	box-shadow: 0 37px 10px 0 rgba(0, 0, 0, .25);
+
+}
+
+.fishing_hooking_bar_container .progressBlock {
+
+	width: 98.8%;
+	height: 100%;
+	border-radius: 5px;
+	position: relative;
+	overflow: hidden;
+
+}
+
+.fishing_hooking_bar_container .progressBlock #fishing-hooking-bar {
+
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	background: linear-gradient(90deg, #AEFF7C 0%, #FFB800 43.74%, #FF2E00 100%);
+	box-shadow: 0 0 20px 0 rgba(174, 255, 124, .55);
+
+}
+
+#fishing-reeling-bar {
+
+	width: 100%;
+	height: 100px;
+	background-color: var(--color-white);
+	border-radius: 10px;
+	transition: height .25s, background-color .25s;
+	
+}
+
+.fishing_reeling_container {
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+	bottom: -195px;
+
+}
+
+.bars_block {
+
+	display: flex;
+	position: relative;
+	height: 392px;
+	top: -20px;
+	gap: 3px;
+	z-index: -1;
+
+}
+
+.percentage_bar, .tension_bar {
+
+	height: 100%;
+	border-radius: 25px;
+	background-color: #171717;
+	padding: 3px;
+
+}
+
+.percentage_bar {
+
+	min-width: 18px;
+	max-width: 18px;
+
+}
+
+.tension_bar {
+
+	min-width: 30px;
+	max-width: 30px;
+
+}
+
+.internal_border {
+
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	border-width: .5px;
+	border-style: solid;
+	border-radius: 100px;
+	padding-top: 2px;
+
+}
+
+.percentage_bar .internal_border {
+
+	border-color: #2E2E2E;
+	padding-bottom: 4px;
+
+}
+
+.tension_bar .internal_border {
+
+	border-color: var(--color-white);
+	padding-bottom: 8px;
+
+}
+
+.bg_bar {
+
+	width: 100%;
+	height: 100%;
+	background-color: rgb(7, 7, 15)55, .1);
+	/* box-shadow: 0px 0 10px 0px rgba(0, 0, 0, .25); */
+	position: relative;
+	overflow: hidden;
+
+}
+
+.percentage_bar .bg_bar {
+
+	width: 4px;
+	max-width: 4px;
+
+} 
+
+.tension_bar .bg_bar {
+
+	width: 8px;
+	max-width: 8px;
+	padding-top: 12px;
+
+}
+
+.tutorial_box {
+
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	position: absolute;
+	bottom: 35px;
+	left: 35px;
+
+}
+
+.instructions_block > h2 {
+
+	font-size: 7px;
+	font-weight: 700;
+	letter-spacing: 3.01px;
+	margin-bottom: 7px;
+
+}
+
+.instructions_block:nth-child(1) .instructions_text p {
+
+	width: 447px;
+	max-width: 447px;
+
+}
+
+.instructions_block:nth-child(2) .instructions_text p {
+
+	width: 570px;
+	max-width: 570px;
+
+}
+
+.instructions_text {
+
+	width: min-content;
+	border-radius: 10px;
+	border-top: 1px solid rgba(255, 255, 255, .1);
+	border-left: 1px solid rgba(255, 255, 255, .1);
+	background: linear-gradient(120deg, rgba(255, 255, 255, .07) -15.78%, rgba(255, 255, 255, 0) 100%);
+	padding: 20px;
+
+}
+
+.instructions_text p {
+
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: .65px;
+	color: rgba(255, 255, 255, .25);
+	text-align: center;
+
+}
+
+.instructions_text p > span {
+
+	font-weight: 800;
+
+}
+
+.infos_desc {
+
+	position: absolute;
+	top: 0;
+
+}
+
+.infos_desc .item_desc {
+
+	display: flex;
+	align-items: center;
+	position: absolute;
+	gap: 4px;
+	background-color: rgbA(24, 24, 24, .55);
+	padding: 10px;
+	width: max-content;
+	
+}
+
+.infos_desc .item_desc .aux {
+
+	display: flex;
+	align-items: center;
+
+}
+
+.infos_desc .item_desc:nth-child(1), .infos_desc .item_desc:nth-child(2), .infos_desc .item_desc:nth-child(3) {
+
+	right: 0;
+	border-radius: 100px 0 0 100px;
+
+}
+
+.infos_desc .item_desc:nth-child(4), .infos_desc .item_desc:nth-child(5), .infos_desc .item_desc:nth-child(6) {
+
+	left: 51px;
+	border-radius: 0 100px 100px 0;
+
+}
+
+.infos_desc .item_desc:nth-child(1) .aux, .infos_desc .item_desc:nth-child(2) .aux, .infos_desc .item_desc:nth-child(3) .aux {
+
+	gap: 8px;
+
+}
+
+.infos_desc .item_desc:nth-child(4) .aux, .infos_desc .item_desc:nth-child(5) .aux, .infos_desc .item_desc:nth-child(6) .aux {
+
+	gap: 14px;
+
+}
+
+.infos_desc .item_desc:nth-child(1), .infos_desc .item_desc:nth-child(4) {
+
+	top: 12px;
+
+}
+
+.infos_desc .item_desc:nth-child(2), .infos_desc .item_desc:nth-child(5) {
+
+	top: 170px;
+
+}
+
+.infos_desc .item_desc:nth-child(3), .infos_desc .item_desc:nth-child(6) {
+
+	top: 340px;
+
+}
+
+.infos_desc .item_desc:nth-child(1) span, .infos_desc .item_desc:nth-child(4) span {
+
+	color: var(--color-white);
+
+}
+
+.infos_desc .item_desc:nth-child(1) span, .infos_desc .item_desc:nth-child(2) span, .infos_desc .item_desc:nth-child(3) span,
+.infos_desc .item_desc:nth-child(4) span, .infos_desc .item_desc:nth-child(5) span, .infos_desc .item_desc:nth-child(6) span {
+
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: .5px;
+	line-height: 13px;
+	color: var(--color-white);
+
+}
+
+.hidden_bar {
+
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-color: #171717;
+	transition: height .1s, background-color .1s;
+
+}
+
+.bg_bar .hidden_bar {
+
+	max-height: 97%;
+	border-radius: 0 0 0px 0px;
+	bottom: 0;
+	
+}
+
+.progressBlock .hidden_bar {
+
+	max-width: 100%;
+	border-radius: 0 5px 5px 0;
+	right: 0;
+	
+}
+
+.bg_bar .hidden_bar::before, .progressBlock .hidden_bar::after {
+
+	content: '';
+	position: absolute;
+	background-color: transparent;
+	overflow: hidden;
+	z-index: 100;
+
+}
+
+.bg_bar .hidden_bar::before {
+
+	top: -8px;
+	width: 8px;
+	height: 8px;
+	box-shadow: 0 6px 0 4px #171717;
+	border-radius: 0 0 5px 5px;
+
+}
+
+.progressBlock .hidden_bar::after {
+
+	left: -5px;
+	width: 5px;
+	height: 5px;
+	box-shadow: 4px 0 0 2px #171717;
+	border-radius: 0 5px 5px 0;
+
+}
+
+#fishing-fish-details-container {
+	width: 100vw;
+	height: 100vh;
+	background-color: #00000070;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.fish-rarity-title-container {
+	padding: 10px 60px;
+	width: fit-content;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.fish-details-fish-img {
+	transform: rotate(15deg);
+}
+
+.fish-details-items-container {
+	display: flex;
+	border-radius: 10px;
+	padding: 10px 50px;
+}
+
+.fish-details-item span {
+	font-weight: 600;
+	color: #e1e1e1ab;
+}
+
+.fish-details-item h3 {
+	font-weight: 700;
+	margin-bottom: 0;
+	color: white;
+}
+
+.fish-details-continue-button-container {
+	margin-top: 20px;
+	padding: 10px 50px;
+	border-radius: 10px;
+	border: 1px solid #FFFFFF;
+	color: white;
+	font-weight: 600;
+}
+
+.fish-details-continue-button-container:hover {
+	background-color: #ffffff75;
+	cursor: pointer;
+	transition: all .25s;
+}
+
+/* common */
+.fish-rarity-color-common-containers {
+	border: 2px solid #FFFFFF;
+}
+
+/* uncommon */
+.fish-rarity-color-uncommon-image {
+	filter: drop-shadow(0 0 100px #FFFFFF);
+}
+.fish-rarity-color-uncommon-containers {
+	border: 2px solid #FFFFFF;
+	background: linear-gradient(90deg, rgba(220, 220, 220, 0.0875) 0%, rgba(255, 255, 255, 0.35) 100%);
+	box-shadow: 0px 0px 45px 0px #FFFFFF59;
+}
+
+/* rare */
+.fish-rarity-color-rare-image {
+	filter: drop-shadow(0 0 100px #85E2FF);
+}
+.fish-rarity-color-rare-containers {
+	border: 2px solid #85E2FF;
+	background: linear-gradient(90deg, rgba(133, 226, 255, 0.1375) 0%, rgba(133, 226, 255, 0.55) 100%);
+	box-shadow: 0px 0px 45px 0px #85E2FF59;
+}
+
+/* legendary */
+.fish-rarity-color-legendary-image {
+	filter: drop-shadow(0 0 100px #ac85ff);
+}
+.fish-rarity-color-legendary-containers {
+	border: 2px solid #AC85FF;
+	background: linear-gradient(90deg, rgba(172, 133, 255, 0.1375) 0%, rgba(103, 80, 153, 0.55) 100%);
+	box-shadow: 0px 0px 45px 0px #ac85ff59;
+}
+
+/* mythic */
+.fish-rarity-color-mythic-image {
+	filter: drop-shadow(0 0 100px #FFE2AA);
+}
+.fish-rarity-color-mythic-containers {
+	border: 1.5px solid #FFE2AA;
+	background: linear-gradient(90deg, rgba(255, 221, 133, 0.1375) 0%, rgba(255, 226, 170, 0.55) 100%);
+	box-shadow: 0px 0px 45px 0px #FFE2AA59;
+}
