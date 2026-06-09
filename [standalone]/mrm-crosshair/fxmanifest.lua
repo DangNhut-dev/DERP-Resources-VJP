@@ -6,6 +6,10 @@ author 'MrMRVLS'
 description 'Simple crosshair.'
 version '1.1.0'
 
+shared_scripts {
+    '@ox_lib/init.lua'
+}
+
 client_scripts {
     'client/*.lua'
 }
