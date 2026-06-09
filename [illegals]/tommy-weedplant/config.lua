@@ -2,7 +2,7 @@ Config = {}
 
 Config.Debug = false
 
-Config.MaxPlantsPerPlayer = 7 -- Số cây tối đa mỗi người có thể trồng
+Config.MaxPlantsPerPlayer = 10 -- Số cây tối đa mỗi người có thể trồng
 
 -- ===========================================
 -- CÁC LOẠI HẠT GIỐNG (SEED TYPES)

@@ -1,6 +1,6 @@
 Config = {}
 
-Config.PlayerCooldown = 45 * 60 * 1000
+Config.PlayerCooldown = 15 * 60 * 1000
 
 Config.WhitelistedWeapons = {
     [`weapon_knife`]  = true,
