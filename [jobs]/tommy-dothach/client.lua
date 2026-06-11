@@ -31,6 +31,13 @@ local function getStoneList(cb)
 end
 
 local function buildStoneOptions(stones, action)
+    table.sort(stones, function(a, b)
+        local function grindOrder(s)
+            if not s.polished then return 0 end
+            return s.grindCount or 1
+        end
+        return grindOrder(a) < grindOrder(b)
+    end)
     local options = {}
     for _, stone in ipairs(stones) do
         local label
