@@ -1697,9 +1697,7 @@ function PickTrash(bagEntity)
     local bagCoords = GetEntityCoords(bagEntity)
     local bagNetIdToSend = nil
 
-    if not IsExploitFixClear() then
-        return Notify(_L("Job.Gameplay.Exploit"))
-    end
+    -- if not IsEt
 
     if NetworkGetEntityIsNetworked(bagEntity) then
         bagNetIdToSend = ObjToNet(bagEntity)
@@ -2089,9 +2087,9 @@ function StartScene(sceneData, sceneId, binEntity)
     local binRoll = GetEntityRoll(binEntity)
     local binPitch = GetEntityPitch(binEntity)
 
-    if not IsExploitFixClear() then
-        return Notify(_L("Job.Gameplay.Exploit"))
-    end
+    -- if not IsExploitFixClear() then
+    --     return Notify(_L("Job.Gameplay.Exploit"))
+    -- end
 
     if math.abs(binRoll) > 50.0 or math.abs(binPitch) > 50.0 then
         Notify(_L("Job.Gameplay.DumpsterNotStable"))

@@ -15,7 +15,7 @@ Config.VersionCheck = {
 Config.UseBuiltInNotifications = false               -- Đặt false nếu muốn dùng thông báo theo framework của bạn. Nếu không, hệ thống thông báo hiện đại tích hợp sẵn sẽ được sử dụng
 Config.LetBossSplitReward = true                    -- Nếu true, sếp có thể quản lý tỉ lệ phần thưởng của cả nhóm trong menu. Nếu false, tất cả sẽ nhận số tiền bằng nhau
 Config.MultiplyRewardWhileWorkingInGroup = true     -- Nếu false, phần thưởng giữ nguyên mặc định. Ví dụ $1000 cho hoàn thành công việc. Nếu true, phần thưởng sẽ phụ thuộc vào số người trong nhóm. Ví dụ công việc đầy đủ là $1000, nếu người chơi làm trong nhóm 4 người thì phần thưởng sẽ là $4000 (baseReward * số thành viên)
-Config.Price = 200                                    -- Giá trên mỗi túi rác trong xe. Tối đa 100 nên xe đầy = $200 / số thành viên
+Config.Price = 20                                    -- Giá trên mỗi túi rác trong xe. Tối đa 100 nên xe đầy = $200 / số thành viên
 Config.UseTarget = true                            -- Đổi thành true nếu muốn dùng hệ thống target. Tất cả cấu hình target nằm trong file target.lua
 Config.RequiredJob = "none"                         -- Đặt "none" nếu bạn không muốn dùng hệ thống nghề. Nếu đang dùng target, bạn phải đặt tham số "job" cho từng export trong target.lua
 Config.RequireJobAlsoForFriends = false              -- Nếu false, chỉ cần host có nghề; nếu true thì cả nhóm phải có Config.RequiredJob
@@ -69,11 +69,46 @@ Config.KeybindSettings = {
 }
 
 Config.RewardItemsToGive = {
-    -- {
-    --     item_name = "water",
-    --     chance = 100,
-    --     amountPerBag = 1,
-    -- },
+    {
+        item_name = "metalscrap",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "plastic",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "copper",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "iron",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "aluminum",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "steel",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "glass",
+        chance = 15,
+        amountPerBag = 1,
+    },
+    {
+        item_name = "rubber",
+        chance = 15,
+        amountPerBag = 1,
+    },
 }
 
 Config.RequiredItem = "none"                        -- Đặt thành bất kỳ vật phẩm nào bạn muốn, để yêu cầu người chơi phải có vật phẩm đó trong túi trước khi bắt đầu công việc
