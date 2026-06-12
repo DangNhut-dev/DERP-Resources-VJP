@@ -234,15 +234,15 @@ RegisterNetEvent('DERP-smokeweed:client:smoke', function(itemName)
     end
 
     -- Check overdose: nếu vẫn còn trong duration của điếu trước -> ói, KHÔNG apply effect mới, giữ nguyên effect cũ
-    local now = GetGameTimer()
-    if now < lastSmokeEnd then
-        playPukeAnim()
-        TriggerServerEvent('DERP-smokeweed:server:consumed', itemName)
-        SetTimeout(6000, function()
-            isSmoking = false
-        end)
-        return
-    end
+    -- local now = GetGameTimer()
+    -- if now < lastSmokeEnd then
+    --     playPukeAnim()
+    --     TriggerServerEvent('DERP-smokeweed:server:consumed', itemName)
+    --     SetTimeout(6000, function()
+    --         isSmoking = false
+    --     end)
+    --     return
+    -- end
 
     isSmoking = false
     lastSmokeEnd = GetGameTimer() + data.duration

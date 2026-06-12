@@ -331,8 +331,8 @@ Config.InfusionRecipes = {
         bud_type = 'sativa_bud_dried',
         bud_amount = 1,
         ingredients = {
-            ['citrus_extract'] = 2,
-            ['peppermint'] = 1,
+            ['citrus_extract'] = 5,
+            ['peppermint'] = 3,
         },
         time = { min = 15.0, max = 20.0 },
         output = { high = 'blue_dream_high', medium = 'blue_dream_medium', low = 'blue_dream_low' }
@@ -344,11 +344,11 @@ Config.InfusionRecipes = {
         ingredients = {
             ['ethanol'] = 2,
             ['citrus_extract'] = 1,
-            ['stabilizer'] = 1,
-            ['herbal_mix'] = 1,
-            ['glycerin'] = 1,
+            ['stabilizer'] = 2,
+            ['herbal_mix'] = 2,
+            ['glycerin'] = 3,
         },
-        time = { min = 31.0, max = 36.0 },
+        time = { min = 31.0, max = 35.0 },
         output = { high = 'jack_herer_high', medium = 'jack_herer_medium', low = 'jack_herer_low' }
     },
 
@@ -358,8 +358,8 @@ Config.InfusionRecipes = {
         ingredients = {
             ['lemon_essence'] = 2,
             ['stabilizer'] = 1,
-            ['citrus_extract'] = 1,
-            ['peppermint'] = 1,
+            ['citrus_extract'] = 2,
+            ['peppermint'] = 3,
         },
         time = { min = 21.0, max = 26.0 },
         output = { high = 'super_lemon_haze_high', medium = 'super_lemon_haze_medium', low = 'super_lemon_haze_low' }
@@ -370,11 +370,13 @@ Config.InfusionRecipes = {
         bud_type = 'hybrid_bud_dried',
         bud_amount = 1,
         ingredients = {
-            ['flavor_oil'] = 2,
-            ['curing_agent'] = 1,
-            ['herbal_oil'] = 1,
+            ['vanilla_extract'] = 2,
+            ['flavor_oil'] = 3,
+            ['herbal_oil'] = 2,
+            ['glycerin'] = 3,
+            ['curing_agent'] = 2,
         },
-        time = { min = 14.0, max = 28.0 },
+        time = { min = 22.0, max = 28.0 },
         output = { high = 'og_kush_high', medium = 'og_kush_medium', low = 'og_kush_low' }
     },
 
@@ -382,12 +384,12 @@ Config.InfusionRecipes = {
         bud_type = 'hybrid_bud_dried',
         bud_amount = 1,
         ingredients = {
-            ['herbal_mix'] = 2,
-            ['glycerin'] = 1,
-            ['vanilla_extract'] = 1,
-            ['curing_agent'] = 1,
+            ['herbal_mix'] = 4,
+            ['glycerin'] = 3,
+            ['vanilla_extract'] = 2,
+            ['curing_agent'] = 2,
         },
-        time = { min = 18.0, max = 30.0 },
+        time = { min = 25.0, max = 30.0 },
         output = { high = 'gsc_high', medium = 'gsc_medium', low = 'gsc_low' }
     },
 
@@ -395,13 +397,14 @@ Config.InfusionRecipes = {
         bud_type = 'hybrid_bud_dried',
         bud_amount = 1,
         ingredients = {
-            ['vanilla_extract'] = 2,
-            ['flavor_oil'] = 1,
-            ['herbal_oil'] = 1,
-            ['glycerin'] = 1,
+            ['flavor_oil'] = 2,
             ['curing_agent'] = 1,
+            ['herbal_oil'] = 2,
+            ['citrus_extract'] = 3,
+            ['stabilizer'] = 3,
+            ['herbal_mix'] = 4,
         },
-        time = { min = 29.0, max = 34.0 },
+        time = { min = 32.0, max = 34.0 },
         output = { high = 'wedding_cake_high', medium = 'wedding_cake_medium', low = 'wedding_cake_low' }
     },
 }

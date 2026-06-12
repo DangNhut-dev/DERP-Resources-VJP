@@ -40,233 +40,234 @@ Config.Items = {
 
     -- Sour Diesel (HIGH TIER - phê pha nhất, shake cam + walkstyle drunk)
     ['sour_diesel_high_weed'] = {
-        effectType = 'high',
-        progressTime = 30000,
-        duration = 120000,
-        screenEffect = 'DrugsMichaelAliensFightIn',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.5 },
-        walkstyle = 'move_m@drunk@verydrunk',
+        effectType = 'regen',
+        progressTime = 1500,
+        duration = 5000,
+        healthTick = 5,
+        healthInterval = 1000,
     },
     ['sour_diesel_medium_weed'] = {
-        effectType = 'high',
-        progressTime = 30000,
-        duration = 90000,
+        effectType = 'regen',
+        progressTime = 3000,
+        duration = 5000,
+        healthTick = 5,
+        healthInterval = 1000,
         screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.4 },
-        walkstyle = 'move_m@drunk@moderatedrunk',
     },
     ['sour_diesel_low_weed'] = {
-        effectType = 'high',
-        progressTime = 30000,
-        duration = 60000,
+        effectType = 'regen',
+        progressTime = 5000,
+        duration = 5000,
+        healthTick = 5,
+        healthInterval = 1000,
         screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.3 },
-        walkstyle = 'move_m@drunk@slightlydrunk',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
 
     -- Purple Haze (SPRINT boost)
     ['purple_haze_high_weed'] = {
         effectType = 'sprint',
-        progressTime = 5000,
-        duration = 90000,
-        sprintMult = 1.3,
-        screenEffect = 'DrugsTrevorClownsFight',
+        progressTime = 1500,
+        duration = 15000,
+        sprintMult = 1.1,
     },
     ['purple_haze_medium_weed'] = {
         effectType = 'sprint',
-        progressTime = 5000,
-        duration = 60000,
-        sprintMult = 1.2,
+        progressTime = 3000,
+        duration = 15000,
+        sprintMult = 1.1,
         screenEffect = 'DrugsTrevorClownsFight',
     },
     ['purple_haze_low_weed'] = {
         effectType = 'sprint',
         progressTime = 5000,
-        duration = 30000,
+        duration = 15000,
         sprintMult = 1.1,
         screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
-
-    -- Blue Dream (STAMINA không mệt)
-    ['blue_dream_high_weed'] = {
-        effectType = 'stamina',
-        progressTime = 5000,
-        duration = 90000,
-        screenEffect = 'DrugsTrevorClownsFight',
-    },
-    ['blue_dream_medium_weed'] = {
-        effectType = 'stamina',
-        progressTime = 5000,
-        duration = 60000,
-        screenEffect = 'DrugsTrevorClownsFight',
-    },
-    ['blue_dream_low_weed'] = {
-        effectType = 'stamina',
-        progressTime = 5000,
-        duration = 30000,
-        screenEffect = 'DrugsTrevorClownsFight',
-    },
-
-    -- OG Kush (REGEN HP từ từ)
-    ['og_kush_high_weed'] = {
-        effectType = 'regen',
-        progressTime = 5000,
-        duration = 90000,
-        healthTick = 5,
-        healthInterval = 2000,
-    },
-    ['og_kush_medium_weed'] = {
-        effectType = 'regen',
-        progressTime = 5000,
-        duration = 60000,
-        healthTick = 3,
-        healthInterval = 2500,
-    },
-    ['og_kush_low_weed'] = {
-        effectType = 'regen',
-        progressTime = 5000,
-        duration = 30000,
-        healthTick = 2,
-        healthInterval = 3000,
-    },
-
-    -- ========== CÁC LOẠI CÒN LẠI - CHỈ EFFECT NHẸ ==========
 
     -- Northern Lights
     ['northern_lights_high_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 60000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
-        walkstyle = 'move_m@drunk@slightlydrunk',
+        effectType = 'stamina',
+        progressTime = 1500,
+        duration = 15000,
     },
     ['northern_lights_medium_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
-        duration = 45000,
+        progressTime = 3000,
+        duration = 15000,
         screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
     ['northern_lights_low_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
-        duration = 30000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        screenEffect = 'DrunkBlurred01',
-    },
-
-    -- Jack Herer
-    ['jack_herer_high_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 60000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
-        walkstyle = 'move_m@drunk@slightlydrunk',
-    },
-    ['jack_herer_medium_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 45000,
+        progressTime = 5000,
+        duration = 15000,
         screenEffect = 'DrugsTrevorClownsFight',
         shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
-    ['jack_herer_low_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 30000,
+
+    
+    -- Jack Herer
+    ['jack_herer_high_weed'] = {
+        effectType = 'regen',
+        progressTime = 1500,
+        duration = 5000,
+        healthTick = 10,
+        healthInterval = 1000,
+    },
+    ['jack_herer_medium_weed'] = {
+        effectType = 'regen',
+        progressTime = 3000,
+        duration = 5000,
+        healthTick = 10,
+        healthInterval = 1000,
         screenEffect = 'DrugsTrevorClownsFight',
-        screenEffect = 'DrunkBlurred01',
+    },
+    ['jack_herer_low_weed'] = {
+        effectType = 'regen',
+        progressTime = 5000,
+        duration = 5000,
+        healthTick = 10,
+        healthInterval = 1000,
+        screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
 
     -- Super Lemon Haze
     ['super_lemon_haze_high_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 60000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
-        walkstyle = 'move_m@drunk@slightlydrunk',
+        effectType = 'sprint',
+        progressTime = 1500,
+        duration = 30000,
+        sprintMult = 1.2,
     },
     ['super_lemon_haze_medium_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 45000,
+        effectType = 'sprint',
+        progressTime = 3000,
+        duration = 30000,
+        sprintMult = 1.2,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+    ['super_lemon_haze_low_weed'] = {
+        effectType = 'sprint',
+        progressTime = 5000,
+        duration = 30000,
+        sprintMult = 1.2,
         screenEffect = 'DrugsTrevorClownsFight',
         shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
-    ['super_lemon_haze_low_weed'] = {
+
+    ['blue_dream_high_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
+        progressTime = 1500,
+        duration = 30000,
+    },
+    ['blue_dream_medium_weed'] = {
+        effectType = 'light',
+        progressTime = 3000,
         duration = 30000,
         screenEffect = 'DrugsTrevorClownsFight',
-        screenEffect = 'DrunkBlurred01',
+    },
+    ['blue_dream_low_weed'] = {
+        effectType = 'light',
+        progressTime = 5000,
+        duration = 30000,
+        screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
+    },
+
+    -- Wedding Cake
+    ['wedding_cake_high_weed'] = {
+        effectType = 'regen',
+        progressTime = 1500,
+        duration = 5000,
+        healthTick = 15,
+        healthInterval = 1000,
+    },
+    ['wedding_cake_medium_weed'] = {
+        effectType = 'regen',
+        progressTime = 3000,
+        duration = 5000,
+        healthTick = 15,
+        healthInterval = 1000,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+    ['wedding_cake_low_weed'] = {
+        effectType = 'regen',
+        progressTime = 5000,
+        duration = 5000,
+        healthTick = 15,
+        healthInterval = 1000,
+        screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
+    },
+
+    -- OG Kush (REGEN HP từ từ)
+    ['og_kush_high_weed'] = {
+        effectType = 'sprint',
+        progressTime = 1500,
+        duration = 45000,
+        sprintMult = 1.4,
+    },
+    ['og_kush_medium_weed'] = {
+        effectType = 'sprint',
+        progressTime = 3000,
+        duration = 45000,
+        sprintMult = 1.4,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+    ['og_kush_low_weed'] = {
+        effectType = 'sprint',
+        progressTime = 5000,
+        duration = 45000,
+        sprintMult = 1.4,
+        screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
 
     -- Girl Scout Cookies
     ['gsc_high_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
-        duration = 60000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
-        walkstyle = 'move_m@drunk@slightlydrunk',
+        progressTime = 1500,
+        duration = 45000,
     },
     ['gsc_medium_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
+        progressTime = 3000,
+        duration = 45000,
+        screenEffect = 'DrugsTrevorClownsFight',
+    },
+    ['gsc_low_weed'] = {
+        effectType = 'light',
+        progressTime = 5000,
         duration = 45000,
         screenEffect = 'DrugsTrevorClownsFight',
         shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
     },
-    ['gsc_low_weed'] = {
+    
+    ['indica_bud_dried_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
+        progressTime = 5000,
         duration = 30000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        screenEffect = 'DrunkBlurred01',
-    },
-
-    -- Wedding Cake
-    ['wedding_cake_high_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 60000,
         screenEffect = 'DrugsTrevorClownsFight',
         shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
         walkstyle = 'move_m@drunk@slightlydrunk',
     },
-    ['wedding_cake_medium_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 45000,
-        screenEffect = 'DrugsTrevorClownsFight',
-        shake = { name = 'DRUNK_SHAKE', intensity = 0.1 },
-    },
-    ['wedding_cake_low_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 30000,
-        screenEffect = 'DrugsTrevorClownsFight',
-    },
-    ['indica_bud_dried_weed'] = {
-        effectType = 'light',
-        progressTime = 30000,
-        duration = 30000,
-        screenEffect = 'DrugsTrevorClownsFight',
-    },
     ['sativa_bud_dried_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
+        progressTime = 5000,
         duration = 30000,
         screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
+        walkstyle = 'move_m@drunk@slightlydrunk',
     },
     ['hybrid_bud_dried_weed'] = {
         effectType = 'light',
-        progressTime = 30000,
+        progressTime = 5000,
         duration = 30000,
         screenEffect = 'DrugsTrevorClownsFight',
+        shake = { name = 'DRUNK_SHAKE', intensity = 0.15 },
+        walkstyle = 'move_m@drunk@slightlydrunk',
     },
 
 }
