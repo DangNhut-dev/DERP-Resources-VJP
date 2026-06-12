@@ -156,7 +156,7 @@ function OpenShop(config, isPedMenu, shopType)
     end, shopType)
 end
 
-local function OpenClothingShop(isPedMenu)
+RegisterNetEvent("illenium-appearance:client:openClothingShop", function(isPedMenu)
     local config = GetDefaultConfig()
     config.components = true
     config.props = true
@@ -168,8 +168,11 @@ local function OpenClothingShop(isPedMenu)
         config.headOverlays = true
         config.tattoos = not Config.RCoreTattoosCompatibility and true
     end
+
+    config.ped = false  -- tắt ped section bất kể isPedMenu
+
     OpenShop(config, isPedMenu, "clothing")
-end
+end)
 
 RegisterNetEvent("illenium-appearance:client:openClothingShop", OpenClothingShop)
 
