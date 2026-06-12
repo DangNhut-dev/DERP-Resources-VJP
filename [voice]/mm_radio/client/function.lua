@@ -494,11 +494,36 @@ lib.addKeybind({
 if Shared.Battery.state then
     CreateThread(function()
         while true do
-            TriggerServerEvent('mm_radio:server:consumeBattery', Radio.batteryData)
             Wait(Shared.Battery.depletionTime * 60000)
+            if Radio.onRadio and Radio.hasRadio then
+                TriggerServerEvent('mm_radio:server:consumeBattery', Radio.batteryData)
+            end
         end
     end)
 end
 exports('useRadio', function(data, slot)
     TriggerEvent('mm_radio:client:use', slot)
 end)
+
+RegisterCommand('radiodebug', function()
+    -- Check battery data hiện tại
+    print('[RADIO DEBUG] onRadio:', Radio.onRadio)
+    print('[RADIO DEBUG] hasRadio:', Radio.hasRadio)
+    print('[RADIO DEBUG] RadioChannel:', Radio.RadioChannel)
+    print('[RADIO DEBUG] batteryData:', json.encode(Radio.batteryData))
+    
+    -- Check durability item thực tế từ inventory
+    local items = exports.ox_inventory:Search('slots', Shared.RadioItem)
+    for _, v in pairs(items) do
+        print('[RADIO DEBUG] item:', v.name, 
+              '| slot:', v.slot,
+              '| durability:', v.durability,
+              '| metadata:', json.encode(v.metadata or {}))
+    end
+end, false)
+
+RegisterCommand('radioconsume', function()
+    -- Test thủ công trigger consume xem server làm gì
+    print('[RADIO DEBUG] Triggering consumeBattery with:', json.encode(Radio.batteryData))
+    TriggerServerEvent('mm_radio:server:consumeBattery', Radio.batteryData)
+end, false)

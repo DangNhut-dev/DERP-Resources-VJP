@@ -3,14 +3,35 @@ local jammer = {}
 local batteryData = {}
 local spawnedDefaultJammer = false
 
+local function GetSlotWithRadio(source)
+    for i=1, #Shared.RadioItem do
+        return exports.ox_inventory:GetSlotIdWithItem(source, Shared.RadioItem[i])
+    end
+end
+
 RegisterNetEvent('mm_radio:server:consumeBattery', function(data)
-    for i=1, #data do
+    local src = source
+    for i = 1, #data do
         local id = data[i]
         if not batteryData[id] then batteryData[id] = 100 end
-        local battery = batteryData[id] - Shared.Battery.consume
-        batteryData[id] = math.max(battery, 0)
+        batteryData[id] = math.max(batteryData[id] - Shared.Battery.consume, 0)
+
+        -- Sync battery vào metadata item để hiện tooltip
+        local slotid = GetSlotWithRadio(src)
+        if slotid then
+            local slotData = exports.ox_inventory:GetSlot(src, slotid)
+            if slotData and slotData.metadata then
+                local meta = slotData.metadata
+                meta.battery = batteryData[id]
+                meta.description = batteryData[id] == 0 and 'Hết pin' or ('Pin: ' .. batteryData[id] .. '%')
+                exports.ox_inventory:SetMetadata(src, slotid, meta)
+            end
+        end
+
         if batteryData[id] == 0 then
-            TriggerClientEvent('mm_radio:client:nocharge', source)
+            TriggerClientEvent('mm_radio:client:nocharge', src)
+        else
+            TriggerClientEvent('mm_radio:client:updatebattery', src, batteryData[id])
         end
     end
 end)
@@ -188,12 +209,6 @@ local function SetRadioData(src, slot)
     local name = player.PlayerData.charinfo.firstname .. " " .. player.PlayerData.charinfo.lastname
     exports.ox_inventory:SetMetadata(src, slot, { radioId = radioId, name = name })
     return radioId
-end
-
-local function GetSlotWithRadio(source)
-    for i=1, #Shared.RadioItem do
-        return exports.ox_inventory:GetSlotIdWithItem(source, Shared.RadioItem[i])
-    end
 end
 
 lib.callback.register('mm_radio:server:getradiodata', function(source, slot)

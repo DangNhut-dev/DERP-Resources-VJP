@@ -34,9 +34,9 @@ Shared.RadioItem = {
 
 ---@type Battery
 Shared.Battery = {
-    state = false, -- to use battery system or not
-    consume = 1, -- battery consume rate
-    depletionTime = 1, -- in minute, every 1 minute battery will decrease by consume value
+    state = true,
+    consume = 1,
+    depletionTime = 29, -- 29 phút trừ 1% → ~48 tiếng hết pin
 }
 
 ---@type [string]: string

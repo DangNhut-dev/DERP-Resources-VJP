@@ -267,6 +267,10 @@ RegisterNetEvent("ND:updateCharacter", function(character)
     Radio.PlayerDead = character.metadata.dead
 end)
 
+RegisterNetEvent('mm_radio:client:updatebattery', function(battery)
+    Radio:SendSvelteMessage("updateBattery", battery)
+end)
+
 AddEventHandler('ox_inventory:updateInventory', function()
     Radio:doRadioCheck()
 end)

@@ -9,7 +9,7 @@ Shared = {}
 ---@type Shared
 Shared = {
     Ready = true,
-    UseCommand = true,
+    UseCommand = false,
     Debug = false,
     Overlay = 'default' -- default, always, never
 }
