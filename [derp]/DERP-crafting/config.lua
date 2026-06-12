@@ -77,6 +77,7 @@ Config.Benches = {
             },
         }
     },
+    
     ["craftingdevice"] = {
         label = "Bàn Chế Tạo",
         object = `prop_tool_bench02`,

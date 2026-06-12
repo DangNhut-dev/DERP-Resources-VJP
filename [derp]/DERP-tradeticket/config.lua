@@ -14,7 +14,7 @@ Config.BonusItems = {
 
 Config.NPC = {
     model    = 'a_m_y_hasjew_01',
-    coords   = vector4(139.61, -1040.63, 29.40, 54.13),
+    coords   = vector4(194.24, -871.36, 30.71, 251.35),
     scenario = 'WORLD_HUMAN_STAND_MOBILE',
 }
 

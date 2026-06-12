@@ -5,7 +5,7 @@ Config.Shop.BuyCooldown = 3
 Config.Shop.NPCs = {
     ['npc_shop_1'] = {
         model  = 's_m_m_highsec_01',
-        coords = vec4(135.40, -1025.61, 29.36, 160.11),
+        coords = vec4(199.86, -870.83, 30.71, 160.14),
         defaultPayment = 'coin',
 
         blip = {
@@ -225,7 +225,7 @@ Config.Shop.NPCs = {
     },
     ['npc_shop_2'] = {
         model  = 's_m_m_highsec_02',
-        coords = vec4(133.45, -1024.74, 29.36, 84.47),
+        coords = vec4(201.20, -871.28, 30.71, 159.05),
         defaultPayment = 'coin',
 
         blip = {

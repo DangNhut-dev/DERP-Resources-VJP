@@ -500,7 +500,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Tạp Hóa",
         ped = `a_m_m_fatlatin_01`,
-        coords = vector4(136.70, -1095.07, 29.38, 177.20),
+        coords = vector4(188.80, -889.07, 30.71, 251.95),
         type = "both",
         items = {
             {name = "phone", label = "Phone", buyPrice = 200, sellMin = nil, sellMax = nil},
@@ -760,7 +760,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Cửa Hàng Quần Áo",
         ped = `a_f_y_business_01`,
-        coords = vector4(129.78, -1038.58, 29.40, 337.87),
+        coords = vector4(202.31, -873.10, 30.71, 120.88),
         type = "buy",
         items = {
             {name = "quan_231_0_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
@@ -828,7 +828,6 @@ Config.MarketNPCs = {
             {name = "vanilla_extract", label = "Tinh Chất Van", buyPrice = 1, sellMin = nil, sellMax = nil},
         }
     },
-
 }
 
 Config.MarketBlips = { 
@@ -852,7 +851,7 @@ Config.MarketBlips = {
     {coords = vector3(2570.01, 292.57, 108.73), sprite = 110, color = 1, scale = 0.6, display = 4, name = "Cửa Hàng Vũ Khí"},
     {coords = vector3(-1120.44, 2698.51, 18.55), sprite = 110, color = 1, scale = 0.6, display = 4, name = "Cửa Hàng Vũ Khí"},
     {coords = vector3(844.29, -1035.28, 28.19), sprite = 110, color = 1, scale = 0.6, display = 4, name = "Cửa Hàng Vũ Khí"},
-    {coords = vector3(714.00, -964.77, 30.40), sprite = 850, color = 1, scale = 0.6, display = 4, name = "Xưởng May Balo"},
+    {coords = vector3(714.00, -964.77, 30.40), sprite = 676, color = 2, scale = 0.7, display = 4, name = "Xưởng May Balo"},
     {coords = vector3(-356.25, -133.68, 38.97), sprite = 446, color = 47, scale = 0.7, display = 4, name = "Sửa Xe"},
     {coords = vector3(2526.69, 4358.91, 40.06), sprite = 570, color = 0, scale = 0.7, display = 4, name = "Cánh Đồng Bông Cotton"},
     {coords = vector3(-580.10, 5369.02, 70.34), sprite = 85, color = 21, scale = 0.7, display = 4, name = "Trung Tâm Xử Lý Gỗ"},
