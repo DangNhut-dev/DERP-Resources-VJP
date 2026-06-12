@@ -43,7 +43,13 @@ function createMechanicZonesAndBlips()
 
     if locations and type(locations) == "table" and #locations > 0 and mods then
       for _, location in ipairs(locations) do
-        if not location.employeeOnly or isMechanicEmployee then
+        local gradeOk = true
+        if mechanicConfig.grade ~= nil then
+          local job = Globals.PlayerData and Globals.PlayerData.job
+          gradeOk = job and job.name == mechanicConfig.job and job.grade.level >= mechanicConfig.grade
+        end
+
+        if (not location.employeeOnly or isMechanicEmployee) and gradeOk then
           zones[#zones+1] = lib.zones.box({
             coords = location.coords,
             size = vector3(location.size, location.size, location.size),

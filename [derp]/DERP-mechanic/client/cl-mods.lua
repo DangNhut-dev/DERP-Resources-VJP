@@ -388,6 +388,15 @@ RegisterNetEvent("DERP-mechanic:client:open-customisation-menu", openModsMenu)
 
 onEnterModsZone = function(mechId, mechLabel)
   if not cache.vehicle then return false end
+
+  local mechanicConfig = Config.MechanicLocations[mechId]
+  if mechanicConfig and mechanicConfig.grade ~= nil then
+    local job = Globals.PlayerData and Globals.PlayerData.job
+    if not job or job.name ~= mechanicConfig.job or job.grade.level < mechanicConfig.grade then
+      return false
+    end
+  end
+
   CreateThread(function()
     currentMechanicId = mechId
     while currentMechanicId do

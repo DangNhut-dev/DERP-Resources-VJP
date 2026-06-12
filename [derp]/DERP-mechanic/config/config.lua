@@ -374,12 +374,13 @@ Config.MechanicLocations = {
   police = {
     type = "self-service",
     job = "police",
+    grade = 4,
     logo = "ls_customs.png",
     locations = {
       {
         -- coords = vector3(-82.23, 87.88, 71.72),
-        coords = vector3(17.83, -424.78, 39.13),
-        size = 25.0,
+        coords = vector3(480.13, -1022.89, 27.53),
+        size = 15.0,
         showBlip = false,
         employeeOnly = true,
       }
@@ -411,7 +412,49 @@ Config.MechanicLocations = {
       driftTuning      = { enabled = false, requiresItem = false },
       gearboxes        = { enabled = false, requiresItem = false },
     },
-  }
+  },
+  BennyCustom = {
+    type = "self-service",
+    -- job = "none",
+    -- grade = 4,
+    logo = "ls_customs.png",
+    locations = {
+      {
+        -- coords = vector3(-82.23, 87.88, 71.72),
+        coords = vector3(-217.30, -1328.58, 30.43),
+        size = 15.0,
+        showBlip = true,
+        employeeOnly = false,
+      }
+    },
+    blip = {
+      id = 72,
+      color = 47,
+      scale = 0.7
+    },
+    mods = {
+      repair           = { enabled = false, price = 0, percentVehVal = 0.0 },
+      performance      = { enabled = false, price = 0, percentVehVal = 0.0},
+      cosmetics        = { enabled = false, price = 0, percentVehVal = 0.0},
+      stance           = { enabled = false, price = 0, percentVehVal = 0.0 },
+      respray          = { enabled = true, price = 5000, percentVehVal = 0.1 },
+      wheels           = { enabled = false, price = 0, percentVehVal = 0.0},
+      neonLights       = { enabled = false, price = 0, percentVehVal = 0.0 },
+      headlights       = { enabled = false, price = 0, percentVehVal = 0.0 },
+      tyreSmoke        = { enabled = false, price = 0, percentVehVal = 0.0 },
+      bulletproofTyres = { enabled = false, price = 0, percentVehVal = 0.0 },
+      extras           = { enabled = false, price = 0, percentVehVal = 0.0 }
+    },
+    tuning = {
+      engineSwaps      = { enabled = false, requiresItem = false },
+      drivetrains      = { enabled = false, requiresItem = false },
+      turbocharging    = { enabled = false, requiresItem = false },
+      tyres            = { enabled = false, requiresItem = false },
+      brakes           = { enabled = false, requiresItem = false },
+      driftTuning      = { enabled = false, requiresItem = false },
+      gearboxes        = { enabled = false, requiresItem = false },
+    },
+  },
 }
 
 -- Add electric vehicles to disable combustion engine features
