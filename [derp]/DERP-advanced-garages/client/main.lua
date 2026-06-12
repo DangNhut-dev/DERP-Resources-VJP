@@ -84,9 +84,12 @@ local function SafeSetVehicleProperties(vehicle, props, forcePlate)
 
     SanitizeVehicleProperties(vehicle, safeMods)
 
-    local ok = pcall(function()
+    local ok, err = pcall(function()
         lib.setVehicleProperties(vehicle, safeMods)
     end)
+    if not ok then
+        print(('[MODS-DEBUG] setVehicleProperties FAILED plate=%s err=%s'):format(tostring(originalPlate), tostring(err)))
+    end
 
     if originalPlate and DoesEntityExist(vehicle) then
         SetVehicleNumberPlateText(vehicle, originalPlate)
@@ -457,6 +460,9 @@ local function ApplyAllVehicleProperties(vehicle, vehicleData)
             Wait(50)
             ctrlWait = ctrlWait + 50
             NetworkRequestControlOfEntity(vehicle)
+        end
+        if not NetworkHasControlOfEntity(vehicle) then
+            print(('[MODS-DEBUG] NO CONTROL after %dms plate=%s — mods apply will likely FAIL'):format(ctrlWait, GetVehicleNumberPlateText(vehicle)))
         end
     end
 
@@ -1745,4 +1751,132 @@ CreateThread(function()
             end
         end
     end
+end)
+
+-- ============================================================
+-- [DEBUG] Test spawn lặp để bắt lỗi mất mods — GỠ SAU KHI XONG
+-- ============================================================
+-- RegisterCommand('testmods', function(_, args)
+--     local plate = 'DE525648'
+--     local garageName = args[1] or currentGarage
+--     local loops = tonumber(args[2]) or 50
+
+--     if not garageName or not Config.Garages[garageName] then
+--         print('^1[TESTMODS] Cần đứng ở gara hoặc truyền tên gara: /testmods <garageName> <loops>^7')
+--         return
+--     end
+
+--     -- Lấy mods kỳ vọng từ DB qua callback server
+--     local expected = lib.callback.await('DERP-advanced-garages:server:testmods_getExpected', false, plate)
+--     if not expected then
+--         print('^1[TESTMODS] Không lấy được mods kỳ vọng từ DB cho plate ' .. plate .. '^7')
+--         return
+--     end
+
+--     local checkFields = {
+--         'color1', 'color2', 'modEngine', 'modTransmission', 'modSuspension',
+--         'modBrakes', 'wheels', 'modFrontBumper', 'modRearBumper', 'pearlescentColor', 'wheelColor'
+--     }
+
+--     local function compareMods(actual)
+--         local mismatches = {}
+--         for _, f in ipairs(checkFields) do
+--             local ev = expected[f]
+--             local av = actual and actual[f]
+--             -- color1/color2 có thể là table (custom rgb) hoặc number
+--             local es = type(ev) == 'table' and json.encode(ev) or tostring(ev)
+--             local as = type(av) == 'table' and json.encode(av) or tostring(av)
+--             if es ~= as then
+--                 mismatches[#mismatches+1] = string.format('%s(exp=%s got=%s)', f, es, as)
+--             end
+--         end
+--         return mismatches
+--     end
+
+--     CreateThread(function()
+--         local failCount = 0
+--         local fieldFailTally = {}
+--         print(('^3[TESTMODS] === BẮT ĐẦU %d vòng | plate=%s | gara=%s ==='):format(loops, plate, garageName))
+
+--         for i = 1, loops do
+--             local spawnPoint = FindAvailableSpawnPoint(Config.Garages[garageName].spawnPoints)
+--             if not spawnPoint then
+--                 print(('^1[TESTMODS] vòng %d: hết spawn point trống, dừng^7'):format(i))
+--                 break
+--             end
+
+--             local result = lib.callback.await('DERP-advanced-garages:server:spawnVehicle', false, plate, spawnPoint, garageName)
+--             if not result or not result.success then
+--                 print(('^1[TESTMODS] vòng %d: spawn FAIL (%s)^7'):format(i, result and result.message or 'cooldown/none'))
+--                 Wait(2000)
+--                 goto continueLoop
+--             end
+
+--             SpawnVehicle(result, spawnPoint, garageName)
+
+--             -- đợi mods settle (sau luồng apply, trước watchdog sửa health)
+--             Wait(3000)
+
+--             local veh = NetworkGetEntityFromNetworkId(result.netId)
+--             if not veh or veh == 0 or not DoesEntityExist(veh) then
+--                 print(('^1[TESTMODS] vòng %d: entity không tồn tại để đọc mods^7'):format(i))
+--             else
+--                 local actual = lib.getVehicleProperties(veh)
+--                 local mismatches = compareMods(actual)
+--                 if #mismatches > 0 then
+--                     failCount = failCount + 1
+--                     for _, m in ipairs(mismatches) do
+--                         local fname = m:match('^(%w+)')
+--                         fieldFailTally[fname] = (fieldFailTally[fname] or 0) + 1
+--                     end
+--                     print(('^1[TESTMODS] vòng %d: MẤT MODS -> %s^7'):format(i, table.concat(mismatches, ', ')))
+--                 else
+--                     print(('^2[TESTMODS] vòng %d: OK^7'):format(i))
+--                 end
+
+--                 -- dọn xe
+--                 if NetworkGetEntityIsNetworked(veh) then
+--                     NetworkRequestControlOfEntity(veh)
+--                 end
+--                 DeleteEntity(veh)
+--                 TriggerServerEvent('DERP-advanced-garages:server:testmods_cleanup', plate)
+--             end
+
+--             Wait(1500)
+--             ::continueLoop::
+--         end
+
+--         print(('^3[TESTMODS] === KẾT THÚC: %d/%d vòng MẤT MODS ==='):format(failCount, loops))
+--         if next(fieldFailTally) then
+--             print('^3[TESTMODS] Field hay mất nhất:^7')
+--             for f, c in pairs(fieldFailTally) do
+--                 print(('^3   %s: %d lần^7'):format(f, c))
+--             end
+--         end
+--     end)
+-- end, false)
+
+local lastDrivenVehicle = { netId = nil, plate = nil }
+
+lib.onCache('vehicle', function(vehicle)
+    if not vehicle or vehicle == 0 then
+        if lastDrivenVehicle.netId and NetworkDoesNetworkIdExist(lastDrivenVehicle.netId) then
+            local veh = NetworkGetEntityFromNetworkId(lastDrivenVehicle.netId)
+            if veh and veh ~= 0 and DoesEntityExist(veh) then
+                local coords = GetEntityCoords(veh)
+                local heading = GetEntityHeading(veh)
+                TriggerServerEvent('DERP-advanced-garages:server:saveVehiclePosition',
+                    lastDrivenVehicle.plate,
+                    { x = coords.x, y = coords.y, z = coords.z, w = heading })
+            end
+        end
+        lastDrivenVehicle = { netId = nil, plate = nil }
+        return
+    end
+
+    local plate = string.gsub(GetVehicleNumberPlateText(vehicle), '^%s*(.-)%s*$', '%1')
+    lastDrivenVehicle = {
+        netId = NetworkGetNetworkIdFromEntity(vehicle),
+        plate = plate
+    }
 end)

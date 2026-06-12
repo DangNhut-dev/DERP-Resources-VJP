@@ -1,5 +1,5 @@
 Config.Streaming = {
-    Enabled = true,
+    Enabled = false,
     
     DespawnDistance = 300.0,
     

@@ -1185,6 +1185,38 @@ AddEventHandler('onResourceStop', function(resourceName)
     DebugPrint('RESOURCE STOP COMPLETE')
 end)
 
+AddEventHandler('onResourceStop', function(resourceName)
+    if GetCurrentResourceName() ~= resourceName then return end
+    if Config.Streaming and Config.Streaming.Enabled then return end
+
+    local resetHealth = Config.Impound and Config.Impound.ResetHealthOnRelease
+    local engineVal = resetHealth and (Config.Impound.DefaultEngineHealth or 1000) or nil
+    local bodyVal = resetHealth and (Config.Impound.DefaultBodyHealth or 1000) or nil
+
+    if resetHealth then
+        MySQL.update.await([[
+            UPDATE player_vehicles
+            SET state = 1, garage = 'impound',
+                engine = ?, body = ?, status = NULL,
+                impound_price = 1500, impound_duration = 1,
+                impound_reason = 'Để bên ngoài khi động đất',
+                impound_by = 'Hệ thống',
+                impound_start_time = ?, coords = NULL
+            WHERE state = 0
+        ]], { engineVal, bodyVal, os.time() * 1000 })
+    else
+        MySQL.update.await([[
+            UPDATE player_vehicles
+            SET state = 1, garage = 'impound',
+                impound_price = 1500, impound_duration = 1,
+                impound_reason = 'Để bên ngoài khi động đất',
+                impound_by = 'Hệ thống',
+                impound_start_time = ?, coords = NULL
+            WHERE state = 0
+        ]], { os.time() * 1000 })
+    end
+end)
+
 AddEventHandler('txAdmin:events:serverShuttingDown', function()
     local total = CountTrackedVehicles()
     DebugPrint('SERVER SHUTDOWN: ' .. total .. ' tracked vehicles')

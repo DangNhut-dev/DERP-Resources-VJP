@@ -799,3 +799,39 @@ RegisterNetEvent('DERP-advanced-garages:server:waterImpound', function(plate, ne
         end)
     end
 end)
+
+-- ============================================================
+-- [DEBUG] Hỗ trợ /testmods — GỠ SAU KHI XONG
+-- ============================================================
+-- lib.callback.register('DERP-advanced-garages:server:testmods_getExpected', function(source, plate)
+--     local player = QBX:GetPlayer(source)
+--     if not player then return nil end
+
+--     local result = MySQL.query.await([[
+--         SELECT mods FROM player_vehicles WHERE plate = ? LIMIT 1
+--     ]], { plate })
+
+--     if not result or #result == 0 then return nil end
+
+--     local mods = type(result[1].mods) == 'string' and json.decode(result[1].mods) or result[1].mods
+--     return mods
+-- end)
+
+-- -- Sau mỗi lần test xoá xe, set lại state=1 để vòng sau spawn được
+-- RegisterNetEvent('DERP-advanced-garages:server:testmods_cleanup', function(plate)
+--     if not plate or type(plate) ~= 'string' then return end
+--     MySQL.update.await([[
+--         UPDATE paf Khonaf layer_vehicles SET state = 1, coords = NULL WHERE plate = ?
+--     ]], { plate })
+-- end)
+
+RegisterNetEvent('DERP-advanced-garages:server:saveVehiclePosition', function(plate, coords)
+    if not plate or type(plate) ~= 'string' then return end
+    if not coords or type(coords) ~= 'table' or not coords.x or not coords.y or not coords.z then return end
+
+    MySQL.update.await([[
+        UPDATE player_vehicles
+        SET coords = ?
+        WHERE plate = ? AND state = 0
+    ]], { json.encode(coords), plate })
+end)
