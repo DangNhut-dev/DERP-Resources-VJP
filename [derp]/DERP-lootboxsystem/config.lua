@@ -5113,4 +5113,26 @@ Config.Lootboxes = {
             { name = 'quan_290_2_0' },
         }
     },
+    
+    ['lootbox_skin_knife_s1'] = {
+        label = 'Hòm Dao Đợt 1',
+        type  = 'normal',
+        items = {
+            { name = 'skinbayonetknife' },
+            { name = 'skinvanillabfknife' },
+            { name = 'skinchbfnife' },
+            { name = 'skincrimsonbfknife' },
+            { name = 'skinflipknife' },
+            { name = 'skinforestbfknife' },
+            { name = 'skingutknife' },
+            { name = 'skinhuntsmanknife' },
+            { name = 'skinsafaribfknife' },
+            { name = 'skinscorchedbfknife' },
+            { name = 'skinslaughterbfknife' },
+            { name = 'skinstainedrbfknife' },
+            { name = 'skinurbanrbfknife' },
+            { name = 'skinfadebutterfly' },
+            { name = 'skinblueknife' },
+        }
+    },
 }

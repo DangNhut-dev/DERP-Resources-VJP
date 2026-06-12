@@ -64,7 +64,8 @@ function getRarityColor(rarity) {
 }
 
 function getItemImagePath(item) {
-    return (item.type === 'cloth' ? clothPath : imagePath) + item.name + '.png';
+    if (item.type === 'cloth') return clothPath + item.name + '.png';
+    return `nui://ox_inventory/web/images/${item.name}.png`;
 }
 
 function buildItemEl(item) {

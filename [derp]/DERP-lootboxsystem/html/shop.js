@@ -215,7 +215,7 @@ function renderCart() {
 
         const img = document.createElement('img');
         img.className = 'cart-item-img';
-        img.src = boxImagePath + item.name + '.png';
+        img.src = item.type === 'cloth' ? clothesPath + item.name + '.png' : `nui://ox_inventory/web/images/${item.name}.png`;
         img.alt = item.label;
         img.onerror = () => { img.style.opacity = '0.2'; };
 
@@ -378,7 +378,7 @@ function renderShopGrid(items) {
         imgWrap.className = 'shop-card-img-wrap';
         const img = document.createElement('img');
         img.className = 'shop-card-img';
-        img.src = boxImagePath + item.name + '.png';
+        img.src = item.type === 'cloth' ? clothesPath + item.name + '.png' : `nui://ox_inventory/web/images/${item.name}.png`;
         img.alt = item.label;
         img.onerror = () => { img.style.opacity = '0.25'; };
         imgWrap.appendChild(img);
@@ -443,7 +443,7 @@ function openDetailModal(item) {
         card.style.setProperty('--rc', color);
 
         const img = document.createElement('img');
-        img.src = (entry.type === 'cloth' ? clothesPath : boxImagePath) + entry.name + '.png';
+        img.src = entry.type === 'cloth' ? clothesPath + entry.name + '.png' : `nui://ox_inventory/web/images/${entry.name}.png`;
         img.alt = entry.name;
         img.onerror = () => { img.style.opacity = '0.25'; };
 

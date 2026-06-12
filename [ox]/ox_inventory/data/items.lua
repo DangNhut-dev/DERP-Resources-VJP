@@ -188,7 +188,15 @@ return {
 		}
 	},
 
-	
+	['lootbox_skin_knife_s1'] = {
+		label   = 'Hòm Dao Đợt 1',
+		-- description = 'Áo khoác mã thường, giành cho giới tính nam',
+		weight  = 0,
+		consume = 0,
+		client  = {
+			event = 'derp-lootbox:useItem'
+		}
+	},
 
 	-- ['testburger'] = {
 	-- 	label = 'Test Burger',

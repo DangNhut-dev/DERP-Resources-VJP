@@ -12,7 +12,6 @@ RarityConfig.tiers = {
 
 -- Item thường: key = tên item trong ox_inventory
 RarityConfig.items = {
-    ['skinslaughterbfknife'] = 'mythic',
     ['balo_111_0_0'] = 'common',
     ['balo_111_1_0'] = 'common',
     ['balo_112_0_0'] = 'rare',
@@ -460,6 +459,22 @@ RarityConfig.items = {
     ['balo_336_2_1'] = 'rare',
     ['balo_340_1_1'] = 'rare',
     ['balo_341_1_1'] = 'rare',
+    ['skinblueknife'] = 'common',
+    ['skinfadebutterfly'] = 'legendary',
+    ['skinurbanrbfknife'] = 'common',
+    ['skinstainedrbfknife'] = 'epic',
+    ['skinslaughterbfknife'] = 'legendary',
+    ['skinscorchedbfknife'] = 'common',
+    ['skinsafaribfknife'] = 'common',
+    ['skinhuntsmanknife'] = 'rare',
+    ['skingutknife'] = 'rare',
+    ['skinforestbfknife'] = 'epic',
+    ['skinflipknife'] = 'rare',
+    ['skincrimsonbfknife'] = 'legendary',
+    ['skinchbfnife'] = 'epic',
+    ['skinvanillabfknife'] = 'common',
+    ['skinbayonetknife'] = 'rare',
+
 }
 
 -- Clothing: key = {itemName}_{drawable}_{texture}_{gender}

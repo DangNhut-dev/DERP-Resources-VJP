@@ -5,7 +5,7 @@ Config.Shop.BuyCooldown = 3
 Config.Shop.NPCs = {
     ['npc_shop_1'] = {
         model  = 's_m_m_highsec_01',
-        coords = vec4(131.13, -1039.15, 29.40, 333.87),
+        coords = vec4(135.40, -1025.61, 29.36, 160.11),
         defaultPayment = 'coin',
 
         blip = {
@@ -221,6 +221,160 @@ Config.Shop.NPCs = {
                 price = { coin = 5, cash = 2500},
                 tags  = { 'male', 'new' }
             },
+        }
+    },
+    ['npc_shop_2'] = {
+        model  = 's_m_m_highsec_02',
+        coords = vec4(133.45, -1024.74, 29.36, 84.47),
+        defaultPayment = 'coin',
+
+        blip = {
+            enabled = false,
+            sprite  = 73,
+            color   = 15,
+            scale   = 0.8,
+            label   = 'Cửa Hàng Vật Phẩm'
+        },
+
+        items = {
+            ['boombox_blue_large'] = {
+                id    = 1,
+                label = 'Boombox xanh (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_blue_medium'] = {
+                id    = 2,
+                label = 'Boombox xanh (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_blue_small'] = {
+                id    = 3,
+                label = 'Boombox xanh (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['boombox_green_large'] = {
+                id    = 4,
+                label = 'Boombox lục (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_green_medium'] = {
+                id    = 5,
+                label = 'Boombox lục (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_green_small'] = {
+                id    = 6,
+                label = 'Boombox lục (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['boombox_orange_large'] = {
+                id    = 7,
+                label = 'Boombox cam (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_orange_medium'] = {
+                id    = 8,
+                label = 'Boombox cam (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_orange_small'] = {
+                id    = 9,
+                label = 'Boombox cam (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['boombox_pink_large'] = {
+                id    = 10,
+                label = 'Boombox hồng (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_pink_medium'] = {
+                id    = 11,
+                label = 'Boombox hồng (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_pink_small'] = {
+                id    = 12,
+                label = 'Boombox hồng (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['boombox_purple_large'] = {
+                id    = 13,
+                label = 'Boombox tím (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_purple_medium'] = {
+                id    = 14,
+                label = 'Boombox tím (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_purple_small'] = {
+                id    = 15,
+                label = 'Boombox tím (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['boombox_red_large'] = {
+                id    = 16,
+                label = 'Boombox đỏ (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_red_medium'] = {
+                id    = 17,
+                label = 'Boombox đỏ (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_red_small'] = {
+                id    = 18,
+                label = 'Boombox đỏ (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['boombox_white_large'] = {
+                id    = 19,
+                label = 'Boombox trắng (Lớn)',
+                price = { coin = 200 },
+                tags  = { 'new'}
+            },
+            ['boombox_white_medium'] = {
+                id    = 20,
+                label = 'Boombox trắng (Vừa)',
+                price = { coin = 100 },
+                tags  = { 'new'}
+            },
+            ['boombox_white_small'] = {
+                id    = 21,
+                label = 'Boombox trắng (Nhỏ)',
+                price = { coin = 50 },
+                tags  = { 'new'}
+            },
+            ['lootbox_skin_knife_s1'] = {
+                id    = 22,
+                label = 'Hòm Dao Đợt 1',
+                price = { coin = 15},
+                tags  = { 'new'}
+            },
+            -- ['weapon_katanablackgold'] = {
+            --     id    = 23,
+            --     label = 'Hòm Dao Đợt 1',
+            --     price = { coin = 100},
+            --     tags  = { 'new'}
+            -- },
         }
     }
 }
