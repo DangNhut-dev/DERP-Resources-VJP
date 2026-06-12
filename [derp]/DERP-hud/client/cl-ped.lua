@@ -240,9 +240,12 @@ function CreatePlayerThread()
             else
                 deathCheckCounter = deathCheckCounter - 1
             end
-            
+
+            -- Bleeding stage: show real HP instead of forcing 0
+            local isBleeding = LocalPlayer.state.deathType == "bleeding"
+
             -- Calculate health
-            local health = isPlayerDead and 0 or (GetEntityHealth(cache.ped) - 100)
+            local health = (isPlayerDead and not isBleeding) and 0 or (GetEntityHealth(cache.ped) - 100)
             
             -- Get armour
             local armour = GetPedArmour(cache.ped)

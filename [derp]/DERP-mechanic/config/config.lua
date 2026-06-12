@@ -35,7 +35,7 @@ Config.SkillCheckDifficulty = { "easy", "easy", "easy", "easy", "easy" } -- for 
 Config.SkillCheckInputs = { "e"} -- for ox only
 
 -- Servicing
-Config.EnableVehicleServicing = true
+Config.EnableVehicleServicing = false
 Config.ServiceRequiredThreshold = 20 -- [%] if any of the servicable parts hit this %, it will flag that the vehicle needs servicing 
 Config.ServicingBlacklist = {
   "npolchar",

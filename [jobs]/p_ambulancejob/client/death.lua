@@ -3,6 +3,14 @@
 -- =====================================================
 
 Death = {}
+-- local _SetEntityHealth = SetEntityHealth
+-- function SetEntityHealth(ped, health, ...)
+--   if ped == PlayerPedId() then
+--     print(('[HP-DEBUG] set=%s cur=%s deathType=%s time=%s\n%s')
+--       :format(health, GetEntityHealth(ped), Death and Death.deathType or '?', GetGameTimer(), debug.traceback()))
+--   end
+--   return _SetEntityHealth(ped, health, ...)
+-- end
 Death._index = Death
 Death.deathType = "none"
 Death.isCrawling = false
@@ -361,6 +369,17 @@ function Death:setState(stateData, damageInfo)
   TriggerServerEvent("p_ambulancejob/onDeathStateChange", self.deathType, damageInfo)
   
   self.wasRecovering = stateData.type == "recovering"
+
+  if self.deathType == "bleeding" then
+    local healthVersion = self.initVersion
+    CreateThread(function()
+      Wait(2000)
+      if self.initVersion ~= healthVersion or self.deathType ~= "bleeding" then return end
+      local ped = cache.ped
+      local maxHp = GetEntityMaxHealth(ped)
+      SetEntityHealth(ped, math.floor(100 + 0.35 * (maxHp - 100)))
+    end)
+  end
 end
 
 Death.setDeathState = Death.setState
