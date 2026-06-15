@@ -1,0 +1,236 @@
+{
+    "commands": {
+        "porch_pirate": {
+            "admin": {
+                "help": "Porch Pirate Menu"
+            }
+        },
+        "mail": {
+            "admin": {
+                "help": "Blackhat Menu"
+            }
+        }
+    },
+    "notifications": {
+        "porch_pirate": {
+            "need_knife": "You need a knife to open this package",
+            "vanished": "The box vanish from your fingertips.",
+            "no_contents": "The box has no contents inside",
+            "wont_open": "The box won't open.",
+            "glitterbomb": "There's a glitterbomb inside the package!",
+            "glitterbomb_disarmed": "You disarmed the glitterbomb. You threw away the remains.",
+            "location_added": "A new location has been added",
+            "location_updated": "A location has been updated",
+            "location_deleted": "A location has been deleted",
+            "start_editing": "Editing started.",
+            "finished_editing": "Editing finished.",
+            "loot_tables_updated": "Loot tables have been updated."
+        },
+        "pickpocket": {
+            "player_cooldown": "You need to wait a bit before trying to pickpocket again.",
+            "npc_cooldown": "This person is too alert right now, try again later.",
+            "npc_escaped": "You couldn't reach for anything.",
+            "nothing_found": "They had nothing in their pocket.",
+            "found_items": "You found something."
+        },
+        "parking_meters": {
+            "too_far": "You're too far from the parking meter.",
+            "player_cooldown": "You need to wait a bit before smashing another parking meter.",
+            "location_cooldown": "This parking meter is empty right now.",
+            "cant_smash": "This parking meter can't be smashed.",
+            "found_nothing": "You found nothing in the parking meter.",
+            "found_item": "You found something in the parking meter."
+        },
+        "letterbox": {
+            "player_cooldown": "You feel a bit tired from the last hit, give it a moment.",
+            "too_far": "You're too far from the letterbox.",
+            "location_cooldown": "This letterbox is empty right now",
+            "cant_open": "This letterbox can't be opened.",
+            "failed_minigame": "You were unable to pry open the letterbox.",
+            "item_failed": "Something went wrong with your lockpick.",
+            "no_item": "You don't have a working lockpick to open the letterbox.",
+            "found_nothing": "You found nothing in the letterbox.",
+            "found_item": "You found something in the letterbox."
+        },
+        "postbox": {
+            "empty_1": "The box seems empty.",
+            "empty_2": "You could not force your hand through.",
+            "empty_3": "Didn't manage to grab anything. Maybe you should try again.",
+            "no_item": "You don't have a working lockpick to open the postbox.",
+            "failed_minigame": "You were unable to pry open the postbox.",
+            "item_failed": "Something went wrong with your lockpick.",
+            "opened": "You have opened the postbox.",
+            "found_something": "You found something in the postbox.",
+            "stuck": "Your hand is stuck in the postbox.",
+            "still_stuck": "You were unable to remove your hand.",
+            "unstuck": "You managed to free your hand."
+        },
+        "mail": {
+            "none_found": "You don't have any letters to sell",
+            "cant_remove": "Something went wrong trying to sell your letters",
+            "sold": "Pleasure doing business. You got $%s for %s %s.",
+            "letter": "letter",
+            "letters": "letters",
+            "empty_envelope": "The envelope was empty. What a shame.",
+            "found_something": "You found something in the envelope.",
+            "received_note": "You received a strange note with your payment."
+        }
+    },
+    "menu": {
+        "porch_pirate": {
+            "title": "Porch Pirate",
+            "current_locations_title": "Current locations",
+            "current_locations_desc": "Active package locations",
+            "edit_locations_title": "Edit locations",
+            "edit_locations_desc": "Create new or edit available package locations.",
+            "finish_editing_title": "Finish editing",
+            "finish_editing_desc": "Exit editing mode - all changes are already saved.",
+            "loot_tables": "Loot tables",
+            "which_ones_will_apply": "Which ones will be applied to locations.",
+            "current": "Current:",
+            "locations": "Porch Pirate Locations",
+            "select_teleport": "Tables: %s | Select to teleport"
+        },
+        "mail": {
+            "tp_to_blackhat": "Teleport to blackhat NPC.",
+            "show_current_location": "Current location: %s.",
+            "send_to_next_location": "Send to next location.",
+            "send_to_next_location_desc": "Sends NPC to next random location.",
+            "blackhat": "Blackhat"
+        }
+    },
+    "text": {
+        "porch_pirate": {
+            "add": "[E] - Add",
+            "loot_tables": "Loot Tables:"
+        },
+        "postbox": {
+            "unstuck": "[E] Unstuck"
+        }
+    },
+    "target": {
+        "porch_pirate": {
+            "steal": "Steal",
+            "disarm": "Disarm",
+            "edit": "Edit",
+            "delete": "Delete"
+        },
+        "pickpocket": "Pickpocket",
+        "smash_parking_meter": "Smash Up",
+        "letterbox": "Break Into",
+        "postbox": {
+            "lockpick": "Lockpick",
+            "take": "Take"
+        },
+        "mail": {
+            "sell": "Sell Letters"
+        }
+    },
+    "progress": {
+        "porch_pirate": {
+            "grab_package": "Picking it up...",
+            "clean_glitterbomb": "Cleaning yourself...",
+            "disarm_glitterbomb": "Disarming..."
+        },
+        "pickpocketting": {
+            "pickpocket": "Getting ready..."
+        },
+        "parking_meters": {
+            "smash": "Smashing the meter..."
+        },
+        "post_boxes": {
+            "search": "Searching...",
+            "unstuck": "Getting out..."
+        },
+        "mail": {
+            "open_letter": "Opening..."
+        }
+    },
+    "dispatch": {
+        "parking_meters": {
+            "title": "Parking Meter Alert",
+            "details": "A parking meter has been reportly smashed"
+        },
+        "porch_pirate": {
+            "steal_package": {
+                "title": "Porch Pirate Alert",
+                "details": "A porch pirate is attempting to steal a package"
+            },
+            "glitterbomb": {
+                "title": "Package Tracker",
+                "details": "A glitterbomb has been reported"
+            }
+        },
+        "letterboxes": {
+            "title": "Letterbox Alert",
+            "details": "Somebody has been reported tampering with a letterbox"
+        },
+        "postbox": {
+            "title": "Postbox Alert",
+            "details": "Somebody has been reported tampering with a postbox"
+        }
+    },
+    "input": {
+        "porch_pirate": {
+            "loot_table_title": "Loot tables",
+            "loot_tables": "What tables will apply to the following locations.",
+            "set_loot_table_locations": "Select new loot tables for location."
+        }
+    },
+    "logs": {
+        "pickpocket": {
+            "too_far": {
+                "title": "Pickpocket",
+                "description": "Tried to pickpocket a NPC that they're too far from them"
+            }
+        },
+        "parking_meters": {
+            "too_far": {
+                "title": "Parking Meter",
+                "description": "Tried to smash a parking meter that they're too far from."
+            },
+            "invalid_location": {
+                "title": "Parking Meter Exploit",
+                "description": "Tried to smash a parking meter that doesn't exist"
+            },
+            "invalid_model": {
+                "title": "Parking Meter Exploit",
+                "description": "Tried to smash a parking meter that isn't registered in the system"
+            }
+        },
+        "porch_pirate": {
+            "too_far": {
+                "title": "Porch Pirate",
+                "description": "Tried to steal a porch pirate package but is too far from the location"
+            }
+        },
+        "letterbox": {
+            "too_far": {
+                "title": "Letterbox",
+                "description": "Tried to access a letterbox that they're too far from."
+            },
+            "invalid_location": {
+                "title": "Letterbox Exploit",
+                "description": "Tried to open a letterbox that doesn't exist."
+            },
+            "invalid_model": {
+                "title": "Letterbox Exploit",
+                "description": "Tried to open a letterbox that isn't registered in the system."
+            }
+        },
+        "post_box": {
+            "too_far": {
+                "title": "Postbox",
+                "description": "Tried to access a postbox at that they're too far from."
+            },
+            "invalid_location": {
+                "title": "Postbox Exploit",
+                "description": "Tried to open a postbox that doesn't exist."
+            },
+            "invalid_model": {
+                "title": "Postbox Exploit",
+                "description": "Tried to open a postbox that isn't registered in the system."
+            }
+        }
+    }
+}

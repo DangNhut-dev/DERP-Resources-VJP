@@ -1,0 +1,4763 @@
+
+lib.locale()
+
+SvConfig = {}
+
+SvConfig.Logging = true
+SvConfig.LogWebhook = ""
+
+SvConfig.LockpickItem = ""
+
+SvConfig.DispatchAlerts = {
+    ["parking_meter"] = {
+        
+        heatPerAction = 10,
+        jobs = { "police" },
+        code = '10-90',
+        title = locale("dispatch.parking_meters.title"),
+        description = locale("dispatch.parking_meters.details"),
+        blip = {
+            sprite = 354,
+            scale = 0.9,
+            colour = 30,
+            duration = (60 * 5) 
+        },
+    },
+    ["porch_pirate"] = {
+        
+        heatPerAction = 10,
+        jobs = { "police" },
+        code = "10-93",
+        title = locale("dispatch.porch_pirate.steal_package.title"),
+        description = locale("dispatch.porch_pirate.steal_package.details"),
+        blip = {
+            sprite = 587,
+            scale = 0.9,
+            colour = 31,
+            duration = (60 * 5), 
+        },
+    },
+    ["glitter_bomb"] = {
+        
+        heatPerAction = 10,
+        jobs = { "police" },
+        code = '10-90',
+        title = locale("dispatch.porch_pirate.glitterbomb.title"),
+        description = locale("dispatch.porch_pirate.glitterbomb.details"),
+        blip = {
+            sprite = 586,
+            scale = 0.9,
+            colour = 31,
+            duration = (60 * 5) 
+        },
+    },
+    ["letterbox"] = {
+        
+        heatPerAction = 10,
+        jobs = { "police" },
+        code = '10-90',
+        title = locale("dispatch.letterboxes.title"),
+        description = locale("dispatch.letterboxes.details"),
+        blip = {
+            sprite = 501,
+            scale = 0.7,
+            colour = 44,
+            duration = (60 * 5) 
+        },
+    },
+    ["post_box"] = {
+        
+        heatPerAction = 10,
+        jobs = { "police" },
+        code = '10-93',
+        title = locale("dispatch.postbox.title"),
+        description = locale("dispatch.postbox.details"),
+        blip = {
+            sprite = 501,
+            scale = 0.7,
+            colour = 44,
+            duration = (60 * 5) 
+        },
+    }
+}
+
+SvConfig.Heat = {
+    max = 100,
+    degradePerMinute = 10,
+    dispatchChancePerHeat = 0.1,
+    resetInterval = 60, 
+}
+
+-- SvConfig.PickPocket = {
+--     playerCooldown = 1,  
+--     npcCooldown = 1,  
+--     progress = {
+--         text = locale("progress.pickpocketting.pickpocket"),
+--         duration = 2500,
+--         disable = {disableMovement = true, disableCarMovement = true},
+--         anim = {
+--             dict = 'reck@crim@pickpocketgetready',
+--             clip = 'pickpocketgetready',
+--             flag = 16,
+--         },
+--     },
+--     rep = {
+--         enabled = false,
+--         type = "crime",
+--         amount = 5
+--     },
+--     minigame = {
+--         type = "rythmArrows",
+--         options = {
+--             speed = 100,
+--             arrowCount = 4,
+--             time = 4000,
+--             threshold = 15.0,
+--         },
+--         otherOptions = {
+--             animation = {
+--                 dict = 'reck@crim@pickpocket',
+--                 name = 'pickpocket',
+--                 flag = 49,
+--             }
+--         },
+--     },
+--     lootTables = {
+--         [0] = {
+--             lootRolls = 1,
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 10, max = 10 },
+--                 },
+--                 RARE = {
+--                     { name = 'phone', min = 1, max = 1 },
+--                     { name = 'money', min = 100, max = 100 },
+--                 },
+--                 EPIC = {
+--                     { name = 'gold_coin', min = 1, max = 3 },
+--                 }
+--             },
+--             guaranteedRarities = {}
+--         },
+--         [1] = {
+--             lootRolls = 1,
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 10, max = 10 },
+--                 },
+--                 RARE = {
+--                     { name = 'phone', min = 1, max = 1 },
+--                     { name = 'money', min = 100, max = 100 },
+--                 },
+--                 EPIC = {
+--                     { name = 'gold_coin', min = 1, max = 3 },
+--                 }
+--             },
+--             guaranteedRarities = {}
+--         },
+--         [2] = {
+--             lootRolls = 1,
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 10, max = 10 },
+--                 },
+--                 RARE = {
+--                     { name = 'phone', min = 1, max = 1 },
+--                     { name = 'money', min = 100, max = 100 },
+--                 },
+--                 EPIC = {
+--                     { name = 'gold_coin', min = 1, max = 3 },
+--                 }
+--             },
+--             guaranteedRarities = {}
+--         },
+--         [3] = {
+--             lootRolls = 1,
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 10, max = 10 },
+--                 },
+--                 RARE = {
+--                     { name = 'phone', min = 1, max = 1 },
+--                     { name = 'money', min = 100, max = 100 },
+--                 },
+--                 EPIC = {
+--                     { name = 'gold_coin', min = 1, max = 3 },
+--                 }
+--             },
+--         },
+--         [4] = {
+--             lootRolls = 1,
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 10, max = 10 },
+--                 },
+--                 RARE = {
+--                     { name = 'phone', min = 1, max = 1 },
+--                     { name = 'money', min = 100, max = 100 },
+--                 },
+--                 EPIC = {
+--                     { name = 'gold_coin', min = 1, max = 3 },
+--                 }
+--             },
+--             guaranteedRarities = {}
+--         },
+--         [5] = {
+--             lootRolls = 1,
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 10, max = 10 },
+--                 },
+--                 RARE = {
+--                     { name = 'phone', min = 1, max = 1 },
+--                     { name = 'money', min = 100, max = 100 },
+--                 },
+--                 EPIC = {
+--                     { name = 'gold_coin', min = 1, max = 3 },
+--                     { name = 'money', min = 1000, max = 2000 },
+--                 }
+--             },
+--             guaranteedRarities = {}
+--         },
+--     }
+-- }
+
+SvConfig.ParkingMeters = {
+    
+    cooldownResetInterval = 60, 
+    lootRolls = 1,
+    lootTable = {
+        COMMON = {
+            { name = 'money', min = 500, max = 1000 },
+        },
+        RARE = {
+            { name = 'black_money', min = 100, max = 100 },
+        },
+        EPIC = {
+            { name = 'kimloaisieucung', min = 1, max = 2 },
+        },
+        LEGENDARY = {
+            { name = 'banhrang', min = 1, max = 1 },
+
+        },
+    },
+    
+    guaranteedRarities = {},
+    
+    allowedWeapons = {
+        [`WEAPON_BAT`] = true,
+        [`WEAPON_CROWBAR`] = true,
+    },
+    
+    minCooldown = 1, 
+    
+    maxCooldown = 1, 
+    
+    personalCooldown = 0.1, 
+    
+    stress = {
+        enabled = true,
+        
+        amount = 5
+    },
+    minigame = {
+        type = "rythmArrows",
+        options = {
+            speed = 100,
+            arrowCount = 4,
+            time = 4000,
+            threshold = 15.0,
+        },
+        otherOptions = {
+            animation = {
+                dict = 'melee@large_wpn@streamed_core',
+                name = 'ground_attack_on_spot',
+                flag = 1,
+            }
+        },
+    },
+    smashProgressBar = {
+        text = locale("progress.parking_meters.smash"),
+        duration = 60000, 
+        disable = {disableMovement = true, disableCarMovement = true},
+        anim = {
+            dict = 'melee@large_wpn@streamed_core',
+            clip = 'ground_attack_on_spot',
+            flag = 1,
+        },
+    },
+    rep = {
+        enabled = false,
+        type = "crime",
+        amount = 5
+    },
+}
+
+SvConfig.LetterBoxes = {
+    
+    cooldownResetInterval = 1, 
+
+    openingItems = {
+        [SvConfig.LockpickItem] = {
+            durabilityLossOnSuccess = 30,
+            durabilityLossOnFailure = 20,
+        },
+    },
+
+    lootRolls = 1,
+    lootTable = {
+        COMMON = {
+            { name = 'envelope',         min = 1, max = 1 },
+            { name = 'black_money',         min = 10, max = 20 },
+        },
+        RARE = {
+            { name = 'envelope',         min = 1, max = 1 },
+            { name = 'black_money',         min = 15, max = 25 },
+        },
+        EPIC = {
+            { name = 'envelope',         min = 2, max = 4 },
+            { name = 'black_money',         min = 20, max = 30 },
+            { name = 'lockpick', min = 1, max = 2 },
+        },
+        LEGENDARY = {
+            { name = 'envelope',         min = 2, max = 4 },
+            { name = 'black_money',         min = 25, max = 35 },
+            { name = 'lockpick', min = 1, max = 3 },
+        },
+    },
+    
+    guaranteedRarities = {},
+
+    minCooldown = 0.1,
+    
+    maxCooldown = 0.1,
+    
+    personalCooldown = 0.1,
+
+    minigame = {
+        type = "holeMatch",
+        gameOptions = { holeCount = 4, speed = 20 },
+        otherOptions = {
+            animation = {
+                dict = 'reck@crim@postboxlockpick',
+                name = 'postboxlockpick',
+                flag = 49,
+            }
+        },
+    },
+
+    stealProgressBar = {
+        text = locale("progress.post_boxes.search"),
+        duration = 5000, 
+        disable = {disableMovement = true, disableCarMovement = true},
+        anim = {
+            dict = 'reck@crim@mailboxsteal',
+            clip = 'mailboxsteal',
+            flag = 2,
+        },
+    },
+
+    rep = {
+        enabled = false,
+        type = "crime",
+        amount = 5
+    },
+}
+
+SvConfig.PostBoxes = {
+    
+    cooldownResetInterval = 60, 
+
+    openingItems = {
+        [SvConfig.LockpickItem] = {
+            durabilityLossOnSuccess = 10,
+            durabilityLossOnFailure = 20,
+        },
+    },
+
+    lootRolls = 1,
+    lootTable = {
+        COMMON = {
+            { name = 'envelope',         min = 1, max = 1 },
+            { name = 'black_money',         min = 10, max = 20 },
+        },
+        RARE = {
+            { name = 'envelope',         min = 1, max = 1 },
+            { name = 'black_money',         min = 15, max = 25 },
+        },
+        EPIC = {
+            { name = 'envelope',         min = 2, max = 4 },
+            { name = 'black_money',         min = 20, max = 30 },
+            { name = 'lockpick', min = 1, max = 2 },
+        },
+        LEGENDARY = {
+            { name = 'envelope',         min = 2, max = 4 },
+            { name = 'black_money',         min = 25, max = 35 },
+            { name = 'lockpick', min = 1, max = 3 },
+        },
+    },
+    
+    guaranteedRarities = {},
+
+    stuckChance = 45,
+
+    minLootableCount = 1,
+    
+    maxLootableCount = 3,
+
+    emptyBoxTexts = {
+        locale("notifications.postbox.empty_1"),
+        locale("notifications.postbox.empty_2"),
+        locale("notifications.postbox.empty_3"),
+    },
+
+    minCooldown = 15, 
+    
+    maxCooldown = 60, 
+
+    stealProgressBar = {
+        text = locale("progress.post_boxes.search"),
+        duration = 5000, 
+        disable = {disableMovement = true, disableCarMovement = true},
+        anim = {
+            dict = 'reck@crim@mailboxsteal',
+            clip = 'mailboxsteal',
+            flag = 2,
+        },
+    },
+    stuckAnim = {
+        dict = 'reck@crim@mailboxstuck',
+        clip = 'mailboxstuck',
+    },
+    unstuckAnim = {
+        dict = 'reck@crim@postboxunstuck',
+        clip = 'postboxunstuck',
+        flag = 0,
+    },
+    unstuckProgressBar = {
+        text = locale("progress.post_boxes.unstuck"),
+        duration = 2000, 
+        disable = {disableMovement = true, disableCarMovement = true},
+        anim = {
+            dict = 'reck@crim@postboxunstuck',
+            clip = 'postboxunstuck',
+            flag = 2,
+        },
+    },
+    unstuckMinigame = {
+        options = {
+            holeCount = 3,
+            speed = 20,
+        },
+    },
+    minigame = {
+        type = "holeMatch",
+        gameOptions = { holeCount = 4, speed = 20 },
+        otherOptions = {
+            animation = {
+                dict = 'reck@crim@postboxlockpick',
+                name = 'postboxlockpick',
+                flag = 49,
+            }
+        },
+    },
+
+    rep = {
+        enabled = false,
+        type = "crime",
+        value = 5
+    }
+}
+
+SvConfig.Mail = {
+    adminMenu = {
+        command = "bhadmin",
+        permission = "group.admin"
+    },
+
+    letterSell = {
+        paymentItem = "money", -- changed from cash
+        amountPerLetter = 500,
+
+        rep = {
+            enabled = false,
+            type = "crime",
+            amountPerLetter = 5
+        },
+        
+        noteReward = {
+            enabled = true,
+            chance = 1, -- 10% chance
+            itemName = "giaygoiymot",
+            metadata = {
+                description = "Một tờ giấy note với những kí hiệu kì lạ... Có vẻ là một gợi ý về điểm ẩn nào đó."
+            }
+        }
+    },
+
+    envelopeItem = 'envelope',
+    catalogEnvelopeItem = 'catalog_envelope',
+    letterItem = 'letter',
+
+    envelopeLootTable = {
+        minLootRolls = 1,
+        maxLootRolls = 1,
+        lootTable = {
+            COMMON = {
+                { name = 'letter', min = 1, max = 2 },
+            },
+            -- RARE = {
+            --     { name = 'money', min = 10, max = 30 },
+            -- },
+        },
+        
+        guaranteedRarities = {},
+    },
+
+    catalogEnvelopeLootTable = {
+        minLootRolls = 1,
+        maxLootRolls = 1,
+        lootTable = {
+            COMMON = {
+                { name = 'letter', min = 3, max = 5 },
+            },
+            -- RARE = {
+            --     { name = 'money', min = 10, max = 20 },
+            -- },
+        },
+        
+        guaranteedRarities = {},
+    },
+
+    letterNpc = {
+        model = `g_m_m_chigoon_02`,
+        
+        minLocationTime = 360, 
+        
+        maxLocationTime = 640, 
+        locations = {
+            {name = 'Bay City', coords = vector4(-1317.42, -816.40, 16.13, 210.06)},
+            -- {name = 'Prosperity', coords = vector4(-1022.5, -1022.6, 1.2, 25.8)},
+            -- {name = 'Cougar', coords = vector4(-1489.7, -325.2, 45.9, 181.0)},
+            -- {name = 'Bay City', coords = vector4(-1082.9, -1673.8, 3.7, 353.7)},
+        },
+    },
+
+    envelopeProgressBar = {
+        text = locale("progress.mail.open_letter"),
+        duration = 2500, 
+        disable = {disableMovement = true, disableCarMovement = true},
+        anim = {
+            dict = 'reck@crim@envelopeopen',
+            clip = 'envelopeopen',
+        },
+    }
+}
+
+-- SvConfig.PorchPirate = {
+--     adminMenu = {
+--         command = "ppadmin",
+--         permission = "group.admin"
+--     },
+
+--     rep = {
+--         enabled = false,
+--         type = "crime",
+--         amount = 5
+--     },
+
+--     glitterBomb = {
+        
+--         expiresIn = 60, 
+--         triggerProgressBar = {
+--             text = locale("progress.porch_pirate.clean_glitterbomb"),
+--             duration = 8300, 
+--             disable = {disableMovement = true, disableCarMovement = true},
+--             anim = {
+--                 dict = 'reck@crim@glitterbombclean',
+--                 clip = 'glitterbombclean',
+--                 flag = 2,
+--             },
+--         },
+--         disarmProgressBar = {
+--             text = locale("progress.porch_pirate.disarm_glitterbomb"),
+--             duration = 15000, 
+--             disable = {disableMovement = true, disableCarMovement = true},
+--             anim = {
+--                 dict = 'reck@crim@glitterbombdisarm',
+--                 clip = 'glitterbombdisarm',
+--                 flag = 2,
+--             },
+--         },
+--     },
+
+--     packageLimit = 150,
+
+--     packageRegenerationTime = 2, 
+
+--     packageLocationCooldownTime = 30, 
+
+--     packageItemPrefix = "pp",
+
+--     progressBar = {
+--         text = locale("progress.porch_pirate.grab_package"), 
+--         duration = 3000, 
+--         disable = { disableMovement = true, disableCarMovement = true }, 
+--         anim = { 
+--             dict = "reck@crim@pickuppackage",
+--             clip = "pickuppackage",
+--             flag = 1,
+--         },
+--     },
+
+--     defaultLootTables = {
+--         "small",
+--         "medium",
+--         "large",
+--     },
+
+--     lootTables = {
+--         small = {
+--             weight = 50,
+            
+--             lootRolls = 1,
+            
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 100, max = 200 },
+--                 },
+--                 RARE = {
+--                     { name = 'lockpick', min = 1, max = 1 },
+--                     { name = 'atm_hack_device', min = 1, max = 1 },
+--                     { name = 'atm_bomb', min = 1, max = 1 }
+--                 },
+--                 EPIC = {
+--                     { name = 'seeds_weed_1a', min = 1, max = 1 },
+--                     { name = 'seeds_weed_1b', min = 1, max = 1 }
+--                 },
+--                 LEGENDARY = {
+--                     { name = 'cash', min = 200, max = 400 },
+--                     { name = 'lockpick', min = 1, max = 1 },
+--                     { name = 'atm_bomb', min = 1, max = 1 }
+--                 },
+--             },
+            
+--             guaranteedRarities = {},
+--             models = {
+--                     {
+--                         weight = 100,
+--                         itemSubfix = "1",
+--                         hash = `pr_pettybox_02`
+--                     },
+--                     {
+--                         weight = 100,
+--                         itemSubfix = "2",
+--                         hash = `pr_pettybox_03`
+--                     },
+--                     {
+--                         weight = 100,
+--                         itemSubfix = "3",
+--                         hash = `pr_pettybox_04`
+--                     },
+--             },
+            
+--             glitterBombPercentage = 0
+--         },
+--         medium = {
+--             weight = 35,
+            
+--             openingItem = {"weapon_knife","weapon_switchblade"},
+--             openingItemMissingText = locale("notifications.porch_pirate.need_knife"),
+            
+--             lootRolls = 1,
+            
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'bandage', min = 1, max = 1 }
+--                 },
+--                 RARE = {
+--                     { name = 'money', min = 100, max = 100 },
+--                     { name = 'lockpick', min = 1, max = 1 }
+--                 },
+--                 EPIC = {
+--                     { name = 'atm_hack_device', min = 1, max = 1 },
+--                     { name = 'atm_bomb', min = 1, max = 1 }
+--                 },
+--                 LEGENDARY = {
+--                     { name = 'seeds_weed_1a', min = 1, max = 1 },
+--                     { name = 'seeds_weed_1b', min = 1, max = 1 },
+--                     { name = 'ruby', min = 1, max = 1 }
+--                 },
+--             },
+            
+--             guaranteedRarities = {},
+            
+--             models = {
+--                 {
+--                     weight = 100,
+--                     itemSubfix = "1",
+--                     hash = `pr_pettybox_01`
+--                 },
+--             },
+            
+--             glitterBombPercentage = 0
+--         },
+--         large = {
+--             weight = 15,
+            
+--             openingItem = {"weapon_knife","weapon_switchblade"},
+--             openingItemMissingText = locale("notifications.porch_pirate.need_knife"),
+            
+--             lootRolls = 1,
+            
+--             lootTable = {
+--                 COMMON = {
+--                     { name = 'money', min = 100, max = 700 }
+--                 },
+--                 RARE = {
+--                     { name = 'weapon_scanner', min = 1, max = 1 },
+--                     { name = 'lockpick', min = 1, max = 1 }
+--                 },
+--                 EPIC = {
+--                     { name = 'seeds_weed_1a', min = 1, max = 1 },
+--                     { name = 'seeds_weed_1b', min = 1, max = 1 },
+--                     { name = 'atm_reader', min = 1, max = 1 }
+--                 }
+--             },
+            
+--             guaranteedRarities = {},
+--             models = {
+--                 {
+--                     weight = 100,
+--                     itemSubfix = "1",
+--                     hash = `pr_pettybox_05`,
+--                 },
+--             },
+            
+--             glitterBombPercentage = 0
+--         },
+--     },
+
+--     defaultLocations = {
+--         insert = true, 
+--         entries = {
+--             {
+--                 coords = vector3(1387.5400390625, -577.239990234375, 73.33999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1387.5699462890625, -569.7100219726562, 73.5),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1385.9200439453125, -592.52001953125, 73.48999786376953),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1367.8299560546875, -605.6900024414062, 73.72000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1366.77001953125, -604.8400268554688, 73.72000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1383.3299560546875, -592.4600219726562, 73.33999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1386.4599609375, -571.4400024414062, 73.33999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1385.77001953125, -569.9199829101562, 73.33999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1369.9200439453125, -555.3300170898438, 76.33000183105469),
+--                 lootTables = { "large" }
+--             },
+--             {
+--                 coords = vector3(1203.5799560546875, -598.9600219726562, 67.06999969482422),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1203.5400390625, -599.6599731445312, 67.06999969482422),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(999.489990234375, -594.6300048828125, 58.63999938964844),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(999.760009765625, -593.7100219726562, 58.63999938964844),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(993.9400024414062, -620.6199951171875, 58.04999923706055),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1242.3199462890625, -565.7899780273438, 68.66000366210938),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1240.5699462890625, -601.6199951171875, 68.79000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1250.8699951171875, -621.280029296875, 68.41999816894531),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1100.3900146484375, -412.0400085449219, 66.55999755859375),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1222.06005859375, -697.27001953125, 59.81000137329101),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1215.93994140625, -700.3099975585938, 59.61000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(996.3300170898438, -728.5999755859375, 56.81999969482422),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(980.4099731445312, -716.5, 57.02999877929687),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(969.9199829101562, -700.0, 57.47999954223633),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(968.7899780273438, -686.52001953125, 56.95999908447265),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(961.260009765625, -670.0599975585938, 57.45999908447265),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(944.469970703125, -652.030029296875, 57.02999877929687),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(971.8800048828125, -631.6300048828125, 56.47000122070312),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(931.3300170898438, -640.0900268554688, 56.86999893188476),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(902.6099853515625, -612.97998046875, 57.06000137329101),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(886.4000244140625, -606.8099975585938, 57.22000122070312),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(876.6500244140625, -600.6799926757812, 57.22000122070312),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(860.9000244140625, -582.0499877929688, 57.15999984741211),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(845.739990234375, -563.77001953125, 56.70999908447265),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(850.8699951171875, -531.510009765625, 56.93000030517578),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(853.8900146484375, -515.5800170898438, 56.33000183105469),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(864.530029296875, -509.2200012207031, 56.33000183105469),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(880.1300048828125, -497.6499938964844, 56.88000106811523),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(905.5599975585938, -492.3699951171875, 58.02000045776367),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(921.1300048828125, -480.3999938964844, 59.70000076293945),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(944.6500244140625, -465.5299987792969, 60.2599983215332),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(969.489990234375, -451.6199951171875, 61.4000015258789),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(987.9299926757812, -435.55999755859375, 62.7400016784668),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1011.9400024414062, -424.010009765625, 63.95999908447265),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1031.6700439453125, -409.42999267578125, 64.94999694824219),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1063.300048828125, -378.2099914550781, 66.8499984741211),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1090.8900146484375, -363.9599914550781, 66.08000183105469),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1124.239990234375, -346.4100036621094, 66.05999755859375),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1124.22998046875, -346.42999267578125, 66.05999755859375),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1138.43994140625, -343.5400085449219, 66.05000305175781),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1153.3499755859375, -389.20001220703125, 66.33999633789062),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1150.050048828125, -402.1000061035156, 66.3499984741211),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1152.739990234375, -430.760009765625, 66.0199966430664),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1151.1099853515625, -437.1000061035156, 66.0),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1113.06005859375, -392.3699951171875, 67.73999786376953),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1097.8800048828125, -437.04998779296875, 66.4000015258789),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1058.3800048828125, -447.739990234375, 64.95999908447266),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1098.489990234375, -465.8399963378906, 66.31999969482422),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1089.6500244140625, -485.29998779296875, 64.66999816894531),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1054.2099609375, -469.30999755859375, 62.9000015258789),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1047.5799560546875, -495.2799987792969, 63.88999938964844),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1006.7000122070312, -513.1599731445312, 59.68999862670898),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(989.3499755859375, -525.2999877929688, 59.47999954223633),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(968.1099853515625, -543.3200073242188, 58.36000061035156),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(974.9199829101562, -579.7899780273438, 58.63999938964844),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(962.4000244140625, -596.25, 58.9000015258789),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(922.1500244140625, -570.8900146484375, 56.95000076293945),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(890.7999877929688, -540.4000244140625, 57.13000106811523),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(922.510009765625, -526.0700073242188, 58.58000183105469),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(944.52001953125, -517.8900146484375, 59.25),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(968.97998046875, -503.1700134277344, 61.13999938964844),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1012.3599853515625, -470.04998779296875, 63.29000091552734),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1043.510009765625, -447.20001220703125, 64.94999694824219),
+--                 lootTables = { "medium", "large", "small" }
+--             },
+--             {
+--                 coords = vector3(1010.280029296875, -570.530029296875, 59.20000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-401.20001220703125, 427.6199951171875, 111.33999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-371.6000061035156, 343.44000244140625, 108.94999694824219),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-478.3599853515625, 352.92999267578125, 103.1500015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-389.9100036621094, 490.4100036621094, 119.19999694824219),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-387.44000244140625, 504.70001220703125, 119.41000366210938),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-501.3500061035156, 553.0700073242188, 119.2699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-524.6099853515625, 573.8499755859375, 120.2300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-497.20001220703125, 683.1500244140625, 150.57000732421875),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-605.239990234375, 672.1500244140625, 150.60000610351562),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-708.7899780273438, 711.6400146484375, 161.22999572753906),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-749.0800170898438, 814.760009765625, 213.3800048828125),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-932.489990234375, 808.8699951171875, 183.77999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-998.489990234375, 768.6799926757812, 170.5800018310547),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-954.6699829101562, 736.6900024414062, 174.75999450683594),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1056.22998046875, 760.8800048828125, 166.32000732421875),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1130.8800048828125, 783.7999877929688, 162.88999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1219.5400390625, 664.5700073242188, 143.5399932861328),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1277.760009765625, 629.7000122070312, 142.19000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1366.81005859375, 611.22998046875, 132.91000366210938),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1359.8299560546875, 547.969970703125, 130.58999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1468.469970703125, 509.739990234375, 116.62999725341797),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1729.81005859375, 380.2099914550781, 88.7300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1828.2900390625, 311.7300109863281, 88.72000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1995.72998046875, 301.2900085449219, 90.95999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1996.06005859375, 300.6000061035156, 90.95999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1921.9300537109375, 160.16000366210938, 83.58000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1500.68994140625, 103.44999694824219, 54.65999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-533.5700073242188, -165.6999969482422, 37.33000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1184.6400146484375, -1045.449951171875, 1.14999997615814),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1128.2099609375, -1080.8800048828125, 3.23000001907348),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1092.0799560546875, -1040.050048828125, 1.14999997615814),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-990.739990234375, -991.8200073242188, 1.14999997615814),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-963.510009765625, -1109.780029296875, 1.16999995708465),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1258.75, -1341.8499755859375, 3.07999992370605),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1308.239990234375, -1227.989990234375, 3.90000009536743),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-3089.419921875, 220.8800048828125, 13.34000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-3119.06005859375, 283.2300109863281, 8.05000019073486),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-3110.989990234375, 335.2799987792969, 6.5),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-3059.449951171875, 453.1000061035156, 5.3600001335144),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-2972.06005859375, 599.5800170898438, 23.45000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-3018.330078125, 746.4000244140625, 26.59000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-3243.219970703125, 932.3699951171875, 16.22999954223632),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-2588.159912109375, 1910.6600341796875, 166.5),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-329.5299987792969, 6150.2998046875, 31.30999946594238),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-347.3800048828125, 6225.31982421875, 30.88999938964843),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-360.07000732421875, 6334.7001953125, 29.48999977111816),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-280.5, 6350.64990234375, 31.61000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-27.3799991607666, 6545.2900390625, 32.02999877929687),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(25.1200008392334, 6601.64013671875, 31.46999931335449),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-9.05000019073486, 6653.52001953125, 30.11000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-146.25999450683594, 6303.47998046875, 30.55999946594238),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-316.7799987792969, 6295.7900390625, 31.52000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-467.7799987792969, 6206.009765625, 28.54999923706054),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-400.1099853515625, 6377.7998046875, 13.05000019073486),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(64.55000305175781, 6664.6201171875, 30.79000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1727.6199951171875, 6412.2998046875, 34.0),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(2452.330078125, 4969.43994140625, 45.58000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(2016.7900390625, 4987.6201171875, 41.09999847412109),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1696.9599609375, 4871.9501953125, 41.02999877929687),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1653.4100341796875, 4746.580078125, 41.11000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1724.5699462890625, 4642.080078125, 42.88000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1968.18994140625, 4623.18017578125, 40.08000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(2440.7099609375, 4068.239990234375, 37.06000137329101),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1899.239990234375, 3781.75, 31.8799991607666),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1843.3800048828125, 3778.1201171875, 32.59000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1756.989990234375, 3871.580078125, 33.88000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1703.3800048828125, 3792.360107421875, 33.81000137329101),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1737.9200439453125, 3709.080078125, 33.13999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1632.6099853515625, 3719.43994140625, 34.02000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1596.6300048828125, 3761.9599609375, 33.43000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1479.25, 3678.3701171875, 33.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1697.0899658203125, 3595.56005859375, 34.61000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1614.1099853515625, 3568.679931640625, 37.68000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1400.010009765625, 3636.85009765625, 34.04000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(969.0900268554688, 3618.169921875, 31.54999923706054),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(104.43000030517578, 3727.68994140625, 38.66999816894531),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(53.84999847412109, 3741.669921875, 38.65999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(9.4700002670288, 3719.989990234375, 38.54999923706055),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1500.8399658203125, 857.5399780273438, 180.58999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1105.5, 800.3599853515625, 164.5),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1028.9300537109375, 829.27001953125, 171.3800048828125),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-818.4299926757812, 795.7999877929688, 201.58999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-658.6699829101562, 887.1799926757812, 228.25),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-587.1099853515625, 806.4199829101562, 190.25),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-499.3299865722656, 785.5900268554688, 179.61000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-340.1000061035156, 625.75, 170.36000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-198.63999938964844, 637.0499877929688, 198.64999389648438),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-110.05999755859375, 501.94000244140625, 142.47999572753906),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(57.77000045776367, 450.07000732421875, 146.0399932861328),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(319.239990234375, 552.2999877929688, 154.72999572753906),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(332.6300048828125, 435.3299865722656, 144.22999572753906),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(219.11000061035156, 487.2099914550781, 139.69000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-72.79000091552734, 427.8699951171875, 112.04000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-294.239990234375, 600.8800048828125, 180.5800018310547),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-340.1400146484375, 669.72998046875, 171.7899932861328),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-400.6700134277344, 665.0499877929688, 162.83999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-446.92999267578125, 681.7999877929688, 152.07000732421875),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-477.1099853515625, 647.510009765625, 143.38999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-522.5399780273438, 627.52001953125, 136.97000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-474.3999938964844, 585.3499755859375, 127.68000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-525.969970703125, 517.8300170898438, 111.93000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-418.42999267578125, 569.3400268554688, 124.05999755859375),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-303.7200012207031, 431.6499938964844, 109.31999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-327.5199890136719, 370.1300048828125, 109.01000213623047),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-409.70001220703125, 342.5899963378906, 107.91000366210938),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-442.8699951171875, 343.3900146484375, 104.62000274658203),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(281.989990234375, -1694.97998046875, 28.64999961853027),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(282.7699890136719, -1899.18994140625, 26.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(363.82000732421875, -1987.4599609375, 23.23999977111816),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(356.8999938964844, -2024.97998046875, 21.39999961853027),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(363.7099914550781, -2083.14990234375, 20.76000022888183),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(340.3399963378906, -2098.739990234375, 17.20000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(302.69000244140625, -2080.25, 16.70999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(256.4700012207031, -2023.550048828125, 18.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(143.3800048828125, -1970.199951171875, 17.86000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(149.3699951171875, -1961.06005859375, 18.45999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(170.19000244140625, -1924.949951171875, 20.01000022888183),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(84.31999969482422, -1957.8900146484375, 20.1299991607666),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(77.30999755859375, -1948.260009765625, 20.18000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(113.44999694824219, -1959.7900390625, 19.94000053405761),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(117.69000244140625, -1921.5400390625, 20.32999992370605),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(100.30000305175781, -1913.3399658203125, 20.0300006866455),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(93.51000213623047, -1897.06005859375, 22.97999954223632),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(55.70000076293945, -1921.8299560546875, 20.6200008392334),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(72.70999908447266, -1937.2099609375, 19.97999954223632),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(39.2400016784668, -1912.1099853515625, 20.95999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(24.32999992370605, -1895.6199951171875, 21.59000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(4.96999979019165, -1883.949951171875, 22.70000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(29.76000022888183, -1854.719970703125, 23.06999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(21.1200008392334, -1844.530029296875, 23.61000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-20.20999908447265, -1858.489990234375, 24.40999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-33.40999984741211, -1856.1099853515625, 24.7800006866455),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-43.18999862670898, -1794.0999755859375, 26.70000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-51.27000045776367, -1783.75, 27.30999946594238),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-39.06000137329101, -1772.1700439453125, 26.8700008392334),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-73.55000305175781, -1822.6099853515625, 25.94000053405761),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-224.77999877929688, -1666.3900146484375, 33.45999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-224.4499969482422, -1674.3499755859375, 33.45999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(250.11000061035156, -1730.5400390625, 28.67000007629394),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(223.02000427246094, -1703.6600341796875, 28.30999946594238),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(217.3300018310547, -1716.9100341796875, 28.29000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(242.41000366210938, -1688.8199462890625, 28.2800006866455),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(320.3500061035156, -1731.780029296875, 28.38999938964843),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(314.19000244140625, -1747.510009765625, 28.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(299.6300048828125, -1762.0999755859375, 27.72999954223632),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(349.7699890136719, -1820.3299560546875, 27.88999938964843),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(339.0, -1829.81005859375, 27.34000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(329.07000732421875, -1845.6700439453125, 26.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(320.1199951171875, -1854.0799560546875, 26.52000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(357.07000732421875, -1885.31005859375, 23.81999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-987.1699829101562, 487.9599914550781, 81.2699966430664),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1008.6300048828125, 479.55999755859375, 78.41000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1041.3499755859375, 507.42999267578125, 83.37999725341797),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1062.4300537109375, 475.67999267578125, 80.31999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1051.5899658203125, 429.82000732421875, 75.86000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1042.1099853515625, 382.05999755859375, 68.69000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1135.3900146484375, 376.0299987792969, 70.30000305175781),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1116.969970703125, 304.489990234375, 65.5199966430664),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1189.18994140625, 291.9800109863281, 68.9000015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1188.760009765625, 304.05999755859375, 68.88999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1105.6700439453125, 430.1099853515625, 74.69000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1078.31005859375, 470.25, 76.79000091552734),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1007.25, 512.9199829101562, 78.5999984741211),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-967.2100219726562, 510.45001220703125, 81.06999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-949.989990234375, 465.0799865722656, 79.80000305175781),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-970.7999877929688, 456.0400085449219, 78.80999755859375),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-968.1199951171875, 436.75, 79.56999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-932.4400024414062, 472.010009765625, 84.12000274658203),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-866.989990234375, 457.5199890136719, 87.27999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-824.760009765625, 422.2200012207031, 91.12999725341797),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-833.3599853515625, 455.2300109863281, 88.47000122070312),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-884.27001953125, 518.1599731445312, 91.44000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-850.4600219726562, 521.9099731445312, 89.62000274658203),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-841.1599731445312, 471.82000732421875, 86.58999633789062),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-874.22998046875, 562.0, 95.62000274658203),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-907.3900146484375, 545.219970703125, 99.20999908447266),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-905.239990234375, 586.5599975585938, 100.0),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-924.5700073242188, 561.7999877929688, 98.93000030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-943.8099975585938, 598.3099975585938, 100.0),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-958.5, 605.1599731445312, 104.44000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-947.47998046875, 567.969970703125, 100.48999786376953),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-974.2000122070312, 583.4500122070312, 100.91000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1022.5, 587.4600219726562, 102.2300033569336),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1068.989990234375, 562.7899780273438, 101.7300033569336),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1090.6199951171875, 548.7899780273438, 102.62999725341797),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1125.31005859375, 548.510009765625, 101.56999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1132.0400390625, 582.989990234375, 103.23999786376953),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1146.550048828125, 546.3900146484375, 100.51000213623047),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1153.6700439453125, 579.510009765625, 100.83000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1167.050048828125, 568.010009765625, 100.83000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1192.9599609375, 564.1599731445312, 99.33999633789062),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1162.239990234375, 500.3900146484375, 85.08999633789062),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1217.93994140625, 506.1099853515625, 94.66999816894531),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1277.280029296875, 497.29998779296875, 96.9000015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1333.4599609375, 491.4700012207031, 101.44999694824219),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1343.77001953125, 481.32000732421875, 101.76000213623047),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1289.5899658203125, 501.17999267578125, 96.55999755859375),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1294.239990234375, 454.6000061035156, 96.5199966430664),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1258.7099609375, 447.3800048828125, 93.73999786376953),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1308.6800537109375, 449.2200012207031, 99.97000122070312),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1361.1500244140625, 450.4800109863281, 104.36000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1421.1099853515625, 436.8699951171875, 110.55999755859375),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1408.5400390625, 458.04998779296875, 108.20999908447266),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1458.7900390625, 499.3800048828125, 116.5999984741211),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-733.0, 593.97998046875, 141.13999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-703.989990234375, 589.0800170898438, 140.92999267578125),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-686.5999755859375, 596.1300048828125, 142.64999389648438),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-668.6799926757812, 639.5800170898438, 148.52999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-710.97998046875, 640.280029296875, 154.17999267578125),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-659.739990234375, 682.0499877929688, 152.9199981689453),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-752.9199829101562, 593.739990234375, 141.6199951171875),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-753.3200073242188, 622.3099975585938, 141.58999633789062),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-765.030029296875, 650.9000244140625, 144.5),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-773.6500244140625, 672.72998046875, 144.5),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-810.3400268554688, 673.989990234375, 146.3000030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-819.3699951171875, 696.6199951171875, 147.11000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-853.1400146484375, 695.9199829101562, 147.7899932861328),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-885.6699829101562, 699.1599731445312, 150.27000427246094),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-908.6300048828125, 693.8900146484375, 150.44000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-931.4500122070312, 691.27001953125, 152.47000122070312),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-947.510009765625, 683.5599975585938, 152.5800018310547),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-972.8800048828125, 685.0, 157.02999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-997.1699829101562, 681.510009765625, 159.49000549316406),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1033.25, 679.8300170898438, 160.3000030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1020.5999755859375, 719.3800048828125, 163.0),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1002.6799926757812, 715.239990234375, 163.0),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1065.18994140625, 727.0999755859375, 164.47000122070312),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1070.6099853515625, 749.0900268554688, 167.0500030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1107.1600341796875, 739.5599975585938, 163.27999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1144.1800537109375, 718.6099853515625, 154.4600067138672),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1118.199951171875, 762.4199829101562, 163.2899932861328),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1145.52001953125, 798.27001953125, 166.41000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1165.3900146484375, 727.0599975585938, 154.61000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1197.1099853515625, 693.5900268554688, 146.4199981689453),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1254.8900146484375, 666.8400268554688, 141.82000732421875),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1291.5699462890625, 649.1500244140625, 140.5),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1312.800048828125, 606.25, 133.36000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1327.4000244140625, 611.9199829101562, 133.36000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1384.6199951171875, 606.8300170898438, 132.8800048828125),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1405.3800048828125, 561.6099853515625, 124.41000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1405.6099853515625, 526.8499755859375, 122.83999633789062),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-717.8300170898438, 448.7900085449219, 105.91000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-762.0499877929688, 431.260009765625, 99.19999694824219),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-810.5399780273438, 421.3299865722656, 90.55999755859375),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-760.8800048828125, 463.5299987792969, 100.38999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-715.0499877929688, 502.8500061035156, 108.27999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-722.280029296875, 489.30999755859375, 108.38999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-667.4299926757812, 471.9700012207031, 113.13999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-678.969970703125, 511.5899963378906, 112.52999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-640.6799926757812, 519.9299926757812, 108.69000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-636.0499877929688, 529.989990234375, 108.69000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-593.7100219726562, 530.3499755859375, 107.18000030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-622.5499877929688, 489.1400146484375, 107.86000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-615.25, 476.29998779296875, 107.88999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-579.8200073242188, 492.0400085449219, 107.91000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-537.1599731445312, 477.6199951171875, 102.19000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-564.1199951171875, 403.29998779296875, 99.66000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-595.6900024414062, 393.75, 100.88999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-615.530029296875, 398.4100036621094, 100.62999725341797),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-708.8800048828125, 439.3500061035156, 105.94999694824219),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-516.739990234375, 433.3599853515625, 96.80999755859375),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-476.0799865722656, 413.1700134277344, 102.12000274658203),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-451.3500061035156, 395.4100036621094, 103.77999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-366.4700012207031, 418.3699951171875, 109.98999786376953),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-312.07000732421875, 474.3699951171875, 110.83000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-356.1300048828125, 458.6600036621094, 115.6500015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-349.9599914550781, 514.4600219726562, 119.6500015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-378.2799987792969, 547.5800170898438, 122.8499984741211),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-410.79998779296875, 529.52001953125, 121.19000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(85.05000305175781, 561.9099731445312, 181.77999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(45.27000045776367, 555.989990234375, 179.0800018310547),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(8.64000034332275, 539.6199951171875, 175.02999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-66.18000030517578, 490.2699890136719, 143.69000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-7.67999982833862, 467.9800109863281, 144.85000610351562),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(107.1500015258789, 467.2799987792969, 146.3699951171875),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(159.6999969482422, 470.6499938964844, 141.50999450683594),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(177.4499969482422, 477.2699890136719, 140.89999389648438),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(106.41999816894531, 493.1400146484375, 146.14999389648438),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(80.5999984741211, 486.1499938964844, 147.1999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(43.72999954223633, 468.6199951171875, 147.10000610351562),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(119.30000305175781, 564.5599975585938, 182.9600067138672),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(184.39999389648438, 571.4099731445312, 182.33999633789062),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(150.72999572753906, 555.969970703125, 182.74000549316406),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(216.33999633789062, 620.239990234375, 186.63999938964844),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(233.64999389648438, 643.8699951171875, 185.39999389648438),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(232.0800018310547, 672.530029296875, 188.9499969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(228.75, 766.780029296875, 203.77999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-86.33000183105469, 834.8699951171875, 234.92999267578125),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-167.19000244140625, 917.27001953125, 234.66000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-176.47000122070312, 970.8900146484375, 236.52999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-113.05999755859375, 986.219970703125, 234.75),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-111.33000183105469, 999.6699829101562, 234.75999450683594),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-100.52999877929688, 821.8800048828125, 234.72999572753906),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-642.760009765625, 874.52001953125, 223.41000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-655.5499877929688, 802.989990234375, 197.99000549316406),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-608.780029296875, 771.4600219726562, 187.52000427246094),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-673.72998046875, 747.8400268554688, 172.6699981689453),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-657.9199829101562, 728.510009765625, 173.27999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-602.530029296875, 712.719970703125, 179.00999450683594),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-579.5599975585938, 733.0700073242188, 183.2100067138672),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-559.5, 663.8699951171875, 144.49000549316406),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-458.92999267578125, 537.1500244140625, 120.45999908447266),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-502.4700012207031, 399.2300109863281, 96.41000366210938),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-561.8400268554688, 294.20001220703125, 86.5),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1996.1400146484375, 591.1099853515625, 117.11000061035156),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1896.6600341796875, 642.5700073242188, 129.2100067138672),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1929.2099609375, 595.6599731445312, 121.27999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1974.449951171875, 630.72998046875, 121.54000091552734),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1938.0400390625, 551.1199951171875, 113.83000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1943.2099609375, 449.510009765625, 101.93000030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-2010.22998046875, 445.4200134277344, 102.0199966430664),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1931.1600341796875, 398.7799987792969, 95.51000213623047),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1944.4599609375, 382.6099853515625, 95.27999877929688),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-2008.27001953125, 367.5400085449219, 93.81999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-2008.6300048828125, 316.7300109863281, 90.56999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1932.1700439453125, 362.2300109863281, 92.79000091552734),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1922.9200439453125, 297.80999755859375, 88.29000091552734),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1906.4599609375, 252.60000610351562, 85.25),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1970.0400390625, 246.1300048828125, 86.81999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1961.0, 211.8699951171875, 85.80999755859375),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1931.8699951171875, 163.11000061035156, 83.6500015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1873.949951171875, 201.4600067138672, 83.29000091552734),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1846.1800537109375, 202.55999755859375, 83.44000244140625),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1898.5799560546875, 132.9499969482422, 80.98999786376953),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1522.0699462890625, 144.3699951171875, 54.6500015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1464.8699951171875, -34.2400016784668, 54.06000137329101),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1551.1300048828125, -110.7699966430664, 53.33000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1549.280029296875, -89.6500015258789, 53.93000030517578),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1579.8399658203125, -34.56000137329101, 56.56999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1579.1800537109375, 13.22999954223632, 60.08000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1570.6400146484375, 23.29999923706054, 58.54999923706055),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1515.4100341796875, 24.2800006866455, 55.81999969482422),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1467.1300048828125, 35.18000030517578, 53.54999923706055),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1629.8599853515625, 36.7599983215332, 61.93999862670898),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1625.489990234375, 8.85000038146972, 61.54000091552734),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1600.0699462890625, -33.61000061035156, 57.20000076293945),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-985.260009765625, 109.76000213623047, 54.95000076293945),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-971.25, 122.2300033569336, 56.04999923706055),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-929.6500244140625, 17.8700008392334, 46.84000015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-913.5900268554688, 108.01000213623047, 54.5099983215332),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-888.3200073242188, 42.20000076293945, 48.1500015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-787.0499877929688, 37.04999923706055, 47.2400016784668),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-788.6199951171875, -7.05000019073486, 39.86999893188476),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-841.4000244140625, -24.93000030517578, 39.4000015258789),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-888.4600219726562, 188.02000427246094, 68.83000183105469),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-903.010009765625, 191.77000427246094, 68.44999694824219),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-817.1199951171875, 177.89999389648438, 71.2300033569336),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-832.0399780273438, 115.12999725341797, 54.41999816894531),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(495.45001220703125, -1823.280029296875, 27.8799991607666),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(500.69000244140625, -1812.969970703125, 27.89999961853027),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(512.3900146484375, -1790.6300048828125, 27.92000007629394),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(514.1400146484375, -1780.93994140625, 27.92000007629394),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(474.989990234375, -1775.5699462890625, 27.69000053405761),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(474.3900146484375, -1757.68994140625, 28.10000038146972),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(479.25, -1735.8499755859375, 28.15999984741211),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(489.80999755859375, -1714.260009765625, 28.70999908447265),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(500.1700134277344, -1697.3199462890625, 28.79000091552734),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(427.3900146484375, -1842.0400390625, 27.46999931335449),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(440.3299865722656, -1829.75, 27.36000061035156),
+--                 lootTables = { "small" }
+--             },
+--             {
+--                 coords = vector3(-3103.419921875, 246.2100067138672, 11.42000007629394),
+--                 lootTables = { "small", "large" }
+--             },
+--             {
+--                 coords = vector3(-3109.179931640625, 303.92999267578125, 7.38999986648559),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3093.239990234375, 350.0, 6.53999996185302),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3095.10009765625, 364.69000244140625, 6.11999988555908),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3089.02001953125, 391.6600036621094, 10.44999980926513),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3072.2099609375, 404.45001220703125, 5.96999979019165),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3050.449951171875, 475.1499938964844, 5.78000020980835),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3035.93994140625, 490.44000244140625, 5.76999998092651),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3031.760009765625, 526.5999755859375, 6.42999982833862),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3034.949951171875, 543.8699951171875, 6.51000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3034.3701171875, 559.7100219726562, 6.51000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3029.050048828125, 568.0399780273438, 6.80000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3048.469970703125, 614.010009765625, 6.28000020980835),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3079.02001953125, 660.4099731445312, 10.60000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3106.340087890625, 720.4500122070312, 19.5300006866455),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3102.419921875, 743.2100219726562, 20.40999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3224.679931640625, 911.5599975585938, 13.0),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3229.18994140625, 928.22998046875, 12.9700002670288),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3232.4599609375, 933.9600219726562, 12.80000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3237.81005859375, 951.47998046875, 12.13000011444091),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3251.530029296875, 1026.469970703125, 10.76000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3247.449951171875, 1041.969970703125, 10.76000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3253.889892578125, 1063.52001953125, 10.14999961853027),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3232.47998046875, 1067.18994140625, 10.02999973297119),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3232.389892578125, 1080.8599853515625, 9.8100004196167),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3228.9599609375, 1091.9599609375, 9.77000045776367),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3224.52001953125, 1112.719970703125, 9.57999992370605),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3214.330078125, 1137.1199951171875, 8.89999961853027),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3210.31005859375, 1144.760009765625, 8.89999961853027),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3213.889892578125, 1148.56005859375, 8.89999961853027),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3206.0, 1151.449951171875, 8.67000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3200.699951171875, 1164.550048828125, 8.65999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3206.530029296875, 1186.18994140625, 8.67000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3201.860107421875, 1194.9100341796875, 8.55000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3205.93994140625, 1202.760009765625, 8.55000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3190.199951171875, 1206.030029296875, 8.57999992370605),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3194.389892578125, 1221.31005859375, 9.05000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3193.389892578125, 1229.56005859375, 9.05000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3201.010009765625, 1233.22998046875, 9.05000019073486),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3187.260009765625, 1275.6300048828125, 11.68000030517578),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3193.85009765625, 1275.010009765625, 11.67000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3194.830078125, 1279.800048828125, 11.67000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3196.760009765625, 1280.219970703125, 11.67000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3190.820068359375, 1298.5, 18.06999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3183.169921875, 1310.52001953125, 13.5600004196167),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-3180.8798828125, 1309.7099609375, 14.77999973297119),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-374.05999755859375, 6191.7900390625, 30.72999954223632),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-356.44000244140625, 6208.16015625, 30.85000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-326.80999755859375, 6226.77978515625, 30.5),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-380.8299865722656, 6253.41015625, 30.86000061035156),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-358.760009765625, 6261.14013671875, 30.48999977111816),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-366.25, 6267.3701171875, 30.52000045776367),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-447.0299987792969, 6259.91015625, 29.04999923706054),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-451.0299987792969, 6269.06982421875, 29.04000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-408.05999755859375, 6313.72021484375, 27.94000053405761),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(132.10000610351562, -1854.3900146484375, 24.23999977111816),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-332.0899963378906, 6302.93017578125, 32.09000015258789),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-320.54998779296875, 6301.97021484375, 35.59000015258789),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-302.1400146484375, 6331.4501953125, 31.48999977111816),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-292.6199951171875, 6319.68994140625, 31.5),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-299.510009765625, 6313.2998046875, 31.48999977111816),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-248.88999938964844, 6369.47998046875, 30.47999954223632),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-239.89999389648438, 6358.39990234375, 30.52000045776367),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-244.00999450683594, 6357.16015625, 30.51000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-217.83999633789062, 6375.419921875, 30.5),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(151.60000610351562, -1865.22998046875, 23.20999908447265),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-226.64999389648438, 6377.97021484375, 30.76000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(170.2899932861328, -1873.8800048828125, 23.40999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(151.75, -1905.52001953125, 22.54000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-245.24000549316406, 6413.509765625, 30.26000022888183),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-238.0800018310547, 6429.43994140625, 30.06999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(189.7899932861328, -1881.72998046875, 24.05999946594238),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-230.30999755859375, 6446.0400390625, 30.20000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(206.69000244140625, -1895.4100341796875, 23.43000030517578),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-213.80999755859375, 6443.31982421875, 30.30999946594238),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-167.5, 6440.25, 30.92000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(290.4599914550781, -1792.06005859375, 26.70000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-159.08999633789062, 6431.990234375, 30.90999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-150.57000732421875, 6423.43994140625, 30.92000007629394),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-150.66000366210938, 6415.31982421875, 31.0300006866455),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-156.27000427246094, 6409.85986328125, 31.0300006866455),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(268.6000061035156, -1917.3499755859375, 24.80999946594238),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(256.04998779296875, -1925.3199462890625, 24.45000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(249.52999877929688, -1936.1700439453125, 23.34000015258789),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-110.66000366210938, 6468.43994140625, 30.6299991607666),
+--                 lootTables = { "large" }
+--             },
+--             {
+--                 coords = vector3(-88.30999755859375, 6494.080078125, 31.10000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-66.52999877929688, 6506.2099609375, 30.54000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-94.30000305175781, 6408.2998046875, 30.63999938964843),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(12.14000034332275, 6579.39013671875, 31.64999961853027),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2.55999994277954, 6613.47021484375, 30.8799991607666),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(36.20999908447265, 6662.77001953125, 31.20000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(159.27000427246094, 6639.06005859375, 30.56999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(166.50999450683594, -1943.9000244140625, 18.85000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(281.2300109863281, -1990.8499755859375, 19.44000053405761),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-97.70999908447266, 6196.06005859375, 31.86000061035156),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(293.4100036621094, -1982.050048828125, 20.60000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(293.5299987792969, -1974.0, 21.90999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-127.58000183105469, 6162.47998046875, 30.60000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(314.3399963378906, -1953.6700439453125, 23.29000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(326.1300048828125, -1939.280029296875, 24.02000045776367),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(1719.050048828125, 4677.9501953125, 42.65999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(383.1099853515625, -1883.739990234375, 25.04000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(401.1300048828125, -1862.800048828125, 25.32999992370605),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(402.5299987792969, -1850.550048828125, 25.97999954223632),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(1739.9599609375, 4649.66015625, 42.31000137329101),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(1959.5699462890625, 4628.3798828125, 40.06999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(404.1300048828125, -1754.489990234375, 28.35000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(1967.510009765625, 4634.60009765625, 40.11000061035156),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(416.9100036621094, -1733.93994140625, 28.61000061035156),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(429.94000244140625, -1728.239990234375, 28.22999954223632),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(445.3999938964844, -1705.199951171875, 28.70999908447265),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2905.340087890625, 4407.77978515625, 49.22000122070312),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(480.239990234375, -1556.1700439453125, 31.79000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2889.43994140625, 4392.39990234375, 49.33000183105469),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(467.8699951171875, -1591.1099853515625, 31.79000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(454.5799865722656, -1571.8699951171875, 31.79000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(431.010009765625, -1556.4599609375, 31.79000091552734),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2684.60009765625, 3514.330078125, 52.29999923706055),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(14.0, -1442.5999755859375, 29.95000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2678.260009765625, 3498.5400390625, 52.29999923706055),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-0.18999999761581, -1442.3499755859375, 29.54999923706054),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2663.6201171875, 3468.0, 54.95999908447265),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-12.85000038146972, -1442.68994140625, 30.10000038146972),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-33.72999954223633, -1447.5799560546875, 30.48999977111816),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2642.929931640625, 3306.0, 54.2599983215332),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2633.39990234375, 3292.580078125, 54.72999954223633),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-45.29999923706055, -1446.93994140625, 31.43000030517578),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2632.97998046875, 3257.330078125, 54.47000122070312),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-60.31999969482422, -1448.739990234375, 31.90999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2617.590087890625, 3274.389892578125, 54.7400016784668),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2607.239990234375, 3272.780029296875, 54.75),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-108.58999633789062, -1474.5400390625, 32.81999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-114.83999633789062, -1481.969970703125, 32.81999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2619.320068359375, 3247.75, 54.47000122070312),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-123.9000015258789, -1475.239990234375, 32.81999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-130.99000549316406, -1469.4000244140625, 32.88000106811523),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-131.7899932861328, -1461.8499755859375, 36.0),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-128.4600067138672, -1457.97998046875, 36.79999923706055),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-112.16999816894531, -1468.6800537109375, 36.0),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-111.0199966430664, -1477.6400146484375, 36.0),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2367.570068359375, 3155.31005859375, 47.20999908447265),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2352.68994140625, 3152.22998046875, 47.27000045776367),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-63.72999954223633, -1513.1800537109375, 32.43999862670898),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2162.2900390625, 3373.97998046875, 44.33000183105469),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-55.68999862670898, -1526.43994140625, 32.45000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-66.8499984741211, -1527.6500244140625, 33.2400016784668),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2166.669921875, 3380.909912109375, 45.43999862670898),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2163.31005859375, 3395.919921875, 44.45000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-78.33000183105469, -1515.969970703125, 33.25),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-68.47000122070312, -1527.4300537109375, 36.41999816894531),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-81.2699966430664, -1521.5799560546875, 36.41999816894531),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2168.9599609375, 3331.469970703125, 45.5099983215332),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-63.77000045776367, -1514.010009765625, 35.63000106811523),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2174.219970703125, 3321.43994140625, 44.95999908447265),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-43.70000076293945, -1546.0999755859375, 29.69000053405761),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-36.93000030517578, -1537.969970703125, 29.69000053405761),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2195.14990234375, 3307.68994140625, 45.33000183105469),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-23.84000015258789, -1555.739990234375, 29.69000053405761),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(2201.219970703125, 3317.02001953125, 45.2400016784668),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-84.63999938964844, -1604.22998046875, 31.31999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-98.80999755859375, -1613.52001953125, 31.20000076293945),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-108.63999938964844, -1627.449951171875, 31.82999992370605),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-96.19000244140625, -1638.02001953125, 31.0300006866455),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-84.4800033569336, -1623.989990234375, 30.44000053405761),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-78.93000030517578, -1608.9100341796875, 30.48999977111816),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-90.2699966430664, -1630.969970703125, 33.68999862670898),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-102.04000091552734, -1617.27001953125, 34.4900016784668),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-115.19999694824219, -1578.56005859375, 33.18999862670898),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-121.30999755859375, -1573.449951171875, 33.18000030517578),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-129.1300048828125, -1568.4599609375, 36.40999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-127.1500015258789, -1596.0400390625, 36.40999984741211),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-136.22000122070312, -1601.0899658203125, 33.84000015258789),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-146.99000549316406, -1595.469970703125, 33.84000015258789),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-141.27999877929688, -1589.0, 33.25),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1033.47998046875, -1146.3699951171875, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1046.1400146484375, -1157.31005859375, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1064.97998046875, -1160.0799560546875, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-168.60000610351562, -1533.6300048828125, 34.11000061035156),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1069.6199951171875, -1163.0400390625, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1069.6199951171875, -1163.030029296875, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-174.4499969482422, -1548.1700439453125, 34.06999969482422),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1083.510009765625, -1139.800048828125, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-185.33999633789062, -1540.5, 33.33000183105469),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1091.68994140625, -1144.72998046875, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1063.989990234375, -1188.4000244140625, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1062.56005859375, -1188.8499755859375, 1.75999999046325),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-186.4199981689453, -1562.280029296875, 34.7599983215332),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-195.42999267578125, -1554.72998046875, 33.95999908447265),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1113.3399658203125, -1193.27001953125, 1.36000001430511),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-186.3699951171875, -1562.4599609375, 38.13000106811523),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-180.24000549316406, -1555.1500244140625, 37.34000015258789),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1110.6099853515625, -1194.260009765625, 5.67999982833862),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1113.9599609375, -1196.1600341796875, 5.67999982833862),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1118.3699951171875, -1198.72998046875, 5.67999982833862),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-162.82000732421875, -1540.1400146484375, 37.33000183105469),
+--                 lootTables = { "small", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1098.8900146484375, -1211.800048828125, 1.54999995231628),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1108.219970703125, -1223.47998046875, 1.55999994277954),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1099.0899658203125, -1230.5799560546875, 1.82000005245208),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1113.18994140625, -1258.75, 5.6599998474121),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(173.8300018310547, -81.73999786376953, 71.77999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(174.72999572753906, -82.0199966430664, 75.81999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(203.5, -133.39999389648438, 62.5),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1031.8399658203125, -1107.949951171875, 1.15999996662139),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(232.25, -131.6999969482422, 62.77000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(241.0500030517578, -122.55999755859375, 69.11000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(236.80999755859375, -108.81999969482422, 73.36000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(236.6999969482422, -108.83999633789062, 77.3499984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-993.0700073242188, -1104.25, 1.14999997615814),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-986.3099975585938, -1120.8699951171875, 3.54999995231628),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-311.80999755859375, 84.36000061035156, 66.69000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-325.1499938964844, 84.3499984741211, 70.66999816894531),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-310.3399963378906, 84.36000061035156, 70.66999816894531),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-325.0899963378906, 84.31999969482422, 74.80000305175781),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-310.4800109863281, 84.26000213623047, 74.66000366210938),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-264.1099853515625, 90.54000091552734, 68.2699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-264.05999755859375, 100.23999786376953, 72.58000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-260.94000244140625, 100.05999755859375, 76.56999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-356.2699890136719, 92.6500015258789, 65.2300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-358.25, 102.08999633789062, 69.52999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-358.2300109863281, 84.8499984741211, 69.52999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-383.7300109863281, 151.63999938964844, 64.54000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-386.1099853515625, 165.47999572753906, 68.7300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-386.0899963378906, 165.50999450683594, 72.73999786376953),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-383.5799865722656, 151.63999938964844, 72.73999786376953),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-389.1499938964844, 165.30999755859375, 76.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-383.510009765625, 151.47000122070312, 76.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-389.1199951171875, 165.19000244140625, 80.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-383.6700134277344, 151.6699981689453, 80.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-408.260009765625, 156.8300018310547, 80.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-412.2099914550781, 151.5800018310547, 76.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-409.8299865722656, 165.5500030517578, 76.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-409.2200012207031, 151.08999633789062, 72.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-409.80999755859375, 165.57000732421875, 72.73999786376953),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-412.1499938964844, 151.55999755859375, 68.7300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-409.79998779296875, 165.5800018310547, 68.7300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-412.25, 151.5, 64.52999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-416.4599914550781, 77.12999725341797, 63.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-428.0899963378906, 77.47000122070312, 63.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-429.2799987792969, 83.5199966430664, 67.5199966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-429.3299865722656, 83.58999633789062, 71.51000213623047),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-452.5199890136719, 80.83000183105469, 66.3499984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-452.3900146484375, 80.62000274658203, 70.3499984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(158.3000030517578, -84.55000305175781, 67.52999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(152.5, -69.8499984741211, 66.68000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(155.02999877929688, -65.76000213623047, 70.87999725341797),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(154.9499969482422, -65.95999908447266, 74.87999725341797),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(144.92999267578125, -84.0, 63.33000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(140.52999877929688, -93.30999755859375, 67.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(145.52999877929688, -79.58000183105469, 67.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(140.64999389648438, -93.22000122070312, 71.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(145.4499969482422, -79.68000030517578, 71.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(144.8300018310547, -111.11000061035156, 61.29999923706055),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(125.62999725341797, -107.13999938964844, 59.72000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(64.5199966430664, -81.86000061035156, 61.5099983215332),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(68.41000366210938, -70.95999908447266, 65.70999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(63.72000122070312, -83.55999755859375, 65.70999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(48.93000030517578, -81.83000183105469, 60.56999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(44.13000106811523, -94.69999694824219, 64.7699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(49.0, -81.37999725341797, 64.7699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(43.97999954223633, -94.83999633789062, 68.7699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(49.04999923706055, -81.63999938964844, 68.7699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(50.65999984741211, -76.08999633789062, 62.43999862670898),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(50.2400016784668, -77.0199966430664, 66.63999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(45.97999954223633, -61.45999908447265, 66.63999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(68.2699966430664, -57.61999893188476, 67.83000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(58.83000183105469, -53.18999862670898, 72.02999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(72.26000213623047, -58.02000045776367, 72.02999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(58.77000045776367, -52.88999938964844, 76.02999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(71.87999725341797, -57.86999893188476, 76.02999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(77.36000061035156, -62.7599983215332, 75.13999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(79.26000213623047, -49.81000137329101, 75.1500015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(77.4800033569336, -62.75, 71.1500015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(77.41000366210938, -62.45999908447265, 66.94999694824219),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-28.59000015258789, -63.6500015258789, 66.5999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-28.73999977111816, -62.97999954223633, 62.56999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-41.2400016784668, -60.13000106811523, 62.65999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-9.32999992370605, -13.14000034332275, 70.1500015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-9.31999969482421, -13.13000011444091, 74.3499984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-9.21000003814697, -13.11999988555908, 78.3499984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-22.93000030517578, -8.32999992370605, 78.36000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-28.98999977111816, -18.3700008392334, 68.0),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-15.7200002670288, -26.40999984741211, 72.25),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-14.51000022888183, -23.27000045776367, 72.25),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-93.05999755859375, -12.27000045776367, 65.36000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-107.29000091552734, -10.03999996185302, 65.36000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-106.4000015258789, -7.17999982833862, 69.52999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-92.81999969482422, -12.23999977111816, 69.5199966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-107.43000030517578, -9.89000034332275, 73.5199966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-94.37999725341797, -11.8100004196167, 73.5199966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-102.83000183105469, 3.5, 69.23999786376953),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-98.76000213623047, 12.43000030517578, 73.44000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-103.04000091552734, 0.55000001192092, 73.44000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-98.7300033569336, 12.30000019073486, 77.44000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-103.37999725341797, 0.02999999932944, 77.44000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-98.66999816894531, -33.65999984741211, 61.20000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-102.94999694824219, -34.20000076293945, 65.44999694824219),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-102.9800033569336, -34.20999908447265, 69.44000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-96.69000244140625, -36.2400016784668, 69.44999694824219),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-115.5199966430664, -35.34000015258789, 61.20000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-113.72000122070312, -47.36999893188476, 61.20000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-158.30999755859375, -5.80000019073486, 57.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-162.02000427246094, -6.63999986648559, 61.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-154.0800018310547, -6.48000001907348, 61.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-161.99000549316406, -6.44999980926513, 65.45999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-155.8699951171875, -8.64000034332275, 65.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-168.5500030517578, -6.73999977111816, 57.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-167.07000732421875, -2.51999998092651, 57.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-175.9199981689453, -11.13000011444091, 57.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-172.32000732421875, -17.22999954223632, 57.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-209.33999633789062, -5.84999990463256, 51.38000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-205.11000061035156, -5.40000009536743, 55.63000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-213.02000427246094, -5.48000001907348, 55.63000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-204.9199981689453, -5.38999986648559, 59.61999893188476),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-211.05999755859375, -3.27999997138977, 59.63000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-198.5, -5.88999986648559, 51.38000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-194.6699981689453, 4.40000009536743, 51.38000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-172.14999389648438, 40.36999893188476, 67.11000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-156.77000427246094, 49.22000122070312, 66.5999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-187.5800018310547, 66.08000183105469, 66.87000274658203),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-184.66000366210938, 65.63999938964844, 66.87000274658203),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-171.60000610351562, 22.81999969482422, 63.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-174.24000549316406, 23.8799991607666, 63.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-155.66000366210938, 17.20999908447265, 63.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-153.3300018310547, 16.5, 63.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-141.50999450683594, 62.06000137329101, 69.83999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-153.0, 68.63999938964844, 69.77999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-164.1999969482422, 75.18000030517578, 69.69000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-175.66000366210938, 81.68000030517578, 69.2300033569336),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-187.13999938964844, 88.48999786376953, 68.98999786376953),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-196.22999572753906, 85.54000091552734, 68.76000213623047),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1143.8699951171875, -1517.5999755859375, 6.55999994277954),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1755.1600341796875, -709.739990234375, 9.42000007629394),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1762.6099853515625, -708.9099731445312, 9.60999965667724),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1772.5400390625, -704.0700073242188, 9.57999992370605),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1776.6400146484375, -683.9500122070312, 9.4700002670288),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1789.780029296875, -684.6500244140625, 9.64000034332275),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1798.72998046875, -665.75, 9.52999973297119),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1792.9100341796875, -665.1599731445312, 9.47999954223632),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1812.3900146484375, -665.2000122070312, 9.77999973297119),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1816.43994140625, -657.9299926757812, 12.8100004196167),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1829.5999755859375, -652.1900024414062, 9.8100004196167),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1827.6500244140625, -651.0599975585938, 13.56999969482421),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1819.219970703125, -644.3400268554688, 9.9399995803833),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1833.050048828125, -640.5, 10.47999954223632),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1826.260009765625, -630.0, 9.9700002670288),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1835.6600341796875, -630.8099975585938, 9.77999973297119),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1847.3900146484375, -632.8699951171875, 10.15999984741211),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1883.9200439453125, -606.510009765625, 10.88000011444091),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1865.989990234375, -596.77001953125, 10.85000038146972),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1872.0699462890625, -598.1400146484375, 10.85000038146972),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1883.8199462890625, -600.72998046875, 10.89999961853027),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1883.43994140625, -601.280029296875, 14.55000019073486),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1883.260009765625, -601.4299926757812, 18.14999961853027),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1877.8900146484375, -582.8099975585938, 10.84000015258789),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1892.969970703125, -600.9600219726562, 10.89999961853027),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1889.3199462890625, -592.6900024414062, 17.34000015258789),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1902.949951171875, -585.0, 10.86999988555908),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1903.0699462890625, -584.9299926757812, 14.51000022888183),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1897.4000244140625, -571.0999755859375, 10.84000015258789),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1914.469970703125, -573.219970703125, 10.4399995803833),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1908.81005859375, -582.1900024414062, 13.69999980926513),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1907.56005859375, -579.5499877929688, 18.10000038146972),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1908.050048828125, -581.1199951171875, 21.88999938964843),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1922.4000244140625, -570.3800048828125, 10.90999984741211),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1923.4200439453125, -567.4299926757812, 13.73999977111816),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1918.1600341796875, -567.5900268554688, 16.68000030517578),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1922.77001953125, -566.5900268554688, 19.47999954223632),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1921.9200439453125, -557.1900024414062, 11.0600004196167),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1925.9599609375, -561.8099975585938, 11.0600004196167),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1947.9300537109375, -550.1199951171875, 10.88000011444091),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1946.6500244140625, -547.5800170898438, 13.72999954223632),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1952.9300537109375, -546.6300048828125, 10.88000011444091),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1956.8299560546875, -539.6199951171875, 10.89999961853027),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1956.6300048828125, -539.989990234375, 14.55000019073486),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1957.0, -540.6300048828125, 18.14999961853027),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1970.02001953125, -530.1400146484375, 11.17000007629394),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1968.1600341796875, -517.4000244140625, 10.82999992370605),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1974.3199462890625, -526.4299926757812, 10.88000011444091),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1976.7900390625, -524.3499755859375, 14.44999980926513),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1978.3299560546875, -526.2899780273438, 17.93000030517578),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1982.1500244140625, -520.9000244140625, 10.89000034332275),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1983.1600341796875, -517.8300170898438, 13.75),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1979.1099853515625, -518.8599853515625, 16.68000030517578),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(-1984.8599853515625, -519.1300048828125, 19.46999931335449),
+--                 lootTables = { "large", "medium" }
+--             },
+--             {
+--                 coords = vector3(1880.3499755859375, 3920.56005859375, 32.20999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(254.5500030517578, -1674.3399658203125, 28.29000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(268.3699951171875, -1714.75, 28.29000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(255.44000244140625, -1721.4300537109375, 28.65999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(198.94000244140625, -1727.9599609375, 28.65999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(154.69000244140625, -1821.280029296875, 26.8700008392334),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1845.9300537109375, 3914.5, 32.47000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(116.31999969482422, -1885.4200439453125, 22.93000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1803.449951171875, 3913.840087890625, 36.06000137329101),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(126.22000122070312, -1895.8900146484375, 22.2800006866455),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1811.8599853515625, 3853.669921875, 33.54000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(250.07000732421875, -2028.699951171875, 17.31999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1880.72998046875, 3810.639892578125, 31.7800006866455),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(335.79998779296875, -1993.8800048828125, 22.60000038146972),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1932.81005859375, 3804.85009765625, 31.90999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(392.44000244140625, -2017.6500244140625, 22.40999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(382.5299987792969, -2038.9300537109375, 22.40999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1925.02001953125, 3824.7900390625, 31.45000076293945),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(355.7300109863281, -2075.89990234375, 20.69000053405761),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(316.0899963378906, -2042.43994140625, 19.73999977111816),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(291.42999267578125, -2046.3800048828125, 18.39999961853027),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1974.5699462890625, 3815.75, 32.43000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(240.05999755859375, -2043.800048828125, 17.01000022888183),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1662.5, 4776.22998046875, 41.0099983215332),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1113.4000244140625, 4903.68017578125, 217.60000610351562),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1075.5799560546875, 4897.5498046875, 213.27999877929688),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1149.699951171875, 4907.85009765625, 219.97000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1098.6400146484375, 4893.5, 215.07000732421875),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1124.469970703125, 4892.64013671875, 217.47999572753906),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(294.6199951171875, -2090.35009765625, 16.67000007629394),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(318.7099914550781, -2101.97998046875, 17.22999954223632),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(404.92999267578125, -2016.6700439453125, 22.31999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1058.800048828125, -1541.3800048828125, 4.03000020980835),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1075.72998046875, -1553.1500244140625, 3.66000008583068),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1088.6400146484375, -1530.31005859375, 3.71000003814697),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1385.8699951171875, -594.1199951171875, 29.34000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1108.739990234375, -1526.3199462890625, 5.78000020980835),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1043.510009765625, -1579.489990234375, 4.05000019073486),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1058.72998046875, -1588.5400390625, 3.52999997138977),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1024.3199462890625, -1615.06005859375, 3.96000003814697),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1076.0, -1621.9599609375, 3.45000004768371),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1079.4200439453125, -1615.18994140625, 3.41000008583068),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1119.5899658203125, -1583.5, 7.67999982833862),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1097.8499755859375, -1672.6700439453125, 7.40000009536743),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1088.7099609375, -1679.6700439453125, 3.6800000667572),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1114.1600341796875, -1577.280029296875, 3.53999996185302),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1093.239990234375, -1608.5899658203125, 7.46000003814697),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1130.52001953125, -1552.9599609375, 3.33999991416931),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1144.75, -1527.9599609375, 3.33999991416931),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1132.050048828125, -1497.1300048828125, 3.40000009536743),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1141.3599853515625, -1461.1199951171875, 6.69999980926513),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1148.050048828125, -1452.3199462890625, 3.57999992370605),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1202.3199462890625, -1309.6700439453125, 3.91000008583068),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1247.6800537109375, -1358.530029296875, 6.82999992370605),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1269.3199462890625, -1303.800048828125, 7.28999996185302),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1230.6099853515625, -1236.18994140625, 10.02999973297119),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1242.050048828125, -1210.1800537109375, 7.26999998092651),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1350.0400390625, -1164.93994140625, 3.55999994277954),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1336.699951171875, -1147.0699462890625, 5.73999977111816),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1324.3499755859375, -1024.800048828125, 6.75),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1374.3499755859375, -898.1500244140625, 11.4700002670288),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1346.3299560546875, -890.3900146484375, 12.46000003814697),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1338.9200439453125, -942.1300048828125, 14.35999965667724),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1351.7900390625, -938.760009765625, 8.71000003814697),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1326.989990234375, -767.5399780273438, 18.23999977111816),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1353.300048828125, -739.7100219726562, 21.95999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1488.8199462890625, -672.2100219726562, 32.38000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1530.8800048828125, -582.5999755859375, 32.63000106811523),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1668.3800048828125, -442.1400146484375, 39.36000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1643.6199951171875, -413.20001220703125, 41.08000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1604.6800537109375, -343.9800109863281, 48.20999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1565.489990234375, -280.489990234375, 47.27999877929687),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1534.1099853515625, -259.1300048828125, 47.27999877929687),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(347.1199951171875, -198.38999938964844, 53.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(346.9100036621094, -199.17999267578125, 57.02000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(317.55999755859375, -195.7899932861328, 57.02000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(307.3800048828125, -141.42999267578125, 66.7699966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(353.42999267578125, -143.19000244140625, 65.69000244140625),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(179.83999633789062, 43.95000076293945, 86.81999969482422),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(207.8800048828125, 24.34000015258789, 78.19999694824219),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(222.3699951171875, -8.48999977111816, 72.80000305175781),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(253.7100067138672, 25.15999984741211, 87.12999725341797),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(253.2899932861328, 25.14999961853027, 91.12999725341797),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(283.6400146484375, 45.4900016784668, 95.70999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(223.07000732421875, 120.81999969482422, 101.83999633789062),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(116.31999969482422, 170.69000244140625, 111.45999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(34.63000106811523, 154.3699951171875, 116.5199966430664),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-155.08999633789062, 213.0, 97.33000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-176.91000366210938, 219.2899932861328, 88.91000366210938),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-201.05999755859375, 184.75999450683594, 79.37000274658203),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-161.19000244140625, 159.97999572753906, 88.70999908447266),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-160.94000244140625, 162.0399932861328, 80.51000213623047),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-142.27999877929688, 174.49000549316406, 92.62999725341797),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-207.36000061035156, 159.0800018310547, 73.05999755859375),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-274.7699890136719, 169.17999267578125, 78.13999938964844),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1835.81005859375, 446.1199951171875, 125.51000213623047),
+--                 lootTables = { "large" }
+--             },
+--             {
+--                 coords = vector3(-1803.0699462890625, 437.07000732421875, 127.70999908447266),
+--                 lootTables = { "large" }
+--             },
+--             {
+--                 coords = vector3(1395.6500244140625, 1141.1099853515625, 113.6500015258789),
+--                 lootTables = { "large" }
+--             },
+--             {
+--                 coords = vector3(781.0800170898438, 1277.4000244140625, 359.29998779296875),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(388.30999755859375, 792.3800048828125, 186.66000366210938),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(-1856.8499755859375, 2064.0, 140.02000427246094),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(457.260009765625, 5569.77978515625, 780.1799926757812),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(3312.330078125, 5178.740234375, 18.6200008392334),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(3728.8798828125, 4539.259765625, 20.40999984741211),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(3818.719970703125, 4485.580078125, 5.0),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(2364.570068359375, 2557.239990234375, 45.66999816894531),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(2320.550048828125, 2537.199951171875, 45.66999816894531),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(2322.25, 2555.340087890625, 45.66999816894531),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1546.530029296875, 2226.3701171875, 76.66999816894531),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(732.3900146484375, 2525.800048828125, 72.33999633789062),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(468.260009765625, 2607.72998046875, 43.47999954223633),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(500.1000061035156, 2605.489990234375, 42.70000076293945),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(541.9199829101562, 2662.68994140625, 41.7400016784668),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(381.4700012207031, 2579.419921875, 42.52000045776367),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(345.7300109863281, 2617.780029296875, 43.66999816894531),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(264.010009765625, 2593.010009765625, 44.0),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(201.47999572753906, 2444.85009765625, 59.47999954223633),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(-2168.219970703125, 5194.4599609375, 15.65999984741211),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(470.0799865722656, -849.5499877929688, 25.48999977111816),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(823.3800048828125, -829.530029296875, 25.32999992370605),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(804.3800048828125, -829.469970703125, 26.23999977111816),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(-45.83000183105469, 1945.4000244140625, 189.17999267578125),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(742.5599975585938, 4170.7099609375, 40.09000015258789),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(712.6400146484375, 4197.2900390625, 39.70999908447265),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(776.3400268554688, 4183.68994140625, 40.79999923706055),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1334.989990234375, 4308.6201171875, 37.04999923706055),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(2566.820068359375, 4283.52001953125, 40.97999954223633),
+--                 lootTables = { "large", "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1289.050048828125, -1603.3199462890625, 53.83000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1332.949951171875, -1565.18994140625, 53.04999923706055),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1339.4000244140625, -1524.300048828125, 53.18999862670898),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1380.550048828125, -1514.6300048828125, 57.04000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1441.8199462890625, -1480.75, 62.22000122070312),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1382.25, -1545.010009765625, 56.11000061035156),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1232.02001953125, -1589.8399658203125, 52.77000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1250.0999755859375, -1641.550048828125, 50.20999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1213.6099853515625, -1644.0899658203125, 47.6500015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1287.550048828125, -1712.6099853515625, 54.08000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1275.22998046875, -1720.8199462890625, 53.68000030517578),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1313.4100341796875, -1730.75, 53.70999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1349.93994140625, -1746.969970703125, 63.08000183105469),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1022.4400024414062, -2149.47998046875, 30.5300006866455),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(995.5599975585938, -2208.25, 30.54999923706054),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(950.4000244140625, -2375.570068359375, 29.88999938964843),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1239.550048828125, -3179.469970703125, 6.1100001335144),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(27.86000061035156, -2638.340087890625, 5.03000020980835),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(349.739990234375, -1096.9599609375, 28.40999984741211),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(146.22999572753906, -1059.0699462890625, 28.19000053405761),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(50.56000137329101, -1043.3199462890625, 28.55999946594238),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(38.7599983215332, -1026.2900390625, 28.57999992370605),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(15.06999969482421, -897.9299926757812, 28.95999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-271.8500061035156, -956.4000244140625, 30.21999931335449),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-326.3500061035156, -1302.0899658203125, 30.38999938964843),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-319.9700012207031, -1390.9300537109375, 35.5099983215332),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-355.9800109863281, -1467.0699462890625, 29.8799991607666),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-169.13999938964844, -1350.300048828125, 29.01000022888183),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-174.60000610351562, -1274.3299560546875, 31.60000038146972),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-7.4099998474121, -1293.5400390625, 28.35000038146972),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(94.13999938964844, -1285.0899658203125, 28.27000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(142.6199951171875, -1520.93994140625, 28.84000015258789),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(183.27999877929688, -1514.550048828125, 28.13999938964843),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(259.29998779296875, -1357.739990234375, 29.44000053405761),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-602.0399780273438, -1055.449951171875, 21.54999923706054),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-674.9600219726562, -998.3699951171875, 16.94000053405761),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-712.7899780273438, -1027.4200439453125, 15.10999965667724),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-846.5499877929688, -1086.8699951171875, 10.64999961853027),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-885.8099975585938, -1072.760009765625, 1.15999996662139),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-902.280029296875, -1004.5800170898438, 1.14999997615814),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-907.6500244140625, -976.47998046875, 1.14999997615814),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-947.3400268554688, -928.6900024414062, 1.14999997615814),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1009.5599975585938, -889.77001953125, 3.23000001907348),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1024.1300048828125, -912.0800170898438, 5.96999979019165),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1083.969970703125, -936.030029296875, 2.08999991416931),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1111.1400146484375, -903.0399780273438, 10.80000019073486),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-763.6400146484375, -916.27001953125, 19.20999908447265),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-827.0999755859375, -702.530029296875, 27.05999946594238),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-580.4299926757812, -776.4199829101562, 24.02000045776367),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-702.0399780273438, 5766.0498046875, 16.51000022888183),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-677.8900146484375, 5800.72021484375, 16.32999992370605),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(1356.4000244140625, -1689.0899658203125, 59.5),
+--                 lootTables = { "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1340.3199462890625, -1579.0699462890625, 53.04999923706055),
+--                 lootTables = { "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1360.6800537109375, -1568.3399658203125, 54.93999862670898),
+--                 lootTables = { "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1407.0400390625, -1535.47998046875, 57.41999816894531),
+--                 lootTables = { "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(1314.5699462890625, -1527.1500244140625, 50.81000137329101),
+--                 lootTables = { "medium", "small" }
+--             },
+--             {
+--                 coords = vector3(470.4100036621094, -232.42999267578125, 52.79000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(476.4599914550781, -232.57000732421875, 52.79000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(478.04998779296875, -235.97000122070312, 52.79000091552734),
+--                 lootTables = { "small", "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1019.52001953125, 589.510009765625, 102.2300033569336),
+--                 lootTables = { "medium", "large" }
+--             },
+--             {
+--                 coords = vector3(-1010.72998046875, 587.9099731445312, 102.2300033569336),
+--                 lootTables = { "small", "large" }
+--             }
+--         }
+--     }
+-- }
+

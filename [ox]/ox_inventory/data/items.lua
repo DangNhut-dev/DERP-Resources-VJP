@@ -5355,5 +5355,62 @@ return {
 		close       = false,
 		description = 'Báu vật hiếm có trong giới đổ thạch, gần như không thể tìm thấy.',
 	},
+
+	['envelope'] = {
+		label = 'Bao Thư',
+		weight = 10,
+		stack = true,
+		close = true,
+	},
+	
+	['catalog_envelope'] = {
+		label = 'Cuộn Thư',
+		weight = 15,
+		stack = true,
+		close = true,
+	},
+	
+	['letter'] = {
+		label = 'Lá Thư',
+		weight = 5,
+		stack = true,
+		close = true,
+	},
+
+	['kimloaisieucung'] = {
+		label = 'Kim loại siêu cứng',
+		weight = 5000,
+		stack = false,
+		close = true,
+	},
+
+	['banhrang'] = {
+		label = 'Bánh răng',
+		weight = 5000,
+		stack = false,
+		close = true,
+	},
+
+	['giaygoiymot'] = {
+		label = 'Giấy gợi ý điểm ẩn',
+		weight = 1000,
+		stack = false,
+		close = true,
+		description = 'Đi đến nơi có gió',
+	},
+
+	['banvesung'] = {
+		label = 'Bản vẻ súng lục',
+		weight = 1000,
+		stack = false,
+		close = true,
+	},
+
+	['hoachattayrua'] = {
+		label = 'Hóa chất tẩy rửa',
+		weight = 2000,
+		stack = false,
+		close = true,
+	},
 }
 
