@@ -246,14 +246,14 @@ SvConfig.ParkingMeters = {
     
     allowedWeapons = {
         -- [`WEAPON_BAT`] = true,
-        [`weapon_sledgehwammer`] = true,
+        [`WEAPON_SLEDGEHAMMER`] = true,
     },
     
-    minCooldown = 1, 
+    minCooldown = 10, 
     
-    maxCooldown = 1, 
+    maxCooldown = 15, 
     
-    personalCooldown = 0.1, 
+    personalCooldown = 5, 
     
     stress = {
         enabled = false,
@@ -295,7 +295,7 @@ SvConfig.ParkingMeters = {
 
 SvConfig.LetterBoxes = {
     
-    cooldownResetInterval = 1, 
+    cooldownResetInterval = 30, 
 
     openingItems = {
         [SvConfig.LockpickItem] = {
@@ -328,11 +328,11 @@ SvConfig.LetterBoxes = {
     
     guaranteedRarities = {},
 
-    minCooldown = 0.1,
+    minCooldown = 10,
     
-    maxCooldown = 0.1,
+    maxCooldown = 15,
     
-    personalCooldown = 0.1,
+    personalCooldown = 5,
 
     minigame = {
         type = "holeMatch",
@@ -366,7 +366,7 @@ SvConfig.LetterBoxes = {
 
 SvConfig.PostBoxes = {
     
-    cooldownResetInterval = 60, 
+    cooldownResetInterval = 30, 
 
     openingItems = {
         [SvConfig.LockpickItem] = {
@@ -411,9 +411,9 @@ SvConfig.PostBoxes = {
         locale("notifications.postbox.empty_3"),
     },
 
-    minCooldown = 15, 
+    minCooldown = 10, 
     
-    maxCooldown = 60, 
+    maxCooldown = 15, 
 
     stealProgressBar = {
         text = locale("progress.post_boxes.search"),
@@ -487,7 +487,7 @@ SvConfig.Mail = {
         
         noteReward = {
             enabled = true,
-            chance = 1, -- 10% chance
+            chance = 10, -- 10% chance
             itemName = "giaygoiymot",
             metadata = {
                 description = " Chỗ tao đứng có thể thấy được máy bay."

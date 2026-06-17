@@ -28,8 +28,12 @@ RegisterNetEvent("prp-pettycrime:client:startup", function(activityType, data)
                 local coords = GetEntityCoords(entity)
                 local model = GetEntityModel(entity)
                 local archetypeName = GetEntityArchetypeName(entity)
+                local streetHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+                local streetName = GetStreetNameFromHashKey(streetHash)
+                local zoneName = GetLabelText(GetNameOfZone(coords.x, coords.y, coords.z))
+                local locationLabel = (streetName ~= "" and ("%s, %s"):format(streetName, zoneName)) or zoneName
 
-                TriggerServerEvent("prp-pettycrime:server:parkingMeterSteal", archetypeName, model, coords)
+                TriggerServerEvent("prp-pettycrime:server:parkingMeterSteal", archetypeName, model, coords, locationLabel)
             end,
             canInteract = function(entity, distance)
                 if not IsInsideParkingMeterZone() then

@@ -90,9 +90,9 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent('prp-pettycrime:server:letterboxSteal', function(entityName, entityModel, entityCoords)
-    local playerId = source
+RegisterNetEvent('prp-pettycrime:server:letterboxSteal', function(entityName, entityModel, entityCoords, locationLabel)    local playerId = source
     local stateId = bridge.fw.getIdentifier(playerId)
+    HeatAction(src, "parking_meter", entityCoords)
     if not stateId then
         return
     end
@@ -168,36 +168,18 @@ RegisterNetEvent('prp-pettycrime:server:letterboxSteal', function(entityName, en
         return
     end
 
-    local item, data = getLockpickData(playerId)
-    if not item or not data then
-        TriggerClientEvent("prp-bridge:notify", playerId, "error", locale("notifications.letterbox.no_item"))
-        return
-    end
-
     stolenLocations[locationKey] = true
 
     local actionData = SvConfig.LetterBoxes
     local gameData = actionData.minigame
-    local minigameResult = lib.callback.await("prp-bridge:minigame", playerId, gameData.type, gameData.gameOptions, gameData.otherOptions)
-    local degradeBy = minigameResult and data.durabilityLossOnSuccess or data.durabilityLossOnFailure
-    local newDurability = item.metadata.durability - degradeBy
-    local itemAltered = false
 
-    if newDurability > 0 then
-        itemAltered = bridge.inv.setItemMetaDataKey(playerId, item.slot, 'durability', newDurability)
-    else
-        itemAltered = bridge.inv.removeItem(playerId, item.name, 1, nil, item.slot)
-    end
+    HeatAction(playerId, "letterbox", entityCoords, locationLabel)
+
+    local minigameResult = lib.callback.await("prp-bridge:minigame", playerId, gameData.type, gameData.gameOptions, gameData.otherOptions)
 
     if not minigameResult then
         stolenLocations[locationKey] = nil
         TriggerClientEvent("prp-bridge:notify", playerId, "error", locale("notifications.letterbox.failed_minigame"))
-        return
-    end
-
-    if not itemAltered then
-        stolenLocations[locationKey] = nil
-        TriggerClientEvent("prp-bridge:notify", playerId, "error", locale("notifications.letterbox.item_failed"))
         return
     end
 
@@ -232,6 +214,5 @@ RegisterNetEvent('prp-pettycrime:server:letterboxSteal', function(entityName, en
     local cooldownDuration = math.random(actionData.minCooldown, actionData.maxCooldown)
     cooldownLocations[locationKey] = os.time() + (60 * cooldownDuration)
 
-    HeatAction(playerId, "letterbox", entityCoords)
     playerCooldowns[playerId] = os.time() + (60 * actionData.personalCooldown)
 end)

@@ -95,8 +95,7 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent('prp-pettycrime:server:postboxLockpick', function(entityName, entityModel, entityCoords)
-    local playerId = source
+RegisterNetEvent('prp-pettycrime:server:postboxLockpick', function(entityName, entityModel, entityCoords, locationLabel)    local playerId = source
     local stateId = bridge.fw.getIdentifier(playerId)
     if not stateId then return end
 
@@ -134,6 +133,9 @@ RegisterNetEvent('prp-pettycrime:server:postboxLockpick', function(entityName, e
 
     local actionData = SvConfig.PostBoxes
     local gameData = actionData.minigame
+
+    HeatAction(playerId, "post_box", entityCoords, locationLabel)
+
     local minigameResult = lib.callback.await("prp-bridge:minigame", playerId, gameData.type, gameData.gameOptions, gameData.otherOptions)
 
     if not minigameResult then
@@ -149,6 +151,8 @@ end)
 
 RegisterNetEvent('prp-pettycrime:server:postboxSteal', function(entityName, entityModel, entityCoords)
     local playerId = source
+
+    HeatAction(playerId, 'post_box', entityCoords)
     local stateId = bridge.fw.getIdentifier(playerId)
     if not stateId then
         return
@@ -256,7 +260,5 @@ RegisterNetEvent('prp-pettycrime:server:postboxSteal', function(entityName, enti
         local cooldownDuration = math.random(actionData.minCooldown, actionData.maxCooldown)
         cooldownLocations[key] = os.time() + (60 * cooldownDuration)
     end
-
-    HeatAction(playerId, 'post_box', entityCoords)
 end)
 

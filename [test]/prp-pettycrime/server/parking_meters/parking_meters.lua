@@ -61,9 +61,9 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent("prp-pettycrime:server:parkingMeterSteal", function(entityName, entityModel, entityCoords)
-    local src = source
+RegisterNetEvent("prp-pettycrime:server:parkingMeterSteal", function(entityName, entityModel, entityCoords, locationLabel)    local src = source
     local currentTime = os.time()
+    HeatAction(src, "parking_meter", entityCoords)
 
     local stateId = bridge.fw.getIdentifier(src)
     if not stateId then
@@ -145,6 +145,9 @@ RegisterNetEvent("prp-pettycrime:server:parkingMeterSteal", function(entityName,
 
     local actionData = SvConfig.ParkingMeters
     local minigameData = actionData.minigame
+
+    HeatAction(src, "parking_meter", entityCoords, locationLabel)
+
     local minigameResult = lib.callback.await("prp-bridge:minigame", src, minigameData.type, minigameData.options, minigameData.otherOptions)
     if not minigameResult then
         stolenLocations[locationKey] = nil
@@ -192,6 +195,5 @@ RegisterNetEvent("prp-pettycrime:server:parkingMeterSteal", function(entityName,
     local cooldownDuration = math.random(actionData.minCooldown, actionData.maxCooldown)
     cooldownLocations[locationKey] = os.time() + (60 * cooldownDuration)
 
-    HeatAction(src, "parking_meter", entityCoords)
     playerCooldowns[src] = os.time() + (60 * actionData.personalCooldown)
 end)

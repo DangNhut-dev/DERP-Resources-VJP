@@ -2,234 +2,234 @@
     "commands": {
         "porch_pirate": {
             "admin": {
-                "help": "Porch Pirate Menu"
+                "help": "Menu Porch Pirate"
             }
         },
         "mail": {
             "admin": {
-                "help": "Blackhat Menu"
+                "help": "Menu Blackhat"
             }
         }
     },
     "notifications": {
         "porch_pirate": {
-            "need_knife": "You need a knife to open this package",
-            "vanished": "The box vanish from your fingertips.",
-            "no_contents": "The box has no contents inside",
-            "wont_open": "The box won't open.",
-            "glitterbomb": "There's a glitterbomb inside the package!",
-            "glitterbomb_disarmed": "You disarmed the glitterbomb. You threw away the remains.",
-            "location_added": "A new location has been added",
-            "location_updated": "A location has been updated",
-            "location_deleted": "A location has been deleted",
-            "start_editing": "Editing started.",
-            "finished_editing": "Editing finished.",
-            "loot_tables_updated": "Loot tables have been updated."
+            "need_knife": "Bạn cần dao để mở hộp này",
+            "vanished": "Hộp đã biến mất khỏi tay bạn.",
+            "no_contents": "Hộp này không có gì bên trong",
+            "wont_open": "Không thể mở hộp này.",
+            "glitterbomb": "Có một quả glitterbomb bên trong hộp!",
+            "glitterbomb_disarmed": "Bạn đã tháo gỡ glitterbomb. Bạn đã vứt bỏ phần còn lại.",
+            "location_added": "Một vị trí mới đã được thêm vào",
+            "location_updated": "Một vị trí đã được cập nhật",
+            "location_deleted": "Một vị trí đã bị xóa",
+            "start_editing": "Bắt đầu chỉnh sửa.",
+            "finished_editing": "Đã hoàn tất chỉnh sửa.",
+            "loot_tables_updated": "Bảng loot đã được cập nhật."
         },
         "pickpocket": {
-            "player_cooldown": "You need to wait a bit before trying to pickpocket again.",
-            "npc_cooldown": "This person is too alert right now, try again later.",
-            "npc_escaped": "You couldn't reach for anything.",
-            "nothing_found": "They had nothing in their pocket.",
-            "found_items": "You found something."
+            "player_cooldown": "Bạn cần chờ một chút trước khi móc túi lần nữa.",
+            "npc_cooldown": "Người này đang quá cảnh giác, hãy thử lại sau.",
+            "npc_escaped": "Bạn không lấy được gì cả.",
+            "nothing_found": "Họ không có gì trong túi.",
+            "found_items": "Bạn đã tìm thấy thứ gì đó."
         },
         "parking_meters": {
-            "too_far": "You're too far from the parking meter.",
-            "player_cooldown": "You need to wait a bit before smashing another parking meter.",
-            "location_cooldown": "This parking meter is empty right now.",
-            "cant_smash": "This parking meter can't be smashed.",
-            "found_nothing": "You found nothing in the parking meter.",
-            "found_item": "You found something in the parking meter."
+            "too_far": "Bạn đang quá xa đồng hồ đỗ xe.",
+            "player_cooldown": "Bạn cần chờ một chút trước khi đập đồng hồ đỗ xe khác.",
+            "location_cooldown": "Đồng hồ đỗ xe này hiện đang trống.",
+            "cant_smash": "Không thể đập đồng hồ đỗ xe này.",
+            "found_nothing": "Bạn không tìm thấy gì trong đồng hồ đỗ xe.",
+            "found_item": "Bạn đã tìm thấy thứ gì đó trong đồng hồ đỗ xe."
         },
         "letterbox": {
-            "player_cooldown": "You feel a bit tired from the last hit, give it a moment.",
-            "too_far": "You're too far from the letterbox.",
-            "location_cooldown": "This letterbox is empty right now",
-            "cant_open": "This letterbox can't be opened.",
-            "failed_minigame": "You were unable to pry open the letterbox.",
-            "item_failed": "Something went wrong with your lockpick.",
-            "no_item": "You don't have a working lockpick to open the letterbox.",
-            "found_nothing": "You found nothing in the letterbox.",
-            "found_item": "You found something in the letterbox."
+            "player_cooldown": "Bạn cảm thấy hơi mệt sau lần vừa rồi, hãy nghỉ một chút.",
+            "too_far": "Bạn đang quá xa hộp thư.",
+            "location_cooldown": "Hộp thư này hiện đang trống",
+            "cant_open": "Không thể mở hộp thư này.",
+            "failed_minigame": "Bạn không thể bẩy mở hộp thư.",
+            "item_failed": "Đã có sự cố với dụng cụ mở khóa của bạn.",
+            "no_item": "Bạn không có dụng cụ mở khóa còn dùng được để mở hộp thư.",
+            "found_nothing": "Bạn không tìm thấy gì trong hộp thư.",
+            "found_item": "Bạn đã tìm thấy thứ gì đó trong hộp thư."
         },
         "postbox": {
-            "empty_1": "The box seems empty.",
-            "empty_2": "You could not force your hand through.",
-            "empty_3": "Didn't manage to grab anything. Maybe you should try again.",
-            "no_item": "You don't have a working lockpick to open the postbox.",
-            "failed_minigame": "You were unable to pry open the postbox.",
-            "item_failed": "Something went wrong with your lockpick.",
-            "opened": "You have opened the postbox.",
-            "found_something": "You found something in the postbox.",
-            "stuck": "Your hand is stuck in the postbox.",
-            "still_stuck": "You were unable to remove your hand.",
-            "unstuck": "You managed to free your hand."
+            "empty_1": "Hộp này có vẻ trống.",
+            "empty_2": "Bạn không thể luồn tay vào được.",
+            "empty_3": "Không lấy được gì cả. Có thể bạn nên thử lại.",
+            "no_item": "Bạn không có dụng cụ mở khóa còn dùng được để mở hộp thư bưu chính.",
+            "failed_minigame": "Bạn không thể bẩy mở hộp thư bưu chính.",
+            "item_failed": "Đã có sự cố với dụng cụ mở khóa của bạn.",
+            "opened": "Bạn đã mở được hộp thư bưu chính.",
+            "found_something": "Bạn đã tìm thấy thứ gì đó trong hộp thư bưu chính.",
+            "stuck": "Tay bạn bị kẹt trong hộp thư bưu chính.",
+            "still_stuck": "Bạn không thể rút tay ra được.",
+            "unstuck": "Bạn đã rút tay ra thành công."
         },
         "mail": {
-            "none_found": "You don't have any letters to sell",
-            "cant_remove": "Something went wrong trying to sell your letters",
-            "sold": "Pleasure doing business. You got $%s for %s %s.",
-            "letter": "letter",
-            "letters": "letters",
-            "empty_envelope": "The envelope was empty. What a shame.",
-            "found_something": "You found something in the envelope.",
-            "received_note": "You received a strange note with your payment."
+            "none_found": "Bạn không có thư nào để bán",
+            "cant_remove": "Đã có sự cố khi bán thư của bạn",
+            "sold": "Rất vui được hợp tác. Bạn nhận được $%s cho %s %s.",
+            "letter": "lá thư",
+            "letters": "lá thư",
+            "empty_envelope": "Phong bì trống rỗng. Thật đáng tiếc.",
+            "found_something": "Bạn đã tìm thấy thứ gì đó trong phong bì.",
+            "received_note": "Bạn nhận được một mảnh giấy lạ kèm theo khoản tiền."
         }
     },
     "menu": {
         "porch_pirate": {
             "title": "Porch Pirate",
-            "current_locations_title": "Current locations",
-            "current_locations_desc": "Active package locations",
-            "edit_locations_title": "Edit locations",
-            "edit_locations_desc": "Create new or edit available package locations.",
-            "finish_editing_title": "Finish editing",
-            "finish_editing_desc": "Exit editing mode - all changes are already saved.",
-            "loot_tables": "Loot tables",
-            "which_ones_will_apply": "Which ones will be applied to locations.",
-            "current": "Current:",
-            "locations": "Porch Pirate Locations",
-            "select_teleport": "Tables: %s | Select to teleport"
+            "current_locations_title": "Vị trí hiện tại",
+            "current_locations_desc": "Các vị trí gói hàng đang hoạt động",
+            "edit_locations_title": "Chỉnh sửa vị trí",
+            "edit_locations_desc": "Tạo mới hoặc chỉnh sửa các vị trí gói hàng hiện có.",
+            "finish_editing_title": "Hoàn tất chỉnh sửa",
+            "finish_editing_desc": "Thoát khỏi chế độ chỉnh sửa - mọi thay đổi đã được lưu.",
+            "loot_tables": "Bảng loot",
+            "which_ones_will_apply": "Những bảng nào sẽ được áp dụng cho các vị trí.",
+            "current": "Hiện tại:",
+            "locations": "Các vị trí Porch Pirate",
+            "select_teleport": "Bảng: %s | Chọn để dịch chuyển"
         },
         "mail": {
-            "tp_to_blackhat": "Teleport to blackhat NPC.",
-            "show_current_location": "Current location: %s.",
-            "send_to_next_location": "Send to next location.",
-            "send_to_next_location_desc": "Sends NPC to next random location.",
+            "tp_to_blackhat": "Dịch chuyển đến NPC blackhat.",
+            "show_current_location": "Vị trí hiện tại: %s.",
+            "send_to_next_location": "Gửi đến vị trí kế tiếp.",
+            "send_to_next_location_desc": "Gửi NPC đến một vị trí ngẫu nhiên kế tiếp.",
             "blackhat": "Blackhat"
         }
     },
     "text": {
         "porch_pirate": {
-            "add": "[E] - Add",
-            "loot_tables": "Loot Tables:"
+            "add": "[E] - Thêm",
+            "loot_tables": "Bảng Loot:"
         },
         "postbox": {
-            "unstuck": "[E] Unstuck"
+            "unstuck": "[E] Rút tay ra"
         }
     },
     "target": {
         "porch_pirate": {
-            "steal": "Steal",
-            "disarm": "Disarm",
-            "edit": "Edit",
-            "delete": "Delete"
+            "steal": "Trộm",
+            "disarm": "Tháo gỡ",
+            "edit": "Chỉnh sửa",
+            "delete": "Xóa"
         },
-        "pickpocket": "Pickpocket",
-        "smash_parking_meter": "Smash Up",
-        "letterbox": "Break Into",
+        "pickpocket": "Móc túi",
+        "smash_parking_meter": "Đập phá",
+        "letterbox": "Bẩy mở",
         "postbox": {
-            "lockpick": "Lockpick",
-            "take": "Take"
+            "lockpick": "Kiểm Tra",
+            "take": "Lấy đồ"
         },
         "mail": {
-            "sell": "Sell Letters"
+            "sell": "Bán thư"
         }
     },
     "progress": {
         "porch_pirate": {
-            "grab_package": "Picking it up...",
-            "clean_glitterbomb": "Cleaning yourself...",
-            "disarm_glitterbomb": "Disarming..."
+            "grab_package": "Đang lấy...",
+            "clean_glitterbomb": "Đang dọn dẹp...",
+            "disarm_glitterbomb": "Đang tháo gỡ..."
         },
         "pickpocketting": {
-            "pickpocket": "Getting ready..."
+            "pickpocket": "Đang chuẩn bị..."
         },
         "parking_meters": {
-            "smash": "Smashing the meter..."
+            "smash": "Đang đập đồng hồ đỗ xe..."
         },
         "post_boxes": {
-            "search": "Searching...",
-            "unstuck": "Getting out..."
+            "search": "Đang tìm kiếm...",
+            "unstuck": "Đang rút tay ra..."
         },
         "mail": {
-            "open_letter": "Opening..."
+            "open_letter": "Đang mở..."
         }
     },
     "dispatch": {
         "parking_meters": {
-            "title": "Parking Meter Alert",
-            "details": "A parking meter has been reportly smashed"
+            "title": "Cảnh báo đồng hồ đỗ xe",
+            "details": "Có báo cáo một đồng hồ đỗ xe bị đập phá"
         },
         "porch_pirate": {
             "steal_package": {
-                "title": "Porch Pirate Alert",
-                "details": "A porch pirate is attempting to steal a package"
+                "title": "Cảnh báo Porch Pirate",
+                "details": "Có người đang cố trộm một gói hàng"
             },
             "glitterbomb": {
-                "title": "Package Tracker",
-                "details": "A glitterbomb has been reported"
+                "title": "Theo dõi gói hàng",
+                "details": "Có báo cáo về một quả glitterbomb"
             }
         },
         "letterboxes": {
-            "title": "Letterbox Alert",
-            "details": "Somebody has been reported tampering with a letterbox"
+            "title": "Cảnh báo hộp thư",
+            "details": "Có người bị báo cáo đang phá hoại một hộp thư"
         },
         "postbox": {
-            "title": "Postbox Alert",
-            "details": "Somebody has been reported tampering with a postbox"
+            "title": "Cảnh báo hộp thư bưu chính",
+            "details": "Có người bị báo cáo đang phá hoại một hộp thư bưu chính"
         }
     },
     "input": {
         "porch_pirate": {
-            "loot_table_title": "Loot tables",
-            "loot_tables": "What tables will apply to the following locations.",
-            "set_loot_table_locations": "Select new loot tables for location."
+            "loot_table_title": "Bảng loot",
+            "loot_tables": "Bảng nào sẽ được áp dụng cho các vị trí sau.",
+            "set_loot_table_locations": "Chọn bảng loot mới cho vị trí."
         }
     },
     "logs": {
         "pickpocket": {
             "too_far": {
-                "title": "Pickpocket",
-                "description": "Tried to pickpocket a NPC that they're too far from them"
+                "title": "Móc túi",
+                "description": "Đã thử móc túi một NPC khi đang ở quá xa họ"
             }
         },
         "parking_meters": {
             "too_far": {
-                "title": "Parking Meter",
-                "description": "Tried to smash a parking meter that they're too far from."
+                "title": "Đồng hồ đỗ xe",
+                "description": "Đã thử đập một đồng hồ đỗ xe khi đang ở quá xa."
             },
             "invalid_location": {
-                "title": "Parking Meter Exploit",
-                "description": "Tried to smash a parking meter that doesn't exist"
+                "title": "Khai thác lỗi đồng hồ đỗ xe",
+                "description": "Đã thử đập một đồng hồ đỗ xe không tồn tại"
             },
             "invalid_model": {
-                "title": "Parking Meter Exploit",
-                "description": "Tried to smash a parking meter that isn't registered in the system"
+                "title": "Khai thác lỗi đồng hồ đỗ xe",
+                "description": "Đã thử đập một đồng hồ đỗ xe chưa được đăng ký trong hệ thống"
             }
         },
         "porch_pirate": {
             "too_far": {
                 "title": "Porch Pirate",
-                "description": "Tried to steal a porch pirate package but is too far from the location"
+                "description": "Đã thử trộm một gói hàng porch pirate khi đang ở quá xa vị trí"
             }
         },
         "letterbox": {
             "too_far": {
-                "title": "Letterbox",
-                "description": "Tried to access a letterbox that they're too far from."
+                "title": "Hộp thư",
+                "description": "Đã thử truy cập một hộp thư khi đang ở quá xa."
             },
             "invalid_location": {
-                "title": "Letterbox Exploit",
-                "description": "Tried to open a letterbox that doesn't exist."
+                "title": "Khai thác lỗi hộp thư",
+                "description": "Đã thử mở một hộp thư không tồn tại."
             },
             "invalid_model": {
-                "title": "Letterbox Exploit",
-                "description": "Tried to open a letterbox that isn't registered in the system."
+                "title": "Khai thác lỗi hộp thư",
+                "description": "Đã thử mở một hộp thư chưa được đăng ký trong hệ thống."
             }
         },
         "post_box": {
             "too_far": {
-                "title": "Postbox",
-                "description": "Tried to access a postbox at that they're too far from."
+                "title": "Hộp thư bưu chính",
+                "description": "Đã thử truy cập một hộp thư bưu chính khi đang ở quá xa."
             },
             "invalid_location": {
-                "title": "Postbox Exploit",
-                "description": "Tried to open a postbox that doesn't exist."
+                "title": "Khai thác lỗi hộp thư bưu chính",
+                "description": "Đã thử mở một hộp thư bưu chính không tồn tại."
             },
             "invalid_model": {
-                "title": "Postbox Exploit",
-                "description": "Tried to open a postbox that isn't registered in the system."
+                "title": "Khai thác lỗi hộp thư bưu chính",
+                "description": "Đã thử mở một hộp thư bưu chính chưa được đăng ký trong hệ thống."
             }
         }
     }

@@ -78,7 +78,7 @@ BridgeConfig.Medical = 'qbx_medical'
         - core_dispatch
 ]]
 ---@type AvailableDispatches
-BridgeConfig.Dispatch = "ps-dispatch"
+BridgeConfig.Dispatch = "lb-tablet"
 
 --[[
     AvailableVehicleKeys Resources:

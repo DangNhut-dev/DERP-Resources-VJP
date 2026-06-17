@@ -47,7 +47,7 @@ local function getPlayerExtraDispatchPercentage(source)
     return heat * SvConfig.Heat.dispatchChancePerHeat
 end
 
-function HeatAction(source, id, coords)
+function HeatAction(source, id, coords, locationLabel)
     local dispatch = SvConfig.DispatchAlerts[id]
     if not dispatch then
         lib.print.debug("No dispatch data found for heat action", id)
@@ -55,11 +55,6 @@ function HeatAction(source, id, coords)
     end
 
     addPlayerHeat(source, dispatch.heatPerAction)
-
-    local totalPercentage = getPlayerExtraDispatchPercentage(source)
-    if math.random(1, SvConfig.Heat.max) > totalPercentage then
-        return
-    end
 
     bridge.dispatch.sendAlert(
         source,
@@ -75,7 +70,8 @@ function HeatAction(source, id, coords)
             scale = dispatch.blip.scale,
             colour = dispatch.blip.colour,
             length = dispatch.blip.duration
-        }
+        },
+        locationLabel
     )
 end
 

@@ -44,7 +44,12 @@ RegisterNetEvent("prp-pettycrime:client:startup", function(activityType, data)
 
                     MoveToPostBox(entity, heading)
 
-                    TriggerServerEvent("prp-pettycrime:server:postboxLockpick", GetEntityArchetypeName(entity), model, coords)
+                    local streetHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+                    local streetName = GetStreetNameFromHashKey(streetHash)
+                    local zoneName = GetLabelText(GetNameOfZone(coords.x, coords.y, coords.z))
+                    local locationLabel = (streetName ~= "" and ("%s, %s"):format(streetName, zoneName)) or zoneName
+
+                    TriggerServerEvent("prp-pettycrime:server:postboxLockpick", GetEntityArchetypeName(entity), model, coords, locationLabel)
                 end)
 
                 if not success then

@@ -1,16 +1,3 @@
---[[
-░▒▓████████▓▒░▒▓██████▓▒░       ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░  
-   ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░  ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░  ░▒▓█▓▒░             ░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░  
-   ░▒▓█▓▒░  ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░   ░▒▓██████▓▒░       ░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓███████▓▒░  
-                                                                         
- This File Leaked By TC HUB Team, Join Our Server For More
- DISCORD: - https://discord.gg/k3S8RjkPWc - https://t.me/+RgDxwPX3L7w2ODBk - https://tchub.shop/
---]]
-
 
 local envelopeLootTables = {} 
 local npcLocation = nil 
@@ -87,9 +74,9 @@ CreateThread(function()
             local minLootRolls = lootData.minLootRolls
             local maxLootRolls = lootData.maxLootRolls
             local amount = math.random(minLootRolls, maxLootRolls)
-            local nothingRolled = GiveRewards(playerId, amount, lootData.lootTable, lootData.guaranteedRarities)
+            local loot = GiveRewards(playerId, amount, lootData.lootTable, lootData.guaranteedRarities)
 
-            if nothingRolled then
+            if not loot or not next(loot) then
                 TriggerClientEvent("prp-bridge:notify", playerId, "error", locale("notifications.mail.empty_envelope"))
                 return
             end

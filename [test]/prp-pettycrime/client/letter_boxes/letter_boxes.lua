@@ -1,16 +1,3 @@
---[[
-░▒▓████████▓▒░▒▓██████▓▒░       ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░  
-   ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░  ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░  ░▒▓█▓▒░             ░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░  
-   ░▒▓█▓▒░  ░▒▓█▓▒░             ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
-   ░▒▓█▓▒░   ░▒▓██████▓▒░       ░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓███████▓▒░  
-                                                                        
- This File Leaked By TC HUB Team, Join Our Server For More
- DISCORD: - https://discord.gg/k3S8RjkPWc - https://t.me/+RgDxwPX3L7w2ODBk - https://tchub.shop/
---]]
-
 local letterBoxModels = {}
 local letterBoxItems = {}
 
@@ -36,8 +23,12 @@ RegisterNetEvent("prp-pettycrime:client:startup", function(activityType, data)
                 local coords = GetEntityCoords(entity)
                 local model = GetEntityModel(entity)
                 local archetypeName = GetEntityArchetypeName(entity)
+                local streetHash = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
+                local streetName = GetStreetNameFromHashKey(streetHash)
+                local zoneName = GetLabelText(GetNameOfZone(coords.x, coords.y, coords.z))
+                local locationLabel = (streetName ~= "" and ("%s, %s"):format(streetName, zoneName)) or zoneName
 
-                TriggerServerEvent("prp-pettycrime:server:letterboxSteal", archetypeName, model, coords)
+                TriggerServerEvent("prp-pettycrime:server:letterboxSteal", archetypeName, model, coords, locationLabel)
             end,
             canInteract = function(entity, distance)
                 if not IsInsideLetterBoxZone() then
@@ -52,13 +43,13 @@ RegisterNetEvent("prp-pettycrime:client:startup", function(activityType, data)
                     return false
                 end
 
-                for _, item in ipairs(letterBoxItems) do
-                    if bridge.inv.hasItem(item, 1) then
-                        return true
-                    end
-                end
+                -- for _, item in ipairs(letterBoxItems) do
+                --     if bridge.inv.hasItem(item, 1) then
+                --         return true
+                --     end
+                -- end
 
-                return false
+                return true
             end
         }
     })
