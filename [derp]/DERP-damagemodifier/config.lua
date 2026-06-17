@@ -19,6 +19,7 @@ Config.Weapons = {
     { weapon_name = 'weapon_knife', damage_multiplier = 0.25 }, 
     { weapon_name = 'weapon_nightstick', damage_multiplier = 0.5 },
     { weapon_name = 'weapon_katana', damage_multiplier = 0.3 },
+    { weapon_name = 'weapon_chair', damage_multiplier = 0.3 },
     { weapon_name = 'WEAPON_SLEDGEHAMMER', damage_multiplier = 0.3 }, 
     { weapon_name = 'WEAPON_colbaton', damage_multiplier = 0.5 }, 
     { weapon_name = 'WEAPON_PERFORATOR', damage_multiplier = 5.0 }, 
