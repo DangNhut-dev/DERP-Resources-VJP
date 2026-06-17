@@ -547,122 +547,140 @@ Config.MarketNPCs = {
         }
     },
     {
-        id = "ammunation_shop1",
+        id = "logshopfemale",
         enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(-664.02, -933.51, 21.83, 177.34),
+        label = "Cửa Hàng Quần Áo",
+        ped = `a_f_y_business_01`,
+        coords = vector4(202.31, -873.10, 30.71, 120.88),
         type = "buy",
         items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+            {name = "quan_231_0_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_1_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_2_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_3_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_4_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_5_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "quan_231_6_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
+            {name = "hat_item", label = "Keo Vuốt Tóc", buyPrice = 1000, sellMin = nil, sellMax = nil},
         }
     },
-    {
-        id = "ammunation_shop2",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(811.98, -2159.08, 29.62, 357.88),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop3",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(1690.98, 3759.66, 34.71, 224.64),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop4",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(-332.79, 6083.77, 31.45, 224.75),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop5",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(254.46, -48.67, 69.94, 66.30),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop6",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(20.79, -1104.79, 29.80, 156.79),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop7",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(2570.01, 292.57, 108.73, 355.64),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop8",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(-1120.44, 2698.51, 18.55, 217.19),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "ammunation_shop9",
-        enabled = true,
-        label = "Mua Vũ Khí",
-        ped = `s_m_y_ammucity_01`,
-        coords = vector4(844.29, -1035.28, 28.19, 356.54),
-        type = "buy",
-        items = {
-            {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
-            {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
-            {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
-        }
-    },
+    -- {
+    --     id = "ammunation_shop1",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(-664.02, -933.51, 21.83, 177.34),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop2",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(811.98, -2159.08, 29.62, 357.88),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop3",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(1690.98, 3759.66, 34.71, 224.64),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop4",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(-332.79, 6083.77, 31.45, 224.75),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop5",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(254.46, -48.67, 69.94, 66.30),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop6",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(20.79, -1104.79, 29.80, 156.79),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop7",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(2570.01, 292.57, 108.73, 355.64),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop8",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(-1120.44, 2698.51, 18.55, 217.19),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
+    -- {
+    --     id = "ammunation_shop9",
+    --     enabled = true,
+    --     label = "Mua Vũ Khí",
+    --     ped = `s_m_y_ammucity_01`,
+    --     coords = vector4(844.29, -1035.28, 28.19, 356.54),
+    --     type = "buy",
+    --     items = {
+    --         {name = "weapon_knife", label = "Dao", buyPrice = 1500, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_katana", label = "Katana", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --         {name = "weapon_sledgehammer", label = "Búa Tạ", buyPrice = 5000, sellMin = nil, sellMax = nil},
+    --     }
+    -- },
     -- {
     --     id = "houserobbery_shop",
     --     enabled = true,
@@ -722,55 +740,14 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Cửa Hàng Thiết Bị",
         ped = `g_m_y_ballasout_01`,
-        coords = vector4(354.45, -2703.86, 1.71, 72.28),
+        coords = vector4(-464.85, -2275.67, 8.52, 91.20),
         type = "buy",
-        items = {
-            {name = "weapon_digiscanner", label = "Máy Quét Tín Hiệu", buyPrice = 1000, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "chopshop_shop2",
-        enabled = true,
-        label = "Thu Mua Phụ Tùng",
-        ped = `a_m_m_salton_03`,
-        coords = vector4(340.72, -2732.40, 5.99, 333.60),
         blackmarket = true,
-        type = "sell",
         items = {
-            {name = "car_wheel", label = "Bánh Xe", buyPrice = nil, sellMin = 3, sellMax = 7},
-            {name = "car_door", label = "Cửa Xe", buyPrice = nil, sellMin = 5, sellMax = 9},
-            {name = "radiator", label = "Két Nước", buyPrice = nil, sellMin = 7, sellMax = 11},
-            {name = "trunk", label = "Cốp Xe", buyPrice = nil, sellMin = 7, sellMax = 11},
-        }
-    },
-    {
-        id = "gunshop1",
-        enabled = true,
-        label = "Cửa Hàng Súng Đạn",
-        ped = `a_m_m_salton_01`,
-        coords = vector4(379.18, 792.58, 190.41, 182.59),
-        blackmarket = true,
-        type = "buy",
-        items = {
-            {name = "weapon_g26", label = "Glock 26", buyPrice = 150, sellMin = nil, sellMax = nil},
-        }
-    },
-    {
-        id = "logshopfemale",
-        enabled = true,
-        label = "Cửa Hàng Quần Áo",
-        ped = `a_f_y_business_01`,
-        coords = vector4(202.31, -873.10, 30.71, 120.88),
-        type = "buy",
-        items = {
-            {name = "quan_231_0_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "quan_231_1_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "quan_231_2_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "quan_231_3_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "quan_231_4_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "quan_231_5_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "quan_231_6_1", label = "Chân", buyPrice = 1, sellMin = nil, sellMax = nil, type = 'clothing'},
-            {name = "hat_item", label = "Keo Vuốt Tóc", buyPrice = 1000, sellMin = nil, sellMax = nil},
+            {name = "radio", label = "Bộ Đàm", buyPrice = 15, sellMin = nil, sellMax = nil},
+            {name = "lockpick", label = "Bộ Bẻ Khóa", buyPrice = 5, sellMin = nil, sellMax = nil},
+            {name = "hack_laptop", label = "Laptop", buyPrice = 30, sellMin = nil, sellMax = nil},
+            {name = "weapon_digiscanner", label = "Máy Quét Tín Hiệu", buyPrice = 30, sellMin = nil, sellMax = nil},
         }
     },
     {
@@ -797,7 +774,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Cửa Hàng Nuôi Trồng",
         ped = `a_m_m_salton_01`,
-        coords = vector4(355.64, -2731.34, 5.99, 57.01),
+        coords = vector4(1221.79, -489.61, 66.41, 258.55),
         blackmarket = true,
         type = "buy",
         items = {
@@ -810,7 +787,7 @@ Config.MarketNPCs = {
         enabled = true,
         label = "Cửa Hàng Nuôi Trồng",
         ped = `a_m_m_salton_01`,
-        coords = vector4(-1926.69, 1787.08, 172.60, 20.82),
+        coords = vector4( -390.77, 1144.80, 322.62, 219.49),
         blackmarket = true,
         type = "buy",
         items = {

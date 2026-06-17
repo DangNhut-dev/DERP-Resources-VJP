@@ -4,14 +4,14 @@ Config = {}
 Config.Levels = {
     [1] = 0,
     [2] = 5,
-    [3] = 300,
-    [4] = 600,
+    [3] = 100,
+    [4] = 500,
     [5] = 1000,
-    [6] = 1500,
-    [7] = 2100,
-    [8] = 2800,
-    [9] = 3600,
-    [10] = 4500,
+    [6] = 2000,
+    [7] = 4000,
+    [8] = 8000,
+    [9] = 16000,
+    [10] = 32000,
 }
 
 Config.Benches = {
@@ -80,44 +80,116 @@ Config.Benches = {
     
     ["craftingdevice"] = {
         label = "Bàn Chế Tạo",
-        object = `prop_tool_bench02`,
-        coords = vector3(1493.39, -2118.47, 74.89),
-        heading = 266.74,
+        object = `prop_toolchest_04`,
+        coords = vector3(1507.91, -2120.41, 75.56 ),
+        heading = 90.83,
 
         recipes = {
-            ["radio"] = {
+            ["WEAPON_SLEDGEHAMMER"] = {
                 id = 1,
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
                 requiredLevel = 1,
-                expReward = 0,
+                expReward = 1,
                 ingredients = {
-                    ["aluminum"] = 10,
-                    ["copper"] = 5,
-                    ["circuit"] = 1,
+                    ["iron"] = 1,
+                    -- ["rubber"] = 25,
+                    -- ["aluminum"] = 10,
                 }
             },
-            ["hack_laptop"] = {
+            ["WEAPON_KATANA"] = {
                 id = 2,
                 time = 3000,
                 amount = 1,
                 allowQuantity = false,
-                requiredLevel = 1,
+                requiredLevel = 2,
                 expReward = 0,
                 ingredients = {
-                    ["iron"] = 15,
-                    ["copper"] = 10,
-                    ["circuit"] = 5,
+                    ["iron"] = 1,
+                    -- ["aluminum"] = 15,
                 }
             },
+            ["WEAPON_CHAIR"] = {
+                id = 3,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                requiredLevel = 2,
+                expReward = 0,
+                ingredients = {
+                    ["iron"] = 1,
+                    -- ["aluminum"] = 50,
+                }
+            },
+            ["WEAPON_P30L"] = {
+                id = 4,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                requiredLevel = 2,
+                expReward = 5,
+                limit = true,
+                ingredients = {
+                    ["iron"] = 1,
+                    -- ["banvesung"] = 1,
+                    -- ["banhrang"] = 1,
+                    -- ["refined_metal"] = 1,
+                }
+            },
+            ["WEAPON_P210"] = {
+                id = 5,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                requiredLevel = 3,
+                expReward = 10,
+                limit = true,
+                ingredients = {
+                    ["iron"] = 1,
+                    -- ["banvesung"] = 1,
+                    -- ["banhrang"] = 1,
+                    -- ["refined_metal"] = 1,
+                }
+            },
+            ["WEAPON_SR40"] = {
+                id = 6,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                requiredLevel = 4,
+                expReward = 20,
+                limit = true,
+                ingredients = {
+                    ["iron"] = 1,
+                    -- ["banvesung"] = 1,
+                    -- ["banhrang"] = 1,
+                    -- ["refined_metal"] = 1,
+                }
+            },
+            ["WEAPON_MGGLOCK"] = {
+                id = 7,
+                time = 3000,
+                amount = 1,
+                allowQuantity = false,
+                requiredLevel = 4,
+                expReward = 20,
+                limit = true,
+                ingredients = {
+                    ["iron"] = 1,
+                    -- ["banvesung"] = 1,
+                    -- ["banhrang"] = 1,
+                    -- ["refined_metal"] = 1,
+                }
+            },
+            
         }
     },
     ["craftingarmor"] = {
         label = "Bàn Chế Tạo",
-        object = `prop_tool_bench02`,
-        coords = vector3(579.69, -3110.16, 5.07),
-        heading = 270.18,
+        object = `prop_toolchest_05`,
+        coords = vector3(871.97, -1347.18, 25.31),
+        heading = 0.931,
 
         recipes = {
             ["armor_plate1"] = {
@@ -149,8 +221,8 @@ Config.Benches = {
     ["craftingweed"] = {
         label = "Bàn Chế Tạo",
         object = `prop_tool_bench02`,
-        coords = vector3(-508.95, -1631.24, 16.80),
-        heading = 148.16,
+        coords = vector3(1443.55, 6334.64, 22.78),
+        heading = 267.88,
 
         recipes = {
             ["drying_rack"] = {
@@ -161,9 +233,9 @@ Config.Benches = {
                 requiredLevel = 1,
                 expReward = 0,
                 ingredients = {
-                    ["finishwood"] = 25,
-                    ["iron"] = 25,
-                    ["metalscrap"] = 10,
+                    ["finishwood"] = 50,
+                    ["iron"] = 30,
+                    ["metalscrap"] = 30,
                 }
             },
             ["infusion_table"] = {
@@ -174,20 +246,11 @@ Config.Benches = {
                 requiredLevel = 1,
                 expReward = 0,
                 ingredients = {
-                    ["finishwood"] = 25,
-                    ["iron"] = 25,
-                    ["metalscrap"] = 10,
+                    ["finishwood"] = 50,
+                    ["iron"] = 30,
+                    ["metalscrap"] = 30,
                 }
             },
-        }
-    },
-    ["craftingweed2"] = {
-        label = "Bàn Chế Tạo",
-        object = `prop_tool_bench02`,
-        coords = vector3(1216.37, 1892.68, 76.97),
-        heading = 124.45,
-
-        recipes = {
             ["uv_lamp"] = {
                 id = 1,
                 time = 3000,
@@ -196,8 +259,8 @@ Config.Benches = {
                 requiredLevel = 1,
                 expReward = 0,
                 ingredients = {
-                    ["glass"] = 1,
-                    ["metalscrap"] = 2,
+                    ["glass"] = 5,
+                    ["metalscrap"] = 5,
                 }
             },
         }
@@ -205,11 +268,11 @@ Config.Benches = {
     ["craftinglockpick"] = {
         label = "Bàn Chế Tạo",
         object = `prop_tool_bench02`,
-        coords = vector3(493.06, -583.07, 23.71),
-        heading = 349.33,
+        coords = vector3(372.24, -317.92, 45.76),
+        heading = 161.27,
 
         recipes = {
-            ["lockpick"] = {
+            ["advancedlockpick"] = {
                 id = 1,
                 time = 2000,
                 amount = 1,
@@ -217,19 +280,7 @@ Config.Benches = {
                 requiredLevel = 1,
                 expReward = 0,
                 ingredients = {
-                    ["iron"] = 5,
-                }
-            },
-            ["advancedlockpick"] = {
-                id = 2,
-                time = 2000,
-                amount = 1,
-                allowQuantity = true,
-                requiredLevel = 1,
-                expReward = 0,
-                ingredients = {
-                    ["iron"] = 5,
-                    ["refined_metal"] = 10,
+                    ["banhrang"] = 3,
                 }
             },
         }

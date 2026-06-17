@@ -10,8 +10,8 @@ Config.ParkingMeters = {
     targetDistance = 3.0,
     zones = {
         {
-            coords = vector3(269.71, -963.33, 28.27),
-            radius = 150.0,
+            coords = vector3(-20.47, -881.44, 32.07),
+            radius = 450.0,
         }
     }
 }

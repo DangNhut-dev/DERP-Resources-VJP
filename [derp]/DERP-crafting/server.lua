@@ -254,6 +254,15 @@ lib.callback.register('DERP-crafting:server:getPlayerInventory', function(source
     return inventory, playerLevel, playerExp
 end)
 
+local limitedCraftedPlayers = {}
+
+lib.callback.register('DERP-crafting:server:getLimitedCrafted', function(source)
+    local Player = GetPlayer(source)
+    if not Player then return {} end
+    local citizenid = Player.PlayerData.citizenid
+    return limitedCraftedPlayers[citizenid] or {}
+end)
+
 -- Craft item
 RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, quantity)
     local src = source
@@ -266,12 +275,21 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
     if not Player then return end
 
     local citizenid = Player.PlayerData.citizenid
-
     local benchData = Config.Benches[benchId]
     if not benchData then return end
 
     local recipe = benchData.recipes[itemName]
     if not recipe then return end
+
+    if recipe.limit then
+        if not limitedCraftedPlayers[citizenid] then
+            limitedCraftedPlayers[citizenid] = {}
+        end
+        if limitedCraftedPlayers[citizenid][benchId .. ":" .. itemName] then
+            Notify(src, 'Bạn đã đạt giới hạn trong 1 buổi!', 'error')
+            return
+        end
+    end
 
     quantity = math.floor(tonumber(quantity) or 1)
     if quantity < 1 or quantity > 999 then
@@ -283,7 +301,6 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
         quantity = 1
     end
 
-    -- Validate job
     if benchData.jobs then
         local hasJob = false
         local job = Player.PlayerData.job
@@ -299,7 +316,6 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
         end
     end
 
-    -- Validate level
     local co = coroutine.running()
     local playerExp
 
@@ -318,7 +334,6 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
         return
     end
 
-    -- Validate ingredients
     for ingredient, baseAmount in pairs(recipe.ingredients) do
         local required = baseAmount * quantity
         local count    = exports.ox_inventory:GetItemCount(src, ingredient)
@@ -334,67 +349,74 @@ RegisterNetEvent('DERP-crafting:server:craftItem', function(benchId, itemName, q
         exports.ox_inventory:RemoveItem(src, ingredient, baseAmount * quantity)
     end
 
-    local outputItem     = recipe.craftItem or itemName
-    local craftAmount    = (recipe.amount or 1) * quantity
-    local metadata       = recipe.craftMeta and table.clone(recipe.craftMeta) or nil
-    local success        = exports.ox_inventory:AddItem(src, outputItem, craftAmount, metadata)
-    local benchLabel     = benchData.label or tostring(benchId)
-    local craftedLabel   = recipe.customLabel or GetItemLabel(outputItem, metadata)
-    local ingredientText = FormatIngredientList(recipe.ingredients, quantity)
+    local outputItem      = recipe.craftItem or itemName
+    local craftAmount     = (recipe.amount or 1) * quantity
+    local metadata        = recipe.craftMeta and table.clone(recipe.craftMeta) or nil
+    local benchLabel      = benchData.label or tostring(benchId)
+    local craftedLabel    = recipe.customLabel or GetItemLabel(outputItem, metadata)
+    local ingredientText  = FormatIngredientList(recipe.ingredients, quantity)
     local craftedItemText = FormatItem(outputItem, craftAmount, metadata, 'add')
 
-    if success then
-        Notify(src, 'Chế Tạo Thành Công: ' .. craftedLabel, 'success')
+    CreateThread(function()
+        local success = exports.ox_inventory:AddItem(src, outputItem, craftAmount, metadata)
+        if success == nil then success = true end
 
-        -- Grant EXP
-        local expGain = (tonumber(recipe.expReward) or 0) * quantity
-        if expGain > 0 then
-            AddPlayerExp(citizenid, expGain, function(newExp, newLevel, oldLevel)
-                local leveledUp = newLevel > oldLevel
-                TriggerClientEvent('DERP-crafting:client:expGained', src, {
-                    expGain   = expGain,
-                    newExp    = newExp,
-                    newLevel  = newLevel,
-                    leveledUp = leveledUp,
-                    oldLevel  = oldLevel,
-                })
+        if success then
+            if recipe.limit then
+                limitedCraftedPlayers[citizenid][benchId .. ":" .. itemName] = true
+                TriggerClientEvent('DERP-crafting:client:markLimitedCrafted', src, benchId, itemName)
+            end
 
+            Notify(src, 'Chế Tạo Thành Công: ' .. craftedLabel, 'success')
+
+            local expGain = (tonumber(recipe.expReward) or 0) * quantity
+            if expGain > 0 then
+                AddPlayerExp(citizenid, expGain, function(newExp, newLevel, oldLevel)
+                    local leveledUp = newLevel > oldLevel
+                    TriggerClientEvent('DERP-crafting:client:expGained', src, {
+                        expGain   = expGain,
+                        newExp    = newExp,
+                        newLevel  = newLevel,
+                        leveledUp = leveledUp,
+                        oldLevel  = oldLevel,
+                    })
+
+                    AddActionLog(src, 'Chế Tạo Thành Công', {
+                        { 'ban',         benchLabel },
+                        { 'cong_thuc',   tostring(itemName) },
+                        { 'nhan',        craftedItemText },
+                        { 'nguyen_lieu', ingredientText },
+                        { 'so_luong',    tostring(quantity) },
+                        { 'exp_nhan',    tostring(expGain) },
+                        { 'exp_moi',     tostring(newExp) },
+                        { 'level_moi',   tostring(newLevel) },
+                        { 'len_level',   leveledUp and 'co' or 'khong' },
+                    })
+                end)
+            else
                 AddActionLog(src, 'Chế Tạo Thành Công', {
                     { 'ban',         benchLabel },
                     { 'cong_thuc',   tostring(itemName) },
                     { 'nhan',        craftedItemText },
                     { 'nguyen_lieu', ingredientText },
                     { 'so_luong',    tostring(quantity) },
-                    { 'exp_nhan',    tostring(expGain) },
-                    { 'exp_moi',     tostring(newExp) },
-                    { 'level_moi',   tostring(newLevel) },
-                    { 'len_level',   leveledUp and 'co' or 'khong' },
+                    { 'exp_nhan',    '0' },
                 })
-            end)
+            end
         else
-            AddActionLog(src, 'Chế Tạo Thành Công', {
+            for ingredient, baseAmount in pairs(recipe.ingredients) do
+                exports.ox_inventory:AddItem(src, ingredient, baseAmount * quantity)
+            end
+            Notify(src, 'Chế tạo thất bại!', 'error')
+
+            AddActionLog(src, 'Chế tạo thất bại', {
                 { 'ban',         benchLabel },
                 { 'cong_thuc',   tostring(itemName) },
-                { 'nhan',        craftedItemText },
-                { 'nguyen_lieu', ingredientText },
+                { 'khong_nhan',  craftedItemText },
+                { 'hoan_nguyen', ingredientText },
                 { 'so_luong',    tostring(quantity) },
-                { 'exp_nhan',    '0' },
+                { 'ly_do',       'khong the them item, da rollback' },
             })
         end
-    else
-        -- Rollback ingredients
-        for ingredient, baseAmount in pairs(recipe.ingredients) do
-            exports.ox_inventory:AddItem(src, ingredient, baseAmount * quantity)
-        end
-        Notify(src, 'Chế tạo thất bại!', 'error')
-
-        AddActionLog(src, 'Chế tạo thất bại', {
-            { 'ban',           benchLabel },
-            { 'cong_thuc',     tostring(itemName) },
-            { 'khong_nhan',    craftedItemText },
-            { 'hoan_nguyen',   ingredientText },
-            { 'so_luong',      tostring(quantity) },
-            { 'ly_do',         'khong the them item, da rollback' },
-        })
-    end
+    end)
 end)

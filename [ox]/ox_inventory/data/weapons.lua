@@ -726,6 +726,7 @@ return {
 		['WEAPON_DIGISCANNER'] = {
 			label = 'Máy Quét Tín Hiệu',
 			weight = 1000,
+			degrade = 10000,	
 			durability = 0.1,
 			throwable = false,
 		},

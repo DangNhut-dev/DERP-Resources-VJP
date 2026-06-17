@@ -1198,6 +1198,7 @@ return {
 	['blackphone'] = {
 		label = 'Điện Thoại Vệ Tinh',
 		weight = 200,
+		degrade = 10000,
 		stack = false,
 		close = true,
 		description = 'Có tính bảo mật cao',

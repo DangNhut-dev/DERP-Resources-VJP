@@ -38,6 +38,15 @@ window.addEventListener('message', function(event) {
         case 'refreshRecipes':
             refreshRecipes(data);
             break;
+        case 'markLimitedCrafted':
+            if (currentRecipes[data.itemName]) {
+                currentRecipes[data.itemName].limitedCrafted = true;
+            }
+            renderRecipes();
+            if (selectedRecipe === data.itemName) {
+                showRecipeDetails(data.itemName, currentRecipes[data.itemName], checkCanCraft(currentRecipes[data.itemName]));
+            }
+            break;
     }
 });
 
@@ -125,7 +134,10 @@ function renderRecipes() {
 // ── Recipe details ──
 
 function showRecipeDetails(itemName, recipe, canCraft) {
-    const allowQuantity = recipe.allowQuantity !== false;
+    const allowQuantity  = recipe.allowQuantity !== false;
+    const alreadyCrafted = recipe.limitedCrafted === true;
+    const craftDisabled  = !canCraft || alreadyCrafted;
+    const craftText      = alreadyCrafted ? 'ĐÃ CHẾ TẠO' : (canCraft ? 'CHẾ TẠO NGAY' : 'THIẾU NGUYÊN LIỆU');
 
     const quantityHtml = allowQuantity ?
         '<input type="number" id="craft-quantity" class="quantity-input-simple" value="1" min="1" max="999" placeholder="SL" ' +
@@ -170,9 +182,9 @@ function showRecipeDetails(itemName, recipe, canCraft) {
                 '<span>NGUYÊN LIỆU CẦN THIẾT</span>' +
             '</div>' +
             '<div class="ingredients-list">' + ingredientsHtml + '</div>' +
-            '<button class="craft-btn" onclick="craftItemWithQuantity(\'' + itemName + '\')" ' + (!canCraft ? 'disabled' : '') + '>' +
+            '<button class="craft-btn" onclick="craftItemWithQuantity(\'' + itemName + '\')" ' + (craftDisabled ? 'disabled' : '') + '>' +
                 '<i class="fas fa-hammer"></i>' +
-                '<span id="craft-btn-text">' + (canCraft ? 'CHẾ TẠO NGAY' : 'THIẾU NGUYÊN LIỆU') + '</span>' +
+                '<span id="craft-btn-text">' + craftText + '</span>' +
             '</button>' +
         '</div>'
     );

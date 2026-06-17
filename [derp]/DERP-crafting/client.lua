@@ -83,7 +83,6 @@ AddEventHandler('DERP-crafting:client:openBench', function(data)
     end
 end)
 
--- Open UI
 function OpenCraftingUI(benchId, benchData)
     if IsInventoryOpen() then
         Notify('Vui long dong inventory truoc!', 'error')
@@ -92,7 +91,6 @@ function OpenCraftingUI(benchId, benchData)
         return
     end
 
-    -- inventory, playerLevel, playerExp
     lib.callback('DERP-crafting:server:getPlayerInventory', false, function(inventory, playerLevel, playerExp)
         if IsInventoryOpen() then
             Notify('Vui long dong inventory truoc!', 'error')
@@ -105,10 +103,9 @@ function OpenCraftingUI(benchId, benchData)
         SetNuiFocus(true, true)
 
         local oxItems = exports.ox_inventory:Items()
-
         local recipesWithLabels = {}
+
         for itemName, recipeData in pairs(benchData.recipes) do
-            -- Ẩn hoàn toàn nếu chưa đủ level
             local requiredLevel = tonumber(recipeData.requiredLevel) or 1
             if playerLevel >= requiredLevel then
                 local label, image
@@ -133,37 +130,47 @@ function OpenCraftingUI(benchId, benchData)
                 end
 
                 recipesWithLabels[itemName] = {
-                    id            = recipeData.id,
-                    time          = recipeData.time,
-                    amount        = recipeData.amount,
-                    allowQuantity = recipeData.allowQuantity,
-                    ingredients   = recipeData.ingredients,
-                    label         = label,
-                    image         = image,
-                    expReward     = recipeData.expReward or 0,
-                    requiredLevel = requiredLevel,
+                    id             = recipeData.id,
+                    time           = recipeData.time,
+                    amount         = recipeData.amount,
+                    allowQuantity  = recipeData.allowQuantity,
+                    ingredients    = recipeData.ingredients,
+                    label          = label,
+                    image          = image,
+                    expReward      = recipeData.expReward or 0,
+                    requiredLevel  = requiredLevel,
+                    limit          = recipeData.limit or false,
+                    limitedCrafted = false,
                 }
             end
         end
 
-        -- Tính exp cần cho level tiếp theo
         local maxLevel = 1
         for lvl in pairs(Config.Levels) do
             if lvl > maxLevel then maxLevel = lvl end
         end
-        local nextLevelExp = playerLevel < maxLevel and Config.Levels[playerLevel + 1] or nil
+        local nextLevelExp    = playerLevel < maxLevel and Config.Levels[playerLevel + 1] or nil
         local currentLevelExp = Config.Levels[playerLevel] or 0
 
-        SendNUIMessage({
-            action        = 'openCrafting',
-            benchLabel    = benchData.label,
-            recipes       = recipesWithLabels,
-            inventory     = inventory,
-            playerLevel   = playerLevel,
-            playerExp     = playerExp,
-            currentLevelExp = currentLevelExp,
-            nextLevelExp  = nextLevelExp,
-        })
+        lib.callback('DERP-crafting:server:getLimitedCrafted', false, function(limitedMap)
+            for itemName, _ in pairs(recipesWithLabels) do
+                local key = benchId .. ":" .. itemName
+                if limitedMap[key] then
+                    recipesWithLabels[itemName].limitedCrafted = true
+                end
+            end
+
+            SendNUIMessage({
+                action          = 'openCrafting',
+                benchLabel      = benchData.label,
+                recipes         = recipesWithLabels,
+                inventory       = inventory,
+                playerLevel     = playerLevel,
+                playerExp       = playerExp,
+                currentLevelExp = currentLevelExp,
+                nextLevelExp    = nextLevelExp,
+            })
+        end)
 
         CreateThread(function()
             while isCraftingUIOpen do
@@ -310,6 +317,7 @@ RegisterNUICallback('requestInventoryRefresh', function(_, cb)
                     image         = image,
                     expReward     = recipeData.expReward or 0,
                     requiredLevel = requiredLevel,
+                    limitedCrafted = false,
                 }
             end
         end
@@ -380,6 +388,15 @@ AddEventHandler('DERP-crafting:client:expGained', function(expData)
         oldLevel        = expData.oldLevel,
         currentLevelExp = currentLevelExp,
         nextLevelExp    = nextLevelExp,
+    })
+end)
+
+RegisterNetEvent('DERP-crafting:client:markLimitedCrafted')
+AddEventHandler('DERP-crafting:client:markLimitedCrafted', function(benchId, itemName)
+    SendNUIMessage({
+        action   = 'markLimitedCrafted',
+        benchId  = benchId,
+        itemName = itemName,
     })
 end)
 

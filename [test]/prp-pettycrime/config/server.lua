@@ -231,13 +231,13 @@ SvConfig.ParkingMeters = {
             { name = 'money', min = 500, max = 1000 },
         },
         RARE = {
-            { name = 'black_money', min = 100, max = 100 },
+            { name = 'black_money', min = 20, max = 30 },
         },
         EPIC = {
-            { name = 'kimloaisieucung', min = 1, max = 2 },
+            { name = 'banhrang', min = 1, max = 2 },
         },
         LEGENDARY = {
-            { name = 'banhrang', min = 1, max = 1 },
+            { name = 'banhrang', min = 2, max = 5 },
 
         },
     },
@@ -245,8 +245,8 @@ SvConfig.ParkingMeters = {
     guaranteedRarities = {},
     
     allowedWeapons = {
-        [`WEAPON_BAT`] = true,
-        [`WEAPON_CROWBAR`] = true,
+        -- [`WEAPON_BAT`] = true,
+        [`weapon_sledgehwammer`] = true,
     },
     
     minCooldown = 1, 
@@ -256,7 +256,7 @@ SvConfig.ParkingMeters = {
     personalCooldown = 0.1, 
     
     stress = {
-        enabled = true,
+        enabled = false,
         
         amount = 5
     },
@@ -278,7 +278,7 @@ SvConfig.ParkingMeters = {
     },
     smashProgressBar = {
         text = locale("progress.parking_meters.smash"),
-        duration = 60000, 
+        duration = 30000, 
         disable = {disableMovement = true, disableCarMovement = true},
         anim = {
             dict = 'melee@large_wpn@streamed_core',
@@ -490,7 +490,7 @@ SvConfig.Mail = {
             chance = 1, -- 10% chance
             itemName = "giaygoiymot",
             metadata = {
-                description = "Một tờ giấy note với những kí hiệu kì lạ... Có vẻ là một gợi ý về điểm ẩn nào đó."
+                description = " Chỗ tao đứng có thể thấy được máy bay."
             }
         }
     },
