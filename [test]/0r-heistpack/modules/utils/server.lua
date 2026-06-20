@@ -80,9 +80,21 @@ function Utils.generateUniquePin(digitCount)
 end
 
 local DispatchMap = {
-    ammunation_robbery = { code = '10-90', title = 'Cướp Ammunation', blip = { sprite = 110, color = 1, size = 1.5 } },
-    atm_robbery        = { code = '10-65', title = 'Cướp ATM',                 blip = { sprite = 500, color = 1, size = 1.3 } },
-    truck_robbery      = { code = '10-66', title = 'Cướp Xe Tải Container',     blip = { sprite = 477, color = 1, size = 1.5 } },
+    house_robbery        = { code = '10-90', title = 'Trộm Nhà',                   blip = { sprite = 40,  color = 1, size = 1.3 } },
+    store_robbery        = { code = '10-90', title = 'Cướp Cửa Hàng',              blip = { sprite = 59,  color = 1, size = 1.3 } },
+    atm_robbery          = { code = '10-65', title = 'Cướp ATM',                   blip = { sprite = 500, color = 1, size = 1.3 } },
+    vangelico_robbery    = { code = '10-91', title = 'Cướp Tiệm Trang Sức',        blip = { sprite = 110, color = 1, size = 1.5 } },
+    pacific_bank_robbery = { code = '10-92', title = 'Cướp Ngân Hàng Pacific',     blip = { sprite = 108, color = 1, size = 1.5 } },
+    paleto_bank_robbery  = { code = '10-92', title = 'Cướp Ngân Hàng Paleto',      blip = { sprite = 108, color = 1, size = 1.5 } },
+    fleeca_bank_robbery  = { code = '10-92', title = 'Cướp Ngân Hàng Fleeca',      blip = { sprite = 108, color = 1, size = 1.5 } },
+    money_truck_robbery  = { code = '10-66', title = 'Cướp Xe Tải Tiền',           blip = { sprite = 477, color = 1, size = 1.5 } },
+    ammunation_robbery   = { code = '10-90', title = 'Cướp Ammunation',            blip = { sprite = 110, color = 1, size = 1.5 } },
+    cargo_ship_robbery   = { code = '10-93', title = 'Cướp Tàu Chở Hàng',          blip = { sprite = 410, color = 1, size = 1.5 } },
+    bobcat_robbery       = { code = '10-93', title = 'Cướp Bobcat',                blip = { sprite = 477, color = 1, size = 1.5 } },
+    truck_robbery        = { code = '10-66', title = 'Cướp Xe Tải Container',      blip = { sprite = 477, color = 1, size = 1.5 } },
+    train_robbery        = { code = '10-94', title = 'Cướp Tàu Hỏa',               blip = { sprite = 460, color = 1, size = 1.5 } },
+    vehicle_theft_robbery = { code = '10-95', title = 'Cướp Xe',                   blip = { sprite = 225, color = 1, size = 1.3 } },
+    yacht_robbery        = { code = '10-93', title = 'Cướp Du Thuyền',             blip = { sprite = 410, color = 1, size = 1.5 } },
 }
 
 RegisterNetEvent('utils:triggerPoliceAlert', function(key, message, coords, streetLabel)

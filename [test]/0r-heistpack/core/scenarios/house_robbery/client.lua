@@ -78,19 +78,7 @@ end
 local function hackLockedDoor(interior)
     state.isBusy = true
 
-    local p = promise.new()
-
-    exports['boii_minigames']:button_mash({
-        style = 'default',
-        loading_time = 4000,
-        difficulty = 6,
-        guesses = 3,
-        timer = 25000,
-    }, function(success)
-        p:resolve(success)
-    end)
-
-    local result = Citizen.Await(p)
+    local result = exports['lockpick']:startLockpick()
 
     if not result then
         Utils.notify(locale("house_robbery.hack_failed"), "error")

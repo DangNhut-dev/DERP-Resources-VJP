@@ -9,7 +9,7 @@ return {
 
     employers = {
         {
-            coords = vector4(-883.18, -1285.67, 13.20, 195.28),
+            coords = vector4(-883.18, -1285.67, 12.20, 195.28),
             pedModel = "s_m_m_movprem_01",
             vehicleSpawnPoints = {
                 vector4(-905.20, -1291.65, 4.55, 20.76),
@@ -21,7 +21,7 @@ return {
         ["house_robbery"] = {
             isActive = true, 
             level = 1,
-            requiredCops = 2,
+            requiredCops = 1,
             maxMemberCount = 2,
             simultaneous = 5,
 
@@ -38,7 +38,7 @@ return {
 
             infoTexts = {
                 "Nếu thiếu vật phẩm, hãy đến chợ để mua.",
-                "Đến khu vực được đánh dấu trên bản đồ và dùng máy dò để đột nhập vào nhà.",
+                "Đến khu vực được đánh dấu trên bản đồ và dùng bộ bẻ khóa nâng cao để đột nhập vào nhà.",
                 "Lục soát các phòng để tìm đồ có giá trị như tiền mặt, trang sức và đồ điện tử.",
                 "Thu thập càng nhiều đồ có giá trị càng tốt.",
                 "Di chuyển đủ xa để kết thúc vụ cướp và quay lại gặp chủ thuê.",
@@ -101,8 +101,8 @@ return {
             requiredCops = 1,   -- Minimum number of police officers required online to start a heist.
             maxMemberCount = 6, -- Maximum number of players allowed in the scenario.
             -- Required items: Items that players must have to start the scenario.
-            requiredItems = {
-                { itemName = "black_money", count = 100, label = "Tiền Bẩn", },
+            requiredItems = { 
+                { itemName = "black_money", count = 100, label = "Tiền Bẩn", },6
             },
 
             scenarioCooldown = SHARED_CONFIG.gameplay.cooldowns.medium, -- Duration (in minutes) of the entire scenario.

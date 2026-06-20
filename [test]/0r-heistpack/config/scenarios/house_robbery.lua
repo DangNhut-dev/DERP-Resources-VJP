@@ -23,7 +23,7 @@ return {
 
     ---@section EQUIPMENT CONFIGURATION
     hackingDeviceOptions = {
-        itemName = "weapon_digiscanner",
+        itemName = "advancedlockpick",
     },
 
     ---@section PROP PRICING
@@ -47,53 +47,136 @@ return {
     ---@section REWARD CONFIGURATION
     -- Loot rewards configuration, defining possible items and their chances
     ---@type table<string, RewardItem[]>
+    -- lootRewardItems = {
+    --     livingroom = {
+    --         { itemName = "gold_necklace", chance = 0.3, quantity = { min = 1, max = 1 } },
+    --         { itemName = "silver_ring",   chance = 0.5, quantity = { min = 1, max = 2 } },
+    --         { itemName = "money",         chance = 0.7, quantity = { min = 50, max = 200 } },
+    --     },
+    --     kitchen = {
+    --         { itemName = "tosti",      chance = 0.6, quantity = { min = 1, max = 2 } },
+    --         { itemName = "sandwich",   chance = 0.6, quantity = { min = 1, max = 2 } },
+    --         { itemName = "gold_chain", chance = 0.2, quantity = { min = 1, max = 1 } },
+    --     },
+    --     methpack = {
+    --         { itemName = "meth_pack", chance = 1.0, quantity = { min = 1, max = 1 } },
+    --     },
+    --     cabin = {
+    --         { itemName = "plastic",      chance = 0.7, quantity = { min = 1, max = 4 } },
+    --         { itemName = "steel",        chance = 0.5, quantity = { min = 1, max = 4 } },
+    --         { itemName = "copper",       chance = 0.5, quantity = { min = 1, max = 4 } },
+    --         { itemName = "electronics",  chance = 0.4, quantity = { min = 1, max = 2 } },
+    --         { itemName = "cryptostick",  chance = 0.4, quantity = { min = 1, max = 1 } },
+    --         { itemName = "gold_chain",   chance = 0.2, quantity = { min = 1, max = 1 } },
+    --         { itemName = "diamond_ring", chance = 0.1, quantity = { min = 1, max = 1 } },
+    --     },
+    --     chest = {
+    --         { itemName = "money",        chance = 0.8,  quantity = { min = 100, max = 300 } },
+    --         { itemName = "gold_chain",   chance = 0.3,  quantity = { min = 1, max = 1 } },
+    --         { itemName = "diamond_ring", chance = 0.15, quantity = { min = 1, max = 1 } },
+    --     },
+    --     watch_case = {
+    --         { itemName = "luxury_watch", chance = 1.0, quantity = { min = 1, max = 1 } },
+    --     },
+    --     electronics = {
+    --         { itemName = "tablet",      chance = 0.5, quantity = { min = 1, max = 1 } },
+    --         { itemName = "smartphone",  chance = 0.7, quantity = { min = 1, max = 1 } },
+    --         { itemName = "laptop",      chance = 0.3, quantity = { min = 1, max = 1 } },
+    --         { itemName = "cryptostick", chance = 0.4, quantity = { min = 1, max = 1 } },
+    --     },
+    --     drugpack = {
+    --         { itemName = "cocaine_bag", chance = 0.5, quantity = { min = 1, max = 2 } },
+    --         { itemName = "weed_bag",    chance = 0.5, quantity = { min = 1, max = 2 } },
+    --         { itemName = "meth_bag",    chance = 0.5, quantity = { min = 1, max = 2 } },
+    --     },
+    --     luxury_alcohol = {
+    --         { itemName = "luxury_whiskey", chance = 1.0, quantity = { min = 1, max = 1 } },
+    --     },
+    --     money = {
+    --         { itemName = "money", chance = 1.0, quantity = { min = 500, max = 1000 } },
+    --     },
+    -- },
+
     lootRewardItems = {
         livingroom = {
-            { itemName = "gold_necklace", chance = 0.3, quantity = { min = 1, max = 1 } },
-            { itemName = "silver_ring",   chance = 0.5, quantity = { min = 1, max = 2 } },
-            { itemName = "money",         chance = 0.7, quantity = { min = 50, max = 200 } },
+            { itemName = "book",             chance = 0.5, quantity = { min = 1, max = 2 } },
+            { itemName = "notepad",          chance = 0.4, quantity = { min = 1, max = 2 } },
+            { itemName = "boombox",          chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "radio_alarm",      chance = 0.3, quantity = { min = 1, max = 1 } },
+            { itemName = "television",       chance = 0.1, quantity = { min = 1, max = 1 } },
+            { itemName = "bracelet",         chance = 0.25, quantity = { min = 1, max = 2 } },
+            { itemName = "watch",            chance = 0.25, quantity = { min = 1, max = 2 } },
         },
+
         kitchen = {
-            { itemName = "tosti",      chance = 0.6, quantity = { min = 1, max = 2 } },
-            { itemName = "sandwich",   chance = 0.6, quantity = { min = 1, max = 2 } },
-            { itemName = "gold_chain", chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "coffemachine",     chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "soap",             chance = 0.5, quantity = { min = 1, max = 3 } },
+            { itemName = "shampoo",          chance = 0.4, quantity = { min = 1, max = 2 } },
+            { itemName = "toothpaste",       chance = 0.4, quantity = { min = 1, max = 2 } },
+            { itemName = "toiletry",         chance = 0.3, quantity = { min = 1, max = 2 } },
+            { itemName = "pogo",             chance = 0.2, quantity = { min = 1, max = 1 } },
         },
+
         methpack = {
-            { itemName = "meth_pack", chance = 1.0, quantity = { min = 1, max = 1 } },
+            { itemName = "skull",            chance = 0.5, quantity = { min = 1, max = 2 } },
+            { itemName = "lockpick",         chance = 0.3, quantity = { min = 1, max = 2 } },
         },
+
         cabin = {
-            { itemName = "plastic",      chance = 0.7, quantity = { min = 1, max = 4 } },
-            { itemName = "steel",        chance = 0.5, quantity = { min = 1, max = 4 } },
-            { itemName = "copper",       chance = 0.5, quantity = { min = 1, max = 4 } },
-            { itemName = "electronics",  chance = 0.4, quantity = { min = 1, max = 2 } },
-            { itemName = "cryptostick",  chance = 0.4, quantity = { min = 1, max = 1 } },
-            { itemName = "gold_chain",   chance = 0.2, quantity = { min = 1, max = 1 } },
-            { itemName = "diamond_ring", chance = 0.1, quantity = { min = 1, max = 1 } },
+            { itemName = "fan",              chance = 0.4, quantity = { min = 1, max = 1 } },
+            { itemName = "monitor",          chance = 0.3, quantity = { min = 1, max = 1 } },
+            { itemName = "printer",          chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "laptop",           chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "gold_watch",       chance = 0.2, quantity = { min = 1, max = 2 } },
+            { itemName = "gold_bracelet",    chance = 0.2, quantity = { min = 1, max = 2 } },
+            { itemName = "earings",          chance = 0.25, quantity = { min = 1, max = 1 } },
         },
+
         chest = {
-            { itemName = "money",        chance = 0.8,  quantity = { min = 100, max = 300 } },
-            { itemName = "gold_chain",   chance = 0.3,  quantity = { min = 1, max = 1 } },
-            { itemName = "diamond_ring", chance = 0.15, quantity = { min = 1, max = 1 } },
+            { itemName = "gold_watch",       chance = 0.3, quantity = { min = 1, max = 2 } },
+            { itemName = "gold_bracelet",    chance = 0.3, quantity = { min = 1, max = 2 } },
+            { itemName = "necklace",         chance = 0.3, quantity = { min = 1, max = 2 } },
+            { itemName = "earings",          chance = 0.3, quantity = { min = 1, max = 2 } },
+            { itemName = "watch",            chance = 0.4, quantity = { min = 1, max = 2 } },
+            { itemName = "banvesung",        chance = 0.5, quantity = { min = 1, max = 1 } },
         },
+
         watch_case = {
-            { itemName = "luxury_watch", chance = 1.0, quantity = { min = 1, max = 1 } },
+            { itemName = "watch",            chance = 1.0, quantity = { min = 1, max = 2 } },
+            { itemName = "gold_watch",       chance = 0.5, quantity = { min = 1, max = 1 } },
         },
+
         electronics = {
-            { itemName = "tablet",      chance = 0.5, quantity = { min = 1, max = 1 } },
-            { itemName = "smartphone",  chance = 0.7, quantity = { min = 1, max = 1 } },
-            { itemName = "laptop",      chance = 0.3, quantity = { min = 1, max = 1 } },
-            { itemName = "cryptostick", chance = 0.4, quantity = { min = 1, max = 1 } },
+            { itemName = "flat_television",  chance = 0.15, quantity = { min = 1, max = 1 } },
+            { itemName = "console",          chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "monitor",          chance = 0.4, quantity = { min = 1, max = 1 } },
+            { itemName = "printer",          chance = 0.3, quantity = { min = 1, max = 1 } },
+            { itemName = "laptop",           chance = 0.25, quantity = { min = 1, max = 1 } },
+            { itemName = "j_phone",          chance = 0.35, quantity = { min = 1, max = 2 } },
+            { itemName = "npc_phone",        chance = 0.35, quantity = { min = 1, max = 2 } },
         },
+
         drugpack = {
-            { itemName = "cocaine_bag", chance = 0.5, quantity = { min = 1, max = 2 } },
-            { itemName = "weed_bag",    chance = 0.5, quantity = { min = 1, max = 2 } },
-            { itemName = "meth_bag",    chance = 0.5, quantity = { min = 1, max = 2 } },
+            { itemName = "tapeplayer",       chance = 0.3, quantity = { min = 1, max = 1 } },
+            { itemName = "boombox",          chance = 0.2, quantity = { min = 1, max = 1 } },
+            { itemName = "radio_alarm",      chance = 0.4, quantity = { min = 1, max = 1 } },
+            { itemName = "skull",            chance = 0.4, quantity = { min = 1, max = 2 } },
+            { itemName = "lockpick",         chance = 0.3, quantity = { min = 1, max = 2 } },
         },
+
         luxury_alcohol = {
-            { itemName = "luxury_whiskey", chance = 1.0, quantity = { min = 1, max = 1 } },
+            { itemName = "sculpture",        chance = 0.15, quantity = { min = 1, max = 1 } },
+            { itemName = "romantic_book",    chance = 0.3, quantity = { min = 1, max = 1 } },
+            { itemName = "gold_watch",       chance = 0.25, quantity = { min = 1, max = 2 } },
+            { itemName = "gold_bracelet",    chance = 0.25, quantity = { min = 1, max = 2 } },
+            { itemName = "necklace",         chance = 0.3, quantity = { min = 1, max = 2 } },
         },
+
         money = {
-            { itemName = "money", chance = 1.0, quantity = { min = 500, max = 1000 } },
+            { itemName = "pencil",           chance = 0.4, quantity = { min = 1, max = 3 } },
+            { itemName = "notepad",          chance = 0.4, quantity = { min = 1, max = 2 } },
+            { itemName = "shoebox",          chance = 0.3, quantity = { min = 1, max = 1 } },
+            { itemName = "book",             chance = 0.4, quantity = { min = 1, max = 2 } },
         },
     },
 
